@@ -7,11 +7,18 @@ name: Build BetFi APK
 # The artifact contains exactly TWO files:
 #   Betmodel-v5.apk        (release build - the one to install)
 #   Betmodel-v5-debug.apk  (debug build)
-# Earlier runs uploaded build/**/*.apk, which swept up three files:
-# Flet's final output plus Flutter/Gradle intermediate copies of the
-# same APK sitting in their own output directories. The builds below
-# stage exactly one release APK and one debug APK into out/ and only
-# out/ is uploaded.
+#
+# Speed design (2026-10-19; the naive version took ~14.5 min):
+# - The downloads are cached across runs: the Flutter SDK Flet
+#   installs into ~/flutter, pub packages, and the Gradle
+#   distribution + dependency caches. Setup becomes a restore.
+# - The app is built ONCE. A second full `flet build` for the debug
+#   variant repeated every expensive step (project generation,
+#   Python packaging, pub get) when only Gradle's build type
+#   differs - so the debug APK is produced by running the cached
+#   Flutter directly in the project Flet generated (build/flutter).
+# - --skip-flutter-doctor drops the doctor pass; its warnings are
+#   desktop/web toolchains this Android build never uses.
 
 on:
   workflow_dispatch:
@@ -29,12 +36,26 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
+
+      - name: Cache Flutter SDK, pub and Gradle downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/flutter
+            ~/.pub-cache
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: build-cache-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            build-cache-${{ runner.os }}-
 
       - name: Install Flet (pinned, same as requirements.txt)
         run: |
@@ -47,7 +68,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --project "Betmodel" --product "Betmodel v5"
+        run: flet build apk --yes --skip-flutter-doctor --project "Betmodel" --product "Betmodel v5"
 
       - name: Stage the release APK (exactly one)
         run: |
@@ -58,25 +79,17 @@ jobs:
           test "$count" -eq 1
           cp build/apk/*.apk out/Betmodel-v5.apk
 
-      - name: Build the debug APK
-        # Arguments after -- are passed down to the underlying
-        # flutter build, so this produces the debug variant into the
-        # same output directory (as a *debug*.apk file).
-        # The build directory is wiped first: the first attempt at
-        # this step (2026-10-19) died in under two minutes with
-        # flet's generic "Error building Flet app" - a fast failure
-        # consistent with the second full build colliding with the
-        # release build's leftovers / disk pressure on the runner.
-        # The Flutter SDK and Gradle caches live outside build/, so
-        # wiping it costs no re-download. -v streams the exact failed
-        # command into the log if it ever fails again.
+      - name: Build and stage the debug APK (same generated project)
+        # Flet generated the Flutter project in build/flutter and the
+        # SDK it installed lives in ~/flutter/<version>. Building the
+        # debug variant there reuses the packaged Python app, the pub
+        # resolution and the Gradle caches - no second flet build.
         run: |
-          rm -rf build
-          flet build apk --yes -v --project "Betmodel" --product "Betmodel v5" -- --debug
-
-      - name: Stage the debug APK (exactly one)
-        run: |
-          debug_apk=$(find build/apk -maxdepth 1 -name '*debug*.apk' | head -n 1)
+          FLUTTER=$(find ~/flutter -maxdepth 3 -path '*/bin/flutter' -type f | head -n 1)
+          echo "flutter: $FLUTTER"
+          test -n "$FLUTTER"
+          (cd build/flutter && "$FLUTTER" build apk --debug)
+          debug_apk=$(find build/flutter/build -name 'app-debug.apk' | head -n 1)
           echo "debug APK: $debug_apk"
           test -n "$debug_apk"
           cp "$debug_apk" out/Betmodel-v5-debug.apk
