@@ -1,8 +1,17 @@
 name: Build BetFi APK
 
 # Builds the betmodel v5 Android app (public name: BetFi, internal
-# id: Bet_Finder) with flet build apk and uploads the APK as a
+# id: Bet_Finder) with flet build apk and uploads the APKs as a
 # workflow artifact. Runs on demand and on pushes to main.
+#
+# The artifact contains exactly TWO files:
+#   Betmodel-v5.apk        (release build - the one to install)
+#   Betmodel-v5-debug.apk  (debug build)
+# Earlier runs uploaded build/**/*.apk, which swept up three files:
+# Flet's final output plus Flutter/Gradle intermediate copies of the
+# same APK sitting in their own output directories. The builds below
+# stage exactly one release APK and one debug APK into out/ and only
+# out/ is uploaded.
 
 on:
   workflow_dispatch:
@@ -32,7 +41,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build the APK
+      - name: Build the release APK
         # flet build fetches its own Flutter SDK on first run;
         # the default key signs this personal-use build.
         # --yes is REQUIRED in CI: without it flet stops to ask consent
@@ -40,9 +49,32 @@ jobs:
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
         run: flet build apk --yes --project "Betmodel" --product "Betmodel v5"
 
-      - name: Upload the APK artifact
+      - name: Stage the release APK (exactly one)
+        run: |
+          mkdir -p out
+          count=$(find build/apk -maxdepth 1 -name '*.apk' | wc -l)
+          echo "APKs in build/apk:"
+          find build/apk -maxdepth 1 -name '*.apk'
+          test "$count" -eq 1
+          cp build/apk/*.apk out/Betmodel-v5.apk
+
+      - name: Build the debug APK
+        # Arguments after -- are passed down to the underlying
+        # flutter build, so this produces the debug variant into the
+        # same output directory (as a *debug*.apk file).
+        run: flet build apk --yes --project "Betmodel" --product "Betmodel v5" -- --debug
+
+      - name: Stage the debug APK (exactly one)
+        run: |
+          debug_apk=$(find build/apk -maxdepth 1 -name '*debug*.apk' | head -n 1)
+          echo "debug APK: $debug_apk"
+          test -n "$debug_apk"
+          cp "$debug_apk" out/Betmodel-v5-debug.apk
+          ls -la out/
+
+      - name: Upload the APKs (release + debug only)
         uses: actions/upload-artifact@v4
         with:
           name: betmodel-v5-apk
-          path: build/**/*.apk
+          path: out/*.apk
           if-no-files-found: error
