@@ -1,6 +1,7 @@
-# BetFi — betmodel v5, the Android app
+# BetFi v7 — betmodel v5 engine, the Android app
 
-**Public name: BetFi. Internal id: Bet_Finder.** The service's core:
+**Public name: BetFi. Internal id: Bet_Finder. App release: v7**
+(the engine is the unchanged betmodel v5.1 code). The service's core:
 the betmodel v5 engine (deep mathematics, a multi-source ensemble, a
 fitted reparametrization layer, a cross-market coherence audit, and a
 coverage law — no bet left unchecked) behind a phone app whose face
@@ -104,7 +105,9 @@ guides does not apply to a Flet app and is dead.)
    (it also runs automatically on pushes to `main`). First run takes
    a while: Flet fetches its Flutter SDK and builds with JDK 17.
 4. When the run is green, open it and download the artifact
-   **`betmodel-v5-apk`** — that zip contains the APK.
+   **`betmodel-v7-apk`** — that zip contains exactly two files:
+   **Betmodel-v7.apk** (release, the one to install) and
+   **Betmodel-v7-debug.apk** (debug build).
 5. Copy the APK to the phone and sideload it (allow "install via
    USB" / install the file; it's signed with the build's default key
    for personal use — no Play Store involved).
@@ -118,7 +121,7 @@ surface either way.
 ## Smoke-test checklist (first run on the phone)
 
 - [ ] App **opens** to the Card screen; header reads BetFi /
-      betmodel v5 / Bet_Finder.
+      v7.0 / betmodel v5 / Bet_Finder.
 - [ ] With no pull yet, the menu stamp reads **UNVERIFIED** and the
       screen says so — nothing is pre-filled or assumed.
 - [ ] **Pull Menu**: the stamp updates to the pull time and source;

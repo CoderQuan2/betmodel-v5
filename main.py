@@ -64,6 +64,11 @@ import flet as ft
 PUBLIC_NAME = "BetFi"
 INTERNAL_ID = "Bet_Finder"
 ENGINE_VERSION = "betmodel v5"
+# App release v7 (2026-10-19): folds in the v6 build elements
+# (download caching, build-once debug) and the Gradle-cache patch.
+# The engine itself is unchanged betmodel v5.1 code and stays
+# labeled as such wherever it is named.
+APP_VERSION = "7.0"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
 # lanes shown on the Record screen (engine lane_record is safe for
 # any lane name: an unknown lane reports 0-0, "no scored record")
@@ -625,7 +630,8 @@ def main(page: ft.Page):
         entries = card.get("entries") or []
         record_view.controls.append(ft.Divider())
         record_view.controls.append(ft.Text(
-            f"Engine: {ENGINE_VERSION} · {engine_fingerprint()}",
+            f"App: {PUBLIC_NAME} v{APP_VERSION} · Engine: "
+            f"{ENGINE_VERSION} · {engine_fingerprint()}",
             size=12, color=ACCENT))
         record_view.controls.append(ft.Text(
             f"Scorecard entries on device: {len(entries)} · "
@@ -695,7 +701,8 @@ def main(page: ft.Page):
     header = ft.Column(spacing=4, controls=[
         ft.Text(PUBLIC_NAME, size=22, color=INK,
                 weight=ft.FontWeight.BOLD),
-        ft.Text(f"{ENGINE_VERSION} · {INTERNAL_ID} · analysis only",
+        ft.Text(f"v{APP_VERSION} · {ENGINE_VERSION} · {INTERNAL_ID}"
+                f" · analysis only",
                 size=11, color=FAINT),
         stamp_ctrl,
         ft.Row(spacing=8, controls=[
