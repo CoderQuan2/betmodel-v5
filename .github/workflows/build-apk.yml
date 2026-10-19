@@ -1,0 +1,45 @@
+name: Build BetFi APK
+
+# Builds the betmodel v5 Android app (public name: BetFi, internal
+# id: Bet_Finder) with flet build apk and uploads the APK as a
+# workflow artifact. Runs on demand and on pushes to main.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Flet (pinned, same as requirements.txt)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build the APK
+        # flet build fetches its own Flutter SDK on first run;
+        # the default key signs this personal-use build.
+        run: flet build apk --project "Betmodel" --product "Betmodel v5"
+
+      - name: Upload the APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: betmodel-v5-apk
+          path: build/**/*.apk
+          if-no-files-found: error
