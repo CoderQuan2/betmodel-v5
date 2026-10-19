@@ -699,8 +699,8 @@ def main(page: ft.Page):
                 size=11, color=FAINT),
         stamp_ctrl,
         ft.Row(spacing=8, controls=[
-            ft.ElevatedButton("Pull Menu", on_click=on_pull),
-            ft.ElevatedButton("Price Slate", on_click=on_price),
+            ft.Button("Pull Menu", on_click=on_pull),
+            ft.Button("Price Slate", on_click=on_price),
         ]),
         status,
         ft.Divider(),
@@ -738,4 +738,4 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
-    ft.app(target=main)
+    ft.run(main)
