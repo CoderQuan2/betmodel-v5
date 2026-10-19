@@ -62,7 +62,17 @@ jobs:
         # Arguments after -- are passed down to the underlying
         # flutter build, so this produces the debug variant into the
         # same output directory (as a *debug*.apk file).
-        run: flet build apk --yes --project "Betmodel" --product "Betmodel v5" -- --debug
+        # The build directory is wiped first: the first attempt at
+        # this step (2026-10-19) died in under two minutes with
+        # flet's generic "Error building Flet app" - a fast failure
+        # consistent with the second full build colliding with the
+        # release build's leftovers / disk pressure on the runner.
+        # The Flutter SDK and Gradle caches live outside build/, so
+        # wiping it costs no re-download. -v streams the exact failed
+        # command into the log if it ever fails again.
+        run: |
+          rm -rf build
+          flet build apk --yes -v --project "Betmodel" --product "Betmodel v5" -- --debug
 
       - name: Stage the debug APK (exactly one)
         run: |
