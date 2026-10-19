@@ -35,7 +35,10 @@ jobs:
       - name: Build the APK
         # flet build fetches its own Flutter SDK on first run;
         # the default key signs this personal-use build.
-        run: flet build apk --project "Betmodel" --product "Betmodel v5"
+        # --yes is REQUIRED in CI: without it flet stops to ask consent
+        # to install the Flutter SDK and the run EOF-fails (run 1,
+        # 2026-10-19). Flag verified against flet==1.0.4 --help.
+        run: flet build apk --yes --project "Betmodel" --product "Betmodel v5"
 
       - name: Upload the APK artifact
         uses: actions/upload-artifact@v4
