@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-betmodel v5.1 — the full overhaul (design: MODEL-V5.md; ordered by the
+betmodel v5.2 — the full overhaul (design: MODEL-V5.md; ordered by the
 Pilot 2026-10-19 from his own spec sketch: "Deep mathematics and bet
 algorithmic engine, various sources, and a novel prediction engine,
 with exceptional reparametrization for scale closing and
@@ -49,7 +49,10 @@ Brier grid search — v4's shrinkage with its coefficient fitted
 instead of declared); iso (PAVA isotonic step map). Selection is by
 leave-one-week-out CV on the training pairs ONLY. Fitted parameters
 print and are labelled FITTED. A lane whose phi fails its named
-out-of-sample benchmark reports UNCALIBRATED, grades cap at C.
+out-of-sample benchmark reports UNCALIBRATED — since v5.2 that is a
+DISPLAYED TAG on the card, not a grade cap: grades come from the edge
+math on every lane, and the phi diagnostics stay printed (Record /
+SCALE) where they inform the reader instead of silently capping.
 
 Organ 3 — Unconventional Relationships (coherence). One margin
 distribution must reconcile ML, spread and total: favourite flips
@@ -59,19 +62,27 @@ ML/spread triangle breaks > 6 pts all print as AUDIT FLAGS.
 
 Organ 4 — the Record on the Card. Every price leads with the
 producing lane's scored Win # / Lose #. No scored record -> Win 0 /
-Lose 0 and cap C.
+Lose 0; the ladder counts record-less as a soft condition and the
+lane's calibration tag shows the defect (v5.2: no grade cap).
 
 Organ 5 — the Verdict Ladder (v5.1; Pilot order 2026-10-19,
 MODEL-V5.md "VERDICT LADDER" — supersedes the v5.0 binary gate).
 Five computed verdicts, never vibes: GOLDEN BET / BET HERE /
 RISK BET (BET) / RISK BET (DO NOT BET) / DO NOT BET, each printed
 with its verdict_reason (the deciding condition, named). The old
-gate's conditions survive as the ladder's inputs; the standards
-did not move — an UNCALIBRATED lane caps at RISK BET (DO NOT BET)
-and nothing on the current record can print GOLDEN BET. Grades:
-frozen GRADING.md rubric on the phi edge + v4 modifiers (FRAGILE
--2 when the lane's bias favours the bet, -1 otherwise;
-provisional cap B) + v5 caps.
+gate's conditions survive as the ladder's inputs. v5.2 grading
+policy (Pilot order 2026-10-20): calibration no longer caps a
+grade and no longer gates a verdict — it prints as a tag
+(CALIBRATED / PROVISIONAL / UNCALIBRATED). GOLDEN BET requires an
+A-band grade, a priced market, the pessimistic-end edge at/above
+the golden threshold (+3.0 pts) and a named mechanism; BET HERE is
+an A- or B-band grade with positive edge and no hard condition.
+Grades: the GRADING.md rubric on the phi edge, moderately widened
+in v5.2 (see base_grade), + v4 modifiers (FRAGILE -2 when the
+lane's bias favours the bet, -1 otherwise; provisional-register
+cap B). Every priced bet also carries a STANCE (BULLISH /
+CONSERVATIVE / RISK) derived from its own probability, edge and
+price — see bet_stance.
 
 Totals engine — STUB, by design: until a pace/scoring companion
 distribution exists AND has a scored record, totals print UNPRICED,
@@ -119,7 +130,8 @@ PHI_PATH = os.path.join(DATA, "v5-phi.json")
 HISTORY_PATH = os.path.join(DATA, "v5-lane-history.json")
 NFL_PRICING_PATH = os.path.join(DATA, "nfl-week6-pricing.json")
 
-ENGINE_VERSION = "5.1"   # v5.1 — the verdict ladder (MODEL-V5.md)
+ENGINE_VERSION = "5.2"   # v5.2 — stance tags + tag-not-cap grading
+# policy (Pilot order 2026-10-20); v5.1 was the verdict ladder
 
 # ------------------------------------------------------------------
 # FanDuel menu endpoints — VERIFIED WORKING from this VM 2026-10-19
@@ -482,16 +494,29 @@ LADDER = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D",
 
 def base_grade(edge_pts):
     """GRADING.md base bands from edge in probability points.
-    D-band interpolation: GRADING.md gives D as one band (-5..-2) and
-    names no D+/D-; split it into equal 1-pt steps — D+ (-3..-2),
-    D (-4..-3), D- (-5..-4) — mirroring the named 1-pt steps of the
-    B band (B-/B/B+ over +2..+5) and C band."""
-    for lo, g in [(8, "A+"), (6, "A"), (5, "A-"), (4, "B+"), (3, "B"),
-                  (2, "B-"), (1, "C+"), (-1, "C"), (-2, "C-"), (-3, "D+"),
-                  (-4, "D"), (-5, "D-")]:
+    v5.2 (Pilot order 2026-10-20): the bands are MODERATELY WIDENED —
+    every threshold from A+ through D- sits ~1 pt lower than the
+    frozen v3.1/v5.1 rubric, so a solid-but-not-extreme edge reaches
+    B (now +2.0) and the A band opens at +4.0. Old -> new floors:
+    A+ 8->7, A 6->5, A- 5->4, B+ 4->3, B 3->2, B- 2->1.5,
+    C+ 1->0.5, C -1->-1.5, C- -2->-2.5, D+ -3->-3.5, D -4->-4.5,
+    D- -5->-5.5, F below. D-band interpolation as before: GRADING.md
+    gives D as one band and names no D+/D-; equal steps mirror the
+    B and C bands."""
+    for lo, g in [(7, "A+"), (5, "A"), (4, "A-"), (3, "B+"), (2, "B"),
+                  (1.5, "B-"), (0.5, "C+"), (-1.5, "C"), (-2.5, "C-"),
+                  (-3.5, "D+"), (-4.5, "D"), (-5.5, "D-")]:
         if edge_pts >= lo:
             return g
     return "F"
+
+
+# v5.2 grade bands as data (the Equations page prints this table;
+# it must match base_grade above — the regression asserts it).
+GRADE_BANDS_V52 = [(7, "A+"), (5, "A"), (4, "A-"), (3, "B+"),
+                   (2, "B"), (1.5, "B-"), (0.5, "C+"), (-1.5, "C"),
+                   (-2.5, "C-"), (-3.5, "D+"), (-4.5, "D"),
+                   (-5.5, "D-")]
 
 
 # =============================================================== CORE — v4 engine (inlined from betmodel4.py)
@@ -836,18 +861,20 @@ def grade_v4(shrunk_edge_pts, lane, card, mechanism, flags=None):
         steps = 2 if bias_favours else 1
         idx = min(idx + steps, len(LADDER) - 1)
         tags.append(f"FRAGILE -{steps} step{'s' if steps != 1 else ''}"
-                    + (" (lane bias favours this bet)" if bias_favours
-                       else ""))
+                    + (" (this lane's known bias leans toward this "
+                       "bet)" if bias_favours else ""))
     give = flags.get("price_discipline_pts") or 0
     if give > 0:
         steps = max(1, int(give) // 50)
         idx = min(idx + steps, len(LADDER) - 1)
         tags.append(f"PRICE DISCIPLINE -{steps} step"
-                    f"{'s' if steps != 1 else ''} ({give} pts give-back)")
+                    f"{'s' if steps != 1 else ''} (price moved "
+                    f"{give} against the opener)")
     weakest = flags.get("weakest_leg_grade")
     if weakest:
         idx = max(idx, LADDER.index(weakest))
-        tags.append(f"GROUPING CAP (weakest leg {weakest})")
+        tags.append(f"GROUPING CAP — the slip grades at its "
+                    f"weakest leg ({weakest})")
     if reg["status"] == "provisional":
         capped = max(idx, LADDER.index("B"))
         if capped != idx:
@@ -1560,7 +1587,8 @@ def fit_nfl_phi(persist=True):
             f"{os_briers['v4_shrunk_0.30']:.4f} — "
             + ("beats it; phi ships." if calibrated else
                "does NOT beat it; the lane ships UNCALIBRATED "
-               "(grades cap at C) per MODEL-V5.md R4.")),
+               "per MODEL-V5.md R4 — a displayed tag since v5.2; "
+               "grades no longer cap on it.")),
         "slate_detail": slate,
     }
     hist = {"nfl-ml": {
@@ -1603,16 +1631,20 @@ def lane_phi(lane):
 
 
 def lane_uncalibrated(lane):
-    """v5 cap-C conditions: the lane failed its phi benchmark test
-    (registry status UNCALIBRATED), or it has no scored record
-    (organ 4). Returns a reason string or None."""
+    """The lane's calibration defect, if any: the lane failed its
+    phi benchmark test (registry status UNCALIBRATED), or it has no
+    scored record (organ 4). Returns a reason string or None.
+    v5.2: this is a DIAGNOSTIC — it feeds the displayed calibration
+    tag (calibration_tag) and the Record/SCALE lines. Through v5.1
+    it was also a grade cap (cap C); the Pilot's v5.2 policy removed
+    the cap — the defect is shown, not silently enforced."""
     if lane in ("nfl-ml", "nfl"):
         fit = load_phi_registry()
         if fit and fit["status"] == "UNCALIBRATED":
             return "UNCALIBRATED (phi failed its out-of-sample test)"
     w, l, _ = lane_record(lane)
     if w + l == 0:
-        return "UNCALIBRATED (no scored record — organ 4)"
+        return "UNTESTED (no scored record yet)"
     return None
 
 
@@ -1630,7 +1662,7 @@ def coherence_check(quotes, sd=NFL_MARGIN_SD):
               if q.get("total") is not None]
     favs = {(s > 0) - (s < 0) for _, s in spreads if s != 0}
     if len(favs) > 1:
-        flags.append("FAVOURITE FLIP across sources: "
+        flags.append("FAVORITE FLIP across sources: "
                      + "; ".join(f"{src} {s:+.1f}" for src, s in spreads))
     for i in range(len(totals)):
         for j in range(i + 1, len(totals)):
@@ -1663,20 +1695,79 @@ def coherence_check(quotes, sd=NFL_MARGIN_SD):
 
 
 # ================================================================ grading v5
-# Frozen GRADING.md rubric on the PHI edge + v4 modifiers (via
-# betmodel4.grade_v4) + v5 caps (UNCALIBRATED / no-record -> C).
+# GRADING.md rubric on the PHI edge (v5.2 widened bands — base_grade)
+# + v4 modifiers (via grade_v4). Through v5.1 this layer also applied
+# the v5 caps (UNCALIBRATED / no-record -> C); v5.2 removed them by
+# Pilot order — calibration is a displayed tag now (calibration_tag),
+# and the phi diagnostics stay computed and printed.
 
 def grade_v5(phi_edge_pts, lane, card, mechanism, flags=None):
     flags = flags or {}
     grade, tags, why = grade_v4(phi_edge_pts, lane, card, mechanism,
-                                   flags)
-    cap_reason = lane_uncalibrated(lane)
-    if cap_reason and not flags.get("killed"):
-        idx = max(LADDER.index(grade), LADDER.index("C"))
-        if LADDER[idx] != grade:
-            tags.append(cap_reason + " — cap C applied")
-        grade = LADDER[idx]
+                                flags)
     return grade, tags, why
+
+
+# ================================================================ stance (v5.2)
+# Every priced bet also carries a STANCE — a plain-language posture
+# derived ONLY from numbers the engine already produced for the bet
+# itself (its final model probability, its phi edge in points, its
+# book price). No new pricing, no new data. Thresholds (documented
+# on the app's Terms and Equations pages):
+#   CONSERVATIVE — the boring-favourite profile: model probability
+#     >= 0.65 with an edge under the B floor (+2.0 pts): you are
+#     paying for likelihood, not for edge.
+#   BULLISH — a strong position: edge >= +2.0 pts (the B-band floor)
+#     with model probability >= 0.45 and implied probability > 0.35:
+#     real edge on a side the model genuinely rates.
+#   LONGSHOT — the longshot / high-variance profile: implied probability
+#     <= 0.35, or plus-money at +200 or longer, or model probability
+#     <= 0.45 without the BULLISH shape — the return comes from the
+#     payout shape, not from likelihood.
+#   A priced bet matching none of the three shapes above falls to
+#   CONSERVATIVE when its model probability is >= 0.60 (likelihood
+#   is the story) and to LONGSHOT otherwise (variance is).
+STANCE_BULLISH_MIN_EDGE = 2.0     # the v5.2 B-band floor, in pts
+STANCE_CONSERVATIVE_MIN_P = 0.65
+STANCE_RISK_MAX_P = 0.35
+STANCES = ["BULLISH", "CONSERVATIVE", "LONGSHOT"]
+
+
+def bet_stance(p_final, edge_pts, price):
+    """(v5.2) The stance of one priced bet, from its own numbers.
+    Returns one of STANCES, or None when the bet is not priced
+    (UNPRICED bets get no stance — they stay DO NOT BET with the
+    named reason)."""
+    if p_final is None or edge_pts is None or price is None:
+        return None
+    implied = implied_prob(price)
+    if p_final >= STANCE_CONSERVATIVE_MIN_P \
+            and edge_pts < STANCE_BULLISH_MIN_EDGE:
+        return "CONSERVATIVE"
+    if edge_pts >= STANCE_BULLISH_MIN_EDGE and p_final >= 0.45 \
+            and implied > STANCE_RISK_MAX_P:
+        return "BULLISH"
+    if implied <= STANCE_RISK_MAX_P or price >= 200 \
+            or p_final <= 0.45:
+        return "LONGSHOT"
+    if p_final >= 0.60:
+        return "CONSERVATIVE"
+    return "LONGSHOT"
+
+
+def parlay_stance(leg_stances):
+    """(v5.2) The combined stance of a parlay, from its legs'
+    stances (the Terms page states this rule): the longest shot
+    sets the slip — any LONGSHOT leg makes the parlay LONGSHOT; else any
+    BULLISH leg makes it BULLISH; a slip whose legs are all
+    CONSERVATIVE is CONSERVATIVE. None when a leg has no stance."""
+    if not leg_stances or any(s is None for s in leg_stances):
+        return None
+    if "LONGSHOT" in leg_stances:
+        return "LONGSHOT"
+    if "BULLISH" in leg_stances:
+        return "BULLISH"
+    return "CONSERVATIVE"
 
 
 # ================================================================ organ 5
@@ -1754,6 +1845,33 @@ def calibration_state(lane, card):
     return "CALIBRATED"
 
 
+CALIBRATION_TAGS = ["CALIBRATED", "PROVISIONAL", "UNCALIBRATED",
+                    "UNTESTED"]
+
+
+def calibration_tag(lane, card):
+    """(v5.2) The DISPLAYED calibration tag for a lane — the word
+    the card, the feed and the Record print. Four states, kept
+    apart because they are not the same thing:
+      UNCALIBRATED — a phi was walk-forward TESTED and FAILED its
+        benchmark (the NFL lane after R4).
+      UNTESTED — the lane has no scored record yet: nothing has
+        been tested because there is nothing to test against. A
+        lane with no record has not failed anything.
+      PROVISIONAL — a record exists but the phi is untested
+        (NOT-YET-FITTED), or the lane's register is provisional.
+      CALIBRATED — a tested phi stands on a scored lane.
+    Through v5.1 the FAILED state capped grades at C and gated the
+    ladder; under the v5.2 policy the tag informs the reader and
+    blocks nothing."""
+    if calibration_state(lane, card) == "FAILED":
+        return "UNCALIBRATED"
+    w, l, _ = lane_record(lane)
+    if w + l == 0:
+        return "UNTESTED"
+    return calibration_state(lane, card)
+
+
 def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
                    pess_edge_pts, cal_state, benched, killed,
                    fragile, bias_favours, record_less,
@@ -1780,18 +1898,31 @@ def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
     affirmatives require clean quotes. (3) The grade hard fail is
     the C band literally (C+/C/C-); D/F grades carry a negative
     phi edge and resolve under DO NOT BET's "negative edge".
-    (4) Record-less is the ladder's own soft condition, never the
-    hard UNCALIBRATED — that word is reserved for a phi that was
-    tested and FAILED."""
+    (4) Record-less is the ladder's own soft condition.
+
+    v5.2 readings (Pilot order 2026-10-20, superseding the v5.1
+    calibration rules): (5) calibration_state is accepted and
+    named in affirmative reasons, but it is NO LONGER a hard or
+    soft condition in either direction — a FAILED (UNCALIBRATED)
+    lane's bets climb the ladder on their grade and edge alone,
+    and a CALIBRATED lane earns no rung it did not earn on the
+    numbers. The tag prints on the card instead (calibration_tag).
+    (6) GOLDEN BET: A-band grade (A+/A/A-), priced, pessimistic-end
+    edge >= +3.0 (the golden threshold, unchanged), and a named
+    mechanism — no soft condition outstanding. Absent the mechanism
+    tag, a golden-shaped bet prints BET HERE with the withholding
+    named. (7) BET HERE: A- or B-band grade, positive edge, no hard
+    condition, no soft condition outstanding."""
     if not priced:
         return DO_NOT_BET, ("UNPRICED: no probability the system "
                             "can defend")
     coh = list(coherence_flags or [])
     signal = bool((raw_edge_pts is not None and raw_edge_pts > 0)
                   or coh)
+    # v5.2: calibration is NOT among the softs or the hards — it
+    # is a displayed tag (reading 5). The tag word for reasons:
+    tag = {"FAILED": "UNCALIBRATED"}.get(cal_state, cal_state)
     softs = []
-    if cal_state == "PROVISIONAL":
-        softs.append("lane provisional (phi untested, not failed)")
     if fragile:
         softs.append("FRAGILE: lane bias favours this side"
                      if bias_favours else
@@ -1807,10 +1938,9 @@ def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
         hards.append("kill-ledger contact")
     if benched:
         hards.append("lane BENCHED by the Governor")
-    if cal_state == "FAILED":
-        hards.append("lane UNCALIBRATED")
     if pess_edge_pts is not None and pess_edge_pts <= 0:
-        hards.append("edge dies at band floor")
+        hards.append("at the model's pessimistic number, the edge "
+                     "is gone")
     if grade in ("C+", "C", "C-"):
         hards.append(f"grade {grade} in the C band")
     if coh:
@@ -1827,26 +1957,32 @@ def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
         return DO_NOT_BET, ("negative edge" if (phi_edge_pts or 0) < 0
                             else "no edge")
     if grade is None or LADDER.index(grade) > LADDER.index("B-"):
-        return DO_NOT_BET, f"grade {grade} below the gate (B-)"
+        return DO_NOT_BET, (f"grade {grade} is below the ladder's "
+                            f"B- floor")
     # ---- the affirmative zone: gate-grade edge, no hard condition
-    if cal_state == "CALIBRATED" and not softs:
+    if not softs:
         golden_shape = (LADDER.index(grade) <= LADDER.index("A-")
                         and pess_edge_pts is not None
                         and pess_edge_pts >= 3.0)
         if golden_shape and mechanism in MECHANISMS:
             return GOLDEN_BET, (
-                f"edge survives the band's pessimistic end with "
-                f"{pess_edge_pts:+.1f} to spare; lane calibrated; "
-                f"mechanism tagged ({mechanism})")
+                f"edge still {pess_edge_pts:+.1f} pts at the "
+                f"band's pessimistic end; reason the market may "
+                f"be wrong: {mechanism}; calibration tag {tag} — "
+                f"displayed, not a gate")
         if golden_shape:
-            return BET_HERE, ("golden withheld: the disagreement "
-                              "carries no named mechanism tag")
-        return BET_HERE, ("clean affirmative: gate-grade edge on a "
-                          "calibrated lane; the band floor holds")
+            return BET_HERE, ("not golden: no named reason the "
+                              "market may be wrong (no mechanism "
+                              "tag)")
+        return BET_HERE, ("clean bet by the ladder's rules: "
+                          "A/B-band grade, edge positive, no "
+                          "cautions standing, edge still positive "
+                          f"at the band's low end; calibration tag "
+                          f"{tag} — displayed, not a gate")
     if len(softs) == 1:
         return RISK_BET_YES, softs[0]
-    return RISK_BET_NO, ("risks compound (the ladder's BET rung "
-                         "allows exactly one): "
+    return RISK_BET_NO, ("two or more cautions on one bet — the "
+                         "ladder allows one: "
                          + "; ".join(softs))
 
 
@@ -1911,15 +2047,21 @@ def print_card(mid, lane, p_final, p_raw, phi, phi_state, price,
                + (f" [{'; '.join(tags)}]" if tags else ""))
     out.append(verdict + (f" — {verdict_reason}"
                           if verdict_reason else ""))
+    cal_tag = calibration_tag(lane, card)
+    stance = (bet_stance(p_final, edge, price)
+              if p_final is not None else None)
+    if stance:
+        out.append(f"Stance {stance} · calibration {cal_tag}")
     w_m, w_k, w_note = ensemble_weights(lane)
     if p_final is None:
-        detail = (f"odds {int(price):+d} | price -${stake:.2f} | "
+        detail = (f"odds {int(price):+d} | stake ${stake:.2f} | "
                   f"UNPRICED — no probability the system can defend")
     else:
         detail = (f"odds {int(price):+d} | payout {dec:.2f}x / "
-                  f"${stake * dec:.2f} | price -${stake:.2f} | win% "
+                  f"${stake * dec:.2f} | stake ${stake:.2f} | win% "
                   f"{p_final * 100:.1f} vs {implied * 100:.1f} implied "
-                  f"| edge {edge:+.1f} pts | EV {ev * 100:+.1f}% | "
+                  f"| edge {edge:+.1f} pts | EV "
+                  f"{'+' if ev >= 0 else '-'}${abs(ev):.2f} per $1 | "
                   f"unit {units:.1f}u")
     out.append("  " + detail)
     phi_desc = phi["kind"] + (
@@ -1976,6 +2118,7 @@ def print_card(mid, lane, p_final, p_raw, phi, phi_state, price,
                  "probability": p_final, "grade": grade,
                  "tags": tags, "verdict": verdict,
                  "verdict_reason": verdict_reason,
+                 "cal_tag": cal_tag, "stance": stance,
                  "blocked_by": fails, "sections": sections}
     if as_json:
         print(json.dumps(card_dict, indent=1))
@@ -2075,7 +2218,7 @@ def price_total_stub(sport, home, away, line, price, stake=10.0,
           "pace/scoring distribution, no scored record)")
     print("Grade C [UNPRICED (cap C)]")
     print("DO NOT BET — UNPRICED: no probability the system can defend")
-    print(f"  odds {int(price):+d} | price -${stake:.2f} | total "
+    print(f"  odds {int(price):+d} | stake ${stake:.2f} | total "
           f"line {line} carried for the record only")
     return {"grade": "C", "verdict": "DO NOT BET",
             "verdict_reason": "UNPRICED: no probability the system can defend",
@@ -2733,7 +2876,11 @@ def _verdict(mkt, state, p=None, grade=None, verdict=None,
             "desc": _mkt_desc(mkt), "state": state, "p": p,
             "grade": grade, "verdict": verdict,
             "verdict_reason": verdict_reason, "note": note,
-            "detail": detail}
+            "detail": detail,
+            # v5.2: stamped centrally by run_slate on priced
+            # verdicts — the displayed calibration tag and the
+            # bet's stance. None on UNPRICED / ungraded verdicts.
+            "cal_tag": None, "stance": None}
 
 
 def _mkt_desc(mkt):
@@ -2885,7 +3032,7 @@ def _chk_totals(mkt, ctx):
     return _verdict(mkt, "UNPRICED",
                     note="totals engine not built — no pace/scoring "
                          "companion distribution with a scored "
-                         "record (MODEL-V5.md); stamped, not guessed")
+                         "record; stamped, not guessed")
 
 
 @register("alt-total")
@@ -2957,8 +3104,7 @@ def _chk_scoring_anytime(mkt, ctx):
     return _verdict(mkt, "UNPRICED",
                     note="player scoring rates are not in any "
                          "fitted source — scoring-play "
-                         "reconstruction scoped, not built "
-                         "(prop_from_scoring_plays); never a "
+                         "reconstruction scoped, not built; never a "
                          "market-implied number dressed as a model")
 
 
@@ -3019,8 +3165,8 @@ def _chk_parlay(mkt, ctx):
     joint_pess = 1.0
     for leg, v in zip(mkt["legs"], legs):
         joint_pess *= v["p"]
-    note = ("joint P = product of leg prices (independence "
-            "assumption, printed per the v3 lineage)")
+    note = ("joint P = product of leg probabilities (assumes the "
+            "legs are independent — same-game legs rarely are)")
     grade = verdict = verdict_reason = None
     if all(leg.get("price") is not None for leg in mkt["legs"]):
         dec_prod = 1.0
@@ -3237,14 +3383,30 @@ def run_slate(slate, print_out=True):
     lines = [f"SLATE — menu {stamp}"
              + (f" | pull error: {slate['error']}"
                 if slate.get("error") else "")]
+    card = load_scorecard()
     for mkt in slate.get("markets", []):
         v = run_checker(mkt, ctx)
+        # v5.2 central stamping: every PRICED verdict carries its
+        # lane's calibration tag and its own stance, computed here
+        # so every checker (and both shells) shows the same values.
+        if v["state"] == "PRICED" and v["p"] is not None:
+            lane = _lane_for(mkt)
+            v["cal_tag"] = calibration_tag(lane, card)
+            if mkt.get("price") is not None:
+                v["stance"] = bet_stance(
+                    v["p"],
+                    (v["p"] - implied_prob(mkt["price"])) * 100,
+                    mkt["price"])
         verdicts.append(v)
         line = f"[{v['state']}] {v['market']} — {v['desc']}"
         if v["p"] is not None:
             line += f" | P {v['p'] * 100:.1f}%"
         if v["grade"]:
             line += f" | Grade {v['grade']}"
+        if v.get("stance"):
+            line += f" | Stance {v['stance']}"
+        if v.get("cal_tag"):
+            line += f" | {v['cal_tag']}"
         if v["verdict"]:
             line += f" | {v['verdict']}"
         if v["note"]:
@@ -3730,6 +3892,12 @@ def fd_parse_sport_page(page, sport):
         if " @ " in name:
             away, home = (s.strip() for s in name.split(" @ ", 1))
             games[ev["eventId"]] = (away, home, ev)
+        elif sport == "soccer" and " v " in name:
+            # the soccer page names matches home-first, world
+            # style ("Inter v Fiorentina") — no " @ " separator;
+            # games[] stores (away, home) like every other sport
+            home, away = (s.strip() for s in name.split(" v ", 1))
+            games[ev["eventId"]] = (away, home, ev)
     for mk in markets.values():
         inventory[mk.get("marketName")] = \
             inventory.get(mk.get("marketName"), 0) + 1
@@ -3759,6 +3927,10 @@ def fd_parse_sport_page(page, sport):
                 "fd_market_id": mk.get("marketId"),
                 "market_time": mk.get("marketTime")}
         mname = mk.get("marketName")
+        if sport == "soccer" and mname == "Moneyline (3-way)":
+            # FanDuel's soccer 1X2 market name; the engine's
+            # moneyline route (with its draw leg) prices it
+            mname = "Moneyline"
         if mname == "Moneyline":
             for side, team in (("home", raw_home),
                                ("away", raw_away)):
@@ -3767,6 +3939,17 @@ def fd_parse_sport_page(page, sport):
                 if price is not None:
                     slate.append({**base, "market": "moneyline",
                                   "side": side, "price": price})
+            if sport == "soccer":
+                # the 1X2 market's third leg (v5.2): FanDuel lists
+                # the Draw as its own runner. The soccer engine
+                # prices side="draw" off the Poisson grid; leaving
+                # the leg out misdescribed a three-way market as a
+                # two-way one.
+                r = by_name.get("Draw")
+                price = _fd_runner_price(r) if r else None
+                if price is not None:
+                    slate.append({**base, "market": "moneyline",
+                                  "side": "draw", "price": price})
         elif mname in ("Spread", "Point Spread"):
             for side, team in (("home", raw_home),
                                ("away", raw_away)):
@@ -4089,7 +4272,19 @@ def run_regression():
     fit = fit_nfl_phi()
     ob = fit["os_test"]["briers"]
     cv = fit["cv_brier"]
-    r4_pass = fit["status"] == "CALIBRATED"
+    # v5.2 expectation (Pilot order 2026-10-20): the phi fact is
+    # unchanged — no candidate beats the benchmark, and that fact
+    # prints below, unburied. What the regression asserts changed
+    # with the grading policy: (a) the lane's DISPLAYED calibration
+    # tag is UNCALIBRATED (the tag is asserted, not a cap); (b)
+    # grade_v5 applies NO calibration cap on this lane — a
+    # constructed +9.0-pt edge grades above the C band.
+    tag4 = calibration_tag("nfl-ml", card)
+    g4_probe, _, _ = grade_v5(9.0, "nfl-ml", card,
+                              "model-structural", {})
+    r4_pass = (fit["status"] == "UNCALIBRATED"
+               and tag4 == "UNCALIBRATED"
+               and LADDER.index(g4_probe) < LADDER.index("C"))
     out.append("")
     out.append(f"- training pairs: {fit['train']['n_pairs']} "
                f"(walk-forward weeks 3-5; the generator reproduces "
@@ -4124,9 +4319,16 @@ def run_regression():
                f"out-of-sample. The selected phi is the identity "
                f"(Brier {ob['phi'][fit['selected']]:.4f}); no "
                f"candidate beats the benchmark. The NFL lane ships "
-               f"UNCALIBRATED — grades cap at C, the gate cannot "
-               f"print Bet on this lane, and this paragraph is the "
-               f"record of why.**")
+               f"UNCALIBRATED, and this paragraph is the record of "
+               f"why. Under the v5.2 grading policy the word is a "
+               f"DISPLAYED TAG, not a cap or a gate: the tag is "
+               f"asserted here (calibration_tag(nfl-ml) = {tag4}), "
+               f"and grade_v5 applies no cap on this lane — a "
+               f"constructed +9.0-pt edge grades {g4_probe}, above "
+               f"the C band the v5.1 cap would have forced. The "
+               f"lane's probabilities still carry no calibration "
+               f"claim; the reader sees the tag on every card and "
+               f"judges.**")
     out.append(f"- what the failure is NOT: the lane's raw "
                f"walk-forward Brier on weeks 3-5 was 0.2346 — it was "
                f"calibrated on the data phi was allowed to see. "
@@ -4134,9 +4336,13 @@ def run_regression():
                f"the 0.64-0.69 home-favourite band went 0-for-4). "
                f"No honest function of weeks 1-5 fixes a break it "
                f"cannot see, and v5 will not pretend otherwise.")
-    r4_verdict = ("PASS" if r4_pass else
-                  "FAIL — BY THE DESIGN'S OWN CRITERION, reported as "
-                  "designed: the lane is UNCALIBRATED")
+    r4_verdict = ("PASS — under the v5.2 expectation: phi still "
+                  "fails its benchmark (the fact above), the lane's "
+                  "tag asserts UNCALIBRATED, and no grade cap "
+                  "applies (probe grades "
+                  f"{g4_probe})" if r4_pass else
+                  "FAIL — the v5.2 expectation did not hold (tag or "
+                  "cap probe disagrees with the policy)")
     out.append(f"- **R4: {r4_verdict}** (phi-Brier "
                f"{ob['phi'][fit['selected']]:.4f} vs benchmark 0.278)")
     out.append("")
@@ -4295,18 +4501,21 @@ def run_regression():
     out.append("## Phi state of the lanes (as shipped)")
     out.append("")
     out.append("- nfl-ml: IDENTITY-AFTER-TEST — **UNCALIBRATED** "
-               "(R4). Cap C. The lane keeps pricing (its margin "
+               "(R4). Since v5.2 the tag displays; it does not cap "
+               "or gate. The lane keeps pricing (its margin "
                "centres beat the market's in Week 6 — MAE 6.6 vs "
                "7.1) but its win probabilities carry no calibration "
-               "claim and the gate stays shut on it.")
+               "claim, and every card says so.")
     out.append("- cfb ml / cover / live: phi NOT-YET-FITTED "
                "(identity; no walk-forward pair set built for "
                "these estimators yet — future work, named here "
-               "rather than implied done). v4 grading rules stand.")
+               "rather than implied done). Tag: PROVISIONAL.")
     out.append("- props: phi NOT-YET-FITTED; lane record 0-0 -> "
-               "organ-4 cap C stands.")
-    out.append("- totals: engine is a STUB — UNPRICED, cap C, "
-               "No Bet (price_total_stub).")
+               "the ladder's record-less soft condition stands; "
+               "tag PROVISIONAL/UNCALIBRATED by the record rule.")
+    out.append("- totals: engine is a STUB — UNPRICED, grade C "
+               "convention on the stub line, DO NOT BET "
+               "(price_total_stub).")
     out.append("- scoring-play props: route scoped in code comments "
                "(prop_from_scoring_plays) — the summary endpoint "
                "answers but carries no scoringPlays structure in "
@@ -4316,12 +4525,15 @@ def run_regression():
     out.append("## Consequence, stated plainly")
     out.append("")
     out.append("With every lane either UNCALIBRATED, record-less, or "
-               "phi-untested, v5's Decision Gate will print No Bet "
-               "on nearly everything until a lane earns a fitted phi "
-               "that beats its benchmark out-of-sample. That is the "
-               "overhaul working as designed, not a defect: v5 "
-               "prices, grades, shows its record, and refuses — "
-               "until the evidence says otherwise.")
+               "phi-untested, v5 as designed printed No Bet on "
+               "nearly everything until a lane earned a fitted phi "
+               "that beat its benchmark out-of-sample. v5.2 (Pilot "
+               "order 2026-10-20) changes the presentation, not "
+               "the evidence: the tags print on every card, grades "
+               "and verdicts follow the edge math, and the reader "
+               "— not a silent cap — weighs what an UNCALIBRATED "
+               "tag means. The phi facts in this report are "
+               "unchanged.")
     # ---------- ADDENDUM v5.1: R7 — the verdict ladder
     out.append("")
     out.append(f"## ADDENDUM v5.1 — the verdict ladder (engine "
@@ -4346,26 +4558,35 @@ def run_regression():
                "quotes; (3) the grade hard fail is the C band "
                "literally (C+/C/C-) — D/F grades carry a negative "
                "phi edge and resolve under DO NOT BET’s "
-               "“negative edge”; (4) “lane calibrated” needs a "
-               "tested phi (FITTED, or identity-after-test with "
-               "registry status CALIBRATED) on a non-provisional "
-               "register lane; record-less is the ladder’s own "
-               "soft condition, never the hard UNCALIBRATED — "
-               "that word is reserved for a phi that was tested "
-               "and FAILED.")
+               "“negative edge”; (4) record-less is the ladder’s "
+               "own soft condition.")
+    out.append("")
+    out.append("v5.2 supersedes the v5.1 calibration readings "
+               "(Pilot order 2026-10-20): calibration_state no "
+               "longer enters the ladder as a hard or soft "
+               "condition at all — FAILED (UNCALIBRATED), "
+               "PROVISIONAL and CALIBRATED lanes climb on grade "
+               "and edge alone, and the tag prints on the card. "
+               "GOLDEN BET (v5.2): A-band grade, priced, "
+               "pessimistic-end edge >= +3.0, named mechanism, "
+               "no soft condition outstanding. BET HERE: A/B-band "
+               "grade, positive edge, no hard or soft condition. "
+               "The checks below assert the v5.2 mapping.")
     out.append("")
     out.append("## R7 — verdict-mapping checks")
     out.append("")
     out.append("Criterion (stated before numbers): constructed "
                "inputs to verdict_ladder produce each of the "
-               "five verdicts under exactly its MODEL-V5.md "
-               "conditions; a grid sweep with cal_state=FAILED "
-               "never prints above RISK BET (DO NOT BET); and on "
-               "the recorded data on file — the R6 sample slate "
+               "five verdicts under exactly its stated conditions; "
+               "a grid sweep asserts TAG INVARIANCE — identical "
+               "inputs under cal_state FAILED / PROVISIONAL / "
+               "CALIBRATED print identical verdicts; and on the "
+               "recorded data on file — the R6 sample slate "
                "above, the saved FanDuel pull, and the graded "
-               "NFL Week 6 slate in data/v5-phi.json — nothing "
-               "prints GOLDEN BET and every NFL moneyline sits "
-               "at RISK BET (DO NOT BET) or below.")
+               "NFL Week 6 slate in data/v5-phi.json — every "
+               "PRICED NFL verdict carries the UNCALIBRATED tag, "
+               "every GOLDEN BET satisfies the v5.2 golden "
+               "criteria, and every UNPRICED verdict is DO NOT BET.")
     base7 = dict(priced=True, grade="B", phi_edge_pts=3.5,
                  raw_edge_pts=4.0, pess_edge_pts=2.0,
                  cal_state="CALIBRATED", benched=False,
@@ -4377,9 +4598,13 @@ def run_regression():
          {**base7, "grade": "A", "phi_edge_pts": 6.5,
           "raw_edge_pts": 7.0, "pess_edge_pts": 3.5}, GOLDEN_BET),
         ("clean affirmative", dict(base7), BET_HERE),
-        ("one soft: lane provisional",
+        ("tag only: lane PROVISIONAL no longer demotes (v5.2)",
          {**base7, "grade": "B-", "cal_state": "PROVISIONAL"},
-         RISK_BET_YES),
+         BET_HERE),
+        ("tag only: golden shape on an UNCALIBRATED lane (v5.2)",
+         {**base7, "grade": "A", "phi_edge_pts": 6.5,
+          "raw_edge_pts": 7.0, "pess_edge_pts": 3.5,
+          "cal_state": "FAILED"}, GOLDEN_BET),
         ("one soft: FRAGILE, lane bias favours the bet",
          {**base7, "fragile": True, "bias_favours": True},
          RISK_BET_YES),
@@ -4401,7 +4626,7 @@ def run_regression():
           "raw_edge_pts": 2.0, "pess_edge_pts": 1.2},
          RISK_BET_NO),
         ("two softs compound (reading 1)",
-         {**base7, "cal_state": "PROVISIONAL", "fragile": True},
+         {**base7, "fragile": True, "record_less": True},
          RISK_BET_NO),
         ("negative edge",
          {**base7, "grade": "D", "phi_edge_pts": -3.0,
@@ -4424,27 +4649,34 @@ def run_regression():
     for g7 in LADDER:
         for pess7 in (-2.0, 0.5, 2.0, 5.0):
             for raw7 in (-1.0, 5.0):
-                v7, _w7 = verdict_ladder(
-                    priced=True, grade=g7,
-                    phi_edge_pts=max(raw7, 0.5),
-                    raw_edge_pts=raw7, pess_edge_pts=pess7,
-                    cal_state="FAILED", benched=False,
-                    killed=False, fragile=False,
-                    bias_favours=False, record_less=False,
-                    coherence_flags=[],
-                    mechanism="model-structural")
-                if verdict_rank(v7) < verdict_rank(RISK_BET_NO):
+                vs7 = set()
+                for cal7 in ("FAILED", "PROVISIONAL", "CALIBRATED"):
+                    v7, _w7 = verdict_ladder(
+                        priced=True, grade=g7,
+                        phi_edge_pts=max(raw7, 0.5),
+                        raw_edge_pts=raw7, pess_edge_pts=pess7,
+                        cal_state=cal7, benched=False,
+                        killed=False, fragile=False,
+                        bias_favours=False, record_less=False,
+                        coherence_flags=[],
+                        mechanism="model-structural")
+                    vs7.add(v7)
+                if len(vs7) != 1:
                     sweep_ok = False
     r7_ok = r7_ok and sweep_ok
-    out.append(f"- UNCALIBRATED sweep (13 grades x 4 band margins "
-               f"x 2 raw edges, cal_state=FAILED): nothing above "
-               f"RISK BET (DO NOT BET): {sweep_ok}")
+    out.append(f"- TAG INVARIANCE sweep (13 grades x 4 band "
+               f"margins x 2 raw edges x 3 calibration states): "
+               f"the verdict never moves with the tag: {sweep_ok}")
     r6_golden = [v for v in r6_verdicts
                  if v.get("verdict") == GOLDEN_BET]
+    r6_golden_bad = [v for v in r6_golden
+                     if v.get("grade") not in ("A+", "A", "A-")]
     out.append(f"- recorded data, R6 sample slate above: "
                f"{len(r6_verdicts)} checker verdicts, GOLDEN BET "
-               f"count {len(r6_golden)}")
-    r7_ok = r7_ok and not r6_golden
+               f"count {len(r6_golden)} (v5.2 asserts each one "
+               f"carries an A-band grade: "
+               f"{not r6_golden_bad})")
+    r7_ok = r7_ok and not r6_golden_bad
     pull_names = sorted(f for f in os.listdir(DATA)
                         if f.startswith("menu-fanduel-")
                         and f.endswith(".json"))
@@ -4459,9 +4691,11 @@ def run_regression():
                        and v.get("sport") == "nfl"
                        and v["state"] == "PRICED"]
         pull_nfl_bad = [v for v in pull_nfl_ml
-                        if v["verdict"] is None
-                        or verdict_rank(v["verdict"])
-                        < verdict_rank(RISK_BET_NO)]
+                        if v.get("cal_tag") != "UNCALIBRATED"]
+        pull_golden_bad = [v for v in pull_golden
+                           if v.get("grade")
+                           not in ("A+", "A", "A-")
+                           or not v.get("cal_tag")]
         pull_unp = [v for v in pull_v
                     if v["state"] == "UNPRICED"]
         pull_unp_bad = [v for v in pull_unp
@@ -4469,21 +4703,22 @@ def run_regression():
         out.append(f"- recorded data, saved FanDuel pull "
                    f"({pull_names[-1]}): {len(pull_v)} checker "
                    f"verdicts, GOLDEN BET count "
-                   f"{len(pull_golden)}; PRICED NFL moneylines "
-                   f"{len(pull_nfl_ml)}, any above RISK BET "
-                   f"(DO NOT BET): {len(pull_nfl_bad)}; "
+                   f"{len(pull_golden)} (each satisfying the "
+                   f"v5.2 golden criteria: "
+                   f"{not pull_golden_bad}); PRICED NFL "
+                   f"moneylines {len(pull_nfl_ml)}, all carrying "
+                   f"the UNCALIBRATED tag: {not pull_nfl_bad}; "
                    f"UNPRICED verdicts {len(pull_unp)}, all "
                    f"carrying DO NOT BET: "
                    f"{not pull_unp_bad}")
-        r7_ok = (r7_ok and not pull_golden and not pull_nfl_bad
+        r7_ok = (r7_ok and not pull_golden_bad and not pull_nfl_bad
                  and not pull_unp_bad)
     else:
         out.append("- recorded data, saved FanDuel pull: NONE "
                    "ON FILE — this check cannot run")
         r7_ok = False
     sel7 = fit["candidates"][fit["selected"]]
-    nfl_bad = []
-    nfl_risk_no = 0
+    nfl_dist = {}
     for g7 in fit["slate_detail"]:
         raw_e = (g7["raw"] - g7["mkt"]) * 100
         phi_e = (phi_apply(sel7, g7["raw"]) - g7["mkt"]) * 100
@@ -4499,19 +4734,15 @@ def run_regression():
             fragile=any(t.startswith("FRAGILE") for t in tg7),
             bias_favours=False, record_less=False,
             coherence_flags=[], mechanism="model-structural")
-        if verdict_rank(v7) < verdict_rank(RISK_BET_NO):
-            nfl_bad.append(f"{g7['game']}: {v7}")
-        if v7 == RISK_BET_NO:
-            nfl_risk_no += 1
+        nfl_dist[v7] = nfl_dist.get(v7, 0) + 1
     out.append(f"- recorded data, graded NFL Week 6 slate "
                f"({len(fit['slate_detail'])} games, phi edge vs "
-               f"the market no-vig P): RISK BET (DO NOT BET) "
-               f"count {nfl_risk_no}; anything above that rung: "
-               f"{nfl_bad or 'none'}")
-    r7_ok = r7_ok and not nfl_bad
-    r4_txt = ("PASS" if r4_pass else
-              "FAIL — by the design criterion (lane UNCALIBRATED), "
-              "unchanged from v5.0")
+               f"the market no-vig P): verdict distribution under "
+               f"v5.2 (the lane's tag asserts UNCALIBRATED — R4 "
+               f"above; rungs now follow the edge math): "
+               f"{nfl_dist}")
+    r4_txt = ("PASS (v5.2 expectation: tag asserted, no cap)" if
+              r4_pass else "FAIL (v5.2 expectation)")
     out.append(f"- R1-R6 re-run under engine {ENGINE_VERSION}: "
                f"R1 {'PASS' if r1_pass else 'FAIL'} | "
                f"R2 {'PASS' if r2_pass else 'FAIL'} | "
@@ -4520,6 +4751,75 @@ def run_regression():
                f"R5 {'PASS' if r5_pass else 'FAIL'} | "
                f"R6 {'PASS' if r6_pass else 'FAIL'}")
     out.append(f"- **R7: {'PASS' if r7_ok else 'FAIL'}**")
+    out.append("")
+
+    # ---------- ADDENDUM v5.2: stance + bands + tag checks
+    out.append(f"## ADDENDUM v5.2 — stance, widened bands, "
+               f"calibration-as-tag (engine {ENGINE_VERSION})")
+    out.append("")
+    out.append("Pilot order 2026-10-20: less rigid grading — "
+               "grades from the edge math on every lane, "
+               "calibration as a displayed tag (CALIBRATED / "
+               "PROVISIONAL / UNCALIBRATED / UNTESTED), widened "
+               "grade bands, and a STANCE on every priced bet "
+               "(bet_stance — derived from the bet's own "
+               "probability, edge and price; UNPRICED bets get "
+               "none). Criterion (stated before numbers): the "
+               "constructed profiles below land on their named "
+               "stances; parlay_stance follows its stated rule; "
+               "base_grade reproduces the published v5.2 band "
+               "table at every floor.")
+    stance_cases = [
+        ("boring favourite: p 0.72, edge +0.6, price -250",
+         (0.72, 0.6, -250), "CONSERVATIVE"),
+        ("strong position: p 0.55, edge +5.0, price -105",
+         (0.55, 5.0, -105), "BULLISH"),
+        ("longshot: p 0.30, edge +8.0, price +250",
+         (0.30, 8.0, 250), "LONGSHOT"),
+        ("plus money: p 0.40, edge +1.0, price +220",
+         (0.40, 1.0, 220), "LONGSHOT"),
+        ("heavy favourite with a real edge: p 0.70, edge +4.0, "
+         "price -230", (0.70, 4.0, -230), "BULLISH"),
+        ("coin flip, thin edge: p 0.50, edge +0.5, price -110",
+         (0.50, 0.5, -110), "LONGSHOT"),
+    ]
+    r52_ok = True
+    for name_s, args_s, want_s in stance_cases:
+        got_s = bet_stance(*args_s)
+        ok_s = got_s == want_s
+        r52_ok = r52_ok and ok_s
+        out.append(f"- stance {name_s}: **{got_s}** "
+                   f"({'as specced' if ok_s else 'EXPECTED ' + want_s})")
+    none_s = (bet_stance(None, None, -110) is None
+              and bet_stance(0.5, 1.0, None) is None)
+    r52_ok = r52_ok and none_s
+    out.append(f"- stance of an unpriced bet: None (UNPRICED bets "
+               f"get no stance): {none_s}")
+    parlay_cases = [
+        (["CONSERVATIVE", "CONSERVATIVE"], "CONSERVATIVE"),
+        (["CONSERVATIVE", "BULLISH"], "BULLISH"),
+        (["BULLISH", "LONGSHOT"], "LONGSHOT"),
+        (["CONSERVATIVE", None], None),
+    ]
+    for legs_s, want_s in parlay_cases:
+        got_s = parlay_stance(legs_s)
+        ok_s = got_s == want_s
+        r52_ok = r52_ok and ok_s
+        out.append(f"- parlay stance {legs_s}: **{got_s}** "
+                   f"({'as specced' if ok_s else 'EXPECTED ' + str(want_s)})")
+    bands_ok = True
+    for i, (lo_b, g_b) in enumerate(GRADE_BANDS_V52):
+        if base_grade(lo_b) != g_b:
+            bands_ok = False
+        nxt = (GRADE_BANDS_V52[i + 1][1]
+               if i + 1 < len(GRADE_BANDS_V52) else "F")
+        if base_grade(lo_b - 0.01) != nxt:
+            bands_ok = False
+    r52_ok = r52_ok and bands_ok
+    out.append(f"- band table: base_grade reproduces every v5.2 "
+               f"floor and the grade just below it: {bands_ok}")
+    out.append(f"- **ADDENDUM v5.2 checks: "
+               f"{'PASS' if r52_ok else 'FAIL'}**")
     out.append("")
     text = "\n".join(out)
     path = os.path.join(RESULTS, "model-v5-regression.md")

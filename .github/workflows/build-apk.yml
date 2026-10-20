@@ -1,13 +1,17 @@
 name: Build BetFi APK
 
 # Builds the BetFi Android app (internal id: Bet_Finder; engine:
-# betmodel v5.1) with flet build apk and uploads the APKs as a
+# betmodel v5.2) with flet build apk and uploads the APKs as a
 # workflow artifact. Runs on demand and on pushes to main.
+#
+# App release v10 (2026-10-20): staging/artifact names move to
+# BetFi-10 (artifact betfi-10-apk; files BetFi-10.apk +
+# BetFi-10-debug.apk); build mechanics unchanged from v7.
 #
 # App release v7 (2026-10-19) - this workflow's changelog:
 # - Artifact contains exactly TWO files, staged into out/:
-#     Betmodel-v7.apk        (release build - the one to install)
-#     Betmodel-v7-debug.apk  (debug build)
+#     BetFi-10.apk        (release build - the one to install)
+#     BetFi-10-debug.apk  (debug build)
 #   (An earlier version uploaded build/**/*.apk and swept up three
 #   files - Flet's final output plus Flutter/Gradle intermediates.)
 # - Flet 1.0 API fixes in main.py: ft.run entry, ft.Button.
@@ -78,7 +82,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "Betmodel" --product "Betmodel v7" --build-version "7.1.0" --build-number "9"
+        run: flet build apk --yes --skip-flutter-doctor --project "BetFi" --product "BetFi 10" --build-version "10.0.0" --build-number "10"
 
       - name: Stage the release APK (exactly one)
         run: |
@@ -87,7 +91,7 @@ jobs:
           echo "APKs in build/apk:"
           find build/apk -maxdepth 1 -name '*.apk'
           test "$count" -eq 1
-          cp build/apk/*.apk out/Betmodel-v7.apk
+          cp build/apk/*.apk out/BetFi-10.apk
 
       - name: Build and stage the debug APK (same generated project)
         # Flet generated the Flutter project in build/flutter and the
@@ -117,12 +121,12 @@ jobs:
           debug_apk=$(find build/flutter/build -name 'app-debug.apk' | head -n 1)
           echo "debug APK: $debug_apk"
           test -n "$debug_apk"
-          cp "$debug_apk" out/Betmodel-v7-debug.apk
+          cp "$debug_apk" out/BetFi-10-debug.apk
           ls -la out/
 
       - name: Upload the APKs (release + debug only)
         uses: actions/upload-artifact@v4
         with:
-          name: betmodel-v7-apk
+          name: betfi-10-apk
           path: out/*.apk
           if-no-files-found: error
