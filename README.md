@@ -24,43 +24,72 @@ engine. Two Python files, no package tree, no module sprawl:
 | `main.py` | The entire Flet app: Cards, Parse, Parlay, Solver, More (+ BetFi, Record, Terms, Equations, Dev). |
 | `requirements.txt` | `flet==1.0.4` and nothing else (the engine is stdlib-only). |
 | `.github/workflows/build-apk.yml` | The GitHub Actions build (below). |
-| `BetFi-10.escb` | The Complete Edition — the whole app as ONE file (see the `.escb` section below). Generated, never hand-edited. |
+| `BetFi-10.escb` | The Complete Edition — the whole app as ONE file, ESCB/2 format (see the `.escb` section below). Generated, never hand-edited. |
+| `build_escb.py` | The `.escb` builder: wraps `main.py` + `betmodel5.py` into the bundle. |
+| `armor.py` | The ESCB-T transmission armorer: base85 all-text form of a bundle. |
+| `ESCB-SPEC.md` | The `.escb` format specification and ruleset (v1 + v2). |
 
 ## The `.escb` file — Embedded Single-file Complete Bundle
 
-**Type:** `.escb` = **Embedded Single-file Complete Bundle**. A plain
--text file (Python source, UTF-8) that carries an entire two-file
-application inside one file, for canvas drops, chat handoffs, and
-offline reading — anywhere a repo can't go but one file can.
+**Type:** `.escb` = **Embedded Single-file Complete Bundle**. The
+format is specified in `ESCB-SPEC.md`. This repo ships **ESCB/2**:
+the bundle is a **ZIP archive prefixed with a shebang line** —
+Python executes ZIP archives containing a `__main__.py` (zipapp
+semantics), and ZIP readers find the archive regardless of the
+prefix. One file, three natures: executable, archive, and its own
+sources waiting to resurface. **Backwards compatible with .zip:**
+rename `BetFi-10.escb` to `.zip` and every standard tool opens it;
+renaming changes the name only, never a byte.
 
 **Meaning:** `BetFi-10.escb` is BetFi 10 complete: the v5.2 engine
-and the v10.0.0 shell, reincorporated into a single runnable script.
-It is the same code the APK is built from, in the Pilot's preferred
-1-script form — not a port, not a summary, not a demo build.
+and the v10.1.0 shell, compressed into a single distributable file —
+94,977 bytes against the v1 prototype's 327,088 (29%). It is the
+same code the APK is built from — not a port, not a summary, not a
+demo build.
 
-**Structure:** two parts under one header. PART 1 is `betmodel5.py`
-embedded **verbatim** as a source string and bound as the module
-`b5` at startup (its `__main__` guard stays inert). PART 2 is
-`main.py` with exactly three marked adaptations: (1) its
-`from __future__` import moved into the bundle header, (2) its
-`import betmodel5 as b5` line replaced by the embedded binding,
-(3) the Dev-screen engine fingerprint hashing the embedded source
-instead of a sibling file. No engine or shell logic changes.
+**Structure, in order:** `ESCB.json` (the manifest — format,
+versions, and the sha256 + size of every payload file; stored
+uncompressed so it reads without decompression), `__main__.py`
+(the stdlib-only bootstrap), then the payload: `betmodel5.py` and
+`main.py`, **byte-identical to this repo's sources, with zero
+adaptations**, each DEFLATE-compressed at level 9 (the only codec
+every ZIP tool reads; the spec prohibits BZIP2/LZMA entries).
+
+**On execution**, the bootstrap locates its own archive, verifies
+every payload file against the manifest *before running anything*,
+then **resurfaces** the payload — byte-identical, under its real
+filenames — into a cache keyed by the bundle hash, and runs
+`main.py` from there. The app therefore runs with its real imports,
+its real file-based Dev-screen fingerprint, and its real `main.py`
+entry name, unmodified.
 
 **Usage:**
 - Run the app: `python3 BetFi-10.escb` (needs `flet==1.0.4`
   installed — the shell's only dependency; the engine is stdlib-only).
-- Use the engine alone: import the file as a module; the engine is
-  the `b5` attribute, fully usable with no UI and no network until a
-  pull is requested.
-- Verify a bundle: the Dev screen's fingerprint (short sha256 +
-  byte count) identifies the embedded engine exactly; a bundle whose
-  fingerprint differs from the repo engine's is a different build.
+- Open it as an archive: rename to `.zip`, or `unzip BetFi-10.escb`.
+- Verify a bundle: `python3 BetFi-10.escb --verify` (hash-checks
+  the payload against the manifest). The Dev screen's fingerprint
+  also identifies the resurfaced engine exactly.
+- Extract without running: `python3 BetFi-10.escb --resurface DIR`.
+- Engine alone: `python3 BetFi-10.escb --engine` prints the engine
+  version + fingerprint from the resurfaced tree.
+- Text-only channels (chat, canvas): `python3 armor.py BetFi-10.escb
+  BetFi-10-armored.escb` produces the ESCB-T form — the same bundle
+  base85-encoded in an executable all-ASCII file (121,653 bytes);
+  it decodes, hash-verifies, and delegates to the bundle's own modes.
 - **Never hand-edit an `.escb`.** It is generated from `main.py` +
-  `betmodel5.py`; edits land in those sources and the bundle is
-  regenerated. The two-file layout remains canonical because Flet's
-  APK build requires an entry point named `main.py` — the `.escb`
-  is the distribution form, the repo pair is the source form.
+  `betmodel5.py` by `build_escb.py` (`python3 build_escb.py .
+  BetFi-10.escb BetFi 10`); edits land in those sources and the
+  bundle is regenerated in the same commit. The two-file layout
+  remains canonical because Flet's APK build requires an entry
+  point named `main.py` — the `.escb` is the distribution form,
+  the repo pair is the source form.
+
+*History:* ESCB/1 (the prototype, through v10.1) was a plain-text
+Python file — engine embedded verbatim as a string bound as `b5`,
+shell with three marked adaptations, full raw size. ESCB/2
+supersedes it; v1 bundles remain readable, builders no longer
+emit them. Full ruleset: `ESCB-SPEC.md`, rules R1–R13.
 
 ## The screens
 
