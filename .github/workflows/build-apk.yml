@@ -22,6 +22,13 @@ name: Build BetFi APK
 #   entry ... lib_pickle.so"). The debug step stops any Gradle
 #   daemon and deletes build/flutter/android/.gradle so Gradle
 #   rebuilds that cache clean instead of inheriting a bad one.
+# - serious_python env: run #7's direct-Flutter debug build died
+#   with "SERIOUS_PYTHON_SITE_PACKAGES environment variable is
+#   not set" - Flet exports that set for its own flutter run and a
+#   bare flutter invocation has to provide it. The debug step
+#   exports exactly Flet's values, read from the build directory
+#   Flet left behind (the Python version comes from Flet's own
+#   build/.python-version marker, nothing hardcoded).
 
 on:
   workflow_dispatch:
@@ -89,12 +96,23 @@ jobs:
         # resolution and the Gradle caches - no second flet build.
         # Gradle patch first: stop daemons and purge the project-local
         # .gradle cache whose fileHashes.bin failed in run #5.
+        # Then export the serious_python environment Flet sets for
+        # its own flutter run (values per flet_cli build_base.py):
+        # the Android Gradle plugin refuses to build without them.
         run: |
           FLUTTER=$(find ~/flutter -maxdepth 3 -path '*/bin/flutter' -type f | head -n 1)
           echo "flutter: $FLUTTER"
           test -n "$FLUTTER"
           (cd build/flutter/android && ./gradlew --stop) || true
           rm -rf build/flutter/android/.gradle
+          export SERIOUS_PYTHON_SITE_PACKAGES="$PWD/build/site-packages"
+          export SERIOUS_PYTHON_APP="$PWD/build/python-app"
+          export SERIOUS_PYTHON_VERSION="$(cat build/.python-version)"
+          echo "site-packages: $SERIOUS_PYTHON_SITE_PACKAGES"
+          echo "python-app:    $SERIOUS_PYTHON_APP"
+          echo "python:        $SERIOUS_PYTHON_VERSION"
+          test -d "$SERIOUS_PYTHON_SITE_PACKAGES"
+          test -d "$SERIOUS_PYTHON_APP"
           (cd build/flutter && "$FLUTTER" build apk --debug)
           debug_apk=$(find build/flutter/build -name 'app-debug.apk' | head -n 1)
           echo "debug APK: $debug_apk"
