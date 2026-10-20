@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-BetFi 10 — COMPLETE single-file edition (canvas drop).
+BetFi 10 — COMPLETE single-file edition (canvas drop). v10.1.0.
 
 PART 1 is the engine (betmodel5.py v5.2) embedded verbatim and bound
-as `b5`; PART 2 is the BetFi 10 shell (v10.0.0, build 10) with three
+as `b5`; PART 2 is the BetFi 10 shell (v10.1.0, build 11) with three
 marked adaptations: the future-import moved to this header, the
 engine import replaced by the embedded binding, and the Dev-screen
 fingerprint hashing the embedded source instead of a sibling file.
@@ -4990,7 +4990,7 @@ Screens (bottom nav, five destinations):
     grade + calibration chip / verdict pill + stance pill; depth
     folded in as PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE
     tiles). Toggles (priced only / golden only / hide DO NOT BET /
-    per-sport) and seven sorts re-render the cached checker pass —
+    per-sport) and eight sorts re-render the cached checker pass —
     they never re-price.
   * Parse  — paste slip text ("Lions -3.5 (-110)"); the app reads
     the selection, market, line, odds and implied probability,
@@ -5026,7 +5026,7 @@ import json
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 if APP_DIR not in sys.path:
@@ -5040,7 +5040,7 @@ import flet as ft
 
 PUBLIC_NAME = "BetFi"
 INTERNAL_ID = "Bet_Finder"
-APP_VERSION = "10.0.0"
+APP_VERSION = "10.1.0"
 BUILD_NUMBER = 10
 DISPLAY_NAME = "BetFi 10"
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
@@ -5100,6 +5100,7 @@ SORT_MODES = [("verdict", "Bets first — verdict ladder"),
               ("grade", "Grade — A to F"),
               ("probability", "Highest probability"),
               ("time", "Kickoff time"),
+              ("resolve", "Resolve date"),
               ("pull", "Pull order")]
 
 GRADE_COLORS = {
@@ -5514,6 +5515,62 @@ def sport_header(sport: str, count: int) -> ft.Column:
                 f"{SPORT_LABELS.get(sport, (sport or '—').upper())}"
                 f" · {count} markets",
                 size=13, color=INK, weight=ft.FontWeight.BOLD)])),
+        ft.Divider(color=BORDER)])
+
+
+def _market_dt(mkt):
+    """The market's resolve datetime — the event's scheduled start
+    (FanDuel marketTime) parsed to an aware datetime; None when the
+    menu carried no usable time. Naive stamps are read as UTC."""
+    raw = (mkt or {}).get("market_time")
+    if not raw:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def resolve_date_label(mkt) -> str:
+    """The calendar date a market resolves on, for headers and the
+    Resolve-date sort — the event date in the viewer's timezone."""
+    dt = _market_dt(mkt)
+    if dt is None:
+        return "Date not on the menu"
+    return dt.astimezone().strftime("%a %b %d")
+
+
+def is_quick(mkt, anchor) -> bool:
+    """Quick bet: the market resolves within 0–2 hours of the
+    anchor (the pull's own clock). Started-but-open events whose
+    start sits inside the window's first hour also count — they
+    resolve soonest of all."""
+    dt = _market_dt(mkt)
+    if dt is None or anchor is None:
+        return False
+    delta = (dt - anchor).total_seconds()
+    return -3600 <= delta <= 2 * 3600
+
+
+def search_hit(mkt, query: str) -> bool:
+    """Cards search: the query against every text field the menu
+    gave this market (matchup, market name, description, sport)."""
+    if not query:
+        return True
+    hay = " ".join(str(v) for v in (mkt or {}).values()
+                   if isinstance(v, str)).lower()
+    return all(word in hay for word in query.lower().split())
+
+
+def date_header(label: str, count: int) -> ft.Column:
+    return ft.Column(spacing=4, tight=True, controls=[
+        ft.Container(padding=6, content=ft.Row(spacing=8, controls=[
+            ft.Icon(ft.Icons.CALENDAR_MONTH, size=16, color=ACCENT),
+            ft.Text(f"{label} · {count} markets",
+                    size=13, color=INK, weight=ft.FontWeight.BOLD)])),
         ft.Divider(color=BORDER)])
 
 
@@ -5965,9 +6022,10 @@ def main(page: ft.Page):
     page.scroll = ft.ScrollMode.AUTO
 
     state = {"slate": load_snapshot(), "verdicts": None,
-             "sort": "verdict", "card_limit": CARD_PAGE,
+             "sort": "verdict", "card_limit": CARD_PAGE, "search": "",
              "toggles": {"priced_only": False, "golden_only": False,
-                         "hide_dnb": False, "sports": {}},
+                         "hide_dnb": False, "quick_only": False,
+                         "sports": {}},
              "parlay_legs": [], "view": "cards"}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
@@ -6050,7 +6108,28 @@ def main(page: ft.Page):
             entries.sort(key=lambda t: (
                 t[0].get("market_time") or "9999",
                 t[0].get("desc") or ""))
+        elif mode == "resolve":
+            far = datetime.max.replace(tzinfo=timezone.utc)
+            entries.sort(key=lambda t: (
+                _market_dt(t[0]) or far,
+                t[0].get("desc") or ""))
         return entries
+
+    def _anchor():
+        """The Quick-bets clock: the pull's own timestamp, parsed;
+        now() when the slate carries no readable stamp."""
+        rec = state.get("slate") or {}
+        raw = rec.get("pulled_at")
+        if raw:
+            try:
+                dt = datetime.fromisoformat(
+                    str(raw).replace("Z", "+00:00"))
+                if dt.tzinfo is None:
+                    dt = dt.astimezone()
+                return dt
+            except ValueError:
+                pass
+        return datetime.now().astimezone()
 
     def apply_toggles(entries):
         """The Cards toggles, over the cached verdicts — display
@@ -6068,11 +6147,20 @@ def main(page: ft.Page):
                 continue
             if not t["sports"].get(m.get("sport"), True):
                 continue
+            if t.get("quick_only") and not is_quick(m, _anchor()):
+                continue
+            if not search_hit(m, state.get("search") or ""):
+                continue
             out.append((m, v, e))
         return out
 
     def on_sort(e):
         state["sort"] = e.control.value or "verdict"
+        state["card_limit"] = CARD_PAGE
+        render_cards()
+
+    def on_search(e):
+        state["search"] = e.control.value or ""
         state["card_limit"] = CARD_PAGE
         render_cards()
 
@@ -6117,7 +6205,9 @@ def main(page: ft.Page):
             _switch("Golden only", t["golden_only"],
                     lambda e: _toggle("golden_only", e)),
             _switch("Hide DO NOT BET", t["hide_dnb"],
-                    lambda e: _toggle("hide_dnb", e))]
+                    lambda e: _toggle("hide_dnb", e)),
+            _switch("Quick bets (\u22642h)", t["quick_only"],
+                    lambda e: _toggle("quick_only", e))]
         for s in present:
             rows.append(_switch(
                 SPORT_LABELS.get(s, (s or "?").upper()),
@@ -6135,9 +6225,19 @@ def main(page: ft.Page):
         ctx = lane_contexts(markets)
         limit = state["card_limit"]
         grouped = state["sort"] in ("pull", "time")
+        by_date = state["sort"] == "resolve"
         last_sport = None
+        last_date = None
         for mkt, verdict, edge in shown[:limit]:
-            if grouped and mkt.get("sport") != last_sport:
+            if by_date:
+                label = resolve_date_label(mkt)
+                if label != last_date:
+                    last_date = label
+                    n_day = sum(1 for e in shown
+                                if resolve_date_label(e[0]) == label)
+                    cards_list.controls.append(
+                        date_header(label, n_day))
+            elif grouped and mkt.get("sport") != last_sport:
                 last_sport = mkt.get("sport")
                 n_sport = sum(1 for e in shown
                               if e[0].get("sport") == last_sport)
@@ -7053,6 +7153,22 @@ def main(page: ft.Page):
              "probabilities and outcomes. Lower is better; "
              "0.25 is coin-flip territory for a 50/50 market."),
         ]),
+        ("THE BOARD — SEARCH, QUICK BETS, RESOLVE", [
+            ("Search", "the Cards search box. It reads every text "
+             "field the menu printed for a market — teams, market "
+             "name, league — and every word typed must match. "
+             "Search filters the pull on screen; it never pulls, "
+             "prices, or guesses."),
+            ("Resolve date", "the calendar date a market settles, "
+             "taken from the event's scheduled start on the menu. "
+             "The Resolve date sort orders the board by that date, "
+             "earliest first, grouped under date headers."),
+            ("Quick bet", "a market resolving within 0–2 hours of "
+             "the pull — the Quick bets toggle on Cards. The clock "
+             "is the pull's own timestamp, so a stale pull shows "
+             "its quick window as it stood when pulled, stamped "
+             "STALE like everything else on it."),
+        ]),
     ]
 
     def render_terms():
@@ -7280,6 +7396,10 @@ def main(page: ft.Page):
                          for k, t in SORT_MODES],
                 on_select=on_sort),
             cards_count]),
+        ft.TextField(
+            hint_text="Search teams, markets, leagues\u2026",
+            prefix_icon=ft.Icons.SEARCH, text_size=13,
+            on_change=on_search),
         cards_toggles,
         cards_list]
     page.add(header, cards_view, parse_view, parlay_view,

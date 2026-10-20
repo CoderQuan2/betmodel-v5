@@ -1,7 +1,7 @@
 # BetFi 10 — betmodel v5.2 engine, the Android app
 
-**Public name: BetFi. Internal id: Bet_Finder. App release: v10.0.0
-(build 10)** with the betmodel **v5.2** engine. The service's core:
+**Public name: BetFi. Internal id: Bet_Finder. App release: v10.1.0
+(build 11)** with the betmodel **v5.2** engine. The service's core:
 the betmodel engine (deep mathematics, a multi-source ensemble, a
 fitted reparametrization layer, a cross-market coherence audit, and
 a coverage law — no bet left unchecked) behind a phone app whose
@@ -80,10 +80,13 @@ More**. More links to BetFi, Record, Terms, Equations and Dev.
   outlined pill, so no-signal never reads as the DO NOT BET red.
   Depth stays in the card, collapsed: **PRICE ANATOMY**,
   **SCALE**, **COHERENCE**, **PROVENANCE**, each with a plain
-  one-line gloss. Toggles — Priced only · Golden only · Hide DO
-  NOT BET · one switch per sport on the pull — and seven sorts
-  (verdict ladder / edge (pts) / do-not-bets first / grade /
-  probability / kickoff / pull order) re-render the cached checker
+  one-line gloss. A **search box** filters the board by any text
+  the menu printed (teams, market name, league; every typed word
+  must match). Toggles — Priced only · Golden only · Hide DO
+  NOT BET · **Quick bets (≤2h)** · one switch per sport on the
+  pull — and eight sorts (verdict ladder / edge (pts) /
+  do-not-bets first / grade / probability / kickoff / **Resolve
+  date** / pull order) re-render the cached checker
   pass; they never re-price. A filtered list says so:
   "{shown} of {total} markets".
 - **Parse** — paste a bet line ("Lions -3.5 (-110)", "Over 47.5
