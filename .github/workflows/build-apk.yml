@@ -78,7 +78,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "Betmodel" --product "Betmodel v7" --build-version "7.0.1" --build-number "8"
+        run: flet build apk --yes --skip-flutter-doctor --project "Betmodel" --product "Betmodel v7" --build-version "7.1.0" --build-number "9"
 
       - name: Stage the release APK (exactly one)
         run: |

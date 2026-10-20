@@ -72,7 +72,14 @@ ENGINE_VERSION = "betmodel v5"
 # thread (page.run_thread) with on-screen error reporting — v7.0
 # blocked the handler on the network + first pricing pass and the
 # app froze behind Dart null-check banners on-device.
-APP_VERSION = "7.0.1"
+# 7.1.0 (2026-10-20): nav destinations get real IconData (the
+# string icons were the standing Dart null-check banners at the
+# bottom of the app); Card screen gains sorting (verdict ladder /
+# top gain / do-not-bets first / probability / kickoff / pull
+# order), paged rendering and per-lane lookup caching for
+# fluidity; verdict pills + sport group headers; Record becomes
+# a ledger (latest-pull summary + lane ledger).
+APP_VERSION = "7.1.0"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
 # lanes shown on the Record screen (engine lane_record is safe for
 # any lane name: an unknown lane reports 0-0, "no scored record")
@@ -89,6 +96,31 @@ VERDICT_COLORS = {"GOLDEN BET": "#FFD700", "BET HERE": "#10B981",
                   "RISK BET (DO NOT BET)": "#F97316",
                   "DO NOT BET": "#EF4444",
                   "Bet": "#10B981", "No Bet": "#EF4444"}
+# dark tints behind the white verdict pill text (v7.1 polish)
+VERDICT_BG = {"GOLDEN BET": "#574A00", "BET HERE": "#065F46",
+              "RISK BET (BET)": "#713F12",
+              "RISK BET (DO NOT BET)": "#7C2D12",
+              "DO NOT BET": "#7F1D1D",
+              "Bet": "#065F46", "No Bet": "#7F1D1D"}
+
+SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
+                "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer"}
+SPORT_ICONS = {"nfl": ft.Icons.SPORTS_FOOTBALL,
+               "ncaaf": ft.Icons.SPORTS_FOOTBALL,
+               "nba": ft.Icons.SPORTS_BASKETBALL,
+               "nhl": ft.Icons.SPORTS_HOCKEY,
+               "mlb": ft.Icons.SPORTS_BASEBALL,
+               "soccer": ft.Icons.SPORTS_SOCCER}
+
+# Card screen paging + sort (v7.1): the full slate is priced in
+# one checker pass; paging and sorting are display only.
+CARD_PAGE = 40
+SORT_MODES = [("verdict", "Bets first — verdict ladder"),
+              ("edge", "Top gain — edge %"),
+              ("no-bet-first", "Do-not-bets first"),
+              ("probability", "Highest probability"),
+              ("time", "Kickoff time"),
+              ("pull", "Pull order")]
 
 GRADE_COLORS = {
     "A+": "#10B981", "A": "#10B981", "A-": "#34D399",
@@ -346,13 +378,46 @@ def _tile(title: str, body_lines: list) -> ft.ExpansionTile:
                 _line(t) for t in body_lines]))])
 
 
+def lane_contexts(markets: list) -> dict:
+    """Per-lane engine lookups (record / phi / calibration stamp)
+    computed ONCE per render and shared by every card on it —
+    before v7.1 each card re-ran all three lookups for its lane,
+    hundreds of redundant passes on a full slate."""
+    ctx = {}
+    for m in markets:
+        lane = market_lane(m)
+        if lane not in ctx:
+            w, l, src = b5.lane_record(lane)
+            phi, phi_state, _d = b5.lane_phi(lane)
+            ctx[lane] = (w, l, src, phi, phi_state,
+                         b5.lane_uncalibrated(lane))
+    return ctx
+
+
+def sport_header(sport: str, count: int) -> ft.Container:
+    icon = SPORT_ICONS.get(sport, ft.Icons.SPORTS_FOOTBALL)
+    return ft.Container(padding=6, content=ft.Row(spacing=8,
+                        controls=[
+                            ft.Icon(icon, size=16, color=ACCENT),
+                            ft.Text(
+                                f"{SPORT_LABELS.get(sport, (sport or '—').upper())}"
+                                f" · {count} markets",
+                                size=13, color=INK,
+                                weight=ft.FontWeight.BOLD)]))
+
+
 def build_market_card(mkt: dict, verdict: dict, rec: dict,
                       quotes_by_game: dict, rank: int | None = None,
-                      edge_pts: float | None = None) -> ft.Container:
+                      edge_pts: float | None = None,
+                      lane_ctx: dict | None = None) -> ft.Container:
     lane = market_lane(mkt)
-    w, l, rec_src = b5.lane_record(lane)
-    phi, phi_state, _detail = b5.lane_phi(lane)
-    uncal = b5.lane_uncalibrated(lane)
+    if lane_ctx is not None and lane in lane_ctx:
+        (w, l, rec_src, phi, phi_state,
+         uncal) = lane_ctx[lane]
+    else:
+        w, l, rec_src = b5.lane_record(lane)
+        phi, phi_state, _detail = b5.lane_phi(lane)
+        uncal = b5.lane_uncalibrated(lane)
     p = verdict.get("p")
     grade = verdict.get("grade")
     term, vreason = card_verdict(verdict)
@@ -380,6 +445,13 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
     face.append(_line(f"#:{mkt.get('fd_event_id') or '—'} · "
                       f"{mkt.get('market', '?')} · "
                       f"{mkt.get('sport', '?')}", 10, FAINT))
+    _bits = []
+    if mkt.get("price") is not None:
+        _bits.append(f"odds {int(mkt['price']):+d}")
+    if mkt.get("line") is not None:
+        _bits.append(f"line {mkt['line']} · {mkt.get('side')}")
+    if _bits:
+        face.append(_line(" · ".join(_bits), 12, INK))
     face.append(_line(f"Win {w} · Lose {l}   ({lane} lane record)",
                       12, DIM))
     face.append(ft.Text(
@@ -395,10 +467,13 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
                 color=WARN if state != "PRICED" else DIM,
                 weight=ft.FontWeight.BOLD),
     ]))
-    face.append(ft.Text(
-        term, size=16,
-        color=VERDICT_COLORS.get(term, BAD),
-        weight=ft.FontWeight.BOLD))
+    face.append(ft.Row(spacing=8, controls=[
+        ft.Container(
+            bgcolor=VERDICT_BG.get(term, "#374151"),
+            border_radius=10, padding=6,
+            content=ft.Text(term, size=14, color="#FFFFFF",
+                            weight=ft.FontWeight.BOLD)),
+    ]))
     if uncal:
         # the engine's stamp, verbatim on the face
         face.append(_line(f"UNCALIBRATED — {uncal}", 11, WARN, True))
@@ -500,7 +575,8 @@ def main(page: ft.Page):
     page.title = PUBLIC_NAME
     page.scroll = ft.ScrollMode.AUTO
 
-    state = {"slate": load_snapshot(), "verdicts": None}
+    state = {"slate": load_snapshot(), "verdicts": None,
+             "sort": "verdict", "card_limit": CARD_PAGE}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM)
@@ -528,6 +604,38 @@ def main(page: ft.Page):
             state["verdicts"] = b5.run_slate(rec, print_out=False)
         return state["verdicts"]
 
+    def sorted_entries():
+        """(market, verdict, edge) triples in the Card screen's
+        current sort. Verdicts come from the cached checker pass —
+        sorting never re-prices."""
+        rec = state["slate"]
+        verdicts = ensure_verdicts() or []
+        markets = rec.get("markets", [])
+        entries = [(m, v, market_edge_pts(m, v))
+                   for m, v in zip(markets, verdicts)]
+        mode = state["sort"]
+
+        def edge_key(t):
+            return -(t[2] if t[2] is not None else -1e9)
+
+        if mode == "verdict":
+            entries.sort(key=lambda t: (
+                verdict_rank(card_verdict(t[1])[0]), edge_key(t)))
+        elif mode == "no-bet-first":
+            entries.sort(key=lambda t: (
+                -verdict_rank(card_verdict(t[1])[0]), edge_key(t)))
+        elif mode == "edge":
+            entries.sort(key=edge_key)
+        elif mode == "probability":
+            entries.sort(key=lambda t: -(
+                t[1].get("p") if t[1].get("p") is not None
+                else -1.0))
+        elif mode == "time":
+            entries.sort(key=lambda t: (
+                t[0].get("market_time") or "9999",
+                t[0].get("desc") or ""))
+        return entries
+
     def render_cards():
         card_view.controls = []
         rec = state["slate"]
@@ -538,16 +646,44 @@ def main(page: ft.Page):
                 size=13, color=DIM)]
             page.update()
             return
-        verdicts = ensure_verdicts()
-        quotes = game_quotes(rec.get("markets", []))
-        for mkt, verdict in zip(rec.get("markets", []), verdicts):
+        entries = sorted_entries()
+        markets = rec.get("markets", [])
+        quotes = game_quotes(markets)
+        ctx = lane_contexts(markets)
+        card_view.controls.append(ft.Row(spacing=8, controls=[
+            ft.Icon(ft.Icons.SORT, size=18, color=ACCENT),
+            ft.Dropdown(
+                value=state["sort"], width=230,
+                options=[ft.DropdownOption(key=k, text=t)
+                         for k, t in SORT_MODES],
+                on_select=on_sort),
+            ft.Text(f"{len(entries)} markets", size=11,
+                    color=FAINT),
+        ]))
+        limit = state["card_limit"]
+        grouped = state["sort"] in ("pull", "time")
+        last_sport = None
+        for mkt, verdict, edge in entries[:limit]:
+            if grouped and mkt.get("sport") != last_sport:
+                last_sport = mkt.get("sport")
+                n_sport = sum(1 for e in entries
+                              if e[0].get("sport") == last_sport)
+                card_view.controls.append(
+                    sport_header(last_sport, n_sport))
             card_view.controls.append(build_market_card(
-                mkt, verdict, rec, quotes,
-                edge_pts=market_edge_pts(mkt, verdict)))
-        if not card_view.controls:
-            card_view.controls = [ft.Text(
+                mkt, verdict, rec, quotes, edge_pts=edge,
+                lane_ctx=ctx))
+        if not entries:
+            card_view.controls.append(ft.Text(
                 "The pull returned no primary markets.",
-                size=13, color=DIM)]
+                size=13, color=DIM))
+        elif len(entries) > limit:
+            card_view.controls.append(ft.Button(
+                f"Show more ({len(entries) - limit} more)",
+                on_click=on_show_more))
+            card_view.controls.append(ft.Text(
+                "Paging is display only — every market was priced "
+                "by the same checker pass.", size=10, color=FAINT))
         page.update()
 
     def render_betfi():
@@ -566,6 +702,7 @@ def main(page: ft.Page):
         verdicts = ensure_verdicts()
         markets = rec.get("markets", [])
         quotes = game_quotes(markets)
+        ctx = lane_contexts(markets)
         golden, finds, flagged, counter = distill_finds(markets,
                                                          verdicts)
         # the golden panel — top of the screen, GOLDEN BET cards
@@ -578,7 +715,8 @@ def main(page: ft.Page):
                 "No golden bets on this pull", size=12, color=DIM))
         for mkt, verdict, edge in golden:
             betfi_view.controls.append(build_market_card(
-                mkt, verdict, rec, quotes, edge_pts=edge))
+                mkt, verdict, rec, quotes, edge_pts=edge,
+                lane_ctx=ctx))
         betfi_view.controls.append(ft.Text(
             f"FINDS — verdict ladder, then edge ({len(finds)})",
             size=14, color=ACCENT, weight=ft.FontWeight.BOLD))
@@ -588,9 +726,16 @@ def main(page: ft.Page):
                 "The feed stays empty rather than promote a "
                 "market the engine did not price.",
                 size=12, color=DIM))
-        for i, (mkt, verdict, edge) in enumerate(finds, start=1):
+        for i, (mkt, verdict, edge) in enumerate(
+                finds[:CARD_PAGE], start=1):
             betfi_view.controls.append(build_market_card(
-                mkt, verdict, rec, quotes, rank=i, edge_pts=edge))
+                mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
+                lane_ctx=ctx))
+        if len(finds) > CARD_PAGE:
+            betfi_view.controls.append(ft.Text(
+                f"+{len(finds) - CARD_PAGE} more finds past the "
+                f"page cap — the Card screen's sort holds the "
+                f"full list.", size=11, color=FAINT))
         if flagged:
             betfi_view.controls.append(ft.Text(
                 f"COHERENCE-FLAGGED — somebody's price is wrong "
@@ -598,7 +743,8 @@ def main(page: ft.Page):
                 weight=ft.FontWeight.BOLD))
             for mkt, verdict, edge in flagged:
                 betfi_view.controls.append(build_market_card(
-                    mkt, verdict, rec, quotes, edge_pts=edge))
+                    mkt, verdict, rec, quotes, edge_pts=edge,
+                    lane_ctx=ctx))
         counter_lines = [
             f"{v.get('desc')} — {v.get('state')}"
             + (f" · edge {e:+.1f} pts" if e is not None else "")
@@ -614,8 +760,41 @@ def main(page: ft.Page):
 
     def render_record():
         record_view.controls = [ft.Text(
-            "Record — lane Win / Lose", size=18, color=INK,
+            "Record — the ledger", size=18, color=INK,
             weight=ft.FontWeight.BOLD)]
+        # the session ledger: what the app actually did with the
+        # latest pull, in plain counts — the periodic summary.
+        record_view.controls.append(ft.Text(
+            "LATEST PULL — WHAT THE APP DID", size=12,
+            color=ACCENT, weight=ft.FontWeight.BOLD))
+        rec = state["slate"]
+        if rec:
+            verdicts = ensure_verdicts() or []
+            markets = rec.get("markets", [])
+            priced = sum(1 for v in verdicts
+                         if v.get("state") == "PRICED")
+            golden_n = sum(1 for v in verdicts
+                           if card_verdict(v)[0] == "GOLDEN BET")
+            flagged_n = sum(1 for v in verdicts
+                            if v.get("state")
+                            == "COHERENCE-FLAGGED")
+            stamp_text2, _d2 = stamp_of(rec)
+            record_view.controls.append(ft.Text(
+                f"Pulled: {rec.get('pulled_at')} · {stamp_text2}",
+                size=12, color=DIM))
+            record_view.controls.append(ft.Text(
+                f"Markets checked {len(markets)} · PRICED {priced}"
+                f" · GOLDEN {golden_n} · coherence-flagged "
+                f"{flagged_n} · the rest stamped, never guessed.",
+                size=12, color=DIM))
+        else:
+            record_view.controls.append(ft.Text(
+                "No pull on this device yet — the ledger fills "
+                "with the first pull.", size=12, color=DIM))
+        record_view.controls.append(ft.Divider())
+        record_view.controls.append(ft.Text(
+            "LANE LEDGER — WIN / LOSE OF RECORD", size=12,
+            color=ACCENT, weight=ft.FontWeight.BOLD))
         card = b5.load_scorecard()
         for lane in RECORD_LANES:
             w, l, src = b5.lane_record(lane)
@@ -664,6 +843,7 @@ def main(page: ft.Page):
             rec = pull_menu()
             state["slate"] = rec
             state["verdicts"] = None
+            state["card_limit"] = CARD_PAGE
             save_snapshot(rec)
             refresh_stamp()
             if rec.get("verified"):
@@ -726,6 +906,15 @@ def main(page: ft.Page):
             except Exception:
                 pass
 
+    def on_sort(e):
+        state["sort"] = e.control.value or "verdict"
+        state["card_limit"] = CARD_PAGE
+        render_cards()
+
+    def on_show_more(_e):
+        state["card_limit"] += CARD_PAGE
+        render_cards()
+
     def show(idx: int):
         card_view.visible = idx == 0
         betfi_view.visible = idx == 1
@@ -762,9 +951,11 @@ def main(page: ft.Page):
         page.navigation_bar = nav_bar_cls(
             selected_index=0, on_change=on_nav,
             destinations=[
-                nav_dest_cls(icon="sports", label="Card"),
-                nav_dest_cls(icon="search", label=PUBLIC_NAME),
-                nav_dest_cls(icon="list", label="Record"),
+                nav_dest_cls(icon=ft.Icons.SPORTS_FOOTBALL,
+                             label="Card"),
+                nav_dest_cls(icon=ft.Icons.SEARCH,
+                             label=PUBLIC_NAME),
+                nav_dest_cls(icon=ft.Icons.LIST, label="Record"),
             ])
     else:  # equivalent switch: a labelled button row
         page.add(ft.Row(spacing=8, controls=[

@@ -121,7 +121,7 @@ surface either way.
 ## Smoke-test checklist (first run on the phone)
 
 - [ ] App **opens** to the Card screen; header reads BetFi /
-      v7.0 / betmodel v5 / Bet_Finder.
+      v7.1.0 / betmodel v5 / Bet_Finder.
 - [ ] With no pull yet, the menu stamp reads **UNVERIFIED** and the
       screen says so — nothing is pre-filled or assumed.
 - [ ] **Pull Menu**: the stamp updates to the pull time and source;
