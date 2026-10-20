@@ -24,6 +24,43 @@ engine. Two Python files, no package tree, no module sprawl:
 | `main.py` | The entire Flet app: Cards, Parse, Parlay, Solver, More (+ BetFi, Record, Terms, Equations, Dev). |
 | `requirements.txt` | `flet==1.0.4` and nothing else (the engine is stdlib-only). |
 | `.github/workflows/build-apk.yml` | The GitHub Actions build (below). |
+| `BetFi-10.escb` | The Complete Edition — the whole app as ONE file (see the `.escb` section below). Generated, never hand-edited. |
+
+## The `.escb` file — Embedded Single-file Complete Bundle
+
+**Type:** `.escb` = **Embedded Single-file Complete Bundle**. A plain
+-text file (Python source, UTF-8) that carries an entire two-file
+application inside one file, for canvas drops, chat handoffs, and
+offline reading — anywhere a repo can't go but one file can.
+
+**Meaning:** `BetFi-10.escb` is BetFi 10 complete: the v5.2 engine
+and the v10.0.0 shell, reincorporated into a single runnable script.
+It is the same code the APK is built from, in the Pilot's preferred
+1-script form — not a port, not a summary, not a demo build.
+
+**Structure:** two parts under one header. PART 1 is `betmodel5.py`
+embedded **verbatim** as a source string and bound as the module
+`b5` at startup (its `__main__` guard stays inert). PART 2 is
+`main.py` with exactly three marked adaptations: (1) its
+`from __future__` import moved into the bundle header, (2) its
+`import betmodel5 as b5` line replaced by the embedded binding,
+(3) the Dev-screen engine fingerprint hashing the embedded source
+instead of a sibling file. No engine or shell logic changes.
+
+**Usage:**
+- Run the app: `python3 BetFi-10.escb` (needs `flet==1.0.4`
+  installed — the shell's only dependency; the engine is stdlib-only).
+- Use the engine alone: import the file as a module; the engine is
+  the `b5` attribute, fully usable with no UI and no network until a
+  pull is requested.
+- Verify a bundle: the Dev screen's fingerprint (short sha256 +
+  byte count) identifies the embedded engine exactly; a bundle whose
+  fingerprint differs from the repo engine's is a different build.
+- **Never hand-edit an `.escb`.** It is generated from `main.py` +
+  `betmodel5.py`; edits land in those sources and the bundle is
+  regenerated. The two-file layout remains canonical because Flet's
+  APK build requires an entry point named `main.py` — the `.escb`
+  is the distribution form, the repo pair is the source form.
 
 ## The screens
 
