@@ -68,7 +68,11 @@ ENGINE_VERSION = "betmodel v5"
 # (download caching, build-once debug) and the Gradle-cache patch.
 # The engine itself is unchanged betmodel v5.1 code and stays
 # labeled as such wherever it is named.
-APP_VERSION = "7.0"
+# 7.0.1 (2026-10-20): pull/price work moved off the event-handler
+# thread (page.run_thread) with on-screen error reporting — v7.0
+# blocked the handler on the network + first pricing pass and the
+# app froze behind Dart null-check banners on-device.
+APP_VERSION = "7.0.1"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
 # lanes shown on the Record screen (engine lane_record is safe for
 # any lane name: an unknown lane reports 0-0, "no scored record")
@@ -646,44 +650,81 @@ def main(page: ft.Page):
     def on_pull(_e):
         status.value = "Pulling the live FanDuel menu…"
         page.update()
-        rec = pull_menu()
-        state["slate"] = rec
-        state["verdicts"] = None
-        save_snapshot(rec)
-        refresh_stamp()
-        if rec.get("verified"):
-            per = ", ".join(
-                f"{s}: {v.get('slate_markets', 0)} markets"
-                for s, v in rec["sports"].items() if "error" not in v)
-            failed = ", ".join(
-                s for s, v in rec["sports"].items() if "error" in v)
-            status.value = (f"Pulled {len(rec['markets'])} primary "
-                            f"markets ({per})"
-                            + (f" · UNVERIFIED scopes: {failed}"
-                               if failed else ""))
-        else:
-            err = rec.get("tree_error") or "no markets returned"
-            status.value = (f"Menu UNVERIFIED — {err}. Nothing was "
-                            f"assumed; every market stamps UNPRICED.")
-        render_cards()
-        render_betfi()
-        page.update()
+        page.run_thread(_pull_worker)
+
+    def _pull_worker():
+        # Off the event-handler thread (page.run_thread): the pull
+        # plus the first render's pricing pass can take a minute or
+        # more (the engine fetches its stat caches on first run),
+        # and doing it inside the click handler froze the app
+        # on-device behind Dart null-check error banners (v7.0,
+        # 2026-10-20). A failure now lands in the status line as the
+        # actual Python error — visible on the phone, never silent.
+        try:
+            rec = pull_menu()
+            state["slate"] = rec
+            state["verdicts"] = None
+            save_snapshot(rec)
+            refresh_stamp()
+            if rec.get("verified"):
+                per = ", ".join(
+                    f"{s}: {v.get('slate_markets', 0)} markets"
+                    for s, v in rec["sports"].items()
+                    if "error" not in v)
+                failed = ", ".join(
+                    s for s, v in rec["sports"].items()
+                    if "error" in v)
+                status.value = (f"Pulled {len(rec['markets'])} "
+                                f"primary markets ({per})"
+                                + (f" · UNVERIFIED scopes: {failed}"
+                                   if failed else ""))
+            else:
+                err = rec.get("tree_error") or "no markets returned"
+                status.value = (f"Menu UNVERIFIED — {err}. Nothing "
+                                f"was assumed; every market stamps "
+                                f"UNPRICED.")
+            render_cards()
+            render_betfi()
+            page.update()
+        except Exception as e:
+            status.value = (f"Pull failed on this device: "
+                            f"{type(e).__name__}: {e}")
+            try:
+                page.update()
+            except Exception:
+                pass
 
     def on_price(_e):
         if not state["slate"]:
             status.value = "Nothing to price yet — Pull Menu first."
             page.update()
             return
-        state["verdicts"] = None  # re-run the checkers on the pull
-        verdicts = ensure_verdicts()
-        priced = sum(1 for v in verdicts
-                     if v.get("state") == "PRICED")
-        status.value = (f"Priced slate: {len(verdicts)} markets "
-                        f"checked · {priced} PRICED · the rest "
-                        f"stamped, never guessed.")
-        render_cards()
-        render_betfi()
+        status.value = "Pricing the slate…"
         page.update()
+        page.run_thread(_price_worker)
+
+    def _price_worker():
+        # Same off-thread rule as _pull_worker: re-running the
+        # checkers is the expensive pass, it does not belong inside
+        # the click handler.
+        try:
+            state["verdicts"] = None  # re-run checkers on the pull
+            verdicts = ensure_verdicts()
+            priced = sum(1 for v in verdicts
+                         if v.get("state") == "PRICED")
+            status.value = (f"Priced slate: {len(verdicts)} markets "
+                            f"checked · {priced} PRICED · the rest "
+                            f"stamped, never guessed.")
+            render_cards()
+            render_betfi()
+            page.update()
+        except Exception as e:
+            status.value = (f"Pricing failed on this device: "
+                            f"{type(e).__name__}: {e}")
+            try:
+                page.update()
+            except Exception:
+                pass
 
     def show(idx: int):
         card_view.visible = idx == 0
