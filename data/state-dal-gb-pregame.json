@@ -1,0 +1,14 @@
+{
+ "game": "DAL@GB",
+ "as_of": "2026-10-18 19:16 ET",
+ "mkt_spread": "GB -1.5",
+ "mkt_total": 53.5,
+ "mkt_ml_novig_gb": 0.515,
+ "model_p_gb_raw": 0.615,
+ "model_p_gb_shrunk": 0.545,
+ "fair_spread_gb": -2.8,
+ "spread_gap": 1.3,
+ "p_gb_cover_raw": 0.537,
+ "p_gb_cover_shrunk": 0.511,
+ "total": "UNPRICED (no totals engine)"
+}

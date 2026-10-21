@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Win-Probability Surface — Raw WebGL2 Rebuild</title>
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#060B1A; overflow:hidden;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:#E2E8F0; }
+  #gl { position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:grab; }
+  #gl:active { cursor:grabbing; }
+  .panel { position:absolute; background:rgba(11,19,41,.84); border:1px solid #1E293B;
+    border-radius:10px; padding:10px 12px; backdrop-filter: blur(6px); }
+  #title { top:12px; left:12px; max-width:350px; }
+  #title h1 { margin:0 0 4px; font-size:16px; letter-spacing:.02em; }
+  #title p { margin:0; font-size:11.5px; line-height:1.45; color:#94A3B8; }
+  #title .raw { color:#38BDF8; font-weight:600; }
+  #probe { left:12px; bottom:12px; width:300px; }
+  #probe h2 { margin:0 0 6px; font-size:11px; letter-spacing:.12em; color:#94A3B8; }
+  #probe label { display:block; font-size:12px; color:#94A3B8; margin:7px 0 2px; }
+  #probe label span { color:#E2E8F0; font-weight:600; }
+  #probe input[type=range] { width:100%; accent-color:#FF5D5D; }
+  #readout { margin-top:8px; font-size:13.5px; font-weight:700; color:#FF8A8A; }
+  #legend { top:12px; right:12px; width:250px; font-size:12px; line-height:1.55; color:#94A3B8; }
+  #legend h2 { margin:0 0 5px; font-size:11px; letter-spacing:.12em; color:#94A3B8; }
+  #legend b { color:#E2E8F0; }
+  .sw { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; }
+  #toggles { right:12px; bottom:12px; display:flex; gap:8px; position:absolute; }
+  #toggles button { background:#111C38; color:#E2E8F0; border:1px solid #1E293B; border-radius:8px;
+    font-size:12px; padding:7px 11px; cursor:pointer; }
+  #toggles button.on { border-color:#38BDF8; color:#38BDF8; }
+  .lbl { position:absolute; transform:translate(-50%,-140%); font-size:11.5px; font-weight:700;
+    pointer-events:none; text-shadow:0 1px 6px #060B1A, 0 0 2px #060B1A; white-space:nowrap; }
+  .axis { position:absolute; transform:translate(-50%,-50%); font-size:10.5px; letter-spacing:.13em;
+    color:#64748B; pointer-events:none; white-space:nowrap; }
+  #fallback { position:absolute; inset:0; display:none; place-items:center; text-align:center; padding:24px; }
+  @media (max-width: 760px) { #legend { display:none; } #probe { width:250px; } }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="panel" id="title">
+  <h1>WIN-PROBABILITY SURFACE</h1>
+  <p>Height = win % for the team with the ball, over <b>score difference</b> and <b>time left</b>.
+     The surface is the lab's model, computed live: a normal curve on the final margin,
+     spread <i>den = 13.5·√(t/3600) + 0.8</i> — the later it gets, the steeper the cliff at diff 0.</p>
+  <p style="margin-top:6px"><span class="raw">RAW WebGL 2.0</span> — no libraries. The mesh is a real
+     indexed grid with computed normals, lit with Blinn-Phong in GLSL ES 3.00; journeys ride the
+     vertex-shader ribbon pipeline from the volatility build. Drag to orbit, scroll to zoom.</p>
+</div>
+
+<div class="panel" id="legend">
+  <h2>THE TWO JOURNEYS</h2>
+  <div><span class="sw" style="background:#FFB020"></span><b>Florida's path</b> — down 17-3, won 27-24.
+    The +460 Pilot Book ticket. Marked states are the day's <i>priced</i> states — where a path
+    leaves the surface, that's the market disagreeing with the model, drawn as it was.</div>
+  <div style="margin-top:5px"><span class="sw" style="background:#57B6FF"></span><b>Tennessee's live states</b> —
+    priced at 70% in Q1, 83% in Q3, same slate.</div>
+  <div style="margin-top:5px"><span class="sw" style="background:#FF5D5D"></span><b>Your probe</b> —
+    drag the sliders; the surface prices the state.</div>
+</div>
+
+<div class="panel" id="probe">
+  <h2>PROBE — PRICE A STATE</h2>
+  <label>Score difference: <span id="dLab">0</span>
+    <input id="dSlider" type="range" min="-21" max="21" step="1" value="0"></label>
+  <label>Time left: <span id="tLab">15:00</span>
+    <input id="tSlider" type="range" min="0" max="3600" step="30" value="900"></label>
+  <div id="readout"></div>
+</div>
+
+<div id="toggles">
+  <button id="btnWire" class="on">Wireframe</button>
+  <button id="btnOrbit" class="on">Auto-orbit</button>
+</div>
+
+<div id="fallback"><div>
+  <h2>WebGL 2.0 not available</h2>
+  <p style="color:#94A3B8">This instrument is built on the raw WebGL2 API only — no fallback renderer, by design.</p>
+</div></div>
+
+<script>
+"use strict";
+/* ================================================================
+   RAW WEBGL2 — the win-probability surface, rebuilt on the same
+   hand-built pipeline as the volatility instrument: hand-rolled
+   mat4 math, GLSL ES 3.00, VAO/VBO/IBO geometry throughout.
+   The surface is an indexed mesh whose vertices are generated
+   from the lab's WP function at boot — nothing is pre-baked.
+   ================================================================ */
+
+/* ---------- the model (identical to the original instrument) --- */
+function erf(x) {
+  const s = x < 0 ? -1 : 1; x = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * x);
+  const poly = ((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592;
+  return s * (1 - poly * t * Math.exp(-x * x));
+}
+function WP(diff, secs) {
+  const den = 13.5 * Math.sqrt(Math.max(secs, 1) / 3600) + 0.8;
+  return 100 * 0.5 * (1 + erf((diff + 0.5) / den / Math.SQRT2));
+}
+function wpColor(wp) { // the original blue→green→orange ramp
+  const t = wp / 100;
+  return [(45 + 205 * t) / 255, (95 + 55 * (1 - Math.abs(t - 0.5) * 2)) / 255, (205 - 165 * t) / 255];
+}
+
+/* ---------- world mapping ---------- */
+const XW = 0.92;           // world units per point of score diff
+const ZW = 26;             // world depth for 60:00 of game time
+const YH = 0.16;           // world units per win-% point
+function surfPoint(diff, secs) {
+  return [diff * XW, WP(diff, secs) * YH, (secs / 3600 - 0.5) * ZW];
+}
+
+/* ---------- journeys (marked states, exactly as recorded) ------ */
+const JOURNEYS = [
+  { color: [1.0, 0.69, 0.13], pts: [
+    [-14, 2100, 11, "down 17-3"], [-7, 1800, 20, "half 17-10"],
+    [0, 1228, 45, "Q3 tie 45%"], [0, 849, 59, "Q4 59%"], [3, 0, 100, "WON 27-24"]] },
+  { color: [0.34, 0.71, 1.0], pts: [
+    [9, 2878, 70, "TENN Q1 70%"], [9, 1111, 83, "TENN Q3 83%"]] },
+];
+function journeyPoint(p) { // stated WP, lifted a breath above the mesh
+  return [p[0] * XW, p[2] * YH + 0.35, (p[1] / 3600 - 0.5) * ZW];
+}
+
+/* ---------- small mat4 library (column-major) ------------------ */
+function m4perspective(fovy, aspect, near, far) {
+  const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+  return [f / aspect, 0, 0, 0,  0, f, 0, 0,  0, 0, (far + near) * nf, -1,
+          0, 0, 2 * far * near * nf, 0];
+}
+function m4lookAt(eye, ctr, up) {
+  let zx = eye[0] - ctr[0], zy = eye[1] - ctr[1], zz = eye[2] - ctr[2];
+  let l = Math.hypot(zx, zy, zz); zx /= l; zy /= l; zz /= l;
+  let xx = up[1] * zz - up[2] * zy, xy = up[2] * zx - up[0] * zz, xz = up[0] * zy - up[1] * zx;
+  l = Math.hypot(xx, xy, xz) || 1; xx /= l; xy /= l; xz /= l;
+  const yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+  return [xx, yx, zx, 0,  xy, yy, zy, 0,  xz, yz, zz, 0,
+          -(xx * eye[0] + xy * eye[1] + xz * eye[2]),
+          -(yx * eye[0] + yy * eye[1] + yz * eye[2]),
+          -(zx * eye[0] + zy * eye[1] + zz * eye[2]), 1];
+}
+function m4mul(a, b) {
+  const o = new Array(16);
+  for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
+    o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] +
+                   a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
+  }
+  return o;
+}
+function project(p, mvp, w, h) {
+  const x = mvp[0] * p[0] + mvp[4] * p[1] + mvp[8] * p[2] + mvp[12];
+  const y = mvp[1] * p[0] + mvp[5] * p[1] + mvp[9] * p[2] + mvp[13];
+  const z = mvp[2] * p[0] + mvp[6] * p[1] + mvp[10] * p[2] + mvp[14];
+  const ww = mvp[3] * p[0] + mvp[7] * p[1] + mvp[11] * p[2] + mvp[15];
+  if (ww <= 0) return null;
+  return [(x / ww * 0.5 + 0.5) * w, (0.5 - y / ww * 0.5) * h, z / ww];
+}
+
+/* ---------- shaders (GLSL ES 3.00) ------------------------------ */
+const MESH_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aNor;
+layout(location=2) in vec3 aCol;
+uniform mat4 uMVP;
+out vec3 vN; out vec3 vC; out vec3 vWorld;
+void main() {
+  vN = aNor; vC = aCol; vWorld = aPos;
+  gl_Position = uMVP * vec4(aPos, 1.0);
+}`;
+const MESH_FS = `#version 300 es
+precision highp float;
+in vec3 vN; in vec3 vC; in vec3 vWorld;
+uniform vec3 uCam; uniform vec3 uBg;
+out vec4 o;
+void main() {
+  vec3 N = normalize(vN);
+  vec3 L = normalize(vec3(0.45, 0.85, 0.35));
+  vec3 V = normalize(uCam - vWorld);
+  float dif = max(dot(N, L), 0.0);
+  vec3 H = normalize(L + V);
+  float spec = pow(max(dot(N, H), 0.0), 42.0) * 0.35;
+  vec3 col = vC * (0.40 + 0.60 * dif) + spec;
+  float fog = smoothstep(75.0, 150.0, length(uCam - vWorld));
+  o = vec4(mix(col, uBg, fog * 0.5), 1.0);
+}`;
+const RIBBON_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aTan;
+layout(location=2) in float aSide;
+layout(location=3) in float aWidth;
+uniform mat4 uMVP;
+uniform vec3 uCam;
+out vec3 vWorld;
+void main() {
+  vec3 tan = normalize(aTan);
+  vec3 viewDir = normalize(uCam - aPos);
+  vec3 right = normalize(cross(tan, viewDir));
+  vec3 world = aPos + right * (aSide * aWidth);
+  vWorld = world;
+  gl_Position = uMVP * vec4(world, 1.0);
+}`;
+const RIBBON_FS = `#version 300 es
+precision highp float;
+in vec3 vWorld;
+uniform vec3 uColor; uniform vec3 uCam; uniform vec3 uBg;
+out vec4 o;
+void main() {
+  vec3 col = uColor * 1.05;
+  float fog = smoothstep(75.0, 150.0, length(uCam - vWorld));
+  o = vec4(mix(col, uBg, fog * 0.5), 1.0);
+}`;
+const LINE_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aCol;
+uniform mat4 uMVP;
+out vec3 vC;
+void main() { vC = aCol; gl_Position = uMVP * vec4(aPos, 1.0); }`;
+const LINE_FS = `#version 300 es
+precision highp float;
+in vec3 vC; uniform float uAlpha; out vec4 o;
+void main() { o = vec4(vC, uAlpha); }`;
+const DOT_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aCol;
+layout(location=2) in float aSize;
+uniform mat4 uMV; uniform mat4 uProj; uniform float uPx;
+out vec3 vC;
+void main() {
+  vec4 mv = uMV * vec4(aPos, 1.0);
+  gl_PointSize = clamp(uPx * aSize * (34.0 / -mv.z), 4.0, 42.0);
+  vC = aCol;
+  gl_Position = uProj * mv;
+}`;
+const DOT_FS = `#version 300 es
+precision highp float;
+in vec3 vC; out vec4 o;
+void main() {
+  float d = length(gl_PointCoord - 0.5);
+  if (d > 0.5) discard;
+  vec3 col = (d > 0.36) ? vec3(1.0) : vC;
+  o = vec4(col, 1.0);
+}`;
+
+/* ---------- GL setup -------------------------------------------- */
+const canvas = document.getElementById("gl");
+const gl = canvas.getContext("webgl2", { antialias: true });
+if (!gl) { document.getElementById("fallback").style.display = "grid"; throw new Error("no webgl2"); }
+const BG = [0.024, 0.043, 0.102];
+
+function program(vsSrc, fsSrc) {
+  function sh(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+      throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const p = gl.createProgram();
+  gl.attachShader(p, sh(gl.VERTEX_SHADER, vsSrc));
+  gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fsSrc));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS))
+    throw new Error(gl.getProgramInfoLog(p));
+  return p;
+}
+const meshProg = program(MESH_VS, MESH_FS);
+const ribProg = program(RIBBON_VS, RIBBON_FS);
+const lineProg = program(LINE_VS, LINE_FS);
+const dotProg = program(DOT_VS, DOT_FS);
+const U = {
+  meshMVP: gl.getUniformLocation(meshProg, "uMVP"),
+  meshCam: gl.getUniformLocation(meshProg, "uCam"),
+  meshBg: gl.getUniformLocation(meshProg, "uBg"),
+  ribMVP: gl.getUniformLocation(ribProg, "uMVP"),
+  ribCam: gl.getUniformLocation(ribProg, "uCam"),
+  ribCol: gl.getUniformLocation(ribProg, "uColor"),
+  ribBg: gl.getUniformLocation(ribProg, "uBg"),
+  lineMVP: gl.getUniformLocation(lineProg, "uMVP"),
+  lineA: gl.getUniformLocation(lineProg, "uAlpha"),
+  dotMV: gl.getUniformLocation(dotProg, "uMV"),
+  dotProj: gl.getUniformLocation(dotProg, "uProj"),
+  dotPx: gl.getUniformLocation(dotProg, "uPx"),
+};
+function attrBuf(vao, data, loc, size, dynamic) {
+  gl.bindVertexArray(vao);
+  const b = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, b);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data),
+                dynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
+  return b;
+}
+
+/* ---------- the surface mesh: generated from WP() --------------- */
+const DSTEP = 1.5, TSTEP = 150;
+const diffs = [], times = [];
+for (let d = -21; d <= 21.01; d += DSTEP) diffs.push(Math.round(d * 10) / 10);
+for (let t = 0; t <= 3600; t += TSTEP) times.push(t);
+function buildMesh() {
+  const pos = [], col = [], idx = [], wire = [];
+  const grid = [];
+  for (let ti = 0; ti < times.length; ti++) {
+    grid.push([]);
+    for (let di = 0; di < diffs.length; di++) {
+      const p = surfPoint(diffs[di], times[ti]);
+      grid[ti].push(p);
+      pos.push(...p);
+      col.push(...wpColor(WP(diffs[di], times[ti])));
+    }
+  }
+  const nor = new Array(pos.length).fill(0);
+  function triNormal(a, b, c) {
+    const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2];
+    const vx = c[0] - a[0], vy = c[1] - a[1], vz = c[2] - a[2];
+    return [uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx];
+  }
+  for (let ti = 0; ti < times.length - 1; ti++) {
+    for (let di = 0; di < diffs.length - 1; di++) {
+      const a = ti * diffs.length + di, b = a + 1, c = a + diffs.length, e = c + 1;
+      idx.push(a, c, b, b, c, e);
+      wire.push(a, b, a, c);
+      for (const [i1, i2, i3] of [[a, c, b], [b, c, e]]) {
+        const n = triNormal(grid[ti][di], grid[ti][di + 1], grid[ti + 1][di]);
+        for (const vi of [i1, i2, i3]) {
+          nor[vi * 3] += n[0]; nor[vi * 3 + 1] += n[1]; nor[vi * 3 + 2] += n[2];
+        }
+      }
+    }
+  }
+  for (let i = 0; i < nor.length; i += 3) {
+    const l = Math.hypot(nor[i], nor[i + 1], nor[i + 2]) || 1;
+    nor[i] /= l; nor[i + 1] /= l; nor[i + 2] /= l;
+    if (nor[i + 1] < 0) { nor[i] = -nor[i]; nor[i + 1] = -nor[i + 1]; nor[i + 2] = -nor[i + 2]; }
+  }
+  const vao = gl.createVertexArray();
+  attrBuf(vao, pos, 0, 3); attrBuf(vao, nor, 1, 3); attrBuf(vao, col, 2, 3);
+  gl.bindVertexArray(vao);
+  const ib = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
+  const wireVao = gl.createVertexArray();
+  attrBuf(wireVao, pos, 0, 3);
+  // wireframe reuses positions only; color attribute fed by a
+  // constant via a tiny second buffer
+  const ones = new Array(pos.length).fill(0.55);
+  attrBuf(wireVao, ones, 1, 3);
+  gl.bindVertexArray(wireVao);
+  const wb = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, wb);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(wire), gl.STATIC_DRAW);
+  gl.bindVertexArray(null);
+  return { vao, count: idx.length, wireVao, wireCount: wire.length };
+}
+const mesh = buildMesh();
+
+/* ---------- ribbons + dots for the journeys --------------------- */
+function buildRibbon(pts) {
+  const centers = pts.map(journeyPoint);
+  const n = centers.length;
+  const pos = [], tan = [], side = [], wid = [], idx = [];
+  for (let i = 0; i < n; i++) {
+    const a = centers[Math.max(0, i - 1)], b = centers[Math.min(n - 1, i + 1)];
+    let tx = b[0] - a[0], ty = b[1] - a[1], tz = b[2] - a[2];
+    const l = Math.hypot(tx, ty, tz) || 1; tx /= l; ty /= l; tz /= l;
+    for (const sd of [-1, 1]) {
+      pos.push(...centers[i]); tan.push(tx, ty, tz);
+      side.push(sd); wid.push(0.34);
+    }
+    if (i < n - 1) { const k = i * 2; idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
+  }
+  const vao = gl.createVertexArray();
+  attrBuf(vao, pos, 0, 3); attrBuf(vao, tan, 1, 3);
+  attrBuf(vao, side, 2, 1); attrBuf(vao, wid, 3, 1);
+  gl.bindVertexArray(vao);
+  const ib = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
+  gl.bindVertexArray(null);
+  return { vao, count: idx.length };
+}
+function buildDots(list) { // list of {p:[x,y,z], c:[r,g,b], s:size}
+  const vao = gl.createVertexArray();
+  attrBuf(vao, list.flatMap(d => d.p), 0, 3);
+  attrBuf(vao, list.flatMap(d => d.c), 1, 3);
+  attrBuf(vao, list.map(d => d.s), 2, 1);
+  gl.bindVertexArray(null);
+  return { vao, count: list.length };
+}
+const journeyRibbons = JOURNEYS.map(j => ({ geo: buildRibbon(j.pts), color: j.color }));
+const journeyDots = buildDots(JOURNEYS.flatMap(j =>
+  j.pts.map(p => ({ p: journeyPoint(p), c: j.color, s: 5.2 }))));
+
+/* ---------- floor grid + frame ---------------------------------- */
+function buildFrame() {
+  const pos = [], col = [];
+  const dim = [0.16, 0.22, 0.33], x0 = -21 * XW, x1 = 21 * XW, z0 = -ZW / 2, z1 = ZW / 2;
+  function line(a, b, c) { pos.push(...a, ...b); col.push(...c, ...c); }
+  for (let d = -21; d <= 21; d += 7) line([d * XW, 0, z0], [d * XW, 0, z1], dim);
+  for (let m = 0; m <= 60; m += 15) { const z = (m / 60 - 0.5) * ZW; line([x0, 0, z], [x1, 0, z], dim); }
+  line([x0, 0, z1], [x1, 0, z1], [0.22, 0.73, 0.97]);       // diff axis (0:00 edge)
+  line([x0, 0, z0], [x0, 16, z0], [0.20, 0.83, 0.60]);      // win% axis
+  line([x0, 0, z0], [x0, 0, z1], [0.65, 0.55, 0.98]);       // time axis
+  const vao = gl.createVertexArray();
+  attrBuf(vao, pos, 0, 3); attrBuf(vao, col, 1, 3);
+  gl.bindVertexArray(null);
+  return { vao, count: pos.length / 3 };
+}
+const frame_ = buildFrame();
+
+/* ---------- probe ------------------------------------------------ */
+const probe = { d: 0, t: 900 };
+const probeDots = { count: 1 };
+let probePosBuf = null;
+{ // the probe dot's position buffer is DYNAMIC — sliders rewrite it
+  const vao = gl.createVertexArray();
+  probePosBuf = attrBuf(vao, [0, 0, 0], 0, 3, true);
+  attrBuf(vao, [1.0, 0.36, 0.36], 1, 3);
+  attrBuf(vao, [8.5], 2, 1);
+  gl.bindVertexArray(null);
+  probeDots.vao = vao;
+}
+const dropVao = gl.createVertexArray();
+const dropBuf = attrBuf(dropVao, [0, 0, 0, 0, 0, 0], 0, 3, true);
+attrBuf(dropVao, [1.0, 0.36, 0.36, 1.0, 0.36, 0.36], 1, 3);
+gl.bindVertexArray(null);
+function syncProbe() {
+  const p = surfPoint(probe.d, probe.t);
+  gl.bindBuffer(gl.ARRAY_BUFFER, probePosBuf);
+  gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(p));
+  gl.bindBuffer(gl.ARRAY_BUFFER, dropBuf);
+  gl.bufferSubData(gl.ARRAY_BUFFER, 0,
+    new Float32Array([p[0], 0, p[2], p[0], p[1], p[2]]));
+  const wp = WP(probe.d, probe.t);
+  const mm = Math.floor(probe.t / 60), ss = String(probe.t % 60).padStart(2, "0");
+  document.getElementById("dLab").textContent = (probe.d > 0 ? "+" : "") + probe.d;
+  document.getElementById("tLab").textContent = mm + ":" + ss;
+  document.getElementById("readout").textContent =
+    `Probe: ${probe.d > 0 ? "+" : ""}${probe.d} with ${mm}:${ss} left → win prob ${wp.toFixed(0)}%`;
+}
+const dS = document.getElementById("dSlider"), tS = document.getElementById("tSlider");
+dS.addEventListener("input", () => { probe.d = parseInt(dS.value, 10); syncProbe(); });
+tS.addEventListener("input", () => { probe.t = parseInt(tS.value, 10); syncProbe(); });
+syncProbe();
+
+/* ---------- labels ----------------------------------------------- */
+function makeLabel(cls, text, color) {
+  const d = document.createElement("div");
+  d.className = cls; d.textContent = text;
+  if (color) d.style.color = color;
+  document.body.appendChild(d);
+  return d;
+}
+const journeyLabels = [];
+for (const j of JOURNEYS) {
+  const c = j.color.map(x => Math.round(x * 255));
+  for (const p of j.pts)
+    journeyLabels.push({ el: makeLabel("lbl", p[3], `rgb(${c[0]},${c[1]},${c[2]})`), p: journeyPoint(p) });
+}
+const axisLabels = [
+  { el: makeLabel("axis", "SCORE DIFF — LOSING ← → WINNING"), p: [0, -1.2, ZW / 2 + 1.5] },
+  { el: makeLabel("axis", "TIME LEFT — 60:00 AT BACK, 0:00 AT FRONT"), p: [0, -1.2, -ZW / 2 - 1.5] },
+  { el: makeLabel("axis", "WIN %"), p: [-21 * XW, 17.5, -ZW / 2] },
+  { el: makeLabel("axis", "−21"), p: [-21 * XW, -0.8, ZW / 2] },
+  { el: makeLabel("axis", "+21"), p: [21 * XW, -0.8, ZW / 2] },
+  { el: makeLabel("axis", "0:00"), p: [21 * XW + 2.5, -0.8, ZW / 2] },
+  { el: makeLabel("axis", "60:00"), p: [21 * XW + 2.5, -0.8, -ZW / 2] },
+];
+
+/* ---------- camera + interaction --------------------------------- */
+let az = -0.65, el = 0.62, radius = 52, target = [0, 5.5, 0];
+let autoOrbit = true, showWire = true, idleTimer = 0;
+let dragging = false, lastX = 0, lastY = 0;
+canvas.addEventListener("pointerdown", e => {
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+  canvas.setPointerCapture(e.pointerId); idleTimer = 0;
+});
+canvas.addEventListener("pointermove", e => {
+  if (!dragging) return;
+  az -= (e.clientX - lastX) * 0.005;
+  el = Math.max(-1.1, Math.min(1.45, el + (e.clientY - lastY) * 0.005));
+  lastX = e.clientX; lastY = e.clientY;
+});
+canvas.addEventListener("pointerup", () => { dragging = false; });
+canvas.addEventListener("wheel", e => {
+  e.preventDefault();
+  radius = Math.max(24, Math.min(110, radius + e.deltaY * 0.05));
+  idleTimer = 0;
+}, { passive: false });
+const btnW = document.getElementById("btnWire");
+const btnO = document.getElementById("btnOrbit");
+btnW.onclick = () => { showWire = !showWire; btnW.classList.toggle("on"); };
+btnO.onclick = () => { autoOrbit = !autoOrbit; btnO.classList.toggle("on"); };
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(canvas.clientWidth * dpr);
+  canvas.height = Math.round(canvas.clientHeight * dpr);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+window.addEventListener("resize", resize);
+resize();
+
+/* ---------- render loop ------------------------------------------- */
+function frame(now) {
+  idleTimer += 1 / 60;
+  if (autoOrbit && !dragging && idleTimer > 2.5) az += 0.0016;
+  const eye = [
+    target[0] + radius * Math.cos(el) * Math.sin(az),
+    target[1] + radius * Math.sin(el),
+    target[2] + radius * Math.cos(el) * Math.cos(az),
+  ];
+  const view = m4lookAt(eye, target, [0, 1, 0]);
+  const proj = m4perspective(0.9, canvas.width / canvas.height, 0.1, 400);
+  const mvp = m4mul(proj, view);
+
+  gl.clearColor(BG[0], BG[1], BG[2], 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
+
+  gl.useProgram(lineProg);
+  gl.uniformMatrix4fv(U.lineMVP, false, mvp);
+  gl.uniform1f(U.lineA, 0.8);
+  gl.bindVertexArray(frame_.vao);
+  gl.drawArrays(gl.LINES, 0, frame_.count);
+
+  gl.useProgram(meshProg);
+  gl.uniformMatrix4fv(U.meshMVP, false, mvp);
+  gl.uniform3fv(U.meshCam, eye);
+  gl.uniform3fv(U.meshBg, BG);
+  gl.bindVertexArray(mesh.vao);
+  gl.drawElements(gl.TRIANGLES, mesh.count, gl.UNSIGNED_SHORT, 0);
+
+  if (showWire) {
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.useProgram(lineProg);
+    gl.uniform1f(U.lineA, 0.16);
+    gl.bindVertexArray(mesh.wireVao);
+    gl.drawElements(gl.LINES, mesh.wireCount, gl.UNSIGNED_SHORT, 0);
+    gl.disable(gl.BLEND);
+  }
+
+  gl.useProgram(ribProg);
+  gl.uniformMatrix4fv(U.ribMVP, false, mvp);
+  gl.uniform3fv(U.ribCam, eye);
+  gl.uniform3fv(U.ribBg, BG);
+  for (const j of journeyRibbons) {
+    gl.uniform3fv(U.ribCol, j.color);
+    gl.bindVertexArray(j.geo.vao);
+    gl.drawElements(gl.TRIANGLES, j.geo.count, gl.UNSIGNED_SHORT, 0);
+  }
+
+  /* probe drop line */
+  gl.useProgram(lineProg);
+  gl.uniformMatrix4fv(U.lineMVP, false, mvp);
+  gl.uniform1f(U.lineA, 0.65);
+  gl.bindVertexArray(dropVao);
+  gl.drawArrays(gl.LINES, 0, 2);
+
+  /* dots: journey states + probe */
+  gl.useProgram(dotProg);
+  gl.uniformMatrix4fv(U.dotMV, false, view);
+  gl.uniformMatrix4fv(U.dotProj, false, proj);
+  gl.uniform1f(U.dotPx, Math.min(window.devicePixelRatio || 1, 2) * 3.0);
+  gl.bindVertexArray(journeyDots.vao);
+  gl.drawArrays(gl.POINTS, 0, journeyDots.count);
+  gl.bindVertexArray(probeDots.vao);
+  gl.drawArrays(gl.POINTS, 0, 1);
+  gl.bindVertexArray(null);
+
+  /* labels */
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  for (const L of [...journeyLabels, ...axisLabels]) {
+    const p = project(L.p, mvp, w, h);
+    if (!p || p[2] > 1) { L.el.style.display = "none"; continue; }
+    L.el.style.display = "block";
+    L.el.style.left = p[0] + "px"; L.el.style.top = p[1] + "px";
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -9,28 +9,36 @@ script, byte-identical to the lab's) are the only two Python files
 in the repo. Flet requires the entry point to be named main.py —
 that is the only reason there are two.
 
-Screens (bottom nav, five destinations):
-  * Cards  — every checked market from the current pull as a card
+Screens (bottom nav, five destinations — permanently capped):
+  * Board — every checked market from the current pull as a card
     (face: matchup / record / odds / hero probability + edge /
     grade + calibration chip / verdict pill + stance pill; depth
     folded in as PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE
-    tiles). Toggles (priced only / golden only / hide DO NOT BET /
-    per-sport) and eight sorts re-render the cached checker pass —
-    they never re-price.
-  * Parse  — paste slip text ("Lions -3.5 (-110)"); the app reads
-    the selection, market, line, odds and implied probability,
-    and matches it against the last pull when it can. A bet it
-    can't match gets stamped, not guessed.
-  * Parlay — build a slip of up to four PRICED legs from the last
-    pull; combined odds, combined model probability (product —
-    independence assumed, printed on the page), EV per unit, a
-    ladder-language verdict and the slip's stance.
-  * Solver — stake for a target profit, Kelly sizing (full /
-    half / quarter, with the warning printed), and an
-    equal-return hedge solver.
-  * More   — links to BetFi (the finds feed), Record (the lane
-    ledger + latest-pull summary), Terms, Equations, and Dev
-    (version, engine fingerprint, credit).
+    tiles), with the finds feed merged in behind an
+    All cards | Finds segment. Toggles (priced only / golden
+    only / hide DO NOT BET / per-sport / quick bets) and eight
+    sorts re-render the cached checker pass — they never
+    re-price.
+  * Slip  — the ticket tools as one segmented screen:
+    Parse (paste slip text — "Lions -3.5 (-110)" — read against
+    the pull; a bet it can't match gets stamped, not guessed),
+    Parlay (up to four PRICED legs; combined odds, combined
+    model probability — independence assumed, printed on the
+    page — EV per unit, ladder verdict, slip stance; same-game
+    slips stamp UNPRICED under engine law), and Solver (stake
+    for a target profit, Kelly sizing with the warning printed,
+    equal-return hedge).
+  * Lab   — the record wing: latest-pull summary, lane ledger,
+    the Lab Card and the Pilot Book (two books, separate totals,
+    never merged), the kill ledger, and the grading rubric —
+    all read from the bundled evidence pack (see below).
+  * 3D    — the instruments shelf: the lab's 11 instruments in
+    three families (Stocks / Win Probability / NFL), served from
+    the bundled instruments/ folder over a loopback page and
+    opened full-screen, each with its honest label.
+  * More  — Terms, Equations, and Dev (version, engine
+    fingerprint, evidence-pack stamp, credit). Closed to new
+    tiles in 10.4.x.
 
 v10 (2026-10-20): engine v5.2 — grades computed from the edge
 math on every lane (no calibration cap; bands widened), the
@@ -38,6 +46,16 @@ calibration state rides on every card as a tag (CALIBRATED /
 PROVISIONAL / UNCALIBRATED / UNTESTED), and every priced bet
 carries a stance (BULLISH / CONSERVATIVE / LONGSHOT) computed by
 the engine from the bet's own probability, edge and price.
+
+v10.4.1 (2026-10-21) — the combination (super-team spec):
+one engine (v5.2 in the lab and the app alike), the lab and the
+3D instruments folded into the same app. The Lab wing reads a
+bundled EVIDENCE PACK (data/lab_export.json: scorecard, lane
+history, phi registry, lane fits — exported by the lab, stamped
+with its export time); at startup the pack seeds the engine's
+storage so the record on the phone is the lab's record, not an
+empty fallback (the Room Rule: no pack ⇒ the Lab prints
+"record not bundled", never a 0-0 dressed as a record).
 Prices come only from the live FanDuel menu pull — never
 invented; UNPRICED markets print DO NOT BET with the named
 reason; the golden panel is never backfilled. Analysis only:
@@ -52,6 +70,7 @@ import json
 import os
 import re
 import sys
+import threading
 from datetime import datetime, timedelta, timezone
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -66,8 +85,8 @@ import flet as ft
 
 PUBLIC_NAME = "BetFi"
 INTERNAL_ID = "Bet_Finder"
-APP_VERSION = "10.1.0"
-BUILD_NUMBER = 10
+APP_VERSION = "10.4.1"
+BUILD_NUMBER = 12
 DISPLAY_NAME = "BetFi 10"
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
@@ -204,6 +223,247 @@ def repoint_engine_storage() -> None:
 
 
 repoint_engine_storage()
+
+# ------------------------------------------------------------------
+# The evidence pack (v10.4.1) — the lab's record, exported by the
+# lab into data/lab_export.json + the engine's own data files, and
+# bundled beside this shell. At startup the pack seeds the
+# engine's data dir so the phone's record is the lab's record
+# (scorecard, lane history, phi registry, lane fits) instead of
+# the engine's silent empty fallback. The Room Rule rides on it:
+# no pack anywhere => the Lab prints "record not bundled", never
+# a 0-0 dressed as a record. Seeding never overwrites a NEWER
+# device pack: lab_export.json's exported_at decides, and the
+# pack's engine files travel with their export as one unit.
+
+BUNDLED_DATA_DIR = os.path.join(APP_DIR, "data")
+INSTRUMENTS_DIR = os.path.join(APP_DIR, "instruments")
+
+
+def _exported_at_of(path: str):
+    """The exported_at stamp of a lab_export.json, parsed aware;
+    None when absent or unreadable."""
+    try:
+        with open(path) as f:
+            stamp = json.load(f).get("exported_at")
+        dt = datetime.fromisoformat(str(stamp).replace("Z", "+00:00"))
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+def seed_evidence_pack() -> dict:
+    """Copy the bundled evidence pack into the engine's data dir.
+
+    Missing files are copied. When the bundled export is fresher
+    than the device's, the pack's own engine files refresh with
+    it (a pack is one unit — a fresher scorecard never travels
+    with staler fits). Files the pack does not own (the engine's
+    caches, the NFL pricing file) are never touched. A device
+    pack with an equal or newer exported_at is left alone.
+    Returns a status dict for the Dev screen and the Lab stamp.
+    """
+    status = {"bundled": False, "seeded": False, "files": 0,
+              "exported_at": None}
+    src = BUNDLED_DATA_DIR
+    dst = b5.DATA
+    try:
+        bundled_export = os.path.join(src, "lab_export.json")
+        if not os.path.isfile(bundled_export):
+            return status
+        status["bundled"] = True
+        with open(bundled_export) as f:
+            pack = json.load(f)
+        status["exported_at"] = pack.get("exported_at")
+        if os.path.abspath(src) == os.path.abspath(dst):
+            status["seeded"] = True  # already in place (dev layout)
+            status["files"] = sum(
+                1 for fn in os.listdir(src)
+                if os.path.isfile(os.path.join(src, fn)))
+            return status
+        os.makedirs(dst, exist_ok=True)
+        bundled_at = _exported_at_of(bundled_export)
+        device_at = _exported_at_of(os.path.join(dst,
+                                                 "lab_export.json"))
+        fresher = device_at is None or (
+            bundled_at is not None and bundled_at > device_at)
+        pack_files = set(pack.get("engine_data_files") or [])
+        pack_files.add("lab_export.json")
+        copied = 0
+        for fn in sorted(os.listdir(src)):
+            sp = os.path.join(src, fn)
+            if not os.path.isfile(sp):
+                continue
+            dp = os.path.join(dst, fn)
+            if not os.path.exists(dp) or (fresher
+                                          and fn in pack_files):
+                with open(sp, "rb") as f:
+                    blob = f.read()
+                with open(dp, "wb") as f:
+                    f.write(blob)
+                copied += 1
+        status["seeded"] = True
+        status["files"] = copied
+        return status
+    except Exception:
+        return status  # the shell must never die over the pack
+
+
+PACK_STATUS = seed_evidence_pack()
+
+
+def load_lab_pack() -> dict | None:
+    """The evidence pack as the Lab face reads it: the seeded copy
+    in the engine's data dir first (that is the device's record),
+    the bundled copy as fallback. None when no pack exists —
+    the Room Rule's named failure state."""
+    for path in (os.path.join(b5.DATA, "lab_export.json"),
+                 os.path.join(BUNDLED_DATA_DIR, "lab_export.json")):
+        try:
+            with open(path) as f:
+                return json.load(f)
+        except Exception:
+            continue
+    return None
+
+
+# ------------------------------------------------------------------
+# The instruments (v10.4.1) — the lab's 11 self-contained HTML
+# instruments, bundled in instruments/ beside this shell and
+# served over a loopback page (stdlib http.server, lazy start,
+# idempotent): Android browsers do not reliably render file://
+# paths into app-private storage, and Flet 1.0.4 has no WebView —
+# so each instrument opens full-screen through the UrlLauncher
+# service at its loopback URL (verified in the pinned venv:
+# ft.UrlLauncher exists, page.launch_url does not).
+
+INSTRUMENTS = [
+    # Stocks — one sample, 6 names, 44 sessions (Aug 17–Oct 16 2026)
+    {"file": "stock-vol4d.html", "family": "Stocks",
+     "name": "Volatility Space 4D",
+     "note": "Six names: return vs realized volatility. Ribbon "
+             "width is volume share; the particle cloud is "
+             "indecision (J).",
+     "chip": "SNAPSHOT · AUG 17 – OCT 16, 2026"},
+    {"file": "stock-vol-webgl2.html", "family": "Stocks",
+     "name": "Volatility Space — WebGL2",
+     "note": "The current edition: the same vol4d data on a raw "
+             "WebGL2 GPU pipeline — same encodings, same J.",
+     "chip": "SNAPSHOT · AUG 17 – OCT 16, 2026 · CURRENT EDITION"},
+    {"file": "stock-vol-3d.html", "family": "Stocks",
+     "name": "Volatility Space 3D",
+     "note": "The trajectories with volatility as a true third "
+             "spatial axis.",
+     "chip": "SNAPSHOT · AUG 17 – OCT 16, 2026"},
+    {"file": "stock-3d-map.html", "family": "Stocks",
+     "name": "Stock 3D Map",
+     "note": "The first 3D pass over the six trajectories.",
+     "chip": "SNAPSHOT · AUG 17 – OCT 16, 2026"},
+    {"file": "crm-3d.html", "family": "Stocks",
+     "name": "CRM Terrain",
+     "note": "Single-name 3D terrain of the CRM series.",
+     "chip": "SNAPSHOT · AUG 17 – OCT 16, 2026"},
+    {"file": "crm-path.html", "family": "Stocks",
+     "name": "CRM Path",
+     "note": "Single-name study: CRM's cumulative path, "
+             "Jun 15 – Oct 16, 2026.",
+     "chip": "SNAPSHOT · AUG 17 – OCT 16, 2026"},
+    # Win Probability — the lab's closed-form WP model, computed live
+    {"file": "wp-surface-webgl2.html", "family": "Win Probability",
+     "name": "WP Surface — WebGL2",
+     "note": "The current edition: the win-probability surface "
+             "as a lit mesh, computed live from the model; the "
+             "probe prices any state; journeys are recorded "
+             "priced states.",
+     "chip": "MODEL — COMPUTED LIVE · JOURNEYS RECORDED · "
+             "CURRENT EDITION"},
+    {"file": "wp-surface-3d-interactive.html",
+     "family": "Win Probability",
+     "name": "WP Surface — Interactive",
+     "note": "The same live model in lightweight canvas, with "
+             "the draggable probe.",
+     "chip": "MODEL — COMPUTED LIVE · JOURNEYS RECORDED"},
+    {"file": "wp-surface-3d.html", "family": "Win Probability",
+     "name": "WP Surface — Static",
+     "note": "The print render of the surface, both journeys "
+             "drawn.",
+     "chip": "FROZEN RENDER"},
+    # NFL Week 6 — frozen weekend artifacts
+    {"file": "nfl-week6-trajectories-model-vs-market.html",
+     "family": "NFL",
+     "name": "Model vs Market Trajectories",
+     "note": "Per-game probability trajectories, model vs "
+             "market, NFL Week 6.",
+     "chip": "FROZEN · WEEK 6, 2026"},
+    {"file": "nfl-week6-command-board.html", "family": "NFL",
+     "name": "Command Board",
+     "note": "The weekend command board for the Week 6 slate.",
+     "chip": "FROZEN · WEEK 6, 2026 · CONTAINS AN AUDIT FLAG"},
+]
+INSTRUMENT_FAMILIES = ["Stocks", "Win Probability", "NFL"]
+STOCKS_SAMPLE_NOTE = (
+    "One sample — 6 names, 44 sessions, chosen from a 42-name "
+    "universe. Patterns and J are observations about this sample, "
+    "not laws.")
+
+_instrument_server = {"httpd": None, "port": None}
+_instrument_lock = threading.Lock()
+
+
+def ensure_instrument_server() -> int | None:
+    """Start (once, under a lock — the shelf warms it on a worker
+    thread via page.run_thread and a tap may ask at the same
+    moment) the loopback server for instruments/ and return its
+    port; None when the folder is absent (single-file editions)
+    or no port in 8791–8800 binds."""
+    with _instrument_lock:
+        if _instrument_server["httpd"] is not None:
+            return _instrument_server["port"]
+        if not os.path.isdir(INSTRUMENTS_DIR):
+            return None
+        try:
+            import functools
+            import http.server
+
+            class _Quiet(http.server.SimpleHTTPRequestHandler):
+                def log_message(self, *args):
+                    pass
+
+            handler = functools.partial(_Quiet,
+                                        directory=INSTRUMENTS_DIR)
+            httpd = None
+            port = None
+            for candidate in range(8791, 8801):
+                try:
+                    httpd = http.server.ThreadingHTTPServer(
+                        ("127.0.0.1", candidate), handler)
+                    port = candidate
+                    break
+                except OSError:
+                    continue
+            if httpd is None:
+                return None
+            threading.Thread(target=httpd.serve_forever,
+                             daemon=True).start()
+            _instrument_server["httpd"] = httpd
+            _instrument_server["port"] = port
+            return port
+        except Exception:
+            return None
+
+
+def instruments_bundled() -> tuple[int, int]:
+    """(files present, total bytes) of the bundled instruments —
+    the Dev screen's count, read fresh at render."""
+    n = 0
+    total = 0
+    for inst in INSTRUMENTS:
+        p = os.path.join(INSTRUMENTS_DIR, inst["file"])
+        if os.path.isfile(p):
+            n += 1
+            total += os.path.getsize(p)
+    return n, total
+
 
 # ------------------------------------------------------------------
 # The menu pull — composed from the engine's own functions, the
@@ -1031,12 +1291,46 @@ def parlay_combine(legs: list) -> dict:
         verdict = "BET HERE"
     else:
         verdict = "RISK BET (BET)"
+    # F3 — the parlay law (engine law wins, v10.4.1):
+    # * same game: two or more legs on one game (same FanDuel
+    #   event id, or the same sport + away + home key) make the
+    #   slip a same-game parlay. No correlation engine prices it,
+    #   so NO combined figure is issued — the block renders the
+    #   UNPRICED stamp with its reason instead.
+    # * cross-game: the independence math stands, and the
+    #   combined grade is capped at the weakest leg's grade —
+    #   the engine's grouping law (a basket is graded by its
+    #   basket, never by its best part).
+    def _game_key(mkt):
+        if mkt.get("fd_event_id") is not None:
+            return ("fd", mkt["fd_event_id"])
+        return ("teams", mkt.get("sport"), mkt.get("away"),
+                mkt.get("home"))
+
+    keys = [_game_key(m) for m, _v in legs]
+    same_game = len(set(keys)) != len(keys)
+    grade = b5.base_grade(edge_pts)
+    leg_grades = [v.get("grade") for _m, v in legs
+                  if v.get("grade")]
+    grade_capped = False
+    if leg_grades:
+        weakest = max(leg_grades, key=grade_rank)
+        if grade_rank(weakest) > grade_rank(grade):
+            grade = weakest
+            grade_capped = True
     return {"decimal": dec, "american": b5.decimal_to_american(dec),
             "model_p": p, "implied": implied, "ev": ev,
             "edge_pts": edge_pts, "verdict": verdict,
+            "grade": grade, "grade_capped": grade_capped,
+            "same_game": same_game,
             "stance": b5.parlay_stance(
                 [v.get("stance") for _m, v in legs]),
             "conflicts": conflicts}
+
+
+SAME_GAME_REASON = ("Same-game parlay — no correlation engine "
+                    "prices this; an independence product would "
+                    "be a lie of precision.")
 
 
 # ------------------------------------------------------------------
@@ -1056,29 +1350,88 @@ def main(page: ft.Page):
              "toggles": {"priced_only": False, "golden_only": False,
                          "hide_dnb": False, "quick_only": False,
                          "sports": {}},
-             "parlay_legs": [], "view": "cards"}
+             "parlay_legs": [], "view": "board",
+             "board_seg": "all", "slip_seg": "parse",
+             "instrument_url": None}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM)
     status = ft.Text("", size=12, color=ACCENT)
 
-    # view containers — top-level five plus the More sub-views
+    # view containers — the five destinations (v10.4.1 nav):
+    # Board (cards + finds behind a segment), Slip (Parse /
+    # Parlay / Solver behind a segment), Lab, the 3D shelf,
+    # More — plus the More sub-views (Terms / Equations / Dev).
     cards_view = ft.Column(spacing=8)
-    parse_view = ft.Column(spacing=8, visible=False)
+    betfi_view = ft.Column(spacing=8, visible=False)
+    board_view = ft.Column(spacing=8)
+    parse_view = ft.Column(spacing=8)
     parlay_view = ft.Column(spacing=8, visible=False)
     solver_view = ft.Column(spacing=8, visible=False)
-    more_view = ft.Column(spacing=8, visible=False)
-    betfi_view = ft.Column(spacing=8, visible=False)
+    slip_view = ft.Column(spacing=8, visible=False)
     record_view = ft.Column(spacing=8, visible=False)
+    stage_view = ft.Column(spacing=8, visible=False)
+    more_view = ft.Column(spacing=8, visible=False)
     terms_view = ft.Column(spacing=8, visible=False)
     equations_view = ft.Column(spacing=8, visible=False)
     dev_view = ft.Column(spacing=8, visible=False)
-    views = {"cards": cards_view, "parse": parse_view,
-             "parlay": parlay_view, "solver": solver_view,
-             "more": more_view, "betfi": betfi_view,
-             "record": record_view, "terms": terms_view,
+    views = {"board": board_view, "slip": slip_view,
+             "lab": record_view, "stage": stage_view,
+             "more": more_view, "terms": terms_view,
              "equations": equations_view, "dev": dev_view}
-    TOP_VIEWS = ["cards", "parse", "parlay", "solver", "more"]
+    TOP_VIEWS = ["board", "slip", "lab", "stage", "more"]
+
+    # ---- the two segmented controls (stock Flet segments) ----
+
+    def _segmented(options, selected, handler):
+        return ft.SegmentedButton(
+            segments=[ft.Segment(
+                value=v, label=ft.Text(lbl, size=13))
+                for v, lbl in options],
+            selected={selected}, allow_empty_selection=False,
+            on_change=handler)
+
+    def show_board_segment(seg: str):
+        state["board_seg"] = seg
+        board_seg_ctrl.selected = {seg}
+        finds = seg == "finds"
+        cards_view.visible = not finds
+        betfi_view.visible = finds
+        if finds:
+            render_betfi()
+        else:
+            render_cards()
+        page.update()
+
+    def on_board_seg(e):
+        sel = e.control.selected or set()
+        show_board_segment(sel.pop() if sel else "all")
+
+    board_seg_ctrl = _segmented(
+        [("all", "All cards"), ("finds", "Finds")], "all",
+        on_board_seg)
+
+    def show_slip_tool(tool: str):
+        state["slip_seg"] = tool
+        slip_seg_ctrl.selected = {tool}
+        parse_view.visible = tool == "parse"
+        parlay_view.visible = tool == "parlay"
+        solver_view.visible = tool == "solver"
+        if tool == "parse":
+            render_parse()
+        elif tool == "parlay":
+            render_parlay()
+        else:
+            render_solver()
+        page.update()
+
+    def on_slip_seg(e):
+        sel = e.control.selected or set()
+        show_slip_tool(sel.pop() if sel else "parse")
+
+    slip_seg_ctrl = _segmented(
+        [("parse", "Parse"), ("parlay", "Parlay"),
+         ("solver", "Solver")], "parse", on_slip_seg)
 
     def current_ctx():
         rec = state["slate"] or {}
@@ -1580,7 +1933,32 @@ def main(page: ft.Page):
 
     def _combined_block(legs):
         c = parlay_combine(legs)
+        if c["same_game"]:
+            # F3: the combined block is REPLACED by the UNPRICED
+            # stamp — no combined odds, probability, EV or grade
+            # is printed for a same-game slip, anywhere on the app.
+            stamp_rows = [
+                _kv_row("Legs", str(len(legs))),
+                ft.Row(spacing=8, controls=[
+                    verdict_pill("UNPRICED", unpriced=True)]),
+                ft.Text(SAME_GAME_REASON, size=12, color=DIM,
+                        height=1.35),
+                ft.Text("The legs above still price on their own "
+                        "cards. What no engine here will print is "
+                        "a combined number for them.",
+                        size=11, color=FAINT, height=1.35)]
+            return ft.Container(
+                bgcolor=RAISED, border=_border_all(1, CHIP_BORDER),
+                border_radius=10, padding=12,
+                content=ft.Column(spacing=6, controls=stamp_rows))
         rows = [_kv_row("Legs", str(len(legs))),
+                ft.Row(spacing=8, controls=[
+                    ft.Container(width=110, content=ft.Text(
+                        "Grade", size=11, color=FAINT)),
+                    ft.Text(c["grade"], size=16,
+                            color=GRADE_COLORS.get(
+                                c["grade"], INK),
+                            weight=ft.FontWeight.BOLD)]),
                 ft.Row(spacing=8, controls=[
                     ft.Container(width=110, content=ft.Text(
                         "Combined odds", size=11, color=FAINT)),
@@ -1613,12 +1991,18 @@ def main(page: ft.Page):
             rows.append(ft.Row(spacing=6, controls=[
                 ft.Icon(ft.Icons.WARNING_AMBER, size=14, color=WARN),
                 ft.Text(note, size=11, color=WARN)]))
+        if c["grade_capped"]:
+            rows.append(ft.Text(
+                f"Combined grade capped at the weakest leg "
+                f"({c['grade']}) — the grouping law: a slip is "
+                f"graded by its weakest leg, never its best.",
+                size=11, color=WARN, height=1.35))
         rows.append(ft.Text(
             "Combined probability = product of the legs' "
             "probabilities. That assumes the legs are independent "
-            "— treat it as a ceiling, and expect same-game legs "
-            "to break the assumption.", size=10, color=FAINT,
-            height=1.35))
+            "— treat it as a ceiling. Same-game legs never get a "
+            "combined number at all (see the stamp rule in "
+            "Terms).", size=10, color=FAINT, height=1.35))
         return ft.Container(
             bgcolor=RAISED, border=_border_all(1, CHIP_BORDER),
             border_radius=10, padding=12,
@@ -1828,11 +2212,10 @@ def main(page: ft.Page):
             screen_title(title, subtitle)])
 
     def render_more():
+        # More is closed to new tiles in 10.4.x (UX nav law):
+        # the finds feed moved to the Board and the Record grew
+        # into the Lab destination — what remains is reference.
         tiles = [
-            (ft.Icons.SEARCH, "BetFi finds",
-             "Golden bets and the ranked finds feed", "betfi"),
-            (ft.Icons.LIST, "Record",
-             "Lane ledger and the latest pull", "record"),
             (ft.Icons.MENU_BOOK, "Terms",
              "What every word on a card means", "terms"),
             (ft.Icons.FUNCTIONS, "Equations",
@@ -1855,15 +2238,16 @@ def main(page: ft.Page):
     # ---------------- BetFi finds ----------------
 
     def render_betfi():
-        betfi_view.controls = [_sub_header(
-            "BetFi — finds feed",
-            "Golden bets first, then the ranked finds.")]
+        betfi_view.controls = [ft.Text(
+            "Finds — golden bets first, then the ranked finds. "
+            "Same pull, same prices as All cards; the feed only "
+            "re-ranks.", size=12, color=DIM, height=1.35)]
         rec = state["slate"]
         if not rec:
             betfi_view.controls.append(empty_full(
                 ft.Icons.CLOUD_OFF, "Nothing to distill",
                 "The feed distills the current pull — pull the "
-                "menu on the Cards screen first."))
+                "menu on the Board first."))
             page.update()
             return
         verdicts = ensure_verdicts()
@@ -1902,12 +2286,13 @@ def main(page: ft.Page):
         if len(finds) > CARD_PAGE:
             betfi_view.controls.append(ft.Text(
                 f"+{len(finds) - CARD_PAGE} more finds past the "
-                f"page cap — the Cards screen holds the full "
-                f"list.", size=11, color=FAINT))
+                f"page cap — All cards on the Board holds the "
+                f"full list.", size=11, color=FAINT))
         if flagged:
             betfi_view.controls.append(section_header(
-                f"COHERENCE-FLAGGED — somebody's price is wrong "
-                f"({len(flagged)})", WARN))
+                f"PRICE CONFLICT — two prices for the same event "
+                f"disagree inside this pull ({len(flagged)})",
+                WARN))
             for mkt, verdict, edge in flagged:
                 betfi_view.controls.append(build_market_card(
                     mkt, verdict, rec, quotes, edge_pts=edge,
@@ -1925,11 +2310,38 @@ def main(page: ft.Page):
                                      for t in counter_lines]))]))
         page.update()
 
-    # ---------------- Record ----------------
+    # ---------------- Lab (the record wing) ----------------
 
-    def render_record():
-        record_view.controls = [_sub_header(
-            "Record", "Lane ledger and the latest pull.")]
+    def _money(v) -> str:
+        return f"${abs(v):,.0f}" if float(v) == int(v) \
+            else f"${abs(v):,.2f}"
+
+    def _signed_money(v) -> str:
+        return ("+" if v > 0 else "−" if v < 0 else "") \
+            + _money(v)
+
+    def render_lab():
+        pack = load_lab_pack()
+        record_view.controls = [screen_title(
+            "Lab",
+            "The record wing — the lab's graded history, read "
+            "from the bundled evidence pack.")]
+        if pack is None:
+            # ROOM RULE failure state: a named state, never a
+            # ledger — no lane rows, no book sections, no totals.
+            record_view.controls.append(empty_full(
+                ft.Icons.FOLDER_OFF, "Record not bundled",
+                "This build shipped without the lab evidence "
+                "pack, so the Lab shows no record at all — never "
+                "an empty ledger dressed as 0-0. The full BetFi "
+                "10 build carries the pack."))
+            page.update()
+            return
+        exported = str(pack.get("exported_at") or "")
+        record_view.controls.append(ft.Text(
+            f"Lab record as of {exported[:10]} · evidence pack "
+            f"exported {exported} · the app reads it, only the "
+            f"lab writes it.", size=11, color=FAINT, height=1.35))
         record_view.controls.append(section_header(
             "LATEST PULL — WHAT THE APP DID", ACCENT))
         rec = state["slate"]
@@ -1950,7 +2362,7 @@ def main(page: ft.Page):
             record_view.controls.append(ft.Text(
                 f"Markets checked {len(markets)} · PRICED "
                 f"{len(priced_v)} · GOLDEN {golden_n} · "
-                f"coherence-flagged {flagged_n} · the rest "
+                f"price conflicts {flagged_n} · the rest "
                 f"stamped, never guessed.", size=12, color=DIM))
             from collections import Counter
             tags = Counter(v.get("cal_tag") for v in priced_v)
@@ -1968,8 +2380,10 @@ def main(page: ft.Page):
                 size=12, color=DIM))
         else:
             record_view.controls.append(ft.Text(
-                "No pull on this device yet — the ledger fills "
-                "with the first pull.", size=12, color=DIM))
+                "No pull on this device yet — this section fills "
+                "with the first pull. The graded record below is "
+                "the pack's, and stands whether or not a pull "
+                "has landed.", size=12, color=DIM, height=1.35))
         record_view.controls.append(ft.Divider(color=BORDER))
         record_view.controls.append(section_header(
             "LANE LEDGER — WIN / LOSE OF RECORD", ACCENT))
@@ -1995,15 +2409,113 @@ def main(page: ft.Page):
                 f"{lane}: Win {w} · Lose {l} ({src}) · tag {tag}"
                 f"{status_line}"
                 + (f" · {uncal}" if uncal else ""),
-                size=13, color=DIM))
+                size=13, color=DIM, height=1.35))
         entries = card.get("entries") or []
+        record_view.controls.append(ft.Text(
+            f"Scorecard entries on device: {len(entries)} · "
+            f"graded by the engine's record laws; the full "
+            f"entries live in the lab.", size=11, color=FAINT))
+        # ---- the two books: separate sections, separate
+        # totals, no combined figure anywhere (lab law I-L2) ----
+        record_view.controls.append(ft.Divider(color=BORDER))
+        record_view.controls.append(section_header(
+            "LAB CARD — PAPER, SEALED BY THE PIPELINE", ACCENT))
+        sealed = pack.get("sealed_cards") or []
+        if sealed:
+            for sc in sealed:
+                record_view.controls.append(ft.Text(
+                    f"{sc.get('date')} · {sc.get('name')} — "
+                    f"straights {sc.get('record')} · net "
+                    f"{sc.get('net_units'):+.2f}u · ROI "
+                    f"{sc.get('roi_pct'):+.1f}% · CLV "
+                    f"{sc.get('clv')}", size=13, color=INK,
+                    height=1.35))
+            tot_rec = sealed[-1].get("record")
+            tot_net = sum(float(sc.get("net_units") or 0)
+                          for sc in sealed)
+            record_view.controls.append(ft.Text(
+                f"Lab Card total: {tot_rec} · {tot_net:+.2f}u "
+                f"(paper — no money ever moved on this book).",
+                size=12, color=DIM, height=1.35))
+        else:
+            record_view.controls.append(ft.Text(
+                "No sealed card in this pack.", size=12,
+                color=DIM))
+        screened = pack.get("screened_not_sealed")
+        if screened:
+            record_view.controls.append(ft.Text(
+                f"{screened} packets were screened and held — "
+                f"screened is not sealed. They never became "
+                f"cards and are not in any total above.",
+                size=11, color=FAINT, height=1.35))
+        record_view.controls.append(ft.Divider(color=BORDER))
+        record_view.controls.append(section_header(
+            "PILOT BOOK — HIS PLAYS, THEIR OWN LINES", ACCENT))
+        tickets = pack.get("pilot_book") or []
+        for t in tickets:
+            if t.get("result") == "PENDING":
+                line = (f"{t.get('date')} · {t.get('ticket')} · "
+                        f"{_money(t.get('stake') or 0)} · PENDING"
+                        f" — result not recorded")
+            else:
+                line = (f"{t.get('date')} · {t.get('ticket')} · "
+                        f"{_money(t.get('stake') or 0)} → "
+                        f"{_money(t.get('returned') or 0)} · "
+                        f"{t.get('result')} · net "
+                        f"{_signed_money(t.get('net') or 0)}")
+            record_view.controls.append(ft.Text(
+                line, size=13, color=INK, height=1.35))
+        closed = pack.get("pilot_book_closed_line") or {}
+        if closed:
+            record_view.controls.append(ft.Text(
+                f"Pilot Book closed line (as of "
+                f"{closed.get('as_of')}): "
+                f"{_money(closed.get('staked') or 0)} staked → "
+                f"{_money(closed.get('returned') or 0)} returned "
+                f"· net {_signed_money(closed.get('net') or 0)} "
+                f"— this book only. The two books are never "
+                f"added together.", size=12, color=DIM,
+                height=1.35))
+        record_view.controls.append(ft.Divider(color=BORDER))
+        record_view.controls.append(section_header(
+            "KILL LEDGER — BARRED, READ-ONLY", ACCENT))
+        kills = pack.get("kill_ledger_items")
+        record_view.controls.append(ft.Text(
+            f"{kills} patterns are barred by the lab's Hard Kill "
+            f"Ledger — shapes that failed their sealed tests and "
+            f"may not be bet in any form. The full text lives "
+            f"in the lab (LAB.md); the app shows the count and "
+            f"the rule, and nothing un-bars a pattern from "
+            f"here.", size=12, color=DIM, height=1.35))
+        gov = pack.get("governor_note")
+        if gov:
+            record_view.controls.append(ft.Text(
+                f"Governor at export: {gov}.",
+                size=11, color=FAINT, height=1.35))
+        record_view.controls.append(ft.Divider(color=BORDER))
+        record_view.controls.append(section_header(
+            "THE RUBRIC — HOW A BET IS GRADED", ACCENT))
+        bands = " · ".join(
+            f"{g} ≥ {floor:+g}" for floor, g
+            in b5.GRADE_BANDS_V52)
+        record_view.controls.append(ft.Text(
+            f"Grade bands (edge, points): {bands} · below the "
+            f"last floor: F.", size=12, color=DIM, height=1.35))
+        record_view.controls.append(ft.Text(
+            "Then the named adjustments: FRAGILE −1 grade when a "
+            "thin or single-source price holds half the edge; "
+            "PRICE DISCIPLINE −1 when the model asks for a price "
+            "the market rarely deals; a parlay's grade capped "
+            "at its weakest leg; UNPRICED always capped at "
+            "DO NOT BET. Every adjustment prints its reason on "
+            "the card or the slip — a grade never moves in "
+            "silence.", size=12, color=DIM, height=1.35))
         record_view.controls.append(ft.Divider(color=BORDER))
         record_view.controls.append(ft.Text(
             f"App: {DISPLAY_NAME} v{APP_VERSION} · Engine: "
             f"{ENGINE_VERSION} · {engine_fingerprint()}",
             size=12, color=ACCENT))
         record_view.controls.append(ft.Text(
-            f"Scorecard entries on device: {len(entries)} · "
             f"internal id {INTERNAL_ID} · analysis only — "
             f"{PUBLIC_NAME} never places a bet.",
             size=11, color=FAINT))
@@ -2056,7 +2568,8 @@ def main(page: ft.Page):
              "favorite flip, a spread or total far from another "
              "source, a moneyline/spread pair no single margin "
              "distribution can reconcile). Somebody's price is "
-             "wrong; the card shows which quotes fight."),
+             "wrong; the card shows which quotes fight. On the "
+             "Board the state prints as PRICE CONFLICT."),
         ]),
         ("GRADES, STANCE, CALIBRATION", [
             ("Grade (A+ to F)", "a score of the edge, not of the "
@@ -2194,10 +2707,52 @@ def main(page: ft.Page):
              "The Resolve date sort orders the board by that date, "
              "earliest first, grouped under date headers."),
             ("Quick bet", "a market resolving within 0–2 hours of "
-             "the pull — the Quick bets toggle on Cards. The clock "
-             "is the pull's own timestamp, so a stale pull shows "
-             "its quick window as it stood when pulled, stamped "
-             "STALE like everything else on it."),
+             "the pull — the Quick bets toggle on the Board. The "
+             "clock is the pull's own timestamp, so a stale pull "
+             "shows its quick window as it stood when pulled, "
+             "stamped STALE like everything else on it."),
+        ]),
+        ("THE LAB, THE PACK, AND THE SLIP LAW", [
+            ("Evidence pack", "the lab's record, exported from "
+             "the lab and bundled with the app: the scorecard, "
+             "the lane history, the phi registry and the lane "
+             "fits, stamped with the time of its export. The "
+             "app reads it and displays it; only the lab writes "
+             "it. The Lab face prints the pack's stamp — 'Lab "
+             "record as of' that date."),
+            ("Room Rule", "the Lab wing ships populated: the "
+             "record exists, so the room is never empty. If a "
+             "build carries no evidence pack, the Lab prints "
+             "'record not bundled' instead of an empty record "
+             "dressed as 0-0."),
+            ("Sealed card", "a lab card locked before its games "
+             "and graded after — paper only. Packets that were "
+             "screened and held are not cards and never enter "
+             "a total."),
+            ("Pilot Book", "the Pilot's own placed plays, graded "
+             "on their own lines in their own section. The Lab "
+             "Card and the Pilot Book are never added together; "
+             "there is no combined record."),
+            ("Same-game parlay", "two or more legs on the same "
+             "game. The app stamps the slip UNPRICED and prints "
+             "no combined number: no correlation engine prices "
+             "same-game legs, and an independence product would "
+             "be a lie of precision. The legs still price on "
+             "their own cards."),
+            ("Weakest-leg cap", "a parlay's combined grade can "
+             "never beat the grade of its weakest leg — the "
+             "grouping law. When the cap binds, the Parlay page "
+             "says so in words."),
+            ("Closed-form WP", "the Win Probability instruments "
+             "compute win probability from score difference and "
+             "clock with a closed-form curve — a different, "
+             "simpler estimator than the engine's live Monte "
+             "Carlo matrix. Both names are printed so the two "
+             "are never confused."),
+            ("Snapshot", "an instrument labelled SNAPSHOT or "
+             "FROZEN shows recorded data from the window on its "
+             "label — it does not update. One labelled MODEL — "
+             "COMPUTED LIVE evaluates its model as you move."),
         ]),
     ]
 
@@ -2331,6 +2886,20 @@ def main(page: ft.Page):
 
     # ---------------- Dev ----------------
 
+    def _pack_stamp_line() -> str:
+        pack = load_lab_pack()
+        if pack is None:
+            return "not bundled in this edition"
+        return (f"lab-export/1 · exported "
+                f"{pack.get('exported_at')} · seeded at startup: "
+                f"{'yes' if PACK_STATUS.get('seeded') else 'no'}")
+
+    def _instruments_line() -> str:
+        n, total = instruments_bundled()
+        if n == 0:
+            return "not bundled in this edition"
+        return f"{n} of {len(INSTRUMENTS)} bundled · {total} bytes"
+
     def render_dev():
         identity = ft.Container(
             bgcolor=CARD_BG, border_radius=10, padding=12,
@@ -2346,7 +2915,11 @@ def main(page: ft.Page):
                         "FanDuel (Michigan) public menu — "
                         "read-only, no login"),
                 _kv_row("Storage", storage_dir()),
-                _kv_row("Internal id", INTERNAL_ID)]))
+                _kv_row("Internal id", INTERNAL_ID),
+                _kv_row("Evidence pack",
+                        _pack_stamp_line()),
+                _kv_row("Instruments",
+                        _instruments_line())]))
         credit = ft.Container(
             bgcolor=RAISED, border_radius=10, padding=12,
             content=ft.Column(spacing=6, controls=[
@@ -2367,6 +2940,98 @@ def main(page: ft.Page):
             identity, credit]
         page.update()
 
+    # ---------------- 3D — the instruments shelf ----------------
+
+    # Flet 1.0.4's verified URL route: the UrlLauncher service
+    # (page.launch_url does not exist in the pinned version, and
+    # there is no WebView) — registered once, used per tap.
+    url_launcher = ft.UrlLauncher()
+    try:
+        page.services.append(url_launcher)
+    except Exception:
+        pass
+    stage_status = ft.Text("", size=12, color=DIM)
+
+    def on_open_instrument(inst):
+        def _open(_e):
+            port = ensure_instrument_server()
+            if port is None:
+                stage_status.value = (
+                    "The instruments folder isn't reachable in "
+                    "this edition — nothing to open.")
+                page.update()
+                return
+            url = f"http://127.0.0.1:{port}/{inst['file']}"
+            state["instrument_url"] = url
+            try:
+                page.run_task(url_launcher.launch_url, url)
+                stage_status.value = (f"Opening {inst['name']} "
+                                      f"full-screen…")
+            except Exception as ex:
+                stage_status.value = (
+                    f"Couldn't open {inst['name']}: "
+                    f"{type(ex).__name__}: {ex}")
+            page.update()
+        return _open
+
+    def render_stage():
+        stage_view.controls = [screen_title(
+            "Instruments",
+            "The lab's instruments — snapshots and live models, "
+            "each labelled as what it is.")]
+        n, _total = instruments_bundled()
+        if n == 0:
+            stage_view.controls.append(empty_full(
+                ft.Icons.VIEW_IN_AR,
+                "Instruments not bundled in this edition",
+                "This build shipped without the instruments "
+                "folder, so the shelf prints its state instead "
+                "of a dead list. The full BetFi 10 build "
+                "carries all 11."))
+            page.update()
+            return
+        stage_view.controls.append(stage_status)
+        try:
+            # lazy warm-up: the loopback server starts on a
+            # worker thread the first time the shelf opens, so
+            # the first tap finds its port already bound.
+            page.run_thread(ensure_instrument_server)
+        except Exception:
+            pass
+        for family in INSTRUMENT_FAMILIES:
+            members = [i for i in INSTRUMENTS
+                       if i["family"] == family
+                       and os.path.isfile(os.path.join(
+                           INSTRUMENTS_DIR, i["file"]))]
+            if not members:
+                continue
+            stage_view.controls.append(section_header(
+                family.upper(), ACCENT))
+            for inst in members:
+                stage_view.controls.append(ft.Container(
+                    bgcolor=CARD_BG, border_radius=10, padding=10,
+                    content=ft.Column(spacing=4, controls=[
+                        ft.Row(
+                            spacing=8, alignment=ft
+                            .MainAxisAlignment.SPACE_BETWEEN,
+                            controls=[
+                                ft.Text(inst["name"], size=14,
+                                        color=INK, weight=ft
+                                        .FontWeight.BOLD),
+                                ft.Button(
+                                    "Open",
+                                    on_click=on_open_instrument(
+                                        inst))]),
+                        ft.Text(inst["note"], size=11, color=DIM,
+                                height=1.3),
+                        ft.Text(inst["chip"], size=10,
+                                color=FAINT)])))
+            if family == "Stocks":
+                stage_view.controls.append(ft.Text(
+                    STOCKS_SAMPLE_NOTE, size=10, color=FAINT,
+                    height=1.35))
+        page.update()
+
     # ---------------- navigation ----------------
 
     def show(name: str):
@@ -2376,20 +3041,16 @@ def main(page: ft.Page):
         if page.navigation_bar is not None:
             page.navigation_bar.selected_index = \
                 TOP_VIEWS.index(name) if name in TOP_VIEWS else 4
-        if name == "cards":
-            render_cards()
-        elif name == "parse":
-            render_parse()
-        elif name == "parlay":
-            render_parlay()
-        elif name == "solver":
-            render_solver()
+        if name == "board":
+            show_board_segment(state["board_seg"])
+        elif name == "slip":
+            show_slip_tool(state["slip_seg"])
+        elif name == "lab":
+            render_lab()
+        elif name == "stage":
+            render_stage()
         elif name == "more":
             render_more()
-        elif name == "betfi":
-            render_betfi()
-        elif name == "record":
-            render_record()
         elif name == "terms":
             render_terms()
         elif name == "equations":
@@ -2412,8 +3073,6 @@ def main(page: ft.Page):
         stamp_ctrl,
     ])
     cards_view.controls = [
-        screen_title("Cards",
-                     "Every checked market on the current pull."),
         ft.Row(spacing=8, controls=[
             ft.Button("Pull Menu", on_click=on_pull),
             ft.Button("Price Slate", on_click=on_price)]),
@@ -2432,9 +3091,19 @@ def main(page: ft.Page):
             on_change=on_search),
         cards_toggles,
         cards_list]
-    page.add(header, cards_view, parse_view, parlay_view,
-             solver_view, more_view, betfi_view, record_view,
-             terms_view, equations_view, dev_view)
+    board_view.controls = [
+        screen_title("Board",
+                     "Every checked market on the current pull."),
+        board_seg_ctrl,
+        cards_view, betfi_view]
+    slip_view.controls = [
+        screen_title("Slip", "The ticket tools — read a slip, "
+                             "build a parlay, size a stake."),
+        slip_seg_ctrl,
+        parse_view, parlay_view, solver_view]
+    page.add(header, board_view, slip_view, record_view,
+             stage_view, more_view, terms_view, equations_view,
+             dev_view)
 
     nav_bar_cls = getattr(ft, "NavigationBar", None)
     nav_dest_cls = (getattr(ft, "NavigationDestination", None)
@@ -2444,33 +3113,34 @@ def main(page: ft.Page):
             selected_index=0, on_change=on_nav,
             destinations=[
                 nav_dest_cls(icon=ft.Icons.VIEW_AGENDA,
-                             label="Cards"),
-                nav_dest_cls(icon=ft.Icons.SEARCH, label="Parse"),
+                             label="Board"),
                 nav_dest_cls(icon=ft.Icons.RECEIPT_LONG,
-                             label="Parlay"),
-                nav_dest_cls(icon=ft.Icons.CALCULATE,
-                             label="Solver"),
+                             label="Slip"),
+                nav_dest_cls(icon=ft.Icons.LIST, label="Lab"),
+                nav_dest_cls(icon=ft.Icons.VIEW_IN_AR,
+                             label="3D"),
                 nav_dest_cls(icon=ft.Icons.MORE_HORIZ,
                              label="More"),
             ])
     else:  # equivalent switch: a labelled button row
         page.add(ft.Row(spacing=8, wrap=True, controls=[
-            ft.OutlinedButton("Cards",
-                              on_click=lambda _e: show("cards")),
-            ft.OutlinedButton("Parse",
-                              on_click=lambda _e: show("parse")),
-            ft.OutlinedButton("Parlay",
-                              on_click=lambda _e: show("parlay")),
-            ft.OutlinedButton("Solver",
-                              on_click=lambda _e: show("solver")),
+            ft.OutlinedButton("Board",
+                              on_click=lambda _e: show("board")),
+            ft.OutlinedButton("Slip",
+                              on_click=lambda _e: show("slip")),
+            ft.OutlinedButton("Lab",
+                              on_click=lambda _e: show("lab")),
+            ft.OutlinedButton("3D",
+                              on_click=lambda _e: show("stage")),
             ft.OutlinedButton("More",
                               on_click=lambda _e: show("more")),
         ]))
 
-    # offline behaviour: open on the last pull, stamped with its
-    # original pull time (the engine's stamp calls it STALE past
-    # its own window) — stale is labelled stale, never freshened.
-    render_cards()
+    # offline behaviour: open on the Board on the last pull,
+    # stamped with its original pull time (the engine's stamp
+    # calls it STALE past its own window) — stale is labelled
+    # stale, never freshened.
+    show("board")
     page.update()
 
 

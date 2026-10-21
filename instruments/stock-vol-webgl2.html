@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volatility Space — Raw WebGL2 Rebuild</title>
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#060B1A; overflow:hidden;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:#E2E8F0; }
+  #gl { position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:grab; }
+  #gl:active { cursor:grabbing; }
+  .panel { position:absolute; background:rgba(11,19,41,.82); border:1px solid #1E293B;
+    border-radius:10px; padding:10px 12px; backdrop-filter: blur(6px); }
+  #title { top:12px; left:12px; max-width:340px; }
+  #title h1 { margin:0 0 4px; font-size:16px; letter-spacing:.02em; }
+  #title p { margin:0; font-size:11.5px; line-height:1.45; color:#94A3B8; }
+  #title .raw { color:#38BDF8; font-weight:600; }
+  #legend { top:12px; right:12px; width:228px; }
+  #legend h2 { margin:0 0 6px; font-size:11px; letter-spacing:.12em; color:#94A3B8; }
+  .chip { display:flex; align-items:center; gap:7px; width:100%; background:none; border:none;
+    color:#E2E8F0; font-size:12.5px; padding:3px 2px; cursor:pointer; text-align:left; }
+  .chip .sw { width:10px; height:10px; border-radius:3px; flex:none; }
+  .chip .j { margin-left:auto; color:#94A3B8; font-size:11px; font-variant-numeric:tabular-nums; }
+  .chip.off { opacity:.32; }
+  #rules { left:12px; bottom:12px; max-width:520px; font-size:11.5px; line-height:1.5; color:#94A3B8; }
+  #rules b { color:#E2E8F0; }
+  #toggles { right:12px; bottom:12px; display:flex; gap:8px; }
+  #toggles button { background:#111C38; color:#E2E8F0; border:1px solid #1E293B; border-radius:8px;
+    font-size:12px; padding:7px 11px; cursor:pointer; }
+  #toggles button.on { border-color:#38BDF8; color:#38BDF8; }
+  .lbl { position:absolute; transform:translate(-50%,-130%); font-size:12px; font-weight:700;
+    letter-spacing:.04em; pointer-events:none; text-shadow:0 1px 6px #060B1A, 0 0 2px #060B1A; white-space:nowrap; }
+  .axis { position:absolute; transform:translate(-50%,-50%); font-size:10.5px; letter-spacing:.14em;
+    color:#64748B; pointer-events:none; white-space:nowrap; }
+  #fallback { position:absolute; inset:0; display:none; place-items:center; text-align:center; padding:24px; }
+  @media (max-width: 760px) { #rules { display:none; } #legend { width:196px; } }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div class="panel" id="title">
+  <h1>VOLATILITY SPACE</h1>
+  <p>Six names, 44 sessions (Aug 17 – Oct 2026). Axes: <b>time →</b>,
+     <b>cumulative return % ↑</b>, <b>10-day realized volatility</b> as the third spatial axis.
+     Ribbon width ∝ daily volume share. Particle cloud: count ∝ volume, spread ∝ daily range —
+     the cloud's mass is the indecision, <b>J = volume-share × realized volatility</b>.</p>
+  <p style="margin-top:6px"><span class="raw">RAW WebGL 2.0</span> — no Three.js, no libraries.
+     Hand-written GLSL ES 3.00, VAO/VBO/IBO ribbons expanded in the vertex shader,
+     point-sprite particles, orbit camera from hand-rolled matrix math. Drag to orbit, scroll to zoom.</p>
+</div>
+
+<div class="panel" id="legend">
+  <h2>INDECISION J — H1 → H2</h2>
+  <div id="chips"></div>
+</div>
+
+<div class="panel" id="rules">
+  <b>Rule I — Climactic Inflection:</b> volume climaxes at inflections (MSTR's max-volume day printed one day before its peak).<br>
+  <b>Rule II — Asymmetric Realization:</b> winners' high-volume days carry |moves| 5–9× their average day.<br>
+  <b>Rule III — Participation Decay, corrected:</b> thickness is participation, not indecision. J is.
+  CRM decided (×0.26). BAC and META <i>reopened</i> (×1.54, ×1.90) — their runs are still contested.
+</div>
+
+<div id="toggles">
+  <button id="btnParticles" class="on">Particles</button>
+  <button id="btnOrbit" class="on">Auto-orbit</button>
+</div>
+
+<div id="fallback"><div>
+  <h2>WebGL 2.0 not available</h2>
+  <p style="color:#94A3B8">This instrument is built on the raw WebGL2 API only — no fallback renderer, by design.</p>
+</div></div>
+
+<script>
+"use strict";
+/* ================================================================
+   RAW WEBGL2 — no engine, no libraries.
+   Pipeline: CPU builds ribbon centerlines + tangents once into
+   VBOs; the vertex shader expands each ribbon camera-facing on the
+   GPU. Particles are GL_POINTS with a soft-disc fragment shader.
+   All matrix math below is hand-rolled.
+   ================================================================ */
+const DATA = {"MSTR": [{"d": "2026-08-17", "cum": 0.0, "vol": 47.1, "v": 0.372, "rng": 5.62}, {"d": "2026-08-18", "cum": -5.28, "vol": 52.4, "v": 0.309, "rng": 5.63}, {"d": "2026-08-19", "cum": 6.73, "vol": 81.9, "v": 0.899, "rng": 12.09}, {"d": "2026-08-20", "cum": 15.06, "vol": 87.7, "v": 0.864, "rng": 4.8}, {"d": "2026-08-21", "cum": 22.08, "vol": 90.3, "v": 0.848, "rng": 5.12}, {"d": "2026-08-24", "cum": 25.54, "vol": 86.8, "v": 0.755, "rng": 6.95}, {"d": "2026-08-25", "cum": 29.84, "vol": 84.5, "v": 0.58, "rng": 8.05}, {"d": "2026-08-26", "cum": 26.12, "vol": 87.0, "v": 0.312, "rng": 3.79}, {"d": "2026-08-27", "cum": 40.66, "vol": 96.4, "v": 0.812, "rng": 11.14}, {"d": "2026-08-28", "cum": 30.33, "vol": 105.0, "v": 0.572, "rng": 7.56}, {"d": "2026-08-31", "cum": 36.1, "vol": 104.8, "v": 0.443, "rng": 5.75}, {"d": "2026-09-01", "cum": 27.85, "vol": 106.7, "v": 0.408, "rng": 5.05}, {"d": "2026-09-02", "cum": 26.12, "vol": 95.9, "v": 0.272, "rng": 2.66}, {"d": "2026-09-03", "cum": 48.26, "vol": 118.0, "v": 0.828, "rng": 11.97}, {"d": "2026-09-04", "cum": 46.19, "vol": 117.8, "v": 0.497, "rng": 5.13}, {"d": "2026-09-08", "cum": 39.76, "vol": 121.7, "v": 0.364, "rng": 2.88}, {"d": "2026-09-09", "cum": 35.85, "vol": 122.4, "v": 0.318, "rng": 7.08}, {"d": "2026-09-10", "cum": 31.61, "vol": 122.6, "v": 0.266, "rng": 3.87}, {"d": "2026-09-11", "cum": 34.08, "vol": 108.6, "v": 0.356, "rng": 6.57}, {"d": "2026-09-14", "cum": 40.19, "vol": 103.1, "v": 0.342, "rng": 4.95}, {"d": "2026-09-15", "cum": 32.68, "vol": 105.3, "v": 0.423, "rng": 6.6}, {"d": "2026-09-16", "cum": 29.18, "vol": 101.0, "v": 0.407, "rng": 5.62}, {"d": "2026-09-17", "cum": 35.39, "vol": 103.1, "v": 0.34, "rng": 4.26}, {"d": "2026-09-18", "cum": 57.58, "vol": 99.0, "v": 1.0, "rng": 11.59}, {"d": "2026-09-21", "cum": 72.5, "vol": 106.6, "v": 0.766, "rng": 2.99}, {"d": "2026-09-22", "cum": 71.3, "vol": 102.1, "v": 0.436, "rng": 2.35}, {"d": "2026-09-23", "cum": 66.05, "vol": 102.5, "v": 0.388, "rng": 4.72}, {"d": "2026-09-24", "cum": 65.45, "vol": 99.4, "v": 0.31, "rng": 4.24}, {"d": "2026-09-25", "cum": 62.38, "vol": 101.6, "v": 0.339, "rng": 3.83}, {"d": "2026-09-28", "cum": 60.87, "vol": 101.4, "v": 0.299, "rng": 4.24}, {"d": "2026-09-29", "cum": 58.34, "vol": 95.7, "v": 0.3, "rng": 6.01}, {"d": "2026-09-30", "cum": 56.73, "vol": 93.9, "v": 0.321, "rng": 7.52}, {"d": "2026-10-01", "cum": 64.31, "vol": 94.0, "v": 0.354, "rng": 5.58}, {"d": "2026-10-02", "cum": 63.81, "vol": 58.2, "v": 0.502, "rng": 8.92}, {"d": "2026-10-05", "cum": 68.34, "vol": 36.5, "v": 0.333, "rng": 3.7}, {"d": "2026-10-06", "cum": 68.46, "vol": 36.4, "v": 0.32, "rng": 3.37}, {"d": "2026-10-07", "cum": 57.01, "vol": 48.6, "v": 0.396, "rng": 4.0}, {"d": "2026-10-08", "cum": 55.07, "vol": 48.7, "v": 0.434, "rng": 4.13}, {"d": "2026-10-09", "cum": 58.01, "vol": 49.7, "v": 0.293, "rng": 4.93}, {"d": "2026-10-12", "cum": 56.31, "vol": 49.7, "v": 0.241, "rng": 4.95}, {"d": "2026-10-13", "cum": 55.79, "vol": 49.2, "v": 0.226, "rng": 3.46}, {"d": "2026-10-14", "cum": 46.64, "vol": 57.5, "v": 0.381, "rng": 7.29}, {"d": "2026-10-15", "cum": 54.88, "vol": 59.5, "v": 0.408, "rng": 10.87}, {"d": "2026-10-16", "cum": 40.08, "vol": 76.0, "v": 0.582, "rng": 9.3}], "CRM": [{"d": "2026-08-17", "cum": 0.0, "vol": 44.1, "v": 0.259, "rng": 2.63}, {"d": "2026-08-18", "cum": 2.71, "vol": 44.0, "v": 0.255, "rng": 3.15}, {"d": "2026-08-19", "cum": 7.92, "vol": 49.9, "v": 0.321, "rng": 6.67}, {"d": "2026-08-20", "cum": 7.57, "vol": 45.4, "v": 0.207, "rng": 2.38}, {"d": "2026-08-21", "cum": 9.53, "vol": 44.1, "v": 0.174, "rng": 3.03}, {"d": "2026-08-24", "cum": 9.47, "vol": 43.3, "v": 0.173, "rng": 2.76}, {"d": "2026-08-25", "cum": 7.71, "vol": 44.6, "v": 0.182, "rng": 2.7}, {"d": "2026-08-26", "cum": 7.67, "vol": 42.5, "v": 0.268, "rng": 3.64}, {"d": "2026-08-27", "cum": 31.98, "vol": 107.9, "v": 1.0, "rng": 9.69}, {"d": "2026-08-28", "cum": 34.05, "vol": 104.7, "v": 0.619, "rng": 5.68}, {"d": "2026-08-31", "cum": 34.86, "vol": 101.2, "v": 0.405, "rng": 3.06}, {"d": "2026-09-01", "cum": 35.16, "vol": 102.1, "v": 0.286, "rng": 3.13}, {"d": "2026-09-02", "cum": 34.54, "vol": 102.5, "v": 0.259, "rng": 4.26}, {"d": "2026-09-03", "cum": 38.47, "vol": 101.5, "v": 0.289, "rng": 2.52}, {"d": "2026-09-04", "cum": 35.74, "vol": 104.0, "v": 0.189, "rng": 2.23}, {"d": "2026-09-08", "cum": 30.45, "vol": 108.1, "v": 0.315, "rng": 3.26}, {"d": "2026-09-09", "cum": 27.85, "vol": 108.5, "v": 0.214, "rng": 4.65}, {"d": "2026-09-10", "cum": 27.25, "vol": 108.7, "v": 0.193, "rng": 2.78}, {"d": "2026-09-11", "cum": 29.72, "vol": 32.9, "v": 0.175, "rng": 3.44}, {"d": "2026-09-14", "cum": 35.85, "vol": 40.2, "v": 0.234, "rng": 3.35}, {"d": "2026-09-15", "cum": 33.87, "vol": 40.9, "v": 0.207, "rng": 2.84}, {"d": "2026-09-16", "cum": 31.19, "vol": 42.0, "v": 0.17, "rng": 2.71}, {"d": "2026-09-17", "cum": 27.17, "vol": 44.3, "v": 0.299, "rng": 2.26}, {"d": "2026-09-18", "cum": 24.59, "vol": 40.3, "v": 0.396, "rng": 3.24}, {"d": "2026-09-21", "cum": 23.8, "vol": 40.0, "v": 0.191, "rng": 2.15}, {"d": "2026-09-22", "cum": 22.16, "vol": 36.4, "v": 0.246, "rng": 5.41}, {"d": "2026-09-23", "cum": 24.41, "vol": 37.5, "v": 0.223, "rng": 2.9}, {"d": "2026-09-24", "cum": 24.74, "vol": 37.6, "v": 0.199, "rng": 2.14}, {"d": "2026-09-25", "cum": 22.54, "vol": 36.3, "v": 0.157, "rng": 2.56}, {"d": "2026-09-28", "cum": 19.01, "vol": 23.6, "v": 0.186, "rng": 4.13}, {"d": "2026-09-29", "cum": 17.98, "vol": 23.7, "v": 0.243, "rng": 2.46}, {"d": "2026-09-30", "cum": 20.21, "vol": 27.9, "v": 0.202, "rng": 4.06}, {"d": "2026-10-01", "cum": 23.94, "vol": 31.1, "v": 0.172, "rng": 3.68}, {"d": "2026-10-02", "cum": 22.89, "vol": 29.7, "v": 0.142, "rng": 2.48}, {"d": "2026-10-05", "cum": 20.33, "vol": 31.2, "v": 0.115, "rng": 3.14}, {"d": "2026-10-06", "cum": 17.81, "vol": 32.2, "v": 0.131, "rng": 4.49}, {"d": "2026-10-07", "cum": 17.59, "vol": 29.9, "v": 0.093, "rng": 2.21}, {"d": "2026-10-08", "cum": 19.29, "vol": 31.3, "v": 0.111, "rng": 3.36}, {"d": "2026-10-09", "cum": 19.98, "vol": 30.7, "v": 0.084, "rng": 1.77}, {"d": "2026-10-12", "cum": 22.49, "vol": 28.5, "v": 0.16, "rng": 4.03}, {"d": "2026-10-13", "cum": 24.63, "vol": 28.6, "v": 0.163, "rng": 4.35}, {"d": "2026-10-14", "cum": 23.55, "vol": 28.3, "v": 0.111, "rng": 2.76}, {"d": "2026-10-15", "cum": 29.2, "vol": 32.8, "v": 0.157, "rng": 3.71}, {"d": "2026-10-16", "cum": 26.04, "vol": 35.4, "v": 0.15, "rng": 6.1}], "META": [{"d": "2026-08-17", "cum": 0.0, "vol": 30.3, "v": 0.354, "rng": 4.48}, {"d": "2026-08-18", "cum": -4.45, "vol": 36.9, "v": 0.556, "rng": 3.21}, {"d": "2026-08-19", "cum": -4.03, "vol": 37.1, "v": 0.348, "rng": 3.08}, {"d": "2026-08-20", "cum": -4.07, "vol": 37.0, "v": 0.285, "rng": 1.96}, {"d": "2026-08-21", "cum": -3.35, "vol": 37.3, "v": 0.284, "rng": 1.93}, {"d": "2026-08-24", "cum": -1.75, "vol": 38.8, "v": 0.267, "rng": 2.7}, {"d": "2026-08-25", "cum": 0.19, "vol": 40.5, "v": 0.201, "rng": 1.65}, {"d": "2026-08-26", "cum": 1.26, "vol": 37.5, "v": 0.645, "rng": 5.46}, {"d": "2026-08-27", "cum": 0.37, "vol": 34.3, "v": 0.312, "rng": 3.64}, {"d": "2026-08-28", "cum": 1.59, "vol": 35.1, "v": 0.329, "rng": 3.15}, {"d": "2026-08-31", "cum": 0.59, "vol": 30.0, "v": 0.275, "rng": 1.67}, {"d": "2026-09-01", "cum": 1.68, "vol": 15.8, "v": 0.324, "rng": 4.99}, {"d": "2026-09-02", "cum": 4.2, "vol": 18.2, "v": 0.34, "rng": 3.94}, {"d": "2026-09-03", "cum": 7.33, "vol": 20.3, "v": 0.405, "rng": 2.47}, {"d": "2026-09-04", "cum": 8.4, "vol": 20.2, "v": 0.328, "rng": 1.98}, {"d": "2026-09-08", "cum": 7.82, "vol": 21.6, "v": 0.388, "rng": 2.45}, {"d": "2026-09-09", "cum": 14.89, "vol": 34.7, "v": 0.737, "rng": 2.95}, {"d": "2026-09-10", "cum": 13.25, "vol": 37.5, "v": 0.442, "rng": 3.31}, {"d": "2026-09-11", "cum": 13.9, "vol": 36.0, "v": 0.347, "rng": 2.78}, {"d": "2026-09-14", "cum": 16.98, "vol": 36.7, "v": 0.397, "rng": 2.91}, {"d": "2026-09-15", "cum": 17.8, "vol": 34.5, "v": 0.4, "rng": 3.38}, {"d": "2026-09-16", "cum": 18.34, "vol": 34.9, "v": 0.353, "rng": 1.99}, {"d": "2026-09-17", "cum": 19.92, "vol": 34.5, "v": 0.327, "rng": 2.37}, {"d": "2026-09-18", "cum": 17.01, "vol": 38.2, "v": 0.566, "rng": 4.41}, {"d": "2026-09-21", "cum": 30.28, "vol": 62.7, "v": 1.0, "rng": 9.9}, {"d": "2026-09-22", "cum": 29.46, "vol": 62.8, "v": 0.577, "rng": 3.7}, {"d": "2026-09-23", "cum": 30.78, "vol": 57.5, "v": 0.633, "rng": 3.28}, {"d": "2026-09-24", "cum": 36.67, "vol": 57.2, "v": 0.714, "rng": 4.73}, {"d": "2026-09-25", "cum": 32.11, "vol": 62.9, "v": 0.53, "rng": 3.06}, {"d": "2026-09-28", "cum": 25.77, "vol": 70.0, "v": 0.574, "rng": 5.22}, {"d": "2026-09-29", "cum": 29.85, "vol": 71.1, "v": 0.484, "rng": 3.43}, {"d": "2026-09-30", "cum": 27.45, "vol": 72.5, "v": 0.396, "rng": 2.34}, {"d": "2026-10-01", "cum": 27.59, "vol": 72.5, "v": 0.255, "rng": 1.98}, {"d": "2026-10-02", "cum": 27.96, "vol": 70.5, "v": 0.266, "rng": 2.11}, {"d": "2026-10-05", "cum": 30.39, "vol": 45.4, "v": 0.312, "rng": 2.64}, {"d": "2026-10-06", "cum": 29.86, "vol": 45.4, "v": 0.258, "rng": 1.48}, {"d": "2026-10-07", "cum": 26.77, "vol": 46.5, "v": 0.272, "rng": 2.51}, {"d": "2026-10-08", "cum": 26.7, "vol": 38.6, "v": 0.329, "rng": 1.84}, {"d": "2026-10-09", "cum": 26.31, "vol": 35.7, "v": 0.259, "rng": 1.65}, {"d": "2026-10-12", "cum": 30.58, "vol": 30.4, "v": 0.511, "rng": 3.31}, {"d": "2026-10-13", "cum": 34.01, "vol": 29.0, "v": 0.466, "rng": 4.78}, {"d": "2026-10-14", "cum": 29.63, "vol": 32.7, "v": 0.333, "rng": 3.69}, {"d": "2026-10-15", "cum": 29.48, "vol": 32.8, "v": 0.347, "rng": 3.85}, {"d": "2026-10-16", "cum": 24.67, "vol": 38.2, "v": 0.423, "rng": 5.04}], "AVGO": [{"d": "2026-08-17", "cum": 0.0, "vol": 49.0, "v": 0.333, "rng": 2.05}, {"d": "2026-08-18", "cum": -3.17, "vol": 35.9, "v": 0.38, "rng": 2.31}, {"d": "2026-08-19", "cum": -7.63, "vol": 39.9, "v": 0.583, "rng": 4.5}, {"d": "2026-08-20", "cum": -7.24, "vol": 39.8, "v": 0.328, "rng": 1.34}, {"d": "2026-08-21", "cum": -6.11, "vol": 38.7, "v": 0.316, "rng": 2.74}, {"d": "2026-08-24", "cum": -8.58, "vol": 39.1, "v": 0.311, "rng": 2.08}, {"d": "2026-08-25", "cum": -9.09, "vol": 39.5, "v": 0.299, "rng": 2.15}, {"d": "2026-08-26", "cum": -9.39, "vol": 39.2, "v": 0.319, "rng": 2.65}, {"d": "2026-08-27", "cum": -5.32, "vol": 48.7, "v": 0.354, "rng": 2.99}, {"d": "2026-08-28", "cum": -6.02, "vol": 40.2, "v": 0.275, "rng": 3.05}, {"d": "2026-08-31", "cum": -5.63, "vol": 40.4, "v": 0.364, "rng": 1.74}, {"d": "2026-09-01", "cum": -5.8, "vol": 37.7, "v": 0.32, "rng": 2.54}, {"d": "2026-09-02", "cum": -6.42, "vol": 28.7, "v": 0.645, "rng": 1.75}, {"d": "2026-09-03", "cum": -8.99, "vol": 32.1, "v": 1.0, "rng": 4.78}, {"d": "2026-09-04", "cum": -8.8, "vol": 31.3, "v": 0.546, "rng": 1.8}, {"d": "2026-09-08", "cum": -6.08, "vol": 32.0, "v": 0.506, "rng": 2.7}, {"d": "2026-09-09", "cum": -7.15, "vol": 32.5, "v": 0.43, "rng": 2.4}, {"d": "2026-09-10", "cum": -8.05, "vol": 33.0, "v": 0.398, "rng": 2.08}, {"d": "2026-09-11", "cum": -7.76, "vol": 23.2, "v": 0.351, "rng": 1.42}, {"d": "2026-09-14", "cum": -12.16, "vol": 32.9, "v": 0.542, "rng": 1.84}, {"d": "2026-09-15", "cum": -13.55, "vol": 32.6, "v": 0.411, "rng": 2.76}, {"d": "2026-09-16", "cum": -13.49, "vol": 32.8, "v": 0.384, "rng": 2.46}, {"d": "2026-09-17", "cum": -11.5, "vol": 36.4, "v": 0.405, "rng": 1.62}, {"d": "2026-09-18", "cum": -8.87, "vol": 37.8, "v": 0.731, "rng": 3.34}, {"d": "2026-09-21", "cum": -7.59, "vol": 38.5, "v": 0.44, "rng": 2.89}, {"d": "2026-09-22", "cum": -7.11, "vol": 35.3, "v": 0.341, "rng": 1.99}, {"d": "2026-09-23", "cum": -9.54, "vol": 37.3, "v": 0.388, "rng": 2.5}, {"d": "2026-09-24", "cum": -10.72, "vol": 37.6, "v": 0.347, "rng": 1.3}, {"d": "2026-09-25", "cum": -10.1, "vol": 37.8, "v": 0.27, "rng": 1.42}, {"d": "2026-09-28", "cum": -10.92, "vol": 28.2, "v": 0.357, "rng": 2.44}, {"d": "2026-09-29", "cum": -9.51, "vol": 27.2, "v": 0.319, "rng": 2.21}, {"d": "2026-09-30", "cum": -10.51, "vol": 28.3, "v": 0.328, "rng": 2.05}, {"d": "2026-10-01", "cum": -12.43, "vol": 28.6, "v": 0.408, "rng": 3.25}, {"d": "2026-10-02", "cum": -9.5, "vol": 29.7, "v": 0.409, "rng": 2.8}, {"d": "2026-10-05", "cum": -7.62, "vol": 30.8, "v": 0.357, "rng": 2.13}, {"d": "2026-10-06", "cum": -4.24, "vol": 35.7, "v": 0.512, "rng": 4.48}, {"d": "2026-10-07", "cum": -4.06, "vol": 31.8, "v": 0.3, "rng": 2.08}, {"d": "2026-10-08", "cum": -8.23, "vol": 39.9, "v": 0.451, "rng": 4.43}, {"d": "2026-10-09", "cum": -7.87, "vol": 39.8, "v": 0.28, "rng": 1.53}, {"d": "2026-10-12", "cum": -9.61, "vol": 40.9, "v": 0.271, "rng": 1.82}, {"d": "2026-10-13", "cum": -8.95, "vol": 40.3, "v": 0.287, "rng": 3.12}, {"d": "2026-10-14", "cum": -11.77, "vol": 43.2, "v": 0.384, "rng": 3.3}, {"d": "2026-10-15", "cum": -12.26, "vol": 41.8, "v": 0.472, "rng": 2.93}, {"d": "2026-10-16", "cum": -16.23, "vol": 43.3, "v": 0.493, "rng": 3.35}], "SMCI": [{"d": "2026-08-17", "cum": 0.0, "vol": 108.6, "v": 0.887, "rng": 4.78}, {"d": "2026-08-18", "cum": -2.27, "vol": 103.2, "v": 0.836, "rng": 5.19}, {"d": "2026-08-19", "cum": -4.44, "vol": 100.1, "v": 0.567, "rng": 5.39}, {"d": "2026-08-20", "cum": -4.65, "vol": 97.1, "v": 0.82, "rng": 8.66}, {"d": "2026-08-21", "cum": -2.72, "vol": 94.9, "v": 0.583, "rng": 3.36}, {"d": "2026-08-24", "cum": -8.12, "vol": 102.2, "v": 0.639, "rng": 7.42}, {"d": "2026-08-25", "cum": 0.47, "vol": 109.3, "v": 0.769, "rng": 6.73}, {"d": "2026-08-26", "cum": -2.32, "vol": 69.0, "v": 0.539, "rng": 2.78}, {"d": "2026-08-27", "cum": 0.47, "vol": 67.3, "v": 0.666, "rng": 5.17}, {"d": "2026-08-28", "cum": -3.13, "vol": 68.4, "v": 0.466, "rng": 5.66}, {"d": "2026-08-31", "cum": -2.61, "vol": 66.1, "v": 0.367, "rng": 3.94}, {"d": "2026-09-01", "cum": -4.1, "vol": 65.5, "v": 0.43, "rng": 3.9}, {"d": "2026-09-02", "cum": -3.34, "vol": 64.6, "v": 0.532, "rng": 6.08}, {"d": "2026-09-03", "cum": -1.07, "vol": 65.5, "v": 0.551, "rng": 6.52}, {"d": "2026-09-04", "cum": 3.42, "vol": 68.3, "v": 0.858, "rng": 7.55}, {"d": "2026-09-08", "cum": 5.17, "vol": 58.5, "v": 0.678, "rng": 4.62}, {"d": "2026-09-09", "cum": 1.7, "vol": 44.8, "v": 0.499, "rng": 3.44}, {"d": "2026-09-10", "cum": -2.35, "vol": 47.4, "v": 0.428, "rng": 5.06}, {"d": "2026-09-11", "cum": 4.75, "vol": 58.0, "v": 0.744, "rng": 7.21}, {"d": "2026-09-14", "cum": -4.02, "vol": 71.9, "v": 0.638, "rng": 4.68}, {"d": "2026-09-15", "cum": -6.9, "vol": 73.3, "v": 0.427, "rng": 5.56}, {"d": "2026-09-16", "cum": -3.74, "vol": 75.3, "v": 0.502, "rng": 4.78}, {"d": "2026-09-17", "cum": 5.41, "vol": 88.0, "v": 1.0, "rng": 7.91}, {"d": "2026-09-18", "cum": 2.12, "vol": 89.8, "v": 0.769, "rng": 5.35}, {"d": "2026-09-21", "cum": 7.63, "vol": 90.9, "v": 0.771, "rng": 4.17}, {"d": "2026-09-22", "cum": 8.52, "vol": 90.7, "v": 0.484, "rng": 3.11}, {"d": "2026-09-23", "cum": 8.25, "vol": 88.5, "v": 0.654, "rng": 4.61}, {"d": "2026-09-24", "cum": 8.44, "vol": 84.7, "v": 0.558, "rng": 5.85}, {"d": "2026-09-25", "cum": 13.01, "vol": 80.1, "v": 0.789, "rng": 4.3}, {"d": "2026-09-28", "cum": 9.14, "vol": 65.6, "v": 0.472, "rng": 5.03}, {"d": "2026-09-29", "cum": 7.16, "vol": 63.7, "v": 0.404, "rng": 4.46}, {"d": "2026-09-30", "cum": 7.29, "vol": 63.0, "v": 0.511, "rng": 5.38}, {"d": "2026-10-01", "cum": 9.51, "vol": 45.4, "v": 0.424, "rng": 4.51}, {"d": "2026-10-02", "cum": 14.13, "vol": 44.2, "v": 0.712, "rng": 5.29}, {"d": "2026-10-05", "cum": 12.83, "vol": 38.8, "v": 0.354, "rng": 2.89}, {"d": "2026-10-06", "cum": 13.53, "vol": 38.7, "v": 0.445, "rng": 3.96}, {"d": "2026-10-07", "cum": 17.4, "vol": 41.1, "v": 0.648, "rng": 7.37}, {"d": "2026-10-08", "cum": 11.73, "vol": 50.3, "v": 0.621, "rng": 5.75}, {"d": "2026-10-09", "cum": 9.35, "vol": 46.7, "v": 0.437, "rng": 6.74}, {"d": "2026-10-12", "cum": 4.44, "vol": 49.0, "v": 0.408, "rng": 5.35}, {"d": "2026-10-13", "cum": 2.06, "vol": 49.5, "v": 0.403, "rng": 2.56}, {"d": "2026-10-14", "cum": -6.53, "vol": 64.4, "v": 0.532, "rng": 6.68}, {"d": "2026-10-15", "cum": -8.33, "vol": 61.5, "v": 0.603, "rng": 7.81}, {"d": "2026-10-16", "cum": -17.37, "vol": 65.5, "v": 0.703, "rng": 10.09}], "BAC": [{"d": "2026-08-17", "cum": 0.0, "vol": 12.8, "v": 0.232, "rng": 2.11}, {"d": "2026-08-18", "cum": 0.53, "vol": 12.6, "v": 0.244, "rng": 1.29}, {"d": "2026-08-19", "cum": -1.13, "vol": 15.5, "v": 0.204, "rng": 2.3}, {"d": "2026-08-20", "cum": -3.18, "vol": 18.7, "v": 0.296, "rng": 2.31}, {"d": "2026-08-21", "cum": -3.44, "vol": 18.5, "v": 0.283, "rng": 1.62}, {"d": "2026-08-24", "cum": -2.44, "vol": 18.4, "v": 0.232, "rng": 1.99}, {"d": "2026-08-25", "cum": -2.29, "vol": 18.4, "v": 0.198, "rng": 1.41}, {"d": "2026-08-26", "cum": -2.6, "vol": 16.4, "v": 0.191, "rng": 1.03}, {"d": "2026-08-27", "cum": -4.26, "vol": 17.3, "v": 0.419, "rng": 1.5}, {"d": "2026-08-28", "cum": -2.46, "vol": 20.4, "v": 0.284, "rng": 1.93}, {"d": "2026-08-31", "cum": -3.05, "vol": 20.2, "v": 0.368, "rng": 0.95}, {"d": "2026-09-01", "cum": -2.97, "vol": 19.8, "v": 0.212, "rng": 1.79}, {"d": "2026-09-02", "cum": -2.02, "vol": 19.3, "v": 0.241, "rng": 2.57}, {"d": "2026-09-03", "cum": -1.33, "vol": 16.0, "v": 0.254, "rng": 1.51}, {"d": "2026-09-04", "cum": -1.89, "vol": 16.3, "v": 0.225, "rng": 1.53}, {"d": "2026-09-08", "cum": -2.35, "vol": 15.8, "v": 0.24, "rng": 1.14}, {"d": "2026-09-09", "cum": -1.91, "vol": 15.9, "v": 0.305, "rng": 2.81}, {"d": "2026-09-10", "cum": -2.08, "vol": 15.9, "v": 0.249, "rng": 1.26}, {"d": "2026-09-11", "cum": -1.88, "vol": 12.4, "v": 0.245, "rng": 2.31}, {"d": "2026-09-14", "cum": -6.92, "vol": 28.1, "v": 0.549, "rng": 5.92}, {"d": "2026-09-15", "cum": -6.84, "vol": 28.2, "v": 0.431, "rng": 1.93}, {"d": "2026-09-16", "cum": -9.38, "vol": 30.4, "v": 0.425, "rng": 3.82}, {"d": "2026-09-17", "cum": -8.94, "vol": 29.7, "v": 0.311, "rng": 1.86}, {"d": "2026-09-18", "cum": -9.64, "vol": 28.7, "v": 0.445, "rng": 1.23}, {"d": "2026-09-21", "cum": -9.28, "vol": 29.4, "v": 0.282, "rng": 1.4}, {"d": "2026-09-22", "cum": -12.04, "vol": 31.4, "v": 0.382, "rng": 3.65}, {"d": "2026-09-23", "cum": -12.35, "vol": 30.6, "v": 0.311, "rng": 1.32}, {"d": "2026-09-24", "cum": -12.3, "vol": 30.8, "v": 0.347, "rng": 1.23}, {"d": "2026-09-25", "cum": -11.25, "vol": 32.4, "v": 0.242, "rng": 1.55}, {"d": "2026-09-28", "cum": -13.18, "vol": 23.4, "v": 0.247, "rng": 2.34}, {"d": "2026-09-29", "cum": -13.98, "vol": 23.0, "v": 0.268, "rng": 1.49}, {"d": "2026-09-30", "cum": -14.81, "vol": 20.4, "v": 0.288, "rng": 1.32}, {"d": "2026-10-01", "cum": -15.9, "vol": 19.6, "v": 0.509, "rng": 2.7}, {"d": "2026-10-02", "cum": -15.87, "vol": 20.1, "v": 0.297, "rng": 1.28}, {"d": "2026-10-05", "cum": -15.48, "vol": 20.2, "v": 0.297, "rng": 1.2}, {"d": "2026-10-06", "cum": -15.34, "vol": 15.5, "v": 0.215, "rng": 1.07}, {"d": "2026-10-07", "cum": -16.23, "vol": 15.9, "v": 0.262, "rng": 1.44}, {"d": "2026-10-08", "cum": -16.09, "vol": 16.0, "v": 0.507, "rng": 2.56}, {"d": "2026-10-09", "cum": -14.98, "vol": 16.4, "v": 0.244, "rng": 1.82}, {"d": "2026-10-12", "cum": -14.57, "vol": 13.6, "v": 0.203, "rng": 1.26}, {"d": "2026-10-13", "cum": -15.54, "vol": 13.9, "v": 0.382, "rng": 2.24}, {"d": "2026-10-14", "cum": -19.56, "vol": 27.4, "v": 1.0, "rng": 4.4}, {"d": "2026-10-15", "cum": -19.08, "vol": 27.7, "v": 0.389, "rng": 1.88}, {"d": "2026-10-16", "cum": -19.82, "vol": 27.7, "v": 0.545, "rng": 2.79}]};
+
+/* ---------- small mat4 / vec3 library (column-major) ---------- */
+function m4perspective(fovy, aspect, near, far) {
+  const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+  return [f / aspect, 0, 0, 0,  0, f, 0, 0,  0, 0, (far + near) * nf, -1,
+          0, 0, 2 * far * near * nf, 0];
+}
+function m4lookAt(eye, ctr, up) {
+  let zx = eye[0] - ctr[0], zy = eye[1] - ctr[1], zz = eye[2] - ctr[2];
+  let l = Math.hypot(zx, zy, zz); zx /= l; zy /= l; zz /= l;
+  let xx = up[1] * zz - up[2] * zy, xy = up[2] * zx - up[0] * zz, xz = up[0] * zy - up[1] * zx;
+  l = Math.hypot(xx, xy, xz) || 1; xx /= l; xy /= l; xz /= l;
+  const yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+  return [xx, yx, zx, 0,  xy, yy, zy, 0,  xz, yz, zz, 0,
+          -(xx * eye[0] + xy * eye[1] + xz * eye[2]),
+          -(yx * eye[0] + yy * eye[1] + yz * eye[2]),
+          -(zx * eye[0] + zy * eye[1] + zz * eye[2]), 1];
+}
+function m4mul(a, b) {
+  const o = new Array(16);
+  for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
+    o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] +
+                   a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
+  }
+  return o;
+}
+function project(p, mvp, w, h) {
+  const x = mvp[0] * p[0] + mvp[4] * p[1] + mvp[8] * p[2] + mvp[12];
+  const y = mvp[1] * p[0] + mvp[5] * p[1] + mvp[9] * p[2] + mvp[13];
+  const z = mvp[2] * p[0] + mvp[6] * p[1] + mvp[10] * p[2] + mvp[14];
+  const ww = mvp[3] * p[0] + mvp[7] * p[1] + mvp[11] * p[2] + mvp[15];
+  if (ww <= 0) return null;
+  return [(x / ww * 0.5 + 0.5) * w, (0.5 - y / ww * 0.5) * h, z / ww];
+}
+
+/* ---------- shaders (GLSL ES 3.00) ---------- */
+const RIBBON_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aTan;
+layout(location=2) in float aSide;
+layout(location=3) in float aWidth;
+layout(location=4) in float aT;
+uniform mat4 uMVP;
+uniform vec3 uCam;
+out float vT; out vec3 vN; out vec3 vWorld;
+void main() {
+  vec3 tan = normalize(aTan);
+  vec3 viewDir = normalize(uCam - aPos);
+  vec3 right = normalize(cross(tan, viewDir));
+  vec3 world = aPos + right * (aSide * aWidth);
+  vN = normalize(cross(right, tan));
+  vT = aT; vWorld = world;
+  gl_Position = uMVP * vec4(world, 1.0);
+}`;
+const RIBBON_FS = `#version 300 es
+precision highp float;
+in float vT; in vec3 vN; in vec3 vWorld;
+uniform vec3 uColor; uniform vec3 uCam; uniform vec3 uBg;
+out vec4 o;
+void main() {
+  vec3 L = normalize(vec3(0.4, 0.8, 0.45));
+  float dif = max(dot(normalize(vN), L), 0.0);
+  vec3 col = uColor * (0.42 + 0.58 * dif);
+  col += uColor * smoothstep(0.90, 1.0, vT) * 0.7;
+  float fog = smoothstep(70.0, 140.0, length(uCam - vWorld));
+  col = mix(col, uBg, fog * 0.55);
+  o = vec4(col, 1.0);
+}`;
+const LINE_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aCol;
+uniform mat4 uMVP;
+out vec3 vC;
+void main() { vC = aCol; gl_Position = uMVP * vec4(aPos, 1.0); }`;
+const LINE_FS = `#version 300 es
+precision highp float;
+in vec3 vC; uniform float uAlpha; out vec4 o;
+void main() { o = vec4(vC, uAlpha); }`;
+const POINT_VS = `#version 300 es
+precision highp float;
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aDir;
+layout(location=2) in float aSeed;
+uniform mat4 uMV; uniform mat4 uProj; uniform float uTime; uniform float uPx;
+out float vSeed;
+void main() {
+  vec3 p = aPos + aDir * (0.10 * sin(uTime * 1.4 + aSeed * 39.0));
+  vec4 mv = uMV * vec4(p, 1.0);
+  gl_PointSize = clamp(uPx * (26.0 / -mv.z), 1.0, 9.0);
+  vSeed = aSeed;
+  gl_Position = uProj * mv;
+}`;
+const POINT_FS = `#version 300 es
+precision highp float;
+in float vSeed;
+uniform vec3 uColor; uniform float uAlpha;
+out vec4 o;
+void main() {
+  float d = length(gl_PointCoord - 0.5);
+  float a = smoothstep(0.5, 0.08, d) * uAlpha * (0.55 + 0.45 * vSeed);
+  if (a < 0.012) discard;
+  o = vec4(uColor, a);
+}`;
+
+/* ---------- data → world space ---------- */
+const STOCKS = {
+  CRM:  { color: [0.22, 0.74, 0.97], j: "23.2 → 6.0 · decided" },
+  MSTR: { color: [0.98, 0.45, 0.09], j: "49.4 → 32.2 · decided" },
+  META: { color: [0.51, 0.56, 0.99], j: "12.2 → 23.2 · reopened" },
+  AVGO: { color: [0.65, 0.55, 0.98], j: "15.1 → 14.1 · never decided" },
+  SMCI: { color: [0.96, 0.25, 0.37], j: "48.2 → 38.4 · decided by collapse" },
+  BAC:  { color: [0.58, 0.64, 0.72], j: "5.6 → 8.7 · reopened" },
+};
+const tickers = Object.keys(DATA);
+let cMin = 1e9, cMax = -1e9, vMin = 1e9, vMax = -1e9, nMax = 0;
+for (const t of tickers) for (const s of DATA[t]) {
+  cMin = Math.min(cMin, s.cum); cMax = Math.max(cMax, s.cum);
+  vMin = Math.min(vMin, s.vol); vMax = Math.max(vMax, s.vol);
+  nMax = Math.max(nMax, DATA[t].length);
+}
+const XW = 46, YW = 30, ZW = 34; // world extents
+function world(s, i) {
+  return [
+    (i / (nMax - 1) - 0.5) * XW,
+    ((s.cum - cMin) / (cMax - cMin) - 0.5) * YW,
+    ((s.vol - vMin) / (vMax - vMin) - 0.5) * ZW,
+  ];
+}
+const Y_FLOOR = -YW / 2;
+
+/* ---------- GL setup ---------- */
+const canvas = document.getElementById("gl");
+const gl = canvas.getContext("webgl2", { antialias: true });
+if (!gl) { document.getElementById("fallback").style.display = "grid"; throw new Error("no webgl2"); }
+const BG = [0.024, 0.043, 0.102];
+
+function program(vsSrc, fsSrc) {
+  function sh(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+      throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const p = gl.createProgram();
+  gl.attachShader(p, sh(gl.VERTEX_SHADER, vsSrc));
+  gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fsSrc));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS))
+    throw new Error(gl.getProgramInfoLog(p));
+  return p;
+}
+const ribProg = program(RIBBON_VS, RIBBON_FS);
+const lineProg = program(LINE_VS, LINE_FS);
+const ptProg = program(POINT_VS, POINT_FS);
+const U = {
+  ribMVP: gl.getUniformLocation(ribProg, "uMVP"),
+  ribCam: gl.getUniformLocation(ribProg, "uCam"),
+  ribCol: gl.getUniformLocation(ribProg, "uColor"),
+  ribBg: gl.getUniformLocation(ribProg, "uBg"),
+  lineMVP: gl.getUniformLocation(lineProg, "uMVP"),
+  lineA: gl.getUniformLocation(lineProg, "uAlpha"),
+  ptMV: gl.getUniformLocation(ptProg, "uMV"),
+  ptProj: gl.getUniformLocation(ptProg, "uProj"),
+  ptTime: gl.getUniformLocation(ptProg, "uTime"),
+  ptPx: gl.getUniformLocation(ptProg, "uPx"),
+  ptCol: gl.getUniformLocation(ptProg, "uColor"),
+  ptA: gl.getUniformLocation(ptProg, "uAlpha"),
+};
+
+/* ribbon geometry per stock: centerline points expanded on the GPU */
+function buildRibbon(t) {
+  const rows = DATA[t], n = rows.length;
+  const centers = rows.map((s, i) => world(s, i));
+  const pos = [], tan = [], side = [], wid = [], tt = [], idx = [];
+  for (let i = 0; i < n; i++) {
+    const a = centers[Math.max(0, i - 1)], b = centers[Math.min(n - 1, i + 1)];
+    let tx = b[0] - a[0], ty = b[1] - a[1], tz = b[2] - a[2];
+    const l = Math.hypot(tx, ty, tz) || 1; tx /= l; ty /= l; tz /= l;
+    const w = 0.10 + rows[i].v * 1.5; // half-width ∝ volume share
+    for (const sd of [-1, 1]) {
+      pos.push(...centers[i]); tan.push(tx, ty, tz);
+      side.push(sd); wid.push(w); tt.push(i / (n - 1));
+    }
+    if (i < n - 1) {
+      const k = i * 2;
+      idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2);
+    }
+  }
+  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+  function buf(data, loc, size, type) {
+    const b = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, size, type || gl.FLOAT, false, 0, 0);
+  }
+  buf(new Float32Array(pos), 0, 3);
+  buf(new Float32Array(tan), 1, 3);
+  buf(new Float32Array(side), 2, 1);
+  buf(new Float32Array(wid), 3, 1);
+  buf(new Float32Array(tt), 4, 1);
+  const ib = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
+  gl.bindVertexArray(null);
+  return { vao, count: idx.length };
+}
+
+/* particle cloud per stock: count ∝ volume share, spread ∝ daily range */
+function buildParticles(t) {
+  const rows = DATA[t];
+  const pos = [], dir = [], seed = [];
+  let rngState = 1234567;
+  function rnd() { // deterministic LCG — same cloud every load
+    rngState = (rngState * 1103515245 + 12345) & 0x7fffffff;
+    return rngState / 0x7fffffff;
+  }
+  rows.forEach((s, i) => {
+    const c = world(s, i);
+    const count = Math.round(s.v * 700);
+    const spread = s.rng * 0.14;
+    for (let k = 0; k < count; k++) {
+      const gx = (rnd() + rnd() + rnd() - 1.5) * spread;
+      const gy = (rnd() + rnd() + rnd() - 1.5) * spread;
+      const gz = (rnd() + rnd() + rnd() - 1.5) * spread;
+      pos.push(c[0] + gx, c[1] + gy, c[2] + gz);
+      const th = rnd() * Math.PI * 2, ph = Math.acos(2 * rnd() - 1);
+      dir.push(Math.sin(ph) * Math.cos(th), Math.cos(ph), Math.sin(ph) * Math.sin(th));
+      seed.push(rnd());
+    }
+  });
+  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+  function buf(data, loc, size) {
+    const b = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
+  }
+  buf(pos, 0, 3); buf(dir, 1, 3); buf(seed, 2, 1);
+  gl.bindVertexArray(null);
+  return { vao, count: seed.length };
+}
+
+/* floor grid + axes */
+function buildGrid() {
+  const pos = [], col = [];
+  const dim = [0.16, 0.22, 0.33];
+  function line(a, b, c) { pos.push(...a, ...b); col.push(...c, ...c); }
+  for (let i = 0; i < nMax; i += 5) {
+    const x = (i / (nMax - 1) - 0.5) * XW;
+    line([x, Y_FLOOR, -ZW / 2], [x, Y_FLOOR, ZW / 2], dim);
+  }
+  for (let vv = Math.ceil(vMin / 20) * 20; vv <= vMax; vv += 20) {
+    const z = ((vv - vMin) / (vMax - vMin) - 0.5) * ZW;
+    line([-XW / 2, Y_FLOOR, z], [XW / 2, Y_FLOOR, z], dim);
+  }
+  line([-XW / 2, Y_FLOOR, -ZW / 2], [XW / 2, Y_FLOOR, -ZW / 2], [0.22, 0.73, 0.97]); // time
+  line([-XW / 2, Y_FLOOR, -ZW / 2], [-XW / 2, YW / 2, -ZW / 2], [0.20, 0.83, 0.60]); // return
+  line([-XW / 2, Y_FLOOR, -ZW / 2], [-XW / 2, Y_FLOOR, ZW / 2], [0.65, 0.55, 0.98]); // vol
+  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+  function buf(data, loc) {
+    const b = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 3, gl.FLOAT, false, 0, 0);
+  }
+  buf(pos, 0); buf(col, 1);
+  gl.bindVertexArray(null);
+  return { vao, count: pos.length / 3 };
+}
+
+const ribbons = {}, clouds = {};
+for (const t of tickers) { ribbons[t] = buildRibbon(t); clouds[t] = buildParticles(t); }
+const grid = buildGrid();
+const visible = new Set(tickers);
+
+/* ---------- legend chips + labels ---------- */
+const chipsEl = document.getElementById("chips");
+for (const t of tickers) {
+  const b = document.createElement("button");
+  b.className = "chip";
+  const c = STOCKS[t].color.map(x => Math.round(x * 255));
+  b.innerHTML = `<span class="sw" style="background:rgb(${c[0]},${c[1]},${c[2]})"></span>${t}<span class="j">${STOCKS[t].j}</span>`;
+  b.onclick = () => { visible.has(t) ? visible.delete(t) : visible.add(t); b.classList.toggle("off"); };
+  chipsEl.appendChild(b);
+}
+const labelEls = {};
+function makeLabel(cls, text, color) {
+  const d = document.createElement("div");
+  d.className = cls; d.textContent = text;
+  if (color) d.style.color = color;
+  document.body.appendChild(d);
+  return d;
+}
+for (const t of tickers) {
+  const c = STOCKS[t].color.map(x => Math.round(x * 255));
+  labelEls[t] = makeLabel("lbl", t, `rgb(${c[0]},${c[1]},${c[2]})`);
+}
+const axisLabels = [
+  { el: makeLabel("axis", "TIME — 44 SESSIONS →"), p: [XW / 2, Y_FLOOR, -ZW / 2] },
+  { el: makeLabel("axis", "CUMULATIVE RETURN %"), p: [-XW / 2, YW / 2 + 1.5, -ZW / 2] },
+  { el: makeLabel("axis", "REALIZED VOLATILITY →"), p: [-XW / 2, Y_FLOOR, ZW / 2] },
+  { el: makeLabel("axis", DATA[tickers[0]][0].d), p: [-XW / 2, Y_FLOOR - 0.5, -ZW / 2] },
+  { el: makeLabel("axis", DATA[tickers[0]][nMax - 1].d), p: [XW / 2, Y_FLOOR - 0.5, -ZW / 2] },
+];
+
+/* ---------- camera + interaction ---------- */
+let az = 0.75, el = 0.42, radius = 62, target = [0, 0, 0];
+let autoOrbit = true, showParticles = true, idleTimer = 0;
+let dragging = false, lastX = 0, lastY = 0;
+canvas.addEventListener("pointerdown", e => {
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+  canvas.setPointerCapture(e.pointerId); idleTimer = 0;
+});
+canvas.addEventListener("pointermove", e => {
+  if (!dragging) return;
+  az -= (e.clientX - lastX) * 0.005;
+  el = Math.max(-1.2, Math.min(1.45, el + (e.clientY - lastY) * 0.005));
+  lastX = e.clientX; lastY = e.clientY;
+});
+canvas.addEventListener("pointerup", () => { dragging = false; });
+canvas.addEventListener("wheel", e => {
+  e.preventDefault();
+  radius = Math.max(26, Math.min(120, radius + e.deltaY * 0.05));
+  idleTimer = 0;
+}, { passive: false });
+const btnP = document.getElementById("btnParticles");
+const btnO = document.getElementById("btnOrbit");
+btnP.onclick = () => { showParticles = !showParticles; btnP.classList.toggle("on"); };
+btnO.onclick = () => { autoOrbit = !autoOrbit; btnO.classList.toggle("on"); };
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(canvas.clientWidth * dpr);
+  canvas.height = Math.round(canvas.clientHeight * dpr);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+window.addEventListener("resize", resize);
+resize();
+
+/* ---------- render loop ---------- */
+const t0 = performance.now();
+function frame(now) {
+  const time = (now - t0) / 1000;
+  idleTimer += 1 / 60;
+  if (autoOrbit && !dragging && idleTimer > 2.5) az += 0.0016;
+  const eye = [
+    target[0] + radius * Math.cos(el) * Math.sin(az),
+    target[1] + radius * Math.sin(el),
+    target[2] + radius * Math.cos(el) * Math.cos(az),
+  ];
+  const view = m4lookAt(eye, target, [0, 1, 0]);
+  const proj = m4perspective(0.9, canvas.width / canvas.height, 0.1, 400);
+  const mvp = m4mul(proj, view);
+
+  gl.clearColor(BG[0], BG[1], BG[2], 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
+
+  gl.useProgram(lineProg);
+  gl.uniformMatrix4fv(U.lineMVP, false, mvp);
+  gl.uniform1f(U.lineA, 0.85);
+  gl.bindVertexArray(grid.vao);
+  gl.drawArrays(gl.LINES, 0, grid.count);
+
+  gl.useProgram(ribProg);
+  gl.uniformMatrix4fv(U.ribMVP, false, mvp);
+  gl.uniform3fv(U.ribCam, eye);
+  gl.uniform3fv(U.ribBg, BG);
+  for (const t of tickers) {
+    if (!visible.has(t)) continue;
+    gl.uniform3fv(U.ribCol, STOCKS[t].color);
+    gl.bindVertexArray(ribbons[t].vao);
+    gl.drawElements(gl.TRIANGLES, ribbons[t].count, gl.UNSIGNED_SHORT, 0);
+  }
+
+  if (showParticles) {
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+    gl.depthMask(false);
+    gl.useProgram(ptProg);
+    gl.uniformMatrix4fv(U.ptMV, false, view);
+    gl.uniformMatrix4fv(U.ptProj, false, proj);
+    gl.uniform1f(U.ptTime, time);
+    gl.uniform1f(U.ptPx, Math.min(window.devicePixelRatio || 1, 2) * 3.2);
+    for (const t of tickers) {
+      if (!visible.has(t)) continue;
+      gl.uniform3fv(U.ptCol, STOCKS[t].color);
+      gl.uniform1f(U.ptA, 0.5);
+      gl.bindVertexArray(clouds[t].vao);
+      gl.drawArrays(gl.POINTS, 0, clouds[t].count);
+    }
+    gl.depthMask(true);
+    gl.disable(gl.BLEND);
+  }
+  gl.bindVertexArray(null);
+
+  /* labels projected through the same MVP */
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  for (const t of tickers) {
+    const elx = labelEls[t];
+    if (!visible.has(t)) { elx.style.display = "none"; continue; }
+    const rows = DATA[t];
+    const p = project(world(rows[rows.length - 1], rows.length - 1), mvp, w, h);
+    if (!p || p[2] > 1) { elx.style.display = "none"; continue; }
+    elx.style.display = "block";
+    elx.style.left = p[0] + "px"; elx.style.top = p[1] + "px";
+  }
+  for (const a of axisLabels) {
+    const p = project(a.p, mvp, w, h);
+    if (!p || p[2] > 1) { a.el.style.display = "none"; continue; }
+    a.el.style.display = "block";
+    a.el.style.left = p[0] + "px"; a.el.style.top = p[1] + "px";
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

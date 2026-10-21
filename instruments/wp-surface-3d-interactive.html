@@ -1,0 +1,88 @@
+<div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;">
+<div style="font-weight:600;font-size:15px;margin-bottom:2px;">Win-probability surface — interactive</div>
+<div style="color:var(--hatch-widget-muted);font-size:12px;margin-bottom:8px;">Drag to orbit. Sliders move the probe state; the readout prices it on the surface.</div>
+<canvas id="cv" width="660" height="430" style="width:100%;display:block;touch-action:none;cursor:grab;background:var(--hatch-widget-surface-muted);border-radius:8px;"></canvas>
+<div style="margin-top:10px;display:grid;gap:8px;">
+<label style="font-size:12px;color:var(--hatch-widget-muted);">Score difference (probe team): <span id="dLab" style="color:var(--hatch-widget-text);font-weight:600;">0</span>
+<input id="dSlider" type="range" min="-21" max="21" step="1" value="0" style="width:100%;"></label>
+<label style="font-size:12px;color:var(--hatch-widget-muted);">Time left: <span id="tLab" style="color:var(--hatch-widget-text);font-weight:600;">15:00</span>
+<input id="tSlider" type="range" min="0" max="3600" step="30" value="900" style="width:100%;"></label>
+<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+<label style="font-size:12px;color:var(--hatch-widget-muted);"><input id="rot" type="checkbox" checked> auto-rotate</label>
+<button id="resetBtn" style="font-size:12px;padding:4px 10px;border-radius:6px;border:1px solid var(--hatch-widget-border);background:var(--hatch-widget-surface);color:var(--hatch-widget-text);">Reset view</button>
+<div id="readout" style="font-size:13px;font-weight:600;"></div>
+</div>
+<div style="color:var(--hatch-widget-muted);font-size:11px;"><span style="color:#ffb020;">&#9632;</span> Florida's path (won 27&#8211;24) &nbsp; <span style="color:#57b6ff;">&#9632;</span> Tennessee's live states &nbsp; <span style="color:#ff5d5d;">&#9632;</span> your probe</div>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+var dpr=window.devicePixelRatio||1;
+function fitCanvas(){ var r=cv.getBoundingClientRect(); cv.width=Math.max(300,r.width)*dpr; cv.height=430*dpr; }
+fitCanvas();
+function erf(x){ var s=x<0?-1:1; x=Math.abs(x); var t=1/(1+0.3275911*x); var poly=((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592; return s*(1-poly*t*Math.exp(-x*x)); }
+function WP(diff,secs){ var den=13.5*Math.sqrt(Math.max(secs,1)/3600)+0.8; return 100*0.5*(1+erf((diff+0.5)/den/Math.SQRT2)); }
+function col(wp){ var t=wp/100; return 'rgb('+Math.round(45+205*t)+','+Math.round(95+55*(1-Math.abs(t-0.5)*2))+','+Math.round(205-165*t)+')'; }
+var az=-0.65, el=0.62;
+var probe={d:0,t:900};
+function norm(d,t,wp){ return [d/2,(t/60-30)/5,wp/10]; }
+function proj(p){
+  var x=p[0],y=p[1],z=p[2];
+  var ca=Math.cos(az),sa=Math.sin(az);
+  var x1=x*ca-y*sa, y1=x*sa+y*ca;
+  var ce=Math.cos(el),se=Math.sin(el);
+  var y2=y1*ce-z*se, z2=y1*se+z*ce;
+  var W=cv.width,H=cv.height, S=Math.min(W,H)/2/16.5;
+  return [W/2+x1*S, H/2 - z2*S + 30*dpr, y2];
+}
+function draw(){
+  var W=cv.width,H=cv.height; ctx.clearRect(0,0,W,H);
+  var diffs=[],times=[],i,d,t;
+  for(d=-21;d<=21;d+=3) diffs.push(d);
+  for(t=0;t<=3600;t+=300) times.push(t);
+  var quads=[];
+  for(var ti=0;ti<times.length-1;ti++) for(var di=0;di<diffs.length-1;di++){
+    var d0=diffs[di],d1=diffs[di+1],t0=times[ti],t1=times[ti+1];
+    var c=[[d0,t0],[d1,t0],[d1,t1],[d0,t1]].map(function(q){ return proj(norm(q[0],q[1],WP(q[0],q[1]))); });
+    var depth=(c[0][2]+c[1][2]+c[2][2]+c[3][2])/4;
+    quads.push({c:c,depth:depth,w:(WP(d0,t0)+WP(d1,t1))/2});
+  }
+  quads.sort(function(a,b){ return a.depth-b.depth; });
+  quads.forEach(function(q){
+    ctx.beginPath(); ctx.moveTo(q.c[0][0],q.c[0][1]);
+    for(var k=1;k<4;k++) ctx.lineTo(q.c[k][0],q.c[k][1]);
+    ctx.closePath(); ctx.fillStyle=col(q.w); ctx.globalAlpha=0.9; ctx.fill();
+    ctx.globalAlpha=1; ctx.strokeStyle='rgba(0,0,0,0.13)'; ctx.lineWidth=1; ctx.stroke();
+  });
+  function path(pts,color){
+    ctx.beginPath();
+    pts.forEach(function(q,i){ var xy=proj(norm(q[0],q[1],q[2])); if(i===0) ctx.moveTo(xy[0],xy[1]); else ctx.lineTo(xy[0],xy[1]); });
+    ctx.strokeStyle=color; ctx.lineWidth=2.5*dpr; ctx.stroke();
+    pts.forEach(function(q){ var xy=proj(norm(q[0],q[1],q[2]));
+      ctx.beginPath(); ctx.arc(xy[0],xy[1],4.5*dpr,0,7); ctx.fillStyle=color; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1.2*dpr; ctx.stroke();
+      ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--hatch-widget-text')||'#ddd';
+      ctx.font='600 '+(11*dpr)+'px sans-serif'; ctx.fillText(q[3],xy[0]+8*dpr,xy[1]-6*dpr); });
+  }
+  path([[-14,2100,11,'down 17-3'],[-7,1800,20,'half'],[0,1228,45,'Q3 45%'],[0,849,59,'Q4 59%'],[3,0,100,'WON']],'#ffb020');
+  path([[9,2878,70,'TENN Q1 70%'],[9,1111,83,'TENN Q3 83%']],'#57b6ff');
+  var pw=WP(probe.d,probe.t), pxy=proj(norm(probe.d,probe.t,pw));
+  ctx.beginPath(); ctx.arc(pxy[0],pxy[1],6*dpr,0,7); ctx.fillStyle='#ff5d5d'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1.5*dpr; ctx.stroke();
+  var mm=Math.floor(probe.t/60), ss=('0'+(probe.t%60)).slice(-2);
+  document.getElementById('readout').textContent='Probe: '+(probe.d>0?'+':'')+probe.d+' with '+mm+':'+ss+' left \u2192 win prob '+pw.toFixed(0)+'%';
+}
+var dS=document.getElementById('dSlider'), tS=document.getElementById('tSlider');
+function sync(){ probe.d=parseInt(dS.value,10); probe.t=parseInt(tS.value,10);
+  document.getElementById('dLab').textContent=(probe.d>0?'+':'')+probe.d;
+  var mm=Math.floor(probe.t/60), ss=('0'+(probe.t%60)).slice(-2);
+  document.getElementById('tLab').textContent=mm+':'+ss; draw(); }
+dS.addEventListener('input',sync); tS.addEventListener('input',sync);
+var dragging=false,lx=0,ly=0;
+cv.addEventListener('pointerdown',function(e){ dragging=true; lx=e.clientX; ly=e.clientY; cv.setPointerCapture(e.pointerId); cv.style.cursor='grabbing'; });
+cv.addEventListener('pointermove',function(e){ if(!dragging) return; az+=(e.clientX-lx)*0.008; el+=(e.clientY-ly)*0.006; el=Math.max(0.12,Math.min(1.35,el)); lx=e.clientX; ly=e.clientY; draw(); });
+cv.addEventListener('pointerup',function(){ dragging=false; cv.style.cursor='grab'; });
+document.getElementById('resetBtn').addEventListener('click',function(){ az=-0.65; el=0.62; draw(); });
+setInterval(function(){ if(document.getElementById('rot').checked && !dragging){ az+=0.005; draw(); } },40);
+sync();
+})();
+</script>
+</div>

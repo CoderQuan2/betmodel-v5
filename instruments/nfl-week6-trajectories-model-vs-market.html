@@ -1,0 +1,86 @@
+<div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;">
+<div style="font-weight:700;font-size:17px;">Week 6 Sunday trajectories — market → model → truth</div>
+<div style="color:var(--hatch-widget-muted);font-size:12px;margin:4px 0 10px;">Each game's journey in win-probability space. Grey dot: the market's spread-implied P(home win), sitting on the agreement diagonal. Coloured dot: where the provisional NFL lane priced it (vertical step = the disagreement). The curve then runs to the truth corner — (1,1) home won, (0,0) away won. <b style="color:#3fb950">Green</b> = the lane's Brier beat the market's in that game; <b style="color:#e5534b">red</b> = the market's did. Gold dashed ring = audit flag (gap ≥ 4 pts). Finals: ESPN, Sun Oct 18, 2026. Slate line: model Brier <b>0.304</b> vs market <b>0.270</b> · winner picks 3/11 · cover leans 6/10 · margin MAE model 6.6 beat market 7.1 — on a Sunday when 8 of 11 road teams won.</div>
+<svg width="920" height="920" viewBox="0 0 920 920" style="width:100%;display:block;background:var(--hatch-widget-surface-muted);border-radius:10px;">
+<line x1="70.0" y1="850.0" x2="70.0" y2="46.0" stroke="rgba(140,140,140,0.18)"/><line x1="70.0" y1="850.0" x2="890.0" y2="850.0" stroke="rgba(140,140,140,0.18)"/><text x="70.0" y="870.0" text-anchor="middle" font-size="11" fill="var(--hatch-widget-muted)">0.00</text><text x="62.0" y="854.0" text-anchor="end" font-size="11" fill="var(--hatch-widget-muted)">0.00</text><line x1="275.0" y1="850.0" x2="275.0" y2="46.0" stroke="rgba(140,140,140,0.18)"/><line x1="70.0" y1="649.0" x2="890.0" y2="649.0" stroke="rgba(140,140,140,0.18)"/><text x="275.0" y="870.0" text-anchor="middle" font-size="11" fill="var(--hatch-widget-muted)">0.25</text><text x="62.0" y="653.0" text-anchor="end" font-size="11" fill="var(--hatch-widget-muted)">0.25</text><line x1="480.0" y1="850.0" x2="480.0" y2="46.0" stroke="rgba(140,140,140,0.18)"/><line x1="70.0" y1="448.0" x2="890.0" y2="448.0" stroke="rgba(140,140,140,0.18)"/><text x="480.0" y="870.0" text-anchor="middle" font-size="11" fill="var(--hatch-widget-muted)">0.50</text><text x="62.0" y="452.0" text-anchor="end" font-size="11" fill="var(--hatch-widget-muted)">0.50</text><line x1="685.0" y1="850.0" x2="685.0" y2="46.0" stroke="rgba(140,140,140,0.18)"/><line x1="70.0" y1="247.0" x2="890.0" y2="247.0" stroke="rgba(140,140,140,0.18)"/><text x="685.0" y="870.0" text-anchor="middle" font-size="11" fill="var(--hatch-widget-muted)">0.75</text><text x="62.0" y="251.0" text-anchor="end" font-size="11" fill="var(--hatch-widget-muted)">0.75</text><line x1="890.0" y1="850.0" x2="890.0" y2="46.0" stroke="rgba(140,140,140,0.18)"/><line x1="70.0" y1="46.0" x2="890.0" y2="46.0" stroke="rgba(140,140,140,0.18)"/><text x="890.0" y="870.0" text-anchor="middle" font-size="11" fill="var(--hatch-widget-muted)">1.00</text><text x="62.0" y="50.0" text-anchor="end" font-size="11" fill="var(--hatch-widget-muted)">1.00</text>
+<line x1="70.0" y1="850.0" x2="890.0" y2="46.0" stroke="rgba(160,160,160,0.55)" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="865.4" y="126.4" font-size="11" fill="var(--hatch-widget-muted)" text-anchor="end">agreement diagonal</text>
+<circle cx="890.0" cy="46.0" r="9" fill="none" stroke="var(--hatch-widget-text)" stroke-width="2"/>
+<circle cx="70.0" cy="850.0" r="9" fill="none" stroke="var(--hatch-widget-text)" stroke-width="2"/>
+<text x="886.0" y="30.0" font-size="11.5" font-weight="700" text-anchor="end" fill="var(--hatch-widget-text)">TRUTH: home won</text>
+<text x="74.0" y="876.0" font-size="11.5" font-weight="700" fill="var(--hatch-widget-text)">TRUTH: away won</text>
+
+    <path d="M 538.2 390.9 L 538.2 332.2 Q 274.1 332.2 70.0 850.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="538.2" cy="390.9" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="538.2" cy="332.2" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="552.2" y="322.2" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">HOU @ JAX · 34–31</text>
+    <text x="552.2" y="336.2" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.415 vs mkt 0.327</text>
+    <path d="M 444.7 482.6 L 444.7 415.8 Q 227.4 415.8 70.0 850.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="444.7" cy="482.6" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="444.7" cy="415.8" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="458.7" y="405.8" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">CHI @ ATL · 31–23</text>
+    <text x="458.7" y="419.8" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.292 vs mkt 0.209</text>
+    <path d="M 410.3 516.3 L 410.3 452.0 Q 680.1 452.0 890.0 46.0" fill="none" stroke="#3fb950" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="410.3" cy="516.3" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="410.3" cy="452.0" r="6.5" fill="#3fb950" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="424.3" y="442.0" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">BAL @ CLE · 10–13</text>
+    <text x="424.3" y="456.0" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.255 vs mkt 0.343</text>
+    <path d="M 638.3 292.8 L 638.3 296.0 Q 324.1 296.0 70.0 850.0" fill="none" stroke="#3fb950" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="638.3" cy="292.8" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="638.3" cy="296.0" r="6.5" fill="#3fb950" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="624.3" y="286.0" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">TEN @ IND · 26–20</text>
+    <text x="624.3" y="300.0" text-anchor="end" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.475 vs mkt 0.480</text>
+    <path d="M 648.1 283.2 L 648.1 336.2 Q 799.0 336.2 890.0 46.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="648.1" cy="283.2" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="648.1" cy="336.2" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="634.1" y="326.2" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">NYJ @ NE · 19–26</text>
+    <text x="634.1" y="340.2" text-anchor="end" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.130 vs mkt 0.087</text>
+    <path d="M 515.3 413.4 L 515.3 297.7 Q 262.6 297.7 70.0 850.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="515.3" cy="413.4" r="3.5" fill="#8a8a8a"/>
+    <circle cx="515.3" cy="297.7" r="13" fill="none" stroke="#e3b341" stroke-width="2.5" stroke-dasharray="4 3"/>
+    <circle cx="515.3" cy="297.7" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="529.3" y="287.7" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">NO @ NYG · 34–27</text>
+    <text x="529.3" y="301.7" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.472 vs mkt 0.295</text>
+    <path d="M 410.3 516.3 L 410.3 428.7 Q 210.2 428.7 70.0 850.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="410.3" cy="516.3" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="410.3" cy="428.7" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="424.3" y="418.7" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">CAR @ PHI · 25–14</text>
+    <text x="424.3" y="432.7" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.275 vs mkt 0.172</text>
+    <path d="M 421.8 505.1 L 421.8 449.6 Q 215.9 449.6 70.0 850.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="421.8" cy="505.1" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="421.8" cy="449.6" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="435.8" y="439.6" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">PIT @ TB · 26–19</text>
+    <text x="435.8" y="453.6" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.248 vs mkt 0.184</text>
+    <path d="M 739.1 193.9 L 739.1 311.3 Q 374.6 311.3 70.0 850.0" fill="none" stroke="#3fb950" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="739.1" cy="193.9" r="3.5" fill="#8a8a8a"/>
+    <circle cx="739.1" cy="311.3" r="13" fill="none" stroke="#e3b341" stroke-width="2.5" stroke-dasharray="4 3"/>
+    <circle cx="739.1" cy="311.3" r="6.5" fill="#3fb950" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="725.1" y="301.3" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">ARI @ LAR · 18–16</text>
+    <text x="725.1" y="315.3" text-anchor="end" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.449 vs mkt 0.665</text>
+    <path d="M 648.1 283.2 L 648.1 214.0 Q 799.0 214.0 890.0 46.0" fill="none" stroke="#3fb950" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="648.1" cy="283.2" r="3.5" fill="#8a8a8a"/>
+    <circle cx="648.1" cy="214.0" r="13" fill="none" stroke="#e3b341" stroke-width="2.5" stroke-dasharray="4 3"/>
+    <circle cx="648.1" cy="214.0" r="6.5" fill="#3fb950" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="634.1" y="204.0" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">LAC @ KC · 6–22</text>
+    <text x="634.1" y="218.0" text-anchor="end" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.044 vs mkt 0.087</text>
+    <path d="M 353.7 571.8 L 353.7 415.8 Q 181.9 415.8 70.0 850.0" fill="none" stroke="#e5534b" stroke-width="2.2" opacity="0.75"/>
+    <circle cx="353.7" cy="571.8" r="3.5" fill="#8a8a8a"/>
+    
+    <circle cx="353.7" cy="415.8" r="6.5" fill="#e5534b" stroke="#0d1117" stroke-width="1.5"/>
+    <text x="367.7" y="405.8" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--hatch-widget-text)">BUF @ LV · 33–30</text>
+    <text x="367.7" y="419.8" text-anchor="start" font-size="10.5" fill="var(--hatch-widget-muted)">Brier model 0.292 vs mkt 0.120</text>
+<circle cx="476.7" cy="355.5" r="7" fill="none" stroke="#57b6ff" stroke-width="2.5"/>
+<text x="489.7" y="347.5" font-size="12.5" font-weight="700" fill="#57b6ff">DAL @ GB · tonight</text>
+<text x="489.7" y="361.5" font-size="10.5" fill="var(--hatch-widget-muted)">unresolved — market pick'em (no-vig GB .496), model .615</text>
+<text x="480.0" y="902" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--hatch-widget-text)">Market spread-implied P(home win) →</text>
+<text x="20" y="448.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--hatch-widget-text)" transform="rotate(-90 20 448.0)">Provisional lane P(home win) →</text>
+</svg>
+<div style="color:var(--hatch-widget-muted);font-size:11px;margin-top:8px;">Read of the picture: the long red curves into the (0,0) corner are the slate's story — the lane (and, less far, the market) kept pricing home favourites (JAX .644, IND .689, NYG .687, LAR .670) that lost outright. The two longest green curves are the audit flags the market got worst: LAC @ KC, where the lane's fair margin (−16.0) was the exact final margin, and ARI @ LAR, where the market's −12.5 was the worst price of the day. Market implieds derived from saved spreads (Normal margin, sd 13.9 — the lane's own cover convention) because the saved pricing file carried no moneylines; SNF marker uses the DK pick'em moneyline no-vig instead. DAL @ GB resolves tonight; WSH @ SF (Mon) is the fourth audit flag, still open.</div>
+</div>

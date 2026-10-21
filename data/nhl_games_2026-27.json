@@ -1,0 +1,1122 @@
+[
+ {
+  "sport": "nhl",
+  "date": "2026-10-01",
+  "week": null,
+  "neutral": false,
+  "home": "Columbus Blue Jackets",
+  "away": "Buffalo Sabres",
+  "home_score": 6,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-01",
+  "week": null,
+  "neutral": false,
+  "home": "New Jersey Devils",
+  "away": "Philadelphia Flyers",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-01",
+  "week": null,
+  "neutral": false,
+  "home": "New York Rangers",
+  "away": "Tampa Bay Lightning",
+  "home_score": 5,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "Nashville Predators",
+  "away": "Minnesota Wild",
+  "home_score": 1,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "Calgary Flames",
+  "away": "Seattle Kraken",
+  "home_score": 1,
+  "away_score": 6
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "Utah Mammoth",
+  "away": "Chicago Blackhawks",
+  "home_score": 6,
+  "away_score": 0
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "San Jose Sharks",
+  "away": "Florida Panthers",
+  "home_score": 4,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "Vancouver Canucks",
+  "away": "Edmonton Oilers",
+  "home_score": 7,
+  "away_score": 9
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "Detroit Red Wings",
+  "away": "New York Rangers",
+  "home_score": 0,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-02",
+  "week": null,
+  "neutral": false,
+  "home": "Carolina Hurricanes",
+  "away": "Washington Capitals",
+  "home_score": 2,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Winnipeg Jets",
+  "away": "Boston Bruins",
+  "home_score": 3,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Dallas Stars",
+  "away": "St. Louis Blues",
+  "home_score": 0,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Vegas Golden Knights",
+  "away": "Anaheim Ducks",
+  "home_score": 3,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Buffalo Sabres",
+  "away": "Chicago Blackhawks",
+  "home_score": 4,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Pittsburgh Penguins",
+  "away": "Montreal Canadiens",
+  "home_score": 6,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Tampa Bay Lightning",
+  "away": "Washington Capitals",
+  "home_score": 3,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Toronto Maple Leafs",
+  "away": "Ottawa Senators",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Philadelphia Flyers",
+  "away": "Carolina Hurricanes",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Columbus Blue Jackets",
+  "away": "Utah Mammoth",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "Edmonton Oilers",
+  "away": "Seattle Kraken",
+  "home_score": 3,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-03",
+  "week": null,
+  "neutral": false,
+  "home": "New York Islanders",
+  "away": "New Jersey Devils",
+  "home_score": 6,
+  "away_score": 0
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "Minnesota Wild",
+  "away": "Boston Bruins",
+  "home_score": 4,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "Nashville Predators",
+  "away": "Dallas Stars",
+  "home_score": 2,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "Colorado Avalanche",
+  "away": "St. Louis Blues",
+  "home_score": 6,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "Vancouver Canucks",
+  "away": "Calgary Flames",
+  "home_score": 4,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "San Jose Sharks",
+  "away": "Los Angeles Kings",
+  "home_score": 5,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "Detroit Red Wings",
+  "away": "Winnipeg Jets",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-04",
+  "week": null,
+  "neutral": false,
+  "home": "New York Rangers",
+  "away": "Utah Mammoth",
+  "home_score": 4,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-05",
+  "week": null,
+  "neutral": false,
+  "home": "Anaheim Ducks",
+  "away": "Florida Panthers",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-05",
+  "week": null,
+  "neutral": false,
+  "home": "Seattle Kraken",
+  "away": "Calgary Flames",
+  "home_score": 6,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-05",
+  "week": null,
+  "neutral": false,
+  "home": "Vancouver Canucks",
+  "away": "Vegas Golden Knights",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-05",
+  "week": null,
+  "neutral": false,
+  "home": "Tampa Bay Lightning",
+  "away": "Philadelphia Flyers",
+  "home_score": 4,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-05",
+  "week": null,
+  "neutral": false,
+  "home": "Boston Bruins",
+  "away": "Ottawa Senators",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-05",
+  "week": null,
+  "neutral": false,
+  "home": "Pittsburgh Penguins",
+  "away": "Winnipeg Jets",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "Dallas Stars",
+  "away": "San Jose Sharks",
+  "home_score": 5,
+  "away_score": 0
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "Montreal Canadiens",
+  "away": "Carolina Hurricanes",
+  "home_score": 4,
+  "away_score": 6
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "Toronto Maple Leafs",
+  "away": "Nashville Predators",
+  "home_score": 5,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "Detroit Red Wings",
+  "away": "Ottawa Senators",
+  "home_score": 5,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "New Jersey Devils",
+  "away": "Utah Mammoth",
+  "home_score": 3,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "Buffalo Sabres",
+  "away": "Minnesota Wild",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-06",
+  "week": null,
+  "neutral": false,
+  "home": "New York Rangers",
+  "away": "New York Islanders",
+  "home_score": 5,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-07",
+  "week": null,
+  "neutral": false,
+  "home": "Chicago Blackhawks",
+  "away": "St. Louis Blues",
+  "home_score": 4,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-07",
+  "week": null,
+  "neutral": false,
+  "home": "Seattle Kraken",
+  "away": "Vegas Golden Knights",
+  "home_score": 2,
+  "away_score": 6
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-07",
+  "week": null,
+  "neutral": false,
+  "home": "Los Angeles Kings",
+  "away": "Florida Panthers",
+  "home_score": 1,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-07",
+  "week": null,
+  "neutral": false,
+  "home": "Washington Capitals",
+  "away": "Pittsburgh Penguins",
+  "home_score": 5,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-07",
+  "week": null,
+  "neutral": false,
+  "home": "Winnipeg Jets",
+  "away": "Colorado Avalanche",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Anaheim Ducks",
+  "away": "Edmonton Oilers",
+  "home_score": 2,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Ottawa Senators",
+  "away": "Philadelphia Flyers",
+  "home_score": 2,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Boston Bruins",
+  "away": "Utah Mammoth",
+  "home_score": 6,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Buffalo Sabres",
+  "away": "Dallas Stars",
+  "home_score": 0,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Montreal Canadiens",
+  "away": "Nashville Predators",
+  "home_score": 2,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Tampa Bay Lightning",
+  "away": "Minnesota Wild",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "Carolina Hurricanes",
+  "away": "Vancouver Canucks",
+  "home_score": 7,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-08",
+  "week": null,
+  "neutral": false,
+  "home": "New York Islanders",
+  "away": "Chicago Blackhawks",
+  "home_score": 4,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-09",
+  "week": null,
+  "neutral": false,
+  "home": "St. Louis Blues",
+  "away": "San Jose Sharks",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-09",
+  "week": null,
+  "neutral": false,
+  "home": "Calgary Flames",
+  "away": "Colorado Avalanche",
+  "home_score": 3,
+  "away_score": 7
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-09",
+  "week": null,
+  "neutral": false,
+  "home": "Vegas Golden Knights",
+  "away": "Toronto Maple Leafs",
+  "home_score": 4,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-09",
+  "week": null,
+  "neutral": false,
+  "home": "Detroit Red Wings",
+  "away": "Seattle Kraken",
+  "home_score": 3,
+  "away_score": 6
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-09",
+  "week": null,
+  "neutral": false,
+  "home": "Washington Capitals",
+  "away": "New York Rangers",
+  "home_score": 3,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-09",
+  "week": null,
+  "neutral": false,
+  "home": "Columbus Blue Jackets",
+  "away": "Pittsburgh Penguins",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Winnipeg Jets",
+  "away": "Anaheim Ducks",
+  "home_score": 1,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Boston Bruins",
+  "away": "Philadelphia Flyers",
+  "home_score": 5,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "New Jersey Devils",
+  "away": "Vancouver Canucks",
+  "home_score": 4,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "San Jose Sharks",
+  "away": "Edmonton Oilers",
+  "home_score": 1,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Florida Panthers",
+  "away": "Minnesota Wild",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Buffalo Sabres",
+  "away": "Utah Mammoth",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Montreal Canadiens",
+  "away": "Detroit Red Wings",
+  "home_score": 1,
+  "away_score": 0
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Ottawa Senators",
+  "away": "Nashville Predators",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Pittsburgh Penguins",
+  "away": "Dallas Stars",
+  "home_score": 2,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Chicago Blackhawks",
+  "away": "Carolina Hurricanes",
+  "home_score": 2,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "St. Louis Blues",
+  "away": "Columbus Blue Jackets",
+  "home_score": 5,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "Colorado Avalanche",
+  "away": "Toronto Maple Leafs",
+  "home_score": 3,
+  "away_score": 6
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-10",
+  "week": null,
+  "neutral": false,
+  "home": "New York Islanders",
+  "away": "Tampa Bay Lightning",
+  "home_score": 3,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-11",
+  "week": null,
+  "neutral": false,
+  "home": "Calgary Flames",
+  "away": "Anaheim Ducks",
+  "home_score": 2,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-11",
+  "week": null,
+  "neutral": false,
+  "home": "Vegas Golden Knights",
+  "away": "Los Angeles Kings",
+  "home_score": 2,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-11",
+  "week": null,
+  "neutral": false,
+  "home": "Washington Capitals",
+  "away": "Seattle Kraken",
+  "home_score": 3,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-11",
+  "week": null,
+  "neutral": false,
+  "home": "New York Rangers",
+  "away": "Vancouver Canucks",
+  "home_score": 6,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-11",
+  "week": null,
+  "neutral": false,
+  "home": "Philadelphia Flyers",
+  "away": "Carolina Hurricanes",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-12",
+  "week": null,
+  "neutral": false,
+  "home": "Buffalo Sabres",
+  "away": "Florida Panthers",
+  "home_score": 5,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-12",
+  "week": null,
+  "neutral": false,
+  "home": "New Jersey Devils",
+  "away": "Ottawa Senators",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Minnesota Wild",
+  "away": "Vegas Golden Knights",
+  "home_score": 4,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Detroit Red Wings",
+  "away": "New Jersey Devils",
+  "home_score": 4,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Columbus Blue Jackets",
+  "away": "Florida Panthers",
+  "home_score": 3,
+  "away_score": 7
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Montreal Canadiens",
+  "away": "Buffalo Sabres",
+  "home_score": 4,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Carolina Hurricanes",
+  "away": "Washington Capitals",
+  "home_score": 4,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Philadelphia Flyers",
+  "away": "Seattle Kraken",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "New York Rangers",
+  "away": "Tampa Bay Lightning",
+  "home_score": 4,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "Ottawa Senators",
+  "away": "St. Louis Blues",
+  "home_score": 2,
+  "away_score": 7
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-13",
+  "week": null,
+  "neutral": false,
+  "home": "New York Islanders",
+  "away": "Vancouver Canucks",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Chicago Blackhawks",
+  "away": "Pittsburgh Penguins",
+  "home_score": 5,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Winnipeg Jets",
+  "away": "Minnesota Wild",
+  "home_score": 5,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Dallas Stars",
+  "away": "Colorado Avalanche",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Nashville Predators",
+  "away": "Vegas Golden Knights",
+  "home_score": 2,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Utah Mammoth",
+  "away": "Toronto Maple Leafs",
+  "home_score": 5,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Anaheim Ducks",
+  "away": "Calgary Flames",
+  "home_score": 2,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Los Angeles Kings",
+  "away": "Edmonton Oilers",
+  "home_score": 1,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "San Jose Sharks",
+  "away": "Boston Bruins",
+  "home_score": 3,
+  "away_score": 6
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-14",
+  "week": null,
+  "neutral": false,
+  "home": "Washington Capitals",
+  "away": "Montreal Canadiens",
+  "home_score": 5,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "Colorado Avalanche",
+  "away": "Dallas Stars",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "Toronto Maple Leafs",
+  "away": "Buffalo Sabres",
+  "home_score": 4,
+  "away_score": 5
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "Ottawa Senators",
+  "away": "New York Islanders",
+  "home_score": 2,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "Tampa Bay Lightning",
+  "away": "Seattle Kraken",
+  "home_score": 4,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "Florida Panthers",
+  "away": "Vancouver Canucks",
+  "home_score": 3,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "New Jersey Devils",
+  "away": "New York Rangers",
+  "home_score": 7,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-15",
+  "week": null,
+  "neutral": false,
+  "home": "Detroit Red Wings",
+  "away": "Philadelphia Flyers",
+  "home_score": 2,
+  "away_score": 1
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-16",
+  "week": null,
+  "neutral": false,
+  "home": "Chicago Blackhawks",
+  "away": "Winnipeg Jets",
+  "home_score": 4,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-16",
+  "week": null,
+  "neutral": false,
+  "home": "Nashville Predators",
+  "away": "San Jose Sharks",
+  "home_score": 2,
+  "away_score": 3
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-16",
+  "week": null,
+  "neutral": false,
+  "home": "Minnesota Wild",
+  "away": "St. Louis Blues",
+  "home_score": 5,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-16",
+  "week": null,
+  "neutral": false,
+  "home": "Edmonton Oilers",
+  "away": "Utah Mammoth",
+  "home_score": 2,
+  "away_score": 4
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-16",
+  "week": null,
+  "neutral": false,
+  "home": "Vegas Golden Knights",
+  "away": "Calgary Flames",
+  "home_score": 6,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-17",
+  "week": null,
+  "neutral": false,
+  "home": "Colorado Avalanche",
+  "away": "Pittsburgh Penguins",
+  "home_score": 5,
+  "away_score": 2
+ },
+ {
+  "sport": "nhl",
+  "date": "2026-10-17",
+  "week": null,
+  "neutral": false,
+  "home": "Anaheim Ducks",
+  "away": "Boston Bruins",
+  "home_score": 2,
+  "away_score": 4
+ }
+]

@@ -1,0 +1,81 @@
+<div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;">
+<div style="font-weight:600;font-size:15px;margin-bottom:2px;">CRM (Salesforce) — 3D price terrain, Jun → Oct 2026</div>
+<div style="color:var(--hatch-widget-muted);font-size:12px;margin-bottom:8px;">Drag to orbit. Scrub the slider to walk the path day by day.</div>
+<canvas id="cv" width="660" height="450" style="width:100%;display:block;touch-action:none;cursor:grab;background:var(--hatch-widget-surface-muted);border-radius:10px;"></canvas>
+<div style="margin-top:10px;">
+<label style="font-size:12px;color:var(--hatch-widget-muted);">Probe day: <span id="lab" style="color:var(--hatch-widget-text);font-weight:600;"></span>
+<input id="scrub" type="range" min="0" max="86" step="1" value="86" style="width:100%;"></label>
+<div style="display:flex;gap:14px;align-items:center;">
+<label style="font-size:12px;color:var(--hatch-widget-muted);"><input id="rot" type="checkbox" checked> auto-rotate</label>
+<button id="resetBtn" style="font-size:12px;padding:4px 10px;border-radius:6px;border:1px solid var(--hatch-widget-border);background:var(--hatch-widget-surface);color:var(--hatch-widget-text);">Reset view</button>
+</div></div>
+<script>
+(function(){
+var DATA=[{"d": "2026-06-15", "c": 164.55}, {"d": "2026-06-16", "c": 161.71}, {"d": "2026-06-17", "c": 155.02}, {"d": "2026-06-18", "c": 151.78}, {"d": "2026-06-22", "c": 150.12}, {"d": "2026-06-23", "c": 153.42}, {"d": "2026-06-24", "c": 152.76}, {"d": "2026-06-25", "c": 150.19}, {"d": "2026-06-26", "c": 158.37}, {"d": "2026-06-29", "c": 157.93}, {"d": "2026-06-30", "c": 156.66}, {"d": "2026-07-01", "c": 163.23}, {"d": "2026-07-02", "c": 166.11}, {"d": "2026-07-06", "c": 165.65}, {"d": "2026-07-07", "c": 169.52}, {"d": "2026-07-08", "c": 166.58}, {"d": "2026-07-09", "c": 162.5}, {"d": "2026-07-10", "c": 163.32}, {"d": "2026-07-13", "c": 171.22}, {"d": "2026-07-14", "c": 167.56}, {"d": "2026-07-15", "c": 167.0}, {"d": "2026-07-16", "c": 172.68}, {"d": "2026-07-17", "c": 170.77}, {"d": "2026-07-20", "c": 173.79}, {"d": "2026-07-21", "c": 170.06}, {"d": "2026-07-22", "c": 163.0}, {"d": "2026-07-23", "c": 156.93}, {"d": "2026-07-24", "c": 163.66}, {"d": "2026-07-27", "c": 173.6}, {"d": "2026-07-28", "c": 181.5}, {"d": "2026-07-29", "c": 188.38}, {"d": "2026-07-30", "c": 180.71}, {"d": "2026-07-31", "c": 184.02}, {"d": "2026-08-03", "c": 185.95}, {"d": "2026-08-04", "c": 190.99}, {"d": "2026-08-05", "c": 192.98}, {"d": "2026-08-06", "c": 186.77}, {"d": "2026-08-07", "c": 192.74}, {"d": "2026-08-10", "c": 197.51}, {"d": "2026-08-11", "c": 197.47}, {"d": "2026-08-12", "c": 193.32}, {"d": "2026-08-13", "c": 201.37}, {"d": "2026-08-14", "c": 196.21}, {"d": "2026-08-17", "c": 190.97}, {"d": "2026-08-18", "c": 196.14}, {"d": "2026-08-19", "c": 206.09}, {"d": "2026-08-20", "c": 205.43}, {"d": "2026-08-21", "c": 209.17}, {"d": "2026-08-24", "c": 209.06}, {"d": "2026-08-25", "c": 205.69}, {"d": "2026-08-26", "c": 205.62}, {"d": "2026-08-27", "c": 252.05}, {"d": "2026-08-28", "c": 256.0}, {"d": "2026-08-31", "c": 257.54}, {"d": "2026-09-01", "c": 258.11}, {"d": "2026-09-02", "c": 256.93}, {"d": "2026-09-03", "c": 264.43}, {"d": "2026-09-04", "c": 259.23}, {"d": "2026-09-08", "c": 249.12}, {"d": "2026-09-09", "c": 244.16}, {"d": "2026-09-10", "c": 243.0}, {"d": "2026-09-11", "c": 247.72}, {"d": "2026-09-14", "c": 259.43}, {"d": "2026-09-15", "c": 255.65}, {"d": "2026-09-16", "c": 250.54}, {"d": "2026-09-17", "c": 242.85}, {"d": "2026-09-18", "c": 237.92}, {"d": "2026-09-21", "c": 236.42}, {"d": "2026-09-22", "c": 233.28}, {"d": "2026-09-23", "c": 237.58}, {"d": "2026-09-24", "c": 238.22}, {"d": "2026-09-25", "c": 234.02}, {"d": "2026-09-28", "c": 227.27}, {"d": "2026-09-29", "c": 225.31}, {"d": "2026-09-30", "c": 229.57}, {"d": "2026-10-01", "c": 236.69}, {"d": "2026-10-02", "c": 234.69}, {"d": "2026-10-05", "c": 229.79}, {"d": "2026-10-06", "c": 224.99}, {"d": "2026-10-07", "c": 224.56}, {"d": "2026-10-08", "c": 227.8}, {"d": "2026-10-09", "c": 229.13}, {"d": "2026-10-12", "c": 233.92}, {"d": "2026-10-13", "c": 238.01}, {"d": "2026-10-14", "c": 235.95}, {"d": "2026-10-15", "c": 246.74}, {"d": "2026-10-16", "c": 240.7}];
+var N=DATA.length, BASE=140;
+var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+var dpr=window.devicePixelRatio||1;
+function fit(){ var r=cv.getBoundingClientRect(); cv.width=Math.max(300,r.width)*dpr; cv.height=450*dpr; }
+fit();
+var az=-0.55, el=0.58, probe=N-1;
+function norm(i,price){ return [ (i/(N-1)-0.5)*20, 0, (price-BASE)/9 ]; }
+function proj(p){ var x=p[0],y=p[1],z=p[2];
+  var ca=Math.cos(az),sa=Math.sin(az); var x1=x*ca-y*sa, y1=x*sa+y*ca;
+  var ce=Math.cos(el),se=Math.sin(el); var y2=y1*ce-z*se, z2=y1*se+z*ce;
+  var W=cv.width,H=cv.height,S=Math.min(W,H)/2/16;
+  return [W/2+x1*S, H/2 - z2*S + 60*dpr, y2]; }
+var MARKS={'2026-06-17':'Jun 17 · $155','2026-08-17':'Aug 17 · $191','2026-09-03':'Peak Sep 3 · $264','2026-10-16':'Oct 16 · $241'};
+function draw(){
+  var W=cv.width,H=cv.height; ctx.clearRect(0,0,W,H);
+  var tc=getComputedStyle(document.documentElement).getPropertyValue('--hatch-widget-text')||'#ddd';
+  var mc=getComputedStyle(document.documentElement).getPropertyValue('--hatch-widget-muted')||'#999';
+  // floor gridlines at price levels
+  [150,200,250].forEach(function(g){
+    var a=proj([ -10,0,(g-BASE)/9 ]), b=proj([ 10,0,(g-BASE)/9 ]);
+    // draw as flat floor lines instead: use z of level mapped on back wall: approximate with line at that height across x
+    ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.strokeStyle='rgba(140,140,140,0.28)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle=mc; ctx.font=(10*dpr)+'px sans-serif'; ctx.fillText('$'+g, a[0]-26*dpr, a[1]+3*dpr);
+  });
+  // curtain quads (path wall down to BASE)
+  var quads=[];
+  for(var i=0;i<N-1;i++){
+    var p0=DATA[i].c, p1=DATA[i+1].c;
+    var c=[proj(norm(i,p0)), proj(norm(i+1,p1)), proj(norm(i+1,BASE)), proj(norm(i,BASE))];
+    var depth=(c[0][2]+c[1][2]+c[2][2]+c[3][2])/4;
+    var t=((p0+p1)/2-BASE)/130;
+    quads.push({c:c,depth:depth,fill:'rgba('+(224+Math.round(20*t))+','+(110-Math.round(40*t))+','+(50)+','+(0.34+0.4*t)+')'});
+  }
+  quads.sort(function(a,b){return a.depth-b.depth;});
+  quads.forEach(function(q){ ctx.beginPath(); ctx.moveTo(q.c[0][0],q.c[0][1]); for(var k=1;k<4;k++) ctx.lineTo(q.c[k][0],q.c[k][1]); ctx.closePath(); ctx.fillStyle=q.fill; ctx.fill(); });
+  // floor shadow of the path
+  ctx.beginPath();
+  DATA.forEach(function(r,i){ var xy=proj(norm(i,BASE)); if(i===0) ctx.moveTo(xy[0],xy[1]); else ctx.lineTo(xy[0],xy[1]); });
+  ctx.strokeStyle='rgba(120,120,120,0.35)'; ctx.lineWidth=2*dpr; ctx.stroke();
+  // the ridge line
+  ctx.beginPath();
+  DATA.forEach(function(r,i){ var xy=proj(norm(i,r.c)); if(i===0) ctx.moveTo(xy[0],xy[1]); else ctx.lineTo(xy[0],xy[1]); });
+  ctx.strokeStyle='#ff8c42'; ctx.lineWidth=3*dpr; ctx.lineJoin='round'; ctx.stroke();
+  // marks
+  ctx.font='700 '+(11*dpr)+'px sans-serif';
+  DATA.forEach(function(r,i){ if(MARKS[r.d]){ var xy=proj(norm(i,r.c));
+    ctx.beginPath(); ctx.arc(xy[0],xy[1],4.5*dpr,0,7); ctx.fillStyle='#ffb020'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1.2*dpr; ctx.stroke();
+    ctx.fillStyle=tc; ctx.fillText(MARKS[r.d], xy[0]+8*dpr, xy[1]-8*dpr); } });
+  // probe
+  var pr=DATA[probe], pxy=proj(norm(probe,pr.c));
+  ctx.beginPath(); ctx.arc(pxy[0],pxy[1],6.5*dpr,0,7); ctx.fillStyle='#ff5d5d'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=1.6*dpr; ctx.stroke();
+  var bx=proj(norm(probe,BASE));
+  ctx.beginPath(); ctx.moveTo(pxy[0],pxy[1]); ctx.lineTo(bx[0],bx[1]); ctx.strokeStyle='rgba(255,93,93,0.55)'; ctx.lineWidth=1.4*dpr; ctx.stroke();
+  document.getElementById('lab').textContent=pr.d+' · $'+pr.c.toFixed(2);
+}
+var sc=document.getElementById('scrub');
+sc.addEventListener('input',function(){ probe=parseInt(sc.value,10); draw(); });
+var dragging=false,lx=0,ly=0;
+cv.addEventListener('pointerdown',function(e){ dragging=true; lx=e.clientX; ly=e.clientY; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener('pointermove',function(e){ if(!dragging) return; az+=(e.clientX-lx)*0.008; el+=(e.clientY-ly)*0.006; el=Math.max(0.15,Math.min(1.3,el)); lx=e.clientX; ly=e.clientY; draw(); });
+cv.addEventListener('pointerup',function(){ dragging=false; });
+document.getElementById('resetBtn').addEventListener('click',function(){ az=-0.55; el=0.58; draw(); });
+setInterval(function(){ if(document.getElementById('rot').checked && !dragging){ az+=0.004; draw(); } },40);
+draw();
+})();
+</script>
+</div>

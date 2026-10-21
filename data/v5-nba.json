@@ -1,0 +1,57 @@
+{
+ "sport": "nba",
+ "season": "2025-26 regular season",
+ "fitted_at": "2026-10-19T11:15:31+00:00",
+ "source": "ESPN NBA scoreboard day pulls (cached 2026-10-19T11:15:31+00:00; data/cache/nba_games_2025-26.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "OKC": 1781.7,
+  "HOU": 1636.4,
+  "LAL": 1655.1,
+  "GS": 1338.5,
+  "NY": 1678.3,
+  "CLE": 1658.1,
+  "CHA": 1700.1,
+  "BKN": 1178.0,
+  "ORL": 1589.4,
+  "MIA": 1527.5,
+  "ATL": 1623.8,
+  "TOR": 1561.4,
+  "BOS": 1768.0,
+  "PHI": 1547.5,
+  "CHI": 1267.3,
+  "DET": 1767.3,
+  "MEM": 1155.7,
+  "NO": 1374.3,
+  "MIL": 1281.4,
+  "WSH": 1087.5,
+  "UTAH": 1185.9,
+  "LAC": 1538.6,
+  "DAL": 1296.7,
+  "SA": 1846.1,
+  "PHX": 1552.1,
+  "SAC": 1277.7,
+  "POR": 1559.2,
+  "MIN": 1561.0,
+  "IND": 1258.9,
+  "DEN": 1746.4,
+  "STARS": 1543.1,
+  "WORLD": 1482.8,
+  "STRIPES": 1474.1
+ },
+ "margin_map": {
+  "a": -2.093,
+  "b": 0.0366,
+  "sd": 14.63,
+  "n": 1235
+ },
+ "backtest": {
+  "brier": 0.2104,
+  "naive_home_brier": 0.2469,
+  "n": 1235,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "nfl-ml": {
+  "wins": 3,
+  "losses": 8,
+  "n": 11,
+  "brier_model": 0.3041,
+  "brier_market": 0.2698,
+  "source": "results/weekend-compile-2026-10-17-18.md \u00a71-\u00a72 (graded by betmodel5 R4)"
+ }
+}

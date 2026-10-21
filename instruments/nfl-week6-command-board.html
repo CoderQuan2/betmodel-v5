@@ -1,0 +1,50 @@
+<div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;">
+<div style="font-weight:600;font-size:16px;">Sunday Command Board — NFL Week 6</div>
+<div style="color:var(--hatch-widget-muted);font-size:12px;margin-bottom:10px;">Wired to the four inactive windows. Prices: provisional NFL lane (reliability 0.30, paper only) vs live pull, Sat Oct 17 ~10:20 PM ET (ESPN odds feed). Windows refresh the lab data at each check.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;" id="wbtns"></div>
+<canvas id="tl" width="660" height="86" style="width:100%;display:block;background:var(--hatch-widget-surface-muted);border-radius:8px;"></canvas>
+<div id="cards" style="margin-top:10px;display:flex;flex-direction:column;gap:8px;"></div>
+<div style="color:var(--hatch-widget-muted);font-size:11px;margin-top:8px;">Bar chart in each card: market spread vs model fair spread. Red border = audit flag (gap ≥ 4 pts — instrument presumed wrong until the scorecard resolves it Sunday).</div>
+<script>
+(function(){
+var G=[{"away": "HOU", "home": "JAX", "win": "W1", "kick": "9:30 AM", "tag": "London", "p": 0.644, "fair": -4.7, "mkt": "JAX -2.5", "total": 41.5, "gap": 2.2, "pcov": 0.519, "audit": false}, {"away": "CHI", "home": "ATL", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.54, "fair": 1.9, "mkt": "CHI -1.5", "total": 52.5, "gap": 0.4, "pcov": 0.497, "audit": false}, {"away": "BAL", "home": "CLE", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.495, "fair": 4.7, "mkt": "BAL -3", "total": 39.5, "gap": 1.7, "pcov": 0.485, "audit": false}, {"away": "TEN", "home": "IND", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.689, "fair": -7.8, "mkt": "IND -7", "total": 44.5, "gap": 0.8, "pcov": 0.507, "audit": false}, {"away": "NYJ", "home": "NE", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.639, "fair": -4.4, "mkt": "NE -7.5", "total": 43.5, "gap": 3.1, "pcov": 0.474, "audit": false}, {"away": "NO", "home": "NYG", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.687, "fair": -7.6, "mkt": "NYG -1.5", "total": 46.5, "gap": 6.1, "pcov": 0.551, "audit": true}, {"away": "CAR", "home": "PHI", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.524, "fair": 2.9, "mkt": "CAR -3", "total": 39.5, "gap": 0.1, "pcov": 0.501, "audit": false}, {"away": "PIT", "home": "TB", "win": "W2", "kick": "1:00 PM", "tag": "", "p": 0.498, "fair": 4.5, "mkt": "PIT -2.5", "total": 38.5, "gap": 2.0, "pcov": 0.483, "audit": false}, {"away": "ARI", "home": "LAR", "win": "W3", "kick": "4:05 PM", "tag": "", "p": 0.67, "fair": -6.4, "mkt": "LAR -12.5", "total": 51.5, "gap": 6.1, "pcov": 0.449, "audit": true}, {"away": "LAC", "home": "KC", "win": "W3", "kick": "4:25 PM", "tag": "", "p": 0.791, "fair": -16.0, "mkt": "KC -7.5", "total": 41.5, "gap": 8.5, "pcov": 0.569, "audit": true}, {"away": "BUF", "home": "LV", "win": "W3", "kick": "4:25 PM", "tag": "", "p": 0.54, "fair": 1.9, "mkt": "BUF -5.5", "total": 53.5, "gap": 3.6, "pcov": 0.531, "audit": false}, {"away": "DAL", "home": "GB", "win": "W4", "kick": "8:20 PM", "tag": "SNF", "p": 0.615, "fair": -2.8, "mkt": "GB -1.5", "total": 53.5, "gap": 1.3, "pcov": 0.511, "audit": false}];
+var cur='ALL';
+var btns=[['ALL','All windows'],['W1','W1 · London 8:05 AM'],['W2','W2 · 1 PM block 11:35 AM'],['W3','W3 · Late 2:55 PM'],['W4','W4 · SNF 6:55 PM']];
+var wb=document.getElementById('wbtns');
+btns.forEach(function(b){ var el=document.createElement('button'); el.textContent=b[1];
+  el.style.cssText='font-size:12px;padding:5px 10px;border-radius:14px;border:1px solid var(--hatch-widget-border);background:var(--hatch-widget-surface);color:var(--hatch-widget-text);cursor:pointer;';
+  el.onclick=function(){ cur=b[0]; render(); paintBtns(); }; el.dataset.w=b[0]; wb.appendChild(el); });
+function paintBtns(){ Array.prototype.forEach.call(wb.children,function(el){ el.style.fontWeight=(el.dataset.w===cur)?'700':'400'; el.style.borderColor=(el.dataset.w===cur)?'#e07b39':'var(--hatch-widget-border)'; }); }
+// timeline
+(function(){ var cv=document.getElementById('tl'), ctx=cv.getContext('2d'); var dpr=window.devicePixelRatio||1;
+  var r=cv.getBoundingClientRect(); cv.width=Math.max(300,r.width)*dpr; cv.height=86*dpr;
+  var W=cv.width,H=cv.height; var tc=getComputedStyle(document.documentElement).getPropertyValue('--hatch-widget-text')||'#ddd';
+  function X(h){ return (40+(h-7.5)/13.6*(W/dpr-80))*dpr; }
+  ctx.strokeStyle='rgba(140,140,140,0.5)'; ctx.lineWidth=2*dpr; ctx.beginPath(); ctx.moveTo(X(7.8),44*dpr); ctx.lineTo(X(20.6),44*dpr); ctx.stroke();
+  var ev=[[8.08,'CHECK','W1',1],[9.5,'KICK 9:30','',0],[11.58,'CHECK','W2',1],[13,'KICK 1:00','',0],[14.92,'CHECK','W3',1],[16.4,'KICK 4:05/4:25','',0],[18.92,'CHECK','W4',1],[20.33,'KICK 8:20','',0]];
+  ctx.font='600 '+(10*dpr)+'px sans-serif'; ctx.textAlign='center';
+  ev.forEach(function(e){ var x=X(e[0]); ctx.beginPath(); ctx.arc(x,44*dpr,e[3]?6*dpr:4*dpr,0,7); ctx.fillStyle=e[3]?'#e07b39':'#8a8a8a'; ctx.fill();
+    ctx.fillStyle=tc; ctx.fillText(e[1], x, (e[3]?24:70)*dpr); if(e[2]) ctx.fillText(e[2], x, 82*dpr); });
+  ctx.textAlign='left'; })();
+function spreadBar(label,val,color,maxv){ var w=Math.min(100, Math.abs(val)/maxv*100);
+  return '<div style="display:flex;align-items:center;gap:6px;font-size:11px;"><span style="width:52px;color:var(--hatch-widget-muted);">'+label+'</span><div style="flex:1;height:9px;background:var(--hatch-widget-surface-muted);border-radius:4px;"><div style="width:'+w+'%;height:9px;background:'+color+';border-radius:4px;"></div></div><span style="width:44px;font-weight:600;">'+(val>0?'+':'')+val+'</span></div>'; }
+function render(){ var host=document.getElementById('cards'); host.innerHTML='';
+  G.filter(function(g){ return cur==='ALL'||g.win===cur; }).forEach(function(g){
+    var card=document.createElement('div');
+    card.style.cssText='border:1.5px solid '+(g.audit?'#d94f3d':'var(--hatch-widget-border)')+';border-radius:10px;padding:9px 11px;background:var(--hatch-widget-surface);';
+    var fairHome=g.fair; var mktNum=null; var m=g.mkt.match(/-(\d+\.?\d*)/); 
+    var gapTxt=(g.gap===null)?'—':'gap '+g.gap+' pts';
+    card.innerHTML='<div style="display:flex;justify-content:space-between;align-items:baseline;">'
+      +'<div style="font-weight:700;font-size:14px;">'+g.away+' @ '+g.home+(g.tag?' <span style="color:var(--hatch-widget-muted);font-weight:400;font-size:11px;">'+g.tag+'</span>':'')+'</div>'
+      +'<div style="font-size:11px;color:var(--hatch-widget-muted);">'+g.win+' · kick '+g.kick+' ET</div></div>'
+      +'<div style="font-size:12px;margin:4px 0 6px;">Market: <b>'+g.mkt+'</b> · total '+g.total+' &nbsp;|&nbsp; Model P(home win): <b>'+g.p.toFixed(3)+'</b> &nbsp;|&nbsp; '+gapTxt+(g.pcov?' &nbsp;|&nbsp; P(home cover, shrunk): <b>'+g.pcov.toFixed(3)+'</b>':'')
+      +(g.audit?' &nbsp;<span style="color:#d94f3d;font-weight:700;">AUDIT FLAG</span>':'')+'</div>'
+      + spreadBar('Market', (g.mkt.indexOf(g.home)===0? -1:1)*(m?parseFloat(m[1]):0), '#57b6ff', 17)
+      + spreadBar('Model', -fairHome, '#e07b39', 17)
+      +'<div style="font-size:10px;color:var(--hatch-widget-muted);margin-top:3px;">spread shown from the home team’s side (negative = home favoured)</div>';
+    host.appendChild(card); });
+}
+paintBtns(); render();
+})();
+</script>
+</div>
