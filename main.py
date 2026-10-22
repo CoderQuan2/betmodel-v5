@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BetFi 10 — the betmodel v5.2 mobile shell (public name: BetFi;
+BetFi 11 — the betmodel v5.3 mobile shell (public name: BetFi;
 internal id: Bet_Finder).
 
 The ENTIRE app in one file, per the Pilot's 1-script preference:
@@ -61,6 +61,24 @@ invented; UNPRICED markets print DO NOT BET with the named
 reason; the golden panel is never backfilled. Analysis only:
 the app never places a bet and never touches a sportsbook
 account.
+
+v11.0 (2026-10-22) — "The Feel Build" (Pilot order, from the
+beta reviews of v10): F1 bet identity first — every card leads
+with the FanDuel market name and the selection in plain words,
+carries a "Find it on FanDuel" path and a one-tap copy of the
+exact slip label, and the same bet_name() names the bet on the
+Board, in the Slip, in the finds and in the Lab ledger. F2 the
+Lab record rebuilt as a columnar ledger (Date · Bet · Odds ·
+Grade · Result · P/L) under per-book summary headers. F3
+motion + depth: AnimatedSwitcher view changes, cards animate
+in once per pull, skeleton placeholders during pulls, layered
+surfaces on the standing palette — no verdict, stance, tag or
+rubric wording changed. F4 speed: the shell paints first and
+the pricing pass runs on a worker; toggles and sorts update in
+place. F5 (engine v5.3): the GOLDEN bar at +2.0, the CLV &
+drift ledger on the Lab face (measurement only), and the
+Kelly staking advisory on the Slip (advice only — it never
+places or queues a bet).
 """
 
 from __future__ import annotations
@@ -85,9 +103,9 @@ import flet as ft
 
 PUBLIC_NAME = "BetFi"
 INTERNAL_ID = "Bet_Finder"
-APP_VERSION = "10.4.1"
-BUILD_NUMBER = 12
-DISPLAY_NAME = "BetFi 10"
+APP_VERSION = "11.0.0"
+BUILD_NUMBER = 13
+DISPLAY_NAME = "BetFi 11"
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
 # lanes shown on the Record screen (engine lane_record is safe for
@@ -673,6 +691,201 @@ def side_label(mkt: dict) -> str:
     return side
 
 
+
+
+# ------------------------------------------------------------------
+# BetFi 11 (F1) — bet identity. One bet, one name, everywhere: the
+# card face, the slip, the finds feed and the Lab ledger all read
+# a bet through bet_name(). The hierarchy follows FanDuel's own
+# order — MARKET first, then the selection in plain words, then
+# the game — because that is the order a bettor matches against
+# the FanDuel app in their other hand. Market names are the ones
+# FanDuel prints (verified against the live pull in the engine's
+# fd_parse_sport_page: "Moneyline", "Point Spread", "Total
+# Points", soccer "Moneyline (3-way)").
+
+_NFL_FULL_NAMES = {code: name for name, code
+                   in b5.FD_NFL_TEAM_CODES.items()}
+
+_STAT_WORDS = {"td": "TDs", "yds": "yards", "att": "attempts",
+               "rec": "receptions", "fg": "field goals"}
+
+
+def team_name(mkt: dict, side: str) -> str:
+    """The team's name as a bettor reads it. NFL slate entries
+    carry team codes (the engine routes by code); the full name
+    is restored from the engine's own code table. Every other
+    sport already carries full names as pulled."""
+    raw = mkt.get(side) or "?"
+    if mkt.get("sport") == "nfl":
+        return _NFL_FULL_NAMES.get(raw, raw)
+    return raw
+
+
+def _stat_words(stat: str | None) -> str:
+    """camelCase engine stat key -> plain words ('passingYards'
+    -> 'passing yards', 'passingTouchdowns' -> 'passing TDs')."""
+    if not stat:
+        return ""
+    words = re.sub(r"(?<!^)(?=[A-Z])", " ", str(stat)).split()
+    return " ".join(_STAT_WORDS.get(w.lower(), w.lower())
+                    for w in words)
+
+
+def _fmt_line(line) -> str:
+    """A line with its sign, in the app's minus: -3.5 -> '−3.5',
+    47.5 -> '+47.5' is NOT implied — callers pass signed lines."""
+    s = f"{float(line):+g}"
+    return s.replace("-", "−")
+
+
+def fd_market_name(mkt: dict) -> str:
+    """Line 1 of the card: the market's name as FanDuel prints
+    it — NOT the shell's display name and NOT the engine's key."""
+    market = mkt.get("market") or ""
+    if mkt.get("player") and mkt.get("stat"):
+        return f"{_stat_words(mkt['stat']).title()} — player prop"
+    if mkt.get("sport") == "soccer":
+        return {"moneyline": "Moneyline (3-way)",
+                "spread": "Handicap (spread)",
+                "alt-spread": "Handicap (spread)",
+                "totals": "Total goals (over/under)",
+                "alt-total": "Total goals (over/under)",
+                "btts": "Both Teams To Score"}.get(
+                    market, market)
+    return {"moneyline": "Moneyline",
+            "spread": "Point Spread",
+            "alt-spread": "Alternate Point Spread",
+            "totals": "Total Points",
+            "alt-total": "Alternate Total Points",
+            "btts": "Both Teams To Score",
+            "player-props": "Player Props",
+            "team-props": "Team Props",
+            "game-props": "Game Props",
+            "parlay": "Parlay"}.get(market, market)
+
+
+def selection_words(mkt: dict) -> str:
+    """Line 2 of the card: the selection in plain words, with
+    the line — the words on the FanDuel slip itself. Player
+    props are 'Over 249.5 passing yards' (the player leads on
+    line 1); a spread is the team with its signed line."""
+    side = mkt.get("side") or ""
+    line = mkt.get("line")
+    if mkt.get("player"):
+        stat = _stat_words(mkt.get("stat"))
+        direction = {"over": "Over", "under": "Under"}.get(
+            side, side.capitalize())
+        base = f"{direction} {line:g} {stat}".strip()
+        return base if line is not None else \
+            f"{direction} {stat}".strip()
+    if mkt.get("market") in ("totals", "alt-total"):
+        direction = {"over": "Over", "under": "Under"}.get(
+            side, side.capitalize())
+        unit = "total goals" if mkt.get("sport") == "soccer" \
+            else "total points"
+        return f"{direction} {line:g} {unit}" if line is not None \
+            else f"{direction} {unit}"
+    if mkt.get("market") in ("spread", "alt-spread"):
+        team = team_name(mkt, side if side in ("home", "away")
+                         else "home")
+        return f"{team} {_fmt_line(line)}" if line is not None \
+            else team
+    if mkt.get("market") == "btts":
+        return "Both teams to score — " + \
+            ("Yes" if side == "yes" else "No" if side == "no"
+             else side_label(mkt))
+    if side == "draw":
+        return "Draw"
+    if side in ("home", "away"):
+        return team_name(mkt, side)
+    return side_label(mkt)
+
+
+def bet_name(mkt: dict, verdict: dict | None = None) -> dict:
+    """The bet's one name, in every surface's shape:
+      headline   — card line 1 (the player on props, else the
+                   FanDuel market name)
+      selection  — card line 2, plain words with the line
+      matchup    — the game, as matchup_title prints it
+      slip_label — the exact label the COPY button puts on the
+                   clipboard: selection, price, market, matchup
+      fd_path    — the 'Find it on FanDuel' navigation path:
+                   league -> game -> market tab, in FanDuel's
+                   own words."""
+    verdict = verdict or {}
+    market = fd_market_name(mkt)
+    selection = selection_words(mkt)
+    matchup = matchup_title(mkt, verdict)
+    headline = mkt["player"] if mkt.get("player") else market
+    league = SPORT_LABELS.get(mkt.get("sport"),
+                              (mkt.get("sport") or "?").upper())
+    if mkt.get("player"):
+        tab = f"Player Props → {mkt['player']} " \
+              f"{_stat_words(mkt.get('stat'))}"
+    else:
+        tab = market
+    parts = [selection]
+    if mkt.get("price") is not None:
+        parts.append(f"({int(mkt['price']):+d})")
+    parts.append(f"· {market} · {matchup}")
+    return {"headline": headline, "market": market,
+            "selection": selection, "matchup": matchup,
+            "slip_label": " ".join(parts),
+            "fd_path": f"FanDuel → {league} → {matchup} → {tab}"}
+
+
+# ------------------------------------------------------------------
+# The clipboard (F1): ft.Clipboard is the Flet 1.0.4 service for
+# this (page.set_clipboard does not exist in the pinned build —
+# verified). main() registers its service here so the module-
+# level card builder can offer the copy button; a tap copies the
+# exact slip label for FanDuel search or a notes app.
+
+_CLIPBOARD = {"svc": None}
+
+
+def bind_clipboard(svc) -> None:
+    _CLIPBOARD["svc"] = svc
+
+
+def _copy_label(e, label: str):
+    svc = _CLIPBOARD["svc"]
+    page = getattr(e, "page", None)
+    if svc is None or page is None:
+        return
+    try:
+        page.run_task(svc.set, label)
+    except Exception:
+        return
+    try:
+        e.control.icon = ft.Icons.CHECK
+        e.control.update()
+    except Exception:
+        pass
+
+
+# ------------------------------------------------------------------
+# Skeletons (F3/F4): the shell paints these while a pull or the
+# first pricing pass is in flight — a shaped placeholder in the
+# card's own silhouette instead of a bare spinner or a dead
+# screen.
+
+
+def skeleton_card() -> ft.Container:
+    bar = lambda w, h, c=RAISED: ft.Container(  # noqa: E731
+        width=w, height=h, bgcolor=c, border_radius=4)
+    return ft.Container(
+        bgcolor=CARD_BG, border_radius=10, padding=12,
+        border=_border_all(1, BORDER),
+        content=ft.Column(spacing=8, controls=[
+            bar(150, 16), bar(230, 20), bar(190, 12, DIM),
+            bar(120, 26), bar(260, 12)]))
+
+
+def skeleton_cards(n: int = 3) -> list:
+    return [skeleton_card() for _ in range(n)]
+
 # ------------------------------------------------------------------
 # Shared display pieces: lines, tiles, pills, chips, skeletons
 
@@ -928,31 +1141,50 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
             + (f" · edge {edge_pts:+.1f} pts"
                if edge_pts is not None else ""),
             12, ACCENT, True))
-    face.append(ft.Text(matchup_title(mkt, verdict),
-                        size=16, color=INK, weight=ft.FontWeight.BOLD))
-    face.append(_line(f"#:{mkt.get('fd_event_id') or '—'} · "
-                      f"{market_display_name(mkt)} · "
-                      f"{SPORT_LABELS.get(mkt.get('sport'), mkt.get('sport', '?'))}",
-                      10, FAINT))
-    face.append(_line(f"Win {w} · Lose {l}   ({lane} lane record)",
-                      11, DIM))
-    _bits = []
+    # F1 identity block — the bet leads, the game follows:
+    # line 1 the FanDuel market name (the player on props),
+    # line 2 the selection in plain words with its price,
+    # line 3 the matchup + start time + league, then the
+    # FanDuel navigation path and the slip-label copy button.
+    name = bet_name(mkt, verdict)
+    face.append(ft.Text(name["headline"], size=17, color=INK,
+                        weight=ft.FontWeight.BOLD))
+    sel_row = [ft.Text(name["selection"], size=15, color=INK,
+                       weight=ft.FontWeight.BOLD)]
     if mkt.get("price") is not None:
         price = int(mkt["price"])
         if mkt.get("sport") == "soccer":
             # world readers price in decimal: decimal first,
             # American in parentheses (language report W4)
-            _bits.append(f"odds "
+            price_txt = (f"odds "
                          f"{b5.american_to_decimal(price):.2f} "
                          f"({price:+d})")
         else:
-            _bits.append(f"odds {price:+d}")
-    if mkt.get("line") is not None:
-        _bits.append(f"line {mkt['line']} · {side_label(mkt)}")
-    elif mkt.get("side"):
-        _bits.append(side_label(mkt))
-    if _bits:
-        face.append(_line(" · ".join(_bits), 12, INK))
+            price_txt = f"odds {price:+d}"
+        sel_row.append(ft.Text(price_txt, size=12, color=DIM))
+    face.append(ft.Row(spacing=8, controls=sel_row))
+    meta_bits = [name["matchup"]]
+    _dt = _market_dt(mkt)
+    if _dt is not None:
+        meta_bits.append(_dt.strftime("%a %b %d · %I:%M %p")
+                         .replace(" 0", " "))
+    meta_bits.append(SPORT_LABELS.get(
+        mkt.get("sport"), (mkt.get("sport") or "?").upper()))
+    face.append(_line(" · ".join(meta_bits), 11, DIM))
+    face.append(ft.Row(
+        spacing=4, vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        controls=[
+            ft.Text("Find it: ", size=11, color=FAINT,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text(name["fd_path"], size=11, color=DIM),
+            ft.IconButton(
+                icon=ft.Icons.CONTENT_COPY, icon_size=15,
+                icon_color=ACCENT, width=34, height=34,
+                tooltip="Copy the exact slip label",
+                on_click=lambda e, lbl=name["slip_label"]:
+                _copy_label(e, lbl))]))
+    face.append(_line(f"Win {w} · Lose {l}   ({lane} lane record)",
+                      11, DIM))
     # hero row: probability left (promoted), edge right, colored
     hero = [ft.Text(
         "Probability UNPRICED" if p is None else
@@ -1042,6 +1274,9 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
                   f"pulled at: {rec.get('pulled_at')}"]
     if mkt.get("market_time"):
         provenance.append(f"kickoff: {mkt['market_time']} (local)")
+    if mkt.get("fd_event_id"):
+        provenance.append(f"FanDuel event id: "
+                          f"{mkt['fd_event_id']}")
     if mkt.get("fd_market_id"):
         provenance.append(f"FanDuel market id: "
                             f"{mkt['fd_market_id']}")
@@ -1050,9 +1285,24 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
 
     stripe_color = UNPRICED_BORDER if state == "UNPRICED" else \
         VERDICT_BG.get(term, BORDER)
+    gradient = None
+    if term == "GOLDEN BET":
+        # the only gradient on a card: a restrained gold wash
+        # over the standing card surface (F3 depth pass)
+        gradient = ft.LinearGradient(
+            begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+            colors=["#191405", CARD_BG])
     return ft.Container(
-        bgcolor=CARD_BG, border_radius=10, padding=12,
-        border=ft.Border(left=ft.BorderSide(3, stripe_color)),
+        bgcolor=CARD_BG, gradient=gradient, border_radius=10,
+        padding=12,
+        shadow=ft.BoxShadow(blur_radius=14, spread_radius=0,
+                            color="#00000066",
+                            offset=ft.Offset(0, 4)),
+        border=ft.Border(
+            left=ft.BorderSide(3, stripe_color),
+            top=ft.BorderSide(1, BORDER),
+            right=ft.BorderSide(1, BORDER),
+            bottom=ft.BorderSide(1, BORDER)),
         content=ft.Column(spacing=6, controls=face + [
             _tile("PRICE ANATOMY", "where the probability came from",
                   anatomy),
@@ -1333,6 +1583,114 @@ SAME_GAME_REASON = ("Same-game parlay — no correlation engine "
                     "be a lie of precision.")
 
 
+
+# ------------------------------------------------------------------
+# The Lab ledger (F2). Columnar rows under per-book summary
+# headers; result pills always carry text AND colour (colour is
+# never the only signal). The two books render through the same
+# row builder but keep separate headers and separate totals —
+# they are never merged (lab law I-L2, the Room Rule).
+# Tabular numerals: Flet 1.0.4 exposes no font-feature switch,
+# so columns are fixed-width and right-aligned and every number
+# is formatted to a consistent shape — the columns line up by
+# construction.
+
+_RESULT_PILL = {
+    "WON": ("#065F46", "#34D399"),
+    "LOST": ("#7F1D1D", "#F87171"),
+    "PENDING": ("#1F2937", "#9CA3AF"),
+    "VOID": ("#334155", "#CBD5E1"),
+}
+
+_ODDS_RE = re.compile(r"[+-]\d{2,5}(?!\d)")
+
+
+def result_pill(result):
+    """The Result cell: a pill for the four settled states, a
+    plain cell for anything else (an aggregate record like
+    '3-3' is not a single bet's result and is never pill-washed
+    into one)."""
+    key = (result or "").strip().upper()
+    if key in _RESULT_PILL:
+        bg, fg = _RESULT_PILL[key]
+        return ft.Container(
+            bgcolor=bg, border_radius=20,
+            padding=ft.Padding(left=8, right=8, top=3, bottom=3),
+            content=ft.Text(key, size=11, color=fg,
+                            weight=ft.FontWeight.BOLD))
+    return ft.Text(result or "—", size=12, color=INK)
+
+
+def ticket_odds(ticket):
+    """The first American price printed in a recorded ticket
+    string — read off the record, never reconstructed."""
+    m = _ODDS_RE.search(ticket or "")
+    return m.group(0) if m else "—"
+
+
+def ledger_header():
+    return ft.Container(
+        padding=ft.Padding(left=8, right=8, top=4, bottom=4),
+        border=ft.Border(bottom=ft.BorderSide(1, BORDER)),
+        content=ft.Row(spacing=6, controls=[
+            ft.Text("DATE", size=10, color=FAINT, width=64,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text("BET", size=10, color=FAINT, expand=True,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text("ODDS", size=10, color=FAINT, width=48,
+                    text_align=ft.TextAlign.RIGHT,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text("GRADE", size=10, color=FAINT, width=42,
+                    text_align=ft.TextAlign.CENTER,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text("RESULT", size=10, color=FAINT, width=78,
+                    text_align=ft.TextAlign.CENTER,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text("P/L", size=10, color=FAINT, width=58,
+                    text_align=ft.TextAlign.RIGHT,
+                    weight=ft.FontWeight.BOLD)]))
+
+
+def ledger_row(date, bet, odds, grade, result, pl, zebra=False,
+               bet_note=None, pl_color=None):
+    bet_cell = [ft.Text(bet, size=12, color=INK, height=1.3)]
+    if bet_note:
+        bet_cell.append(ft.Text(bet_note, size=10, color=FAINT))
+    return ft.Container(
+        bgcolor=RAISED if zebra else CARD_BG, border_radius=6,
+        padding=ft.Padding(left=8, right=8, top=7, bottom=7),
+        content=ft.Row(
+            spacing=6,
+            vertical_alignment=ft.CrossAxisAlignment.START,
+            controls=[
+                ft.Text(date or "—", size=11, color=DIM,
+                        width=64),
+                ft.Column(spacing=1, expand=True,
+                          controls=bet_cell),
+                ft.Text(odds or "—", size=12, color=INK,
+                        width=48,
+                        text_align=ft.TextAlign.RIGHT),
+                ft.Text(grade or "—", size=12, color=DIM,
+                        width=42,
+                        text_align=ft.TextAlign.CENTER),
+                ft.Container(width=78,
+                             alignment=ft.Alignment(0, 0),
+                             content=result_pill(result)),
+                ft.Text(pl or "—", size=12,
+                        color=pl_color or INK, width=58,
+                        text_align=ft.TextAlign.RIGHT)]))
+
+
+def book_header(title, lines, edge):
+    return ft.Container(
+        bgcolor=RAISED, border_radius=10, padding=12,
+        border=_border_all(1, edge),
+        content=ft.Column(spacing=3, controls=(
+            [ft.Text(title, size=14, color=INK,
+                     weight=ft.FontWeight.BOLD)]
+            + [ft.Text(t, size=12, color=DIM, height=1.35)
+               for t in lines])))
+
 # ------------------------------------------------------------------
 # The app
 
@@ -1352,7 +1710,8 @@ def main(page: ft.Page):
                          "sports": {}},
              "parlay_legs": [], "view": "board",
              "board_seg": "all", "slip_seg": "parse",
-             "instrument_url": None}
+             "instrument_url": None, "animate_next": False,
+             "toggles_for": None, "bankroll": ""}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM)
@@ -1363,23 +1722,34 @@ def main(page: ft.Page):
     # Parlay / Solver behind a segment), Lab, the 3D shelf,
     # More — plus the More sub-views (Terms / Equations / Dev).
     cards_view = ft.Column(spacing=8)
-    betfi_view = ft.Column(spacing=8, visible=False)
+    betfi_view = ft.Column(spacing=8)
     board_view = ft.Column(spacing=8)
     parse_view = ft.Column(spacing=8)
-    parlay_view = ft.Column(spacing=8, visible=False)
-    solver_view = ft.Column(spacing=8, visible=False)
-    slip_view = ft.Column(spacing=8, visible=False)
-    record_view = ft.Column(spacing=8, visible=False)
-    stage_view = ft.Column(spacing=8, visible=False)
-    more_view = ft.Column(spacing=8, visible=False)
-    terms_view = ft.Column(spacing=8, visible=False)
-    equations_view = ft.Column(spacing=8, visible=False)
-    dev_view = ft.Column(spacing=8, visible=False)
+    parlay_view = ft.Column(spacing=8)
+    solver_view = ft.Column(spacing=8)
+    slip_view = ft.Column(spacing=8)
+    record_view = ft.Column(spacing=8)
+    stage_view = ft.Column(spacing=8)
+    more_view = ft.Column(spacing=8)
+    terms_view = ft.Column(spacing=8)
+    equations_view = ft.Column(spacing=8)
+    dev_view = ft.Column(spacing=8)
     views = {"board": board_view, "slip": slip_view,
              "lab": record_view, "stage": stage_view,
              "more": more_view, "terms": terms_view,
              "equations": equations_view, "dev": dev_view}
     TOP_VIEWS = ["board", "slip", "lab", "stage", "more"]
+
+    def _switcher(content):
+        return ft.AnimatedSwitcher(
+            content=content, duration=220,
+            transition=ft.AnimatedSwitcherTransition.FADE,
+            switch_in_curve=ft.AnimationCurve.DECELERATE,
+            switch_out_curve=ft.AnimationCurve.EASE_IN)
+
+    board_switcher = _switcher(cards_view)
+    slip_switcher = _switcher(parse_view)
+    view_switcher = _switcher(board_view)
 
     # ---- the two segmented controls (stock Flet segments) ----
 
@@ -1395,8 +1765,8 @@ def main(page: ft.Page):
         state["board_seg"] = seg
         board_seg_ctrl.selected = {seg}
         finds = seg == "finds"
-        cards_view.visible = not finds
-        betfi_view.visible = finds
+        board_switcher.content = betfi_view if finds \
+            else cards_view
         if finds:
             render_betfi()
         else:
@@ -1414,9 +1784,9 @@ def main(page: ft.Page):
     def show_slip_tool(tool: str):
         state["slip_seg"] = tool
         slip_seg_ctrl.selected = {tool}
-        parse_view.visible = tool == "parse"
-        parlay_view.visible = tool == "parlay"
-        solver_view.visible = tool == "solver"
+        slip_switcher.content = {"parse": parse_view,
+                                 "parlay": parlay_view,
+                                 "solver": solver_view}[tool]
         if tool == "parse":
             render_parse()
         elif tool == "parlay":
@@ -1557,11 +1927,42 @@ def main(page: ft.Page):
                          label_text_style=ft.TextStyle(size=11,
                                                        color=DIM))
 
+    def _animate_cards(cards):
+        # F3: cards fade/rise in once per fresh slate (boot,
+        # pull, price pass) — toggles, sorts and search never
+        # re-run this; render_cards consumes the flag.
+        cards = [c for c in cards
+                 if isinstance(c, ft.Container)]
+        if not cards:
+            return
+        for c in cards:
+            c.opacity = 0
+            c.offset = ft.Offset(0, 0.04)
+            c.animate_opacity = ft.Animation(
+                300, ft.AnimationCurve.DECELERATE)
+            c.animate_offset = ft.Animation(
+                300, ft.AnimationCurve.DECELERATE)
+        page.update()
+
+        def _flip():
+            import time as _time
+            for k, c in enumerate(cards):
+                if 0 < k <= 10:
+                    _time.sleep(0.03)   # stagger, capped (F3)
+                c.opacity = 1
+                c.offset = ft.Offset(0, 0)
+                try:
+                    c.update()
+                except Exception:
+                    pass
+        page.run_thread(_flip)
+
     def render_cards():
         cards_list.controls = []
-        cards_toggles.controls = []
         rec = state["slate"]
         if not rec:
+            cards_toggles.controls = []
+            state["toggles_for"] = None
             cards_count.value = ""
             cards_list.controls = [empty_full(
                 ft.Icons.CLOUD_OFF, "No pull yet",
@@ -1570,34 +1971,39 @@ def main(page: ft.Page):
             page.update()
             return
         entries = sorted_entries()
-        # toggle rows: the three view toggles + one switch per
-        # sport actually present in this pull
-        t = state["toggles"]
-        present = []
-        for m, _v, _e in entries:
-            s = m.get("sport")
-            if s not in present:
-                present.append(s)
-            t["sports"].setdefault(s, True)
-        order = ["nfl", "ncaaf", "nba", "nhl", "mlb", "soccer"]
-        present.sort(key=lambda s: order.index(s)
-                     if s in order else 99)
-        rows = [
-            _switch("Priced only", t["priced_only"],
-                    lambda e: _toggle("priced_only", e)),
-            _switch("Golden only", t["golden_only"],
-                    lambda e: _toggle("golden_only", e)),
-            _switch("Hide DO NOT BET", t["hide_dnb"],
-                    lambda e: _toggle("hide_dnb", e)),
-            _switch("Quick bets (\u22642h)", t["quick_only"],
-                    lambda e: _toggle("quick_only", e))]
-        for s in present:
-            rows.append(_switch(
-                SPORT_LABELS.get(s, (s or "?").upper()),
-                t["sports"].get(s, True),
-                lambda e, s=s: _toggle_sport(s, e)))
-        cards_toggles.controls = [ft.Row(spacing=12, wrap=True,
-                                         controls=rows)]
+        # F4: the toggle row is rebuilt only when
+        # the slate itself changes — sort, search and
+        # toggle events update the cards in place.
+        if state.get("toggles_for") != id(rec):
+            # toggle rows: the three view toggles + one switch per
+            # sport actually present in this pull
+            t = state["toggles"]
+            present = []
+            for m, _v, _e in entries:
+                s = m.get("sport")
+                if s not in present:
+                    present.append(s)
+                t["sports"].setdefault(s, True)
+            order = ["nfl", "ncaaf", "nba", "nhl", "mlb", "soccer"]
+            present.sort(key=lambda s: order.index(s)
+                         if s in order else 99)
+            rows = [
+                _switch("Priced only", t["priced_only"],
+                        lambda e: _toggle("priced_only", e)),
+                _switch("Golden only", t["golden_only"],
+                        lambda e: _toggle("golden_only", e)),
+                _switch("Hide DO NOT BET", t["hide_dnb"],
+                        lambda e: _toggle("hide_dnb", e)),
+                _switch("Quick bets (\u22642h)", t["quick_only"],
+                        lambda e: _toggle("quick_only", e))]
+            for s in present:
+                rows.append(_switch(
+                    SPORT_LABELS.get(s, (s or "?").upper()),
+                    t["sports"].get(s, True),
+                    lambda e, s=s: _toggle_sport(s, e)))
+            cards_toggles.controls = [ft.Row(spacing=12, wrap=True,
+                                             controls=rows)]
+            state["toggles_for"] = id(rec)
         shown = apply_toggles(entries)
         if len(shown) != len(entries):
             cards_count.value = f"{len(shown)} of {len(entries)} markets"
@@ -1640,6 +2046,8 @@ def main(page: ft.Page):
             cards_list.controls.append(ft.Text(
                 "Paging is display only — every market was priced "
                 "by the same checker pass.", size=10, color=FAINT))
+        if state.pop("animate_next", False):
+            _animate_cards(cards_list.controls)
         page.update()
 
     def _toggle(key, e):
@@ -1656,6 +2064,7 @@ def main(page: ft.Page):
 
     def on_pull(_e):
         status.value = "Pulling the live FanDuel menu…"
+        cards_list.controls = skeleton_cards()
         page.update()
         page.run_thread(_pull_worker)
 
@@ -1691,11 +2100,30 @@ def main(page: ft.Page):
                 status.value = (f"Pull didn't land — {err}. Wasn't "
                                 f"nothing assumed in its place; "
                                 f"every market stamps UNPRICED.")
+            state["animate_next"] = True
             render_cards()
             page.update()
         except Exception as e:
             status.value = (f"Pull failed on this device: "
                             f"{type(e).__name__}: {e}")
+            try:
+                page.update()
+            except Exception:
+                pass
+
+    def _boot_worker():
+        # The first pricing pass, off the paint path (F4).
+        try:
+            ensure_verdicts()
+            state["animate_next"] = True
+            if status.value == "Pricing the last pull…":
+                status.value = ""
+            if state["view"] == "board":
+                show_board_segment(state["board_seg"])
+            page.update()
+        except Exception as e:
+            status.value = (f"Pricing the last pull failed on "
+                            f"this device: {type(e).__name__}: {e}")
             try:
                 page.update()
             except Exception:
@@ -1707,6 +2135,7 @@ def main(page: ft.Page):
             page.update()
             return
         status.value = "Pricing the slate…"
+        cards_list.controls = skeleton_cards()
         page.update()
         page.run_thread(_price_worker)
 
@@ -1721,6 +2150,7 @@ def main(page: ft.Page):
             status.value = (f"Priced slate: {len(verdicts)} markets "
                             f"checked · {priced} PRICED · the rest "
                             f"stamped, never guessed.")
+            state["animate_next"] = True
             render_cards()
             page.update()
         except Exception as e:
@@ -1809,9 +2239,11 @@ def main(page: ft.Page):
                 "again.", size=12, color=DIM, height=1.35))
             page.update()
             return
-        disp = market_display_name(
-            {"market": parsed["market"], "sport": None})
+        disp = fd_market_name({"market": parsed["market"],
+                               "sport": None})
         rows.append(_kv_row("Market", disp))
+        if parsed.get("selection"):
+            rows.append(_kv_row("Bet", parsed["selection"]))
         if parsed.get("line") is not None:
             rows.append(_kv_row("Line", f"{parsed['line']:+g}"))
         if parsed.get("odds") is not None:
@@ -1839,6 +2271,11 @@ def main(page: ft.Page):
                 mkt, verdict, rec, game_quotes(markets),
                 edge_pts=market_edge_pts(mkt, verdict),
                 lane_ctx=lane_contexts(markets)))
+            parse_result.controls.append(_kelly_block(
+                verdict.get("p"), mkt.get("price"),
+                lane=market_lane(mkt),
+                cal_tag=verdict.get("cal_tag"),
+                priced=verdict.get("state") == "PRICED"))
         page.update()
 
     # ---------------- Parlay ----------------
@@ -1857,6 +2294,73 @@ def main(page: ft.Page):
                 and m.get("price") is not None
                 and v.get("p") is not None]
 
+    def _kelly_block(p, price, lane=None, cal_tag=None,
+                     priced=True):
+        # F5b display: the engine's Kelly organ advises a stake
+        # range; it never places or queues anything. Priced off
+        # the pessimistic number, quarter-Kelly, 5% hard cap,
+        # UNCALIBRATED lanes damped — every adjustment prints
+        # its reason (kelly_advice returns them).
+        rows = [ft.Text("KELLY SIZING — ADVISORY ONLY", size=11,
+                        color=ACCENT, weight=ft.FontWeight.BOLD),
+                ft.Text("Advice for your own slip — the app "
+                        "never places or queues a bet.",
+                        size=10, color=FAINT)]
+        bankroll = None
+        try:
+            bankroll = float(state.get("bankroll") or "") \
+                or None
+        except (TypeError, ValueError):
+            bankroll = None
+        adv = b5.kelly_advice(p, price, bankroll=bankroll,
+                              cal_tag=cal_tag, priced=priced)
+        if adv["state"] == "UNPRICED":
+            rows.append(ft.Text(adv["reasons"][0], size=12,
+                                color=DIM, height=1.35))
+        else:
+            stake = (f"Advised stake "
+                     f"{adv['stake_units']:.1f}u – "
+                     f"{adv['stake_units_hi']:.1f}u")
+            if adv["stake_dollars"] is not None:
+                stake += (f"  (${adv['stake_dollars']:,.0f} – "
+                          f"${adv['stake_dollars_hi']:,.0f} of "
+                          f"${bankroll:,.0f})")
+            rows.append(ft.Text(
+                stake, size=14, color=INK,
+                weight=ft.FontWeight.BOLD))
+            for reason in adv["reasons"]:
+                rows.append(ft.Text(reason, size=11, color=DIM,
+                                    height=1.35))
+            if lane:
+                mc = b5.kelly_mc_bands(p, price,
+                                       adv["stake_frac"],
+                                       lane=lane)
+            else:
+                mc = {"state": "insufficient scored history",
+                      "note": "no single lane prices this slip "
+                              "(mixed lanes) — no Monte Carlo "
+                              "bands"}
+            if mc.get("state") == "simulated":
+                rows.append(ft.Text(mc["basis"], size=11,
+                                    color=DIM, height=1.35))
+                rows.append(ft.Text(
+                    f"If this exact bet repeated "
+                    f"{mc['bets_per_path']} times at that "
+                    f"stake: median bankroll "
+                    f"×{mc['median_final']:.2f} · worst-decile "
+                    f"drawdown {mc['p90_max_dd_pct']:.0f}% · "
+                    f"ruin (under 10% of start) on "
+                    f"{mc['ruin_rate'] * 100:.0f}% of paths.",
+                    size=11, color=DIM, height=1.35))
+            else:
+                rows.append(ft.Text(
+                    f"Monte Carlo: {mc.get('note')}",
+                    size=11, color=FAINT, height=1.35))
+        return ft.Container(
+            bgcolor=CARD_BG, border=_border_all(1, BORDER),
+            border_radius=10, padding=12,
+            content=ft.Column(spacing=5, controls=rows))
+
     def render_parlay():
         parlay_view.controls = [screen_title(
             "Parlay", "Priced legs only — built from the last pull.")]
@@ -1873,8 +2377,10 @@ def main(page: ft.Page):
         legs = state["parlay_legs"]
         if legs:
             for i, (mkt, verdict) in enumerate(legs):
+                _nm = bet_name(mkt, verdict)
                 edge = market_edge_pts(mkt, verdict)
-                meta = (f"{int(mkt['price']):+d} · model "
+                meta = (f"{_nm['market']} · "
+                        f"{int(mkt['price']):+d} · model "
                         f"{verdict['p'] * 100:.1f}% · edge "
                         f"{edge:+.1f} pts" if edge is not None
                         else f"{int(mkt['price']):+d}")
@@ -1887,9 +2393,7 @@ def main(page: ft.Page):
                             ft.Column(spacing=2, tight=True,
                                       controls=[
                                           ft.Text(
-                                              verdict.get("desc")
-                                              or matchup_title(
-                                                  mkt, verdict),
+                                              _nm["selection"],
                                               size=13, color=INK,
                                               weight=ft.FontWeight
                                               .BOLD),
@@ -1919,14 +2423,22 @@ def main(page: ft.Page):
                 value=None, width=float("inf"),
                 options=[ft.DropdownOption(
                     key=str(i),
-                    text=f"{v.get('desc') or matchup_title(m, v)}"
-                         f" · {int(m['price']):+d}")
+                    text=bet_name(m, v)["slip_label"])
                     for i, m, v in avail],
                 on_select=lambda e: state.update(
                     {"parlay_pick": e.control.value}))
             parlay_view.controls.append(ft.Row(spacing=8, controls=[
                 dd, ft.Button("Add leg", on_click=on_add_leg)]))
             parlay_view.controls.append(parlay_msg)
+        parlay_view.controls.append(ft.Row(spacing=8, controls=[
+            ft.TextField(
+                label="Bankroll $ — for Kelly $ sizing",
+                value=state["bankroll"], width=220,
+                keyboard_type=ft.KeyboardType.NUMBER,
+                on_change=lambda e: state.update(
+                    {"bankroll": e.control.value or ""})),
+            ft.Button("Update sizing",
+                      on_click=lambda _e: render_parlay())]))
         if legs:
             parlay_view.controls.append(_combined_block(legs))
         page.update()
@@ -2003,6 +2515,17 @@ def main(page: ft.Page):
             "— treat it as a ceiling. Same-game legs never get a "
             "combined number at all (see the stamp rule in "
             "Terms).", size=10, color=FAINT, height=1.35))
+        _lanes = {market_lane(m) for m, _v in legs}
+        _lane = _lanes.pop() if len(_lanes) == 1 else None
+        _tag = None
+        if _lane:
+            try:
+                _tag = b5.calibration_tag(
+                    _lane, b5.load_scorecard())
+            except Exception:
+                _tag = None
+        rows.append(_kelly_block(c["model_p"], c["american"],
+                                 lane=_lane, cal_tag=_tag))
         return ft.Container(
             bgcolor=RAISED, border=_border_all(1, CHIP_BORDER),
             border_radius=10, padding=12,
@@ -2084,10 +2607,13 @@ def main(page: ft.Page):
         controls.append(result)
         if extra is not None:
             controls.append(extra)
-        return ft.Container(bgcolor=RAISED, border_radius=10,
-                            padding=12,
-                            content=ft.Column(spacing=8,
-                                              controls=controls))
+        return ft.Container(
+            bgcolor=RAISED, border_radius=10, padding=12,
+            border=_border_all(1, BORDER),
+            shadow=ft.BoxShadow(blur_radius=10, spread_radius=0,
+                                color="#00000055",
+                                offset=ft.Offset(0, 3)),
+            content=ft.Column(spacing=8, controls=controls))
 
     def on_solve_profit(_e):
         tp_result.controls = []
@@ -2297,10 +2823,14 @@ def main(page: ft.Page):
                 betfi_view.controls.append(build_market_card(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx))
-        counter_lines = [
-            f"{v.get('desc')} — {v.get('state')}"
-            + (f" · edge {e:+.1f} pts" if e is not None else "")
-            for _m, v, e in counter]
+        counter_lines = []
+        for _m, v, e in counter:
+            _nm = bet_name(_m, v)
+            counter_lines.append(
+                f"{_nm['selection']} · {_nm['market']} — "
+                f"{v.get('state')}"
+                + (f" · edge {e:+.1f} pts"
+                   if e is not None else ""))
         betfi_view.controls.append(ft.ExpansionTile(
             title=ft.Text(f"Checked — no edge ({len(counter)})",
                           size=12, color=FAINT,
@@ -2334,7 +2864,7 @@ def main(page: ft.Page):
                 "This build shipped without the lab evidence "
                 "pack, so the Lab shows no record at all — never "
                 "an empty ledger dressed as 0-0. The full BetFi "
-                "10 build carries the pack."))
+                "build carries the pack."))
             page.update()
             return
         exported = str(pack.get("exported_at") or "")
@@ -2388,7 +2918,7 @@ def main(page: ft.Page):
         record_view.controls.append(section_header(
             "LANE LEDGER — WIN / LOSE OF RECORD", ACCENT))
         card = b5.load_scorecard()
-        for lane in RECORD_LANES:
+        for _li, lane in enumerate(RECORD_LANES):
             w, l, src = b5.lane_record(lane)
             tag = b5.calibration_tag(lane, card)
             status_line = ""
@@ -2405,11 +2935,24 @@ def main(page: ft.Page):
                 except Exception as e:
                     status_line = f" · governor: {type(e).__name__}"
             uncal = b5.lane_uncalibrated(lane)
-            record_view.controls.append(ft.Text(
-                f"{lane}: Win {w} · Lose {l} ({src}) · tag {tag}"
-                f"{status_line}"
-                + (f" · {uncal}" if uncal else ""),
-                size=13, color=DIM, height=1.35))
+            record_view.controls.append(ft.Container(
+                bgcolor=RAISED if _li % 2 else CARD_BG,
+                border_radius=6,
+                padding=ft.Padding(left=8, right=8, top=7,
+                                   bottom=7),
+                content=ft.Column(spacing=2, controls=[
+                    ft.Row(spacing=8, controls=[
+                        ft.Text(lane, size=13, color=INK,
+                                width=110,
+                                weight=ft.FontWeight.BOLD),
+                        ft.Text(f"W {w} · L {l}", size=13,
+                                color=INK, width=92),
+                        ft.Text(f"tag {tag}{status_line}"
+                                + (f" · {uncal}" if uncal
+                                   else ""),
+                                size=11, color=DIM,
+                                expand=True)]),
+                    ft.Text(src, size=10, color=FAINT)])))
         entries = card.get("entries") or []
         record_view.controls.append(ft.Text(
             f"Scorecard entries on device: {len(entries)} · "
@@ -2418,25 +2961,33 @@ def main(page: ft.Page):
         # ---- the two books: separate sections, separate
         # totals, no combined figure anywhere (lab law I-L2) ----
         record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(section_header(
-            "LAB CARD — PAPER, SEALED BY THE PIPELINE", ACCENT))
         sealed = pack.get("sealed_cards") or []
         if sealed:
-            for sc in sealed:
-                record_view.controls.append(ft.Text(
-                    f"{sc.get('date')} · {sc.get('name')} — "
-                    f"straights {sc.get('record')} · net "
-                    f"{sc.get('net_units'):+.2f}u · ROI "
-                    f"{sc.get('roi_pct'):+.1f}% · CLV "
-                    f"{sc.get('clv')}", size=13, color=INK,
-                    height=1.35))
-            tot_rec = sealed[-1].get("record")
             tot_net = sum(float(sc.get("net_units") or 0)
                           for sc in sealed)
-            record_view.controls.append(ft.Text(
-                f"Lab Card total: {tot_rec} · {tot_net:+.2f}u "
-                f"(paper — no money ever moved on this book).",
-                size=12, color=DIM, height=1.35))
+            last = sealed[-1]
+            record_view.controls.append(book_header(
+                "LAB CARD — PAPER, SEALED BY THE PIPELINE",
+                [f"Sealed cards on file: {len(sealed)} · "
+                 f"latest {last.get('date')} · "
+                 f"{last.get('name')}",
+                 f"Record {last.get('record')} · net "
+                 f"{tot_net:+.2f}u · ROI "
+                 f"{last.get('roi_pct'):+.1f}% · CLV "
+                 f"{last.get('clv')} — paper: no money ever "
+                 f"moved on this book. Totals are this book's "
+                 f"alone."],
+                ACCENT))
+            record_view.controls.append(ledger_header())
+            for _si, sc in enumerate(sealed):
+                _net = float(sc.get("net_units") or 0)
+                record_view.controls.append(ledger_row(
+                    sc.get("date"), sc.get("name"), "—", "—",
+                    sc.get("record"), f"{_net:+.2f}u",
+                    zebra=bool(_si % 2),
+                    bet_note=f"CLV {sc.get('clv')}",
+                    pl_color=("#34D399" if _net > 0 else
+                              "#F87171" if _net < 0 else INK)))
         else:
             record_view.controls.append(ft.Text(
                 "No sealed card in this pack.", size=12,
@@ -2449,33 +3000,118 @@ def main(page: ft.Page):
                 f"cards and are not in any total above.",
                 size=11, color=FAINT, height=1.35))
         record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(section_header(
-            "PILOT BOOK — HIS PLAYS, THEIR OWN LINES", ACCENT))
         tickets = pack.get("pilot_book") or []
-        for t in tickets:
-            if t.get("result") == "PENDING":
-                line = (f"{t.get('date')} · {t.get('ticket')} · "
-                        f"{_money(t.get('stake') or 0)} · PENDING"
-                        f" — result not recorded")
-            else:
-                line = (f"{t.get('date')} · {t.get('ticket')} · "
-                        f"{_money(t.get('stake') or 0)} → "
-                        f"{_money(t.get('returned') or 0)} · "
-                        f"{t.get('result')} · net "
-                        f"{_signed_money(t.get('net') or 0)}")
-            record_view.controls.append(ft.Text(
-                line, size=13, color=INK, height=1.35))
         closed = pack.get("pilot_book_closed_line") or {}
+        pending = [t for t in tickets
+                   if (t.get("result") or "PENDING") == "PENDING"]
+        header_lines = []
         if closed:
-            record_view.controls.append(ft.Text(
-                f"Pilot Book closed line (as of "
-                f"{closed.get('as_of')}): "
+            header_lines.append(
+                f"Closed line (as of {closed.get('as_of')}): "
                 f"{_money(closed.get('staked') or 0)} staked → "
                 f"{_money(closed.get('returned') or 0)} returned "
                 f"· net {_signed_money(closed.get('net') or 0)} "
-                f"— this book only. The two books are never "
-                f"added together.", size=12, color=DIM,
+                f"— this book only.")
+        if pending:
+            _pend_stake = sum(float(t.get("stake") or 0)
+                              for t in pending)
+            header_lines.append(
+                f"{len(pending)} ticket(s) pending — "
+                f"{_money(_pend_stake)} staked, in no "
+                f"total until they settle.")
+        header_lines.append(
+            "His plays, graded on their own lines. The two "
+            "books are never added together.")
+        record_view.controls.append(book_header(
+            "PILOT BOOK — HIS PLAYS, THEIR OWN LINES",
+            header_lines, "#EAB308"))  # gold edge: the Pilot Book
+        record_view.controls.append(ledger_header())
+        for _ti, t in enumerate(tickets):
+            res = t.get("result") or "PENDING"
+            if res == "PENDING":
+                pl, plc = "—", None
+                note = (f"stake {_money(t.get('stake') or 0)}"
+                        f" · result not recorded")
+            else:
+                net = float(t.get("net") or 0)
+                pl = _signed_money(net)
+                plc = ("#34D399" if net > 0 else
+                       "#F87171" if net < 0 else INK)
+                note = (f"stake {_money(t.get('stake') or 0)}"
+                        f" → returned "
+                        f"{_money(t.get('returned') or 0)}")
+            record_view.controls.append(ledger_row(
+                t.get("date"), t.get("ticket"),
+                ticket_odds(t.get("ticket")), "—", res, pl,
+                zebra=bool(_ti % 2), bet_note=note,
+                pl_color=plc))
+        record_view.controls.append(ft.Divider(color=BORDER))
+        record_view.controls.append(section_header(
+            "CLV & DRIFT — MEASUREMENT, NOT A GRADE", ACCENT))
+        _pulls, _seen_at = [], set()
+        for _d in (b5.DATA, BUNDLED_DATA_DIR):
+            try:
+                _names = sorted(os.listdir(_d))
+            except Exception:
+                _names = []
+            for _fn in _names:
+                if (_fn.startswith("menu-fanduel-")
+                        and _fn.endswith(".json")):
+                    try:
+                        with open(os.path.join(_d, _fn)) as _fh:
+                            _rec_p = json.load(_fh)
+                    except Exception:
+                        continue
+                    if _rec_p.get("pulled_at") not in _seen_at:
+                        _seen_at.add(_rec_p.get("pulled_at"))
+                        _pulls.append(_rec_p)
+        _bets = [{"lane": e.get("lane") or "?", "price": None,
+                  "close_price": None} for e in entries]
+        try:
+            _clv = b5.clv_report(_pulls, _bets)
+        except Exception:
+            _clv = None
+        if _clv is None:
+            record_view.controls.append(ft.Text(
+                "The CLV ledger could not run on this device.",
+                size=12, color=DIM))
+        else:
+            _dr = _clv["drift"]
+            record_view.controls.append(ft.Text(
+                f"Menu pulls on file: {_dr['snapshots']} · "
+                f"markets seen {_dr['markets_seen']} · tracked "
+                f"across two or more pulls "
+                f"{_dr['markets_tracked']}.", size=12, color=DIM,
                 height=1.35))
+            if _dr["markets_tracked"]:
+                record_view.controls.append(ft.Text(
+                    f"Median |drift| across tracked markets: "
+                    f"{_dr['median_abs_drift_pts']:.2f} pts "
+                    f"(implied probability, first pull to last).",
+                    size=12, color=DIM, height=1.35))
+            else:
+                record_view.controls.append(ft.Text(
+                    "Drift: insufficient snapshots — one pull "
+                    "cannot show a market moving, so no drift "
+                    "is printed. Nothing is invented to fill "
+                    "this.", size=12, color=DIM, height=1.35))
+            for _lr in _clv["lanes"]:
+                _mean = (_lr["mean_clv_pts"]
+                         if _lr["mean_clv_pts"] is not None
+                         else None)
+                record_view.controls.append(ft.Text(
+                    f"CLV {_lr['lane']}: {_lr['closed']} closed "
+                    f"bets · {_lr['unclosed']} without a closing "
+                    f"snapshot · mean CLV "
+                    + (f"{_mean:+.2f} pts" if _mean is not None
+                       else "—")
+                    + f" · state: {_lr['state']}",
+                    size=12, color=DIM, height=1.35))
+            record_view.controls.append(ft.Text(
+                "CLV grades the price you got against the "
+                "close — it feeds no grade, verdict or tag "
+                "(engine v5.3, display only).", size=11,
+                color=FAINT, height=1.35))
         record_view.controls.append(ft.Divider(color=BORDER))
         record_view.controls.append(section_header(
             "KILL LEDGER — BARRED, READ-ONLY", ACCENT))
@@ -2537,7 +3173,7 @@ def main(page: ft.Page):
              "from a five-rung ladder. Verdicts are analysis, not "
              "instructions; the app never places a bet."),
             ("GOLDEN BET", "the strongest signal the app prints: "
-             "an A-band grade, an edge still +3.0 pts or better "
+             "an A-band grade, an edge still +2.0 pts or better "
              "at the pessimistic end of the model's band, and a "
              "named reason the market may be wrong. The "
              "calibration tag rides on the card but does not "
@@ -2950,6 +3586,12 @@ def main(page: ft.Page):
         page.services.append(url_launcher)
     except Exception:
         pass
+    clipboard = ft.Clipboard()
+    try:
+        page.services.append(clipboard)
+    except Exception:
+        pass
+    bind_clipboard(clipboard)
     stage_status = ft.Text("", size=12, color=DIM)
 
     def on_open_instrument(inst):
@@ -2986,7 +3628,7 @@ def main(page: ft.Page):
                 "Instruments not bundled in this edition",
                 "This build shipped without the instruments "
                 "folder, so the shelf prints its state instead "
-                "of a dead list. The full BetFi 10 build "
+                "of a dead list. The full BetFi build "
                 "carries all 11."))
             page.update()
             return
@@ -3036,8 +3678,7 @@ def main(page: ft.Page):
 
     def show(name: str):
         state["view"] = name
-        for key, view in views.items():
-            view.visible = key == name
+        view_switcher.content = views[name]
         if page.navigation_bar is not None:
             page.navigation_bar.selected_index = \
                 TOP_VIEWS.index(name) if name in TOP_VIEWS else 4
@@ -3064,14 +3705,21 @@ def main(page: ft.Page):
 
     # ---------------- assembly ----------------
 
-    header = ft.Column(spacing=4, controls=[
-        ft.Text(PUBLIC_NAME, size=22, color=INK,
-                weight=ft.FontWeight.BOLD),
-        ft.Text(f"{DISPLAY_NAME} · engine {ENGINE_VERSION} · "
-                f"analysis only — never places a bet",
-                size=11, color=FAINT),
-        stamp_ctrl,
-    ])
+    header = ft.Container(
+        gradient=ft.LinearGradient(
+            begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+            colors=["#0D1730", PAGE_BG]),
+        border=ft.Border(
+            bottom=ft.BorderSide(1, BORDER)),
+        padding=ft.Padding(left=2, right=2, top=2, bottom=8),
+        content=ft.Column(spacing=4, controls=[
+            ft.Text(PUBLIC_NAME, size=22, color=INK,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text(f"{DISPLAY_NAME} · engine {ENGINE_VERSION} · "
+                    f"analysis only — never places a bet",
+                    size=11, color=FAINT),
+            stamp_ctrl,
+        ]))
     cards_view.controls = [
         ft.Row(spacing=8, controls=[
             ft.Button("Pull Menu", on_click=on_pull),
@@ -3095,15 +3743,13 @@ def main(page: ft.Page):
         screen_title("Board",
                      "Every checked market on the current pull."),
         board_seg_ctrl,
-        cards_view, betfi_view]
+        board_switcher]
     slip_view.controls = [
         screen_title("Slip", "The ticket tools — read a slip, "
                              "build a parlay, size a stake."),
         slip_seg_ctrl,
-        parse_view, parlay_view, solver_view]
-    page.add(header, board_view, slip_view, record_view,
-             stage_view, more_view, terms_view, equations_view,
-             dev_view)
+        slip_switcher]
+    page.add(header, view_switcher)
 
     nav_bar_cls = getattr(ft, "NavigationBar", None)
     nav_dest_cls = (getattr(ft, "NavigationDestination", None)
@@ -3140,8 +3786,18 @@ def main(page: ft.Page):
     # stamped with its original pull time (the engine's stamp
     # calls it STALE past its own window) — stale is labelled
     # stale, never freshened.
-    show("board")
+    # F4 async first render: the shell — header, nav, the board
+    # frame and skeleton cards — paints immediately; the
+    # pricing pass runs on a worker thread and the real cards
+    # stream into the built shell when it lands.
+    state["view"] = "board"
+    if page.navigation_bar is not None:
+        page.navigation_bar.selected_index = 0
+    cards_list.controls = skeleton_cards()
+    if state["slate"]:
+        status.value = "Pricing the last pull…"
     page.update()
+    page.run_thread(_boot_worker)
 
 
 if __name__ == "__main__":

@@ -75,7 +75,8 @@ policy (Pilot order 2026-10-20): calibration no longer caps a
 grade and no longer gates a verdict — it prints as a tag
 (CALIBRATED / PROVISIONAL / UNCALIBRATED). GOLDEN BET requires an
 A-band grade, a priced market, the pessimistic-end edge at/above
-the golden threshold (+3.0 pts) and a named mechanism; BET HERE is
+the golden threshold (+2.0 pts since v5.3 — Pilot order
+2026-10-22; +3.0 through v5.2) and a named mechanism; BET HERE is
 an A- or B-band grade with positive edge and no hard condition.
 Grades: the GRADING.md rubric on the phi edge, moderately widened
 in v5.2 (see base_grade), + v4 modifiers (FRAGILE -2 when the
@@ -130,7 +131,7 @@ PHI_PATH = os.path.join(DATA, "v5-phi.json")
 HISTORY_PATH = os.path.join(DATA, "v5-lane-history.json")
 NFL_PRICING_PATH = os.path.join(DATA, "nfl-week6-pricing.json")
 
-ENGINE_VERSION = "5.2"   # v5.2 — stance tags + tag-not-cap grading
+ENGINE_VERSION = "5.3"   # v5.3 — golden bar +2.0 (Pilot 2026-10-22) + CLV/drift + Kelly organs
 # policy (Pilot order 2026-10-20); v5.1 was the verdict ladder
 
 # ------------------------------------------------------------------
@@ -1809,6 +1810,8 @@ def decision_gate(grade, lane, card, pessimistic_edge_pts, flags=None):
     return ("No Bet", fails) if fails else ("Bet", [])
 
 
+GOLDEN_THRESHOLD_PTS = 2.0  # v5.3 (Pilot order 2026-10-22): the
+# GOLDEN pessimistic-edge bar — +3.0 in v5.0-v5.2, loosened one notch
 VERDICT_LADDER = ["GOLDEN BET", "BET HERE", "RISK BET (BET)",
                   "RISK BET (DO NOT BET)", "DO NOT BET"]
 GOLDEN_BET, BET_HERE, RISK_BET_YES, RISK_BET_NO, DO_NOT_BET = \
@@ -1884,7 +1887,7 @@ def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
     frozen-rubric grade on the phi edge, the phi (graded) edge and
     the raw model edge in points, the band's pessimistic-end edge
     in points (the survival margin is that edge itself: > 0
-    survives, >= +3 survives with the golden spare, < +1 is the
+    survives, >= +2 survives with the golden spare (v5.3), < +1 is the
     thin-floor soft), the lane's calibration state / bench status
     / scored record, kill-ledger contact, the FRAGILE modifier,
     coherence flags against this card's game, and the
@@ -1908,7 +1911,8 @@ def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
     and a CALIBRATED lane earns no rung it did not earn on the
     numbers. The tag prints on the card instead (calibration_tag).
     (6) GOLDEN BET: A-band grade (A+/A/A-), priced, pessimistic-end
-    edge >= +3.0 (the golden threshold, unchanged), and a named
+    edge >= +2.0 (the golden threshold — +3.0 through v5.2,
+    loosened one notch by Pilot order 2026-10-22, v5.3), and a named
     mechanism — no soft condition outstanding. Absent the mechanism
     tag, a golden-shaped bet prints BET HERE with the withholding
     named. (7) BET HERE: A- or B-band grade, positive edge, no hard
@@ -1963,7 +1967,7 @@ def verdict_ladder(*, priced, grade, phi_edge_pts, raw_edge_pts,
     if not softs:
         golden_shape = (LADDER.index(grade) <= LADDER.index("A-")
                         and pess_edge_pts is not None
-                        and pess_edge_pts >= 3.0)
+                        and pess_edge_pts >= GOLDEN_THRESHOLD_PTS)
         if golden_shape and mechanism in MECHANISMS:
             return GOLDEN_BET, (
                 f"edge still {pess_edge_pts:+.1f} pts at the "
@@ -4169,6 +4173,326 @@ def cmd_fit_soccer(args):
           f"{fit['league']} | source: {fit['source']}")
 
 
+
+
+# ================================================================ v5.3 organs
+# Two display-side organs (Pilot order 2026-10-22, F5b). Neither
+# feeds a grade, a verdict, or a calibration tag in v5.3 — the
+# CLV ledger MEASURES, the Kelly engine ADVISES; the ladder
+# above is untouched by both. Each carries regression fixtures
+# in ADDENDUM v5.3, including perturbed-fixture checks.
+
+# ----------------------------------------------------------------
+# Organ 6 — the CLV & drift ledger (measurement)
+#
+# Closing line value is the market's own grade of a price: a bet
+# taken at a price whose implied probability is BELOW the final
+# pre-start price's implied probability beat the close. Sign
+# convention, stated once and used everywhere below:
+#   clv_pts = implied(close) - implied(bet), in points.
+# Positive = beat the close. Drift is the same differencing
+# applied to a market across timestamped menu pulls:
+#   drift_pts = implied(last snapshot) - implied(first snapshot).
+# The ledger invents nothing: a market seen in one pull has no
+# drift ("insufficient snapshots"), a bet with no closing
+# snapshot has no CLV ("no closing snapshot"), and an input that
+# is not a timestamped menu pull is classified, not forced.
+
+def clv_market_key(mkt):
+    """A market's identity across pulls: the FanDuel ids when
+    the pull carries them, the matchup + market + side + line
+    otherwise. The line is part of the identity — a spread that
+    moved from -3.5 to -4 is a different bet, and its drift is
+    reported as a line move on the sibling key, never silently
+    merged."""
+    ident = mkt.get("fd_market_id") or mkt.get("market")
+    return (mkt.get("sport"), mkt.get("fd_event_id"),
+            ident, mkt.get("side"), mkt.get("line"),
+            mkt.get("player"), mkt.get("stat"))
+
+
+def _pull_markets(pull):
+    """(pulled_at, markets) for a menu rec; (None, None) for
+    anything that is not a timestamped menu pull."""
+    if not isinstance(pull, dict):
+        return None, None
+    markets = pull.get("markets")
+    if not isinstance(markets, list) or not pull.get("pulled_at"):
+        return None, None
+    return pull["pulled_at"], markets
+
+
+def drift_ledger(pulls):
+    """Difference every market across the given pulls (menu
+    recs, any order — snapshots sort by pulled_at). Returns
+    {state, snapshots, markets_seen, markets_tracked, rows,
+    skipped}: each row carries the first/last price, the drift
+    in odds points and in implied-probability points, and its
+    own state — 'tracked' (>= 2 snapshots) or 'insufficient
+    snapshots' (seen once: the honest answer, printed)."""
+    snaps = []
+    skipped = 0
+    for pull in pulls or []:
+        at, markets = _pull_markets(pull)
+        if markets is None:
+            skipped += 1
+            continue
+        snaps.append((str(at), markets))
+    snaps.sort(key=lambda t: t[0])
+    seen = {}
+    for at, markets in snaps:
+        for mkt in markets:
+            if mkt.get("price") is None:
+                continue
+            seen.setdefault(clv_market_key(mkt), []).append(
+                (at, int(mkt["price"])))
+    rows = []
+    for key, hist in sorted(seen.items(), key=lambda kv: str(kv[0])):
+        first_at, first_price = hist[0]
+        last_at, last_price = hist[-1]
+        tracked = len(hist) >= 2
+        rows.append({
+            "key": key, "snapshots": len(hist),
+            "first_at": first_at, "last_at": last_at,
+            "first_price": first_price, "last_price": last_price,
+            "drift_odds_pts": last_price - first_price,
+            "drift_prob_pts": (implied_prob(last_price)
+                               - implied_prob(first_price)) * 100,
+            "state": "tracked" if tracked
+                     else "insufficient snapshots"})
+    tracked_rows = [r for r in rows if r["state"] == "tracked"]
+    return {"state": "ok" if snaps else "no menu pulls",
+            "snapshots": len(snaps), "skipped_inputs": skipped,
+            "markets_seen": len(rows),
+            "markets_tracked": len(tracked_rows),
+            "median_abs_drift_pts": (
+                statistics.median(abs(r["drift_prob_pts"])
+                                  for r in tracked_rows)
+                if tracked_rows else None),
+            "rows": rows}
+
+
+def clv_points(bet_price, close_price):
+    """One settled bet's CLV in implied-probability points
+    (module sign convention above). None when either price is
+    missing — an unclosed bet has no CLV, never an assumed one."""
+    if bet_price is None or close_price is None:
+        return None
+    return (implied_prob(int(close_price))
+            - implied_prob(int(bet_price))) * 100
+
+
+def lane_clv_ledger(bets):
+    """Per-lane CLV aggregates over settled bets
+    [{lane, price, close_price}]. A bet without a closing
+    snapshot is counted as unclosed and excluded from the
+    mean — the lane's state says how much of it is real:
+    'measured' (>= 1 closed bet) or 'insufficient settled
+    bets' (none closed: the honest answer, printed)."""
+    lanes = {}
+    for bet in bets or []:
+        lane = bet.get("lane") or "?"
+        row = lanes.setdefault(lane, {"lane": lane, "closed": 0,
+                                      "unclosed": 0, "clv_sum": 0.0,
+                                      "beats": 0})
+        pts = clv_points(bet.get("price"), bet.get("close_price"))
+        if pts is None:
+            row["unclosed"] += 1
+        else:
+            row["closed"] += 1
+            row["clv_sum"] += pts
+            if pts > 0:
+                row["beats"] += 1
+    out = []
+    for lane in sorted(lanes):
+        row = lanes[lane]
+        n = row["closed"]
+        out.append({
+            "lane": lane, "closed": n, "unclosed": row["unclosed"],
+            "mean_clv_pts": (row["clv_sum"] / n) if n else None,
+            "beat_rate": (row["beats"] / n) if n else None,
+            "state": "measured" if n else
+                     "insufficient settled bets"})
+    return out
+
+
+def clv_report(pulls, bets=None):
+    """The ledger as the Lab prints it: drift across the pulls
+    on file + per-lane CLV over the settled bets on file. Both
+    halves carry their own honest states; nothing is backfilled
+    from the other."""
+    return {"drift": drift_ledger(pulls),
+            "lanes": lane_clv_ledger(bets)}
+
+
+# ----------------------------------------------------------------
+# Organ 7 — the Kelly staking engine (money)
+#
+# Advisory stakes only: this organ never places, queues, or
+# approves a bet, and no grade or verdict reads it. Conventions,
+# stated once: stakes size off the PESSIMOTIC probability — the
+# band's pessimistic-end edge when the caller supplies it
+# (pess_edge_pts), else half the model's edge over the price
+# (the half-edge convention, named wherever it prints). The
+# default fraction is quarter-Kelly; a hard cap holds any single
+# bet at 5% of bankroll. An UNCALIBRATED lane's advice is damped
+# to half with the reason named; an UNPRICED bet gets no stake
+# at all, with its reason named. 1 unit = 1% of bankroll (the
+# app's standing unit law).
+
+KELLY_DEFAULT_FRACTION = 0.25
+KELLY_HARD_CAP_FRAC = 0.05
+KELLY_UNCALIBRATED_DAMP = 0.5
+_RUIN_FLOOR = 0.10   # a path is ruined under 10% of its start
+
+
+def _full_kelly(p, price):
+    dec = american_to_decimal(int(price))
+    b = dec - 1.0
+    if b <= 0:
+        return 0.0
+    return (b * p - (1.0 - p)) / b
+
+
+def kelly_advice(p, price, bankroll=None,
+                 fraction=KELLY_DEFAULT_FRACTION,
+                 pess_edge_pts=None, cal_tag=None, priced=True):
+    """The advisory stake for one priced bet, as a RANGE: the
+    low end sizes off the pessimistic probability, the high end
+    off the model's headline probability — both at the stated
+    Kelly fraction, both damped for an UNCALIBRATED lane, both
+    hard-capped. Returns a dict whose 'state' names the outcome
+    (ADVISORY / NO EDGE / UNPRICED) and whose 'reasons' prints
+    every adjustment applied — a stake never moves in silence."""
+    if not priced or p is None or price is None:
+        return {"state": "UNPRICED", "stake_frac": 0.0,
+                "stake_frac_hi": 0.0, "stake_units": 0.0,
+                "stake_units_hi": 0.0, "stake_dollars": None,
+                "stake_dollars_hi": None, "full_kelly": None,
+                "reasons": ["UNPRICED: no probability the system "
+                            "can defend — no stake is advised"]}
+    implied = implied_prob(int(price))
+    if pess_edge_pts is not None:
+        p_pess = implied + pess_edge_pts / 100.0
+        pess_basis = "the band's pessimistic-end edge"
+    else:
+        p_pess = implied + 0.5 * (p - implied)
+        pess_basis = "half-edge convention (no band supplied)"
+    f_lo = _full_kelly(p_pess, price)
+    f_hi = _full_kelly(p, price)
+    reasons = [f"sized off {pess_basis}: pessimistic "
+               f"P {p_pess * 100:.1f}% vs headline "
+               f"{p * 100:.1f}% at {int(price):+d}"]
+    stake_lo = max(0.0, fraction * f_lo)
+    stake_hi = max(0.0, fraction * f_hi)
+    if cal_tag == "UNCALIBRATED":
+        stake_lo *= KELLY_UNCALIBRATED_DAMP
+        stake_hi *= KELLY_UNCALIBRATED_DAMP
+        reasons.append("lane UNCALIBRATED — advisory damped "
+                       "to half, by rule")
+    capped = False
+    if stake_lo > KELLY_HARD_CAP_FRAC:
+        stake_lo = KELLY_HARD_CAP_FRAC
+        capped = True
+    if stake_hi > KELLY_HARD_CAP_FRAC:
+        stake_hi = KELLY_HARD_CAP_FRAC
+        capped = True
+    if capped:
+        reasons.append("hard cap: no single bet above "
+                       "5% of bankroll")
+    state = "ADVISORY" if stake_lo > 0 else "NO EDGE"
+    if state == "NO EDGE":
+        reasons.append("at the pessimistic number the Kelly "
+                       "fraction is not positive — the advised "
+                       "stake is zero")
+    return {"state": state,
+            "stake_frac": stake_lo, "stake_frac_hi": stake_hi,
+            "stake_units": stake_lo / 0.01,
+            "stake_units_hi": stake_hi / 0.01,
+            "stake_dollars": (bankroll * stake_lo
+                              if bankroll else None),
+            "stake_dollars_hi": (bankroll * stake_hi
+                                 if bankroll else None),
+            "full_kelly": f_hi, "reasons": reasons}
+
+
+def lane_history_entry(lane, history=None):
+    """One lane's scored-history entry (v5-lane-history.json via
+    HISTORY_PATH), or None. `history` may inject a parsed dict
+    (the regression's fixtures do)."""
+    if history is None:
+        try:
+            with open(HISTORY_PATH) as f:
+                history = json.load(f)
+        except Exception:
+            return None
+    if isinstance(history, dict):
+        entry = history.get(lane)
+        if isinstance(entry, dict) and entry.get("n"):
+            return entry
+    return None
+
+
+def kelly_mc_bands(p, price, stake_frac, lane=None, history=None,
+                   n_bets=50, n_paths=400, seed=20261022):
+    """Monte Carlo drawdown / ruin bands for repeating this bet
+    at this stake fraction, simulated from the lane's scored
+    history: the per-bet win probability blends the model's p
+    with the lane's empirical rate, 50/50 (named wherever it
+    prints — the lane's record is evidence about the model,
+    not a substitute for it). A lane with < 10 scored bets has
+    no bands: state 'insufficient scored history', printed,
+    never simulated from air. Ruin = the path's bankroll falls
+    below 10% of its start at any point (stated definition).
+    Deterministic under the seed."""
+    entry = lane_history_entry(lane, history) if lane else None
+    if entry is None or int(entry.get("n") or 0) < 10:
+        return {"state": "insufficient scored history",
+                "lane": lane,
+                "note": "no Monte Carlo bands — the lane has "
+                        "fewer than 10 scored bets on file"}
+    wins = int(entry.get("wins") or 0)
+    n = int(entry["n"])
+    p_sim = 0.5 * p + 0.5 * (wins / n)
+    dec = american_to_decimal(int(price))
+    b = dec - 1.0
+    rng = random.Random(seed)
+    finals, max_dds, ruins = [], [], 0
+    for _ in range(n_paths):
+        bank = peak = 1.0
+        max_dd = 0.0
+        ruined = False
+        for _ in range(n_bets):
+            if rng.random() < p_sim:
+                bank *= (1.0 + stake_frac * b)
+            else:
+                bank *= (1.0 - stake_frac)
+            peak = max(peak, bank)
+            max_dd = max(max_dd, (peak - bank) / peak)
+            if bank < _RUIN_FLOOR:
+                ruined = True
+        finals.append(bank)
+        max_dds.append(max_dd)
+        ruins += 1 if ruined else 0
+    finals.sort()
+    max_dds.sort()
+
+    def _pct(xs, q):
+        return xs[min(len(xs) - 1, max(0, int(q * len(xs))))]
+
+    return {"state": "simulated", "lane": lane,
+            "basis": f"lane {lane} scored {wins}-{n - wins} "
+                     f"(n={n}); per-bet P blended 50/50 model "
+                     f"({p * 100:.1f}%) / empirical "
+                     f"({wins / n * 100:.1f}%) = {p_sim * 100:.1f}%",
+            "p_sim": p_sim, "paths": n_paths, "bets_per_path": n_bets,
+            "median_final": _pct(finals, 0.5),
+            "p10_final": _pct(finals, 0.1),
+            "p90_final": _pct(finals, 0.9),
+            "median_max_dd_pct": _pct(max_dds, 0.5) * 100,
+            "p90_max_dd_pct": _pct(max_dds, 0.9) * 100,
+            "ruin_rate": ruins / n_paths}
+
 # ================================================================ regression
 # MODEL-V5.md's suite. R1-R3 reuse the v4 engines (their criteria are
 # v5's: the overhaul must not resurrect the grades v4 killed). R4 is
@@ -4568,7 +4892,8 @@ def run_regression():
                "PROVISIONAL and CALIBRATED lanes climb on grade "
                "and edge alone, and the tag prints on the card. "
                "GOLDEN BET (v5.2): A-band grade, priced, "
-               "pessimistic-end edge >= +3.0, named mechanism, "
+               "pessimistic-end edge >= +2.0 (v5.3 — Pilot order "
+               "2026-10-22; the bar was +3.0 through v5.2), named mechanism, "
                "no soft condition outstanding. BET HERE: A/B-band "
                "grade, positive edge, no hard or soft condition. "
                "The checks below assert the v5.2 mapping.")
@@ -4585,7 +4910,7 @@ def run_regression():
                "above, the saved FanDuel pull, and the graded "
                "NFL Week 6 slate in data/v5-phi.json — every "
                "PRICED NFL verdict carries the UNCALIBRATED tag, "
-               "every GOLDEN BET satisfies the v5.2 golden "
+               "every GOLDEN BET satisfies the golden (v5.3 bar) "
                "criteria, and every UNPRICED verdict is DO NOT BET.")
     base7 = dict(priced=True, grade="B", phi_edge_pts=3.5,
                  raw_edge_pts=4.0, pess_edge_pts=2.0,
@@ -4820,6 +5145,164 @@ def run_regression():
                f"floor and the grade just below it: {bands_ok}")
     out.append(f"- **ADDENDUM v5.2 checks: "
                f"{'PASS' if r52_ok else 'FAIL'}**")
+    out.append("")
+    # ---------- ADDENDUM v5.3: golden bar +2.0, CLV/drift
+    # ledger, Kelly staking engine (Pilot order 2026-10-22)
+    out.append(f"## ADDENDUM v5.3 — golden threshold +2.0, "
+               f"CLV & drift ledger, Kelly staking engine "
+               f"(engine {ENGINE_VERSION})")
+    out.append("")
+    out.append("Pilot order 2026-10-22 (F5): (a) the GOLDEN "
+               "pessimistic-edge bar moves from +3.0 to +2.0 phi "
+               "points — grade A, priced, named mechanism and "
+               "no softs unchanged; GRADING.md amended in "
+               "writing the same day. (b) Two display-side "
+               "organs: the CLV & drift ledger (measurement — "
+               "never an input to a grade, verdict or tag) and "
+               "the Kelly staking engine (advisory — never "
+               "places or queues a bet). Criterion (stated "
+               "before numbers): the boundary cases below land "
+               "exactly on the +2.0 bar; the CLV/drift fixtures "
+               "reproduce their hand-computed values AND fail "
+               "on deliberately perturbed fixtures; the Kelly "
+               "fixtures reproduce hand-computed fractions, "
+               "the 5% hard cap binds, the UNCALIBRATED damp "
+               "halves, and the Monte Carlo bands are "
+               "deterministic under their seed and move when "
+               "the lane history is perturbed.")
+    r53_ok = True
+    gbase = dict(priced=True, grade="A", phi_edge_pts=6.5,
+                 raw_edge_pts=7.0, cal_state="CALIBRATED",
+                 benched=False, killed=False, fragile=False,
+                 bias_favours=False, record_less=False,
+                 coherence_flags=[], mechanism="model-structural")
+    golden_cases = [
+        ("pess +2.4, grade A, mechanism, no softs",
+         {**gbase, "pess_edge_pts": 2.4}, GOLDEN_BET),
+        ("pess +2.0 exactly — the v5.3 bar is inclusive",
+         {**gbase, "pess_edge_pts": 2.0}, GOLDEN_BET),
+        ("pess +1.9 — one notch under the bar",
+         {**gbase, "pess_edge_pts": 1.9}, BET_HERE),
+        ("pess +2.4 with a soft (FRAGILE) — no golden at "
+         "any edge", {**gbase, "pess_edge_pts": 2.4,
+                      "fragile": True}, RISK_BET_YES),
+        ("pess +12.0 with a soft (record-less lane)",
+         {**gbase, "pess_edge_pts": 12.0, "record_less": True},
+         RISK_BET_YES),
+        ("pess +2.4, no mechanism named — withheld",
+         {**gbase, "pess_edge_pts": 2.4, "mechanism": None},
+         BET_HERE),
+    ]
+    for name_g, kw_g, want_g in golden_cases:
+        got_g, _why_g = verdict_ladder(**kw_g)
+        ok_g = got_g == want_g
+        r53_ok = r53_ok and ok_g
+        out.append(f"- golden boundary {name_g}: **{got_g}** "
+                   f"({'as specced' if ok_g else 'EXPECTED ' + want_g})")
+    # ---- CLV & drift fixtures (hand-computed; perturbed twins
+    # must NOT reproduce the expected values)
+    _mk = lambda price: {"sport": "nfl", "fd_event_id": 1,  # noqa: E731
+                         "fd_market_id": "m1", "market": "spread",
+                         "side": "home", "line": -3.5,
+                         "price": price}
+    pull_a = {"pulled_at": "2026-10-19T12:00:00+00:00",
+              "markets": [_mk(-110)]}
+    pull_b = {"pulled_at": "2026-10-19T13:00:00+00:00",
+              "markets": [_mk(-120)]}
+    pull_b_bad = {"pulled_at": "2026-10-19T13:00:00+00:00",
+                  "markets": [_mk(-105)]}
+    d_fix = drift_ledger([pull_a, pull_b])
+    row_fix = d_fix["rows"][0]
+    drift_ok = (d_fix["markets_tracked"] == 1
+                and row_fix["state"] == "tracked"
+                and abs(row_fix["drift_prob_pts"] - 2.16) < 0.01)
+    d_pert = drift_ledger([pull_a, pull_b_bad])
+    drift_ok = drift_ok and (
+        abs(d_pert["rows"][0]["drift_prob_pts"] - 2.16) > 0.5
+        and abs(d_pert["rows"][0]["drift_prob_pts"]
+                - (-1.16)) < 0.01)
+    r53_ok = r53_ok and drift_ok
+    out.append(f"- drift fixture: -110 -> -120 across two pulls "
+               f"is +2.16 pts tracked; perturbed close (-105) "
+               f"does not reproduce it: {drift_ok}")
+    d_one = drift_ledger([pull_a])
+    insuf_ok = (d_one["markets_tracked"] == 0
+                and d_one["rows"][0]["state"]
+                == "insufficient snapshots")
+    d_skip = drift_ledger([{"games": []}])
+    insuf_ok = insuf_ok and d_skip["skipped_inputs"] == 1 \
+        and d_skip["state"] == "no menu pulls"
+    r53_ok = r53_ok and insuf_ok
+    out.append(f"- drift honesty: one pull => 'insufficient "
+               f"snapshots'; a non-pull input is classified, "
+               f"not forced: {insuf_ok}")
+    clv_ok = abs(clv_points(-110, -130) - 4.14) < 0.01 \
+        and clv_points(-110, None) is None
+    lanes_fix = lane_clv_ledger([
+        {"lane": "nfl-ml", "price": -110, "close_price": -130},
+        {"lane": "nfl-ml", "price": 150, "close_price": 120},
+        {"lane": "props", "price": -110, "close_price": None}])
+    by_lane = {r["lane"]: r for r in lanes_fix}
+    clv_ok = clv_ok and (
+        abs(by_lane["nfl-ml"]["mean_clv_pts"] - 4.80) < 0.01
+        and by_lane["nfl-ml"]["beat_rate"] == 1.0
+        and by_lane["props"]["state"]
+        == "insufficient settled bets")
+    r53_ok = r53_ok and clv_ok
+    out.append(f"- CLV fixtures: -110 into a -130 close is "
+               f"+4.14 pts; lane mean/beat-rate aggregate; an "
+               f"unclosed lane states 'insufficient settled "
+               f"bets': {clv_ok}")
+    # ---- Kelly fixtures (hand-computed above in the organ's
+    # docstring conventions)
+    k_fix = kelly_advice(0.60, -110, bankroll=1000)
+    kelly_ok = (k_fix["state"] == "ADVISORY"
+                and abs(k_fix["stake_frac"] - 0.02) < 1e-9
+                and abs(k_fix["stake_units"] - 2.0) < 1e-9
+                and abs(k_fix["stake_dollars"] - 20.0) < 1e-9
+                and abs(k_fix["stake_frac_hi"] - 0.04) < 1e-9)
+    k_pert = kelly_advice(0.55, -110, bankroll=1000)
+    kelly_ok = kelly_ok and abs(k_pert["stake_frac"] - 0.02) > 0.005
+    r53_ok = r53_ok and kelly_ok
+    out.append(f"- Kelly fixture: p .60 at -110 sizes 2.0u "
+               f"($20 of $1000) at the pessimistic end, 4.0u at "
+               f"the headline; perturbed p (.55) does not "
+               f"reproduce it: {kelly_ok}")
+    k_cap = kelly_advice(0.95, -110)
+    k_damp = kelly_advice(0.60, -110, cal_tag="UNCALIBRATED")
+    k_unp = kelly_advice(None, -110, priced=False)
+    k_noedge = kelly_advice(0.50, -110)
+    kelly2_ok = (k_cap["stake_frac"] == KELLY_HARD_CAP_FRAC
+                 and abs(k_damp["stake_frac"] - 0.01) < 1e-9
+                 and any("UNCALIBRATED" in r
+                         for r in k_damp["reasons"])
+                 and k_unp["state"] == "UNPRICED"
+                 and k_unp["stake_frac"] == 0.0
+                 and k_noedge["state"] == "NO EDGE"
+                 and k_noedge["stake_frac"] == 0.0)
+    r53_ok = r53_ok and kelly2_ok
+    out.append(f"- Kelly guards: 5% hard cap binds at p .95; "
+               f"UNCALIBRATED halves with the reason named; "
+               f"UNPRICED and no-edge advise zero: {kelly2_ok}")
+    mc_a = kelly_mc_bands(0.55, -110, 0.02, lane="nfl-ml")
+    mc_b = kelly_mc_bands(0.55, -110, 0.02, lane="nfl-ml")
+    mc_ok = (mc_a["state"] == "simulated" and mc_a == mc_b
+             and 0.0 <= mc_a["ruin_rate"] <= 1.0
+             and mc_a["median_max_dd_pct"] >= 0.0)
+    mc_pert = kelly_mc_bands(
+        0.55, -110, 0.02, lane="nfl-ml",
+        history={"nfl-ml": {"wins": 8, "losses": 3, "n": 11}})
+    mc_ok = mc_ok and mc_pert["median_final"] != mc_a["median_final"]
+    mc_none = kelly_mc_bands(0.55, -110, 0.02, lane="nba-ml")
+    mc_ok = mc_ok and mc_none["state"] == \
+        "insufficient scored history"
+    r53_ok = r53_ok and mc_ok
+    out.append(f"- Kelly MC: bands simulate from the nfl-ml "
+               f"scored history, deterministic under the seed, "
+               f"move under a perturbed history, and refuse "
+               f"an unscored lane: {mc_ok}")
+    out.append(f"- **ADDENDUM v5.3 checks: "
+               f"{'PASS' if r53_ok else 'FAIL'}**")
     out.append("")
     text = "\n".join(out)
     path = os.path.join(RESULTS, "model-v5-regression.md")
