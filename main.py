@@ -103,8 +103,8 @@ import flet as ft
 
 PUBLIC_NAME = "BetFi"
 INTERNAL_ID = "Bet_Finder"
-APP_VERSION = "11.0.0"
-BUILD_NUMBER = 13
+APP_VERSION = "11.0.1"
+BUILD_NUMBER = 14
 DISPLAY_NAME = "BetFi 11"
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
@@ -1758,12 +1758,12 @@ def main(page: ft.Page):
             segments=[ft.Segment(
                 value=v, label=ft.Text(lbl, size=13))
                 for v, lbl in options],
-            selected={selected}, allow_empty_selection=False,
+            selected=[selected], allow_empty_selection=False,
             on_change=handler)
 
     def show_board_segment(seg: str):
         state["board_seg"] = seg
-        board_seg_ctrl.selected = {seg}
+        board_seg_ctrl.selected = [seg]
         finds = seg == "finds"
         board_switcher.content = betfi_view if finds \
             else cards_view
@@ -1774,8 +1774,8 @@ def main(page: ft.Page):
         page.update()
 
     def on_board_seg(e):
-        sel = e.control.selected or set()
-        show_board_segment(sel.pop() if sel else "all")
+        sel = e.control.selected or []
+        show_board_segment(next(iter(sel)) if sel else "all")
 
     board_seg_ctrl = _segmented(
         [("all", "All cards"), ("finds", "Finds")], "all",
@@ -1783,7 +1783,7 @@ def main(page: ft.Page):
 
     def show_slip_tool(tool: str):
         state["slip_seg"] = tool
-        slip_seg_ctrl.selected = {tool}
+        slip_seg_ctrl.selected = [tool]
         slip_switcher.content = {"parse": parse_view,
                                  "parlay": parlay_view,
                                  "solver": solver_view}[tool]
@@ -1796,8 +1796,8 @@ def main(page: ft.Page):
         page.update()
 
     def on_slip_seg(e):
-        sel = e.control.selected or set()
-        show_slip_tool(sel.pop() if sel else "parse")
+        sel = e.control.selected or []
+        show_slip_tool(next(iter(sel)) if sel else "parse")
 
     slip_seg_ctrl = _segmented(
         [("parse", "Parse"), ("parlay", "Parlay"),
