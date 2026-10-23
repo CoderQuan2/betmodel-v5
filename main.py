@@ -103,8 +103,8 @@ import flet as ft
 
 PUBLIC_NAME = "BetFi"
 INTERNAL_ID = "Bet_Finder"
-APP_VERSION = "11.0.1"
-BUILD_NUMBER = 14
+APP_VERSION = "11.0.2"
+BUILD_NUMBER = 15
 DISPLAY_NAME = "BetFi 11"
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
@@ -200,15 +200,32 @@ def snapshot_path() -> str:
 
 
 def engine_fingerprint() -> str:
-    """Short hash + size of the bundled engine file — a stale build
-    shows a different fingerprint on the Dev screen."""
+    """Short hash + size of the running engine, computed from the
+    imported module itself. The packaged Android build does not keep
+    betmodel5.py beside main.py on disk (the APP_DIR open raised
+    FileNotFoundError on-device), so resolve the engine through the
+    import system — module file, then spec origin, then source —
+    and hash what is actually running. A stale build shows a
+    different fingerprint on the Dev screen."""
     try:
-        path = os.path.join(APP_DIR, "betmodel5.py")
-        with open(path, "rb") as f:
-            blob = f.read()
+        blob = None
+        path = getattr(b5, "__file__", None)
+        if path and os.path.isfile(path):
+            with open(path, "rb") as f:
+                blob = f.read()
+        if blob is None:
+            import importlib.util
+            spec = importlib.util.find_spec("betmodel5")
+            if (spec is not None and spec.origin
+                    and os.path.isfile(spec.origin)):
+                with open(spec.origin, "rb") as f:
+                    blob = f.read()
+        if blob is None:
+            import inspect
+            blob = inspect.getsource(b5).encode("utf-8")
         return f"sha256 {hashlib.sha256(blob).hexdigest()[:12]}" \
                f" · {len(blob)} bytes"
-    except OSError as e:
+    except Exception as e:
         return f"unreadable ({type(e).__name__})"
 
 

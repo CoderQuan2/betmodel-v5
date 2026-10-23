@@ -111,8 +111,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 11.0.0", app.APP_VERSION == "11.0.0")
-    check("BUILD_NUMBER is 13", app.BUILD_NUMBER == 13)
+    check("APP_VERSION is 11.0.0", app.APP_VERSION == "11.0.2")
+    check("BUILD_NUMBER is 15", app.BUILD_NUMBER == 15)
     check("DISPLAY_NAME is BetFi 11",
           app.DISPLAY_NAME == "BetFi 11")
     check("engine is v5.3", b5.ENGINE_VERSION == "5.3")
