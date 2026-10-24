@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BetFi 11 harness — headless checks for the shell (main.py)
+"""BetFi Xii harness — headless checks for the shell (main.py)
 against the shipped engine + evidence pack.
 
 Fresh for v11 (the 10.4.1 harness was builder-ephemeral and is
@@ -28,7 +28,7 @@ from types import SimpleNamespace
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-STORAGE = tempfile.mkdtemp(prefix="betfi11-harness-")
+STORAGE = tempfile.mkdtemp(prefix="betfixii-harness-")
 os.environ["FLET_APP_STORAGE_DATA"] = STORAGE
 MENU = os.path.join(HERE, "data", "menu-fanduel-20261019-1232.json")
 with open(MENU) as f:
@@ -111,11 +111,15 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 11.0.0", app.APP_VERSION == "11.0.2")
-    check("BUILD_NUMBER is 15", app.BUILD_NUMBER == 15)
-    check("DISPLAY_NAME is BetFi 11",
-          app.DISPLAY_NAME == "BetFi 11")
-    check("engine is v5.3", b5.ENGINE_VERSION == "5.3")
+    check("APP_VERSION is 12.0.0", app.APP_VERSION == "12.0.0")
+    check("BUILD_NUMBER is 16", app.BUILD_NUMBER == 16)
+    check("DISPLAY_NAME is BetFi Xii",
+          app.DISPLAY_NAME == "BetFi Xii")
+    check("PUBLIC_NAME is BetFi_Xii",
+          app.PUBLIC_NAME == "BetFi_Xii")
+    check("INTERNAL_ID unchanged (storage carries over)",
+          app.INTERNAL_ID == "Bet_Finder")
+    check("engine is v5.4", b5.ENGINE_VERSION == "5.4")
     check("GOLDEN threshold constant is +2.0 (F5a)",
           b5.GOLDEN_THRESHOLD_PTS == 2.0)
     lab_engine = os.path.join(HERE, "..", "..", "scripts",
@@ -357,11 +361,11 @@ def main():
     page.navigation_bar.on_change(SimpleNamespace(
         control=SimpleNamespace(selected_index=4)))
     more_texts = texts(switcher.content)
-    check("More renders; the header carries BetFi 11 / v5.3",
+    check("More renders; the header carries BetFi Xii / v5.4",
           len(switcher.content.controls) >= 5
-          and any("BetFi 11" in t
+          and any("BetFi Xii" in t
                   for t in texts(page.controls[0]))
-          and any("v5.3" in t
+          and any("v5.4" in t
                   for t in texts(page.controls[0])))
 
     # Room Rule strings in the source (all three UI surfaces)
@@ -394,6 +398,103 @@ def main():
               and not any("LAB CARD" in t for t in lt2))
     finally:
         app.BUNDLED_DATA_DIR, b5.DATA = saved
+
+    # ---------- v12 / BetFi Xii ----------
+    reg = b5.universal_registry()
+    leagues = {(e["sport"], e["league"]) for e in reg}
+    check("Xii registry: soccer/epl registered",
+          ("soccer", "epl") in leagues)
+    check("Xii registry: serie a registered (leagues file)",
+          ("soccer", "serie-a") in leagues,
+          f"leagues={sorted(leagues)}")
+    check("Xii registry: backtest carried verbatim",
+          any(e["league"] == "epl"
+              and (e["backtest"] or {}).get("brier3") == 0.6302
+              for e in reg))
+    cov = b5.universal_coverage([
+        {"sport": "soccer", "home": "Inter", "away": "Fiorentina",
+         "market": "moneyline", "side": "home", "price": -145},
+        {"sport": "soccer", "home": "Inter", "away": "FC Nowhere",
+         "market": "moneyline", "side": "home", "price": -145},
+        {"sport": "nfl", "home": "DET", "away": "GB",
+         "market": "moneyline", "side": "home", "price": -150},
+        {"sport": "nfl", "home": "DET", "away": "GB",
+         "market": "totals", "side": "over", "line": 47.5,
+         "price": -110},
+        {"sport": "mlb", "home": "DET", "away": "NYY",
+         "market": "moneyline", "side": "home", "price": -110}])
+    soc_cov = next(c for c in cov if c["sport"] == "soccer"
+                   and c["bet_type"] == "moneyline")
+    mlb_cov = next(c for c in cov if c["sport"] == "mlb")
+    nfl_ml = next(c for c in cov if c["sport"] == "nfl"
+                  and c["bet_type"] == "moneyline")
+    nfl_tot = next(c for c in cov if c["sport"] == "nfl"
+                   and c["bet_type"] == "totals")
+    check("Xii coverage: Serie A fixture is PRICED-capable",
+          soc_cov["priced_capable"] == 1
+          and soc_cov["league"] == "serie-a")
+    check("Xii coverage: missing fit is named per bet type",
+          any("team not in the soccer fit: FC Nowhere" in m
+              for m in soc_cov["missing"])
+          and any("no fit registered for league mlb" in m
+                  for m in mlb_cov["missing"]))
+    check("Xii coverage: bet-type grain — NFL moneyline capable "
+          "while NFL totals stamps its missing distribution",
+          nfl_ml["priced_capable"] == 1
+          and nfl_tot["unpriced"] == 1
+          and any("no totals distribution" in m
+                  for m in nfl_tot["missing"]))
+    _fams = {(e["sport"]) for e in reg}
+    check("Xii registry: every lane family present with its "
+          "specialized math + bet types",
+          {"nfl", "ncaaf", "nba", "nhl", "soccer", "props",
+           "live"} <= _fams
+          and all(any(e.get("bet_types") for e in reg
+                      if e["sport"] == s)
+                  for s in ("nfl", "nba", "nhl", "soccer")))
+    check("Xii copy mechanic: a name copies alone",
+          app.copy_name("  Inter ") == "Inter"
+          and app.copy_name("Josh Allen") == "Josh Allen")
+    check("Xii auto-pull: interval constant is 4 minutes",
+          app.AUTO_PULL_INTERVAL_S == 4 * 60)
+    check("Xii charts: empty pull builds honest controls",
+          len(app.build_xii_charts([])) >= 2
+          and any("No pull yet" in t
+                  for t in texts(app.build_xii_charts([])[-1])))
+    _entries = [
+        ({"sport": "nfl", "market": "moneyline", "side": "home",
+          "home": "DET", "away": "GB", "price": -110},
+         {"state": "PRICED", "p": 0.62, "grade": "A"}, 6.0),
+        ({"sport": "soccer", "market": "moneyline", "side": "home",
+          "home": "Inter", "away": "Fiorentina", "price": -145},
+         {"state": "UNPRICED", "p": None, "grade": None}, None)]
+    _charts = app.build_xii_charts(_entries, on_tap=lambda d: None,
+                                   on_zoom=lambda f: None)
+    _ct = []
+    for _c in _charts:
+        _ct += texts(_c)
+    check("Xii charts: priced + unpriced render from a pull",
+          any("EDGE DISTRIBUTION" in t for t in _ct)
+          and any("PRICED vs UNPRICED" in t for t in _ct))
+    check("Xii ICE: splash + pulse + button-weight constants",
+          app.PULSE_PERIODS["dot"] == 2.0
+          and app.PULSE_PERIODS["golden"] == 2.8
+          and app.BTN_PRIMARY_HEIGHT == 52
+          and callable(app.build_splash)
+          and callable(app.ice_pulse_loop)
+          and app.primary_button("x", lambda e: None).height == 52)
+    _src = open(os.path.join(HERE, "main.py")).read()
+    check("Xii law: no ft.Slider anywhere in main.py",
+          "ft.Slider" not in _src and "Slider(" not in _src)
+    check("Xii fit cache: load_soccer returns the cached object",
+          b5.load_soccer() is b5.load_soccer())
+    check("Xii: EPL spot price unchanged (LIV v ARS home)",
+          abs(b5.engine_price("soccer", "moneyline", "LIV", "ARS",
+                              side="home")[0]
+              - 0.2538531567386233) < 1e-12)
+    check("Xii: Serie A prices off the leagues fit",
+          b5.engine_price("soccer", "moneyline", "Inter",
+                          "Fiorentina", side="home")[0] is not None)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

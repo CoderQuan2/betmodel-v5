@@ -1,0 +1,3275 @@
+{
+ "sport": "soccer",
+ "fitted_at": "2026-10-24T22:10:02+00:00",
+ "leagues": {
+  "serie-a": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/I1.csv",
+   "elo": {
+    "Genoa": 1472.3,
+    "Inter": 1618.7,
+    "Parma": 1452.3,
+    "Fiorentina": 1549.7,
+    "Empoli": 1405.1,
+    "Monza": 1342.5,
+    "Milan": 1547.7,
+    "Torino": 1466.4,
+    "Bologna": 1541.7,
+    "Udinese": 1447.7,
+    "Verona": 1437.2,
+    "Napoli": 1619.9,
+    "Cagliari": 1433.2,
+    "Roma": 1596.3,
+    "Lazio": 1553.4,
+    "Venezia": 1417.6,
+    "Lecce": 1430.1,
+    "Atalanta": 1580.7,
+    "Juventus": 1587.4,
+    "Como": 1500.2
+   },
+   "strengths": {
+    "Genoa": {
+     "att": 0.802,
+     "def": 1.006,
+     "gp": 38
+    },
+    "Inter": {
+     "att": 1.515,
+     "def": 0.768,
+     "gp": 38
+    },
+    "Parma": {
+     "att": 0.921,
+     "def": 1.159,
+     "gp": 38
+    },
+    "Fiorentina": {
+     "att": 1.193,
+     "def": 0.87,
+     "gp": 38
+    },
+    "Empoli": {
+     "att": 0.734,
+     "def": 1.176,
+     "gp": 38
+    },
+    "Monza": {
+     "att": 0.649,
+     "def": 1.346,
+     "gp": 38
+    },
+    "Milan": {
+     "att": 1.21,
+     "def": 0.904,
+     "gp": 38
+    },
+    "Torino": {
+     "att": 0.836,
+     "def": 0.938,
+     "gp": 38
+    },
+    "Bologna": {
+     "att": 1.142,
+     "def": 0.972,
+     "gp": 38
+    },
+    "Udinese": {
+     "att": 0.87,
+     "def": 1.125,
+     "gp": 38
+    },
+    "Verona": {
+     "att": 0.751,
+     "def": 1.295,
+     "gp": 38
+    },
+    "Napoli": {
+     "att": 1.176,
+     "def": 0.632,
+     "gp": 38
+    },
+    "Cagliari": {
+     "att": 0.853,
+     "def": 1.125,
+     "gp": 38
+    },
+    "Roma": {
+     "att": 1.125,
+     "def": 0.768,
+     "gp": 38
+    },
+    "Lazio": {
+     "att": 1.21,
+     "def": 1.006,
+     "gp": 38
+    },
+    "Venezia": {
+     "att": 0.717,
+     "def": 1.125,
+     "gp": 38
+    },
+    "Lecce": {
+     "att": 0.632,
+     "def": 1.159,
+     "gp": 38
+    },
+    "Atalanta": {
+     "att": 1.498,
+     "def": 0.802,
+     "gp": 38
+    },
+    "Juventus": {
+     "att": 1.159,
+     "def": 0.768,
+     "gp": 38
+    },
+    "Como": {
+     "att": 1.006,
+     "def": 1.057,
+     "gp": 38
+    }
+   },
+   "league": {
+    "LH": 1.341,
+    "LA": 1.219,
+    "L": 1.28
+   },
+   "backtest": {
+    "brier3": 0.601,
+    "accuracy": 0.4974,
+    "n": 380,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Serie A (Italy)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "la-liga": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/SP1.csv",
+   "elo": {
+    "Ath Bilbao": 1585.6,
+    "Getafe": 1451.5,
+    "Betis": 1543.9,
+    "Girona": 1433.1,
+    "Celta": 1515.9,
+    "Alaves": 1473.3,
+    "Las Palmas": 1401.4,
+    "Sevilla": 1447.7,
+    "Osasuna": 1519.0,
+    "Leganes": 1459.0,
+    "Valencia": 1499.6,
+    "Barcelona": 1642.0,
+    "Sociedad": 1462.4,
+    "Vallecano": 1509.7,
+    "Mallorca": 1467.5,
+    "Real Madrid": 1626.8,
+    "Valladolid": 1320.1,
+    "Espanol": 1465.5,
+    "Villarreal": 1586.4,
+    "Ath Madrid": 1589.6
+   },
+   "strengths": {
+    "Ath Bilbao": {
+     "att": 1.071,
+     "def": 0.655,
+     "gp": 38
+    },
+    "Getafe": {
+     "att": 0.738,
+     "def": 0.821,
+     "gp": 38
+    },
+    "Betis": {
+     "att": 1.12,
+     "def": 1.004,
+     "gp": 38
+    },
+    "Girona": {
+     "att": 0.905,
+     "def": 1.17,
+     "gp": 38
+    },
+    "Celta": {
+     "att": 1.154,
+     "def": 1.12,
+     "gp": 38
+    },
+    "Alaves": {
+     "att": 0.805,
+     "def": 0.971,
+     "gp": 38
+    },
+    "Las Palmas": {
+     "att": 0.838,
+     "def": 1.187,
+     "gp": 38
+    },
+    "Sevilla": {
+     "att": 0.871,
+     "def": 1.087,
+     "gp": 38
+    },
+    "Osasuna": {
+     "att": 0.971,
+     "def": 1.037,
+     "gp": 38
+    },
+    "Leganes": {
+     "att": 0.821,
+     "def": 1.104,
+     "gp": 38
+    },
+    "Valencia": {
+     "att": 0.905,
+     "def": 1.071,
+     "gp": 38
+    },
+    "Barcelona": {
+     "att": 1.868,
+     "def": 0.821,
+     "gp": 38
+    },
+    "Sociedad": {
+     "att": 0.755,
+     "def": 0.938,
+     "gp": 38
+    },
+    "Vallecano": {
+     "att": 0.855,
+     "def": 0.921,
+     "gp": 38
+    },
+    "Mallorca": {
+     "att": 0.755,
+     "def": 0.905,
+     "gp": 38
+    },
+    "Real Madrid": {
+     "att": 1.469,
+     "def": 0.805,
+     "gp": 38
+    },
+    "Valladolid": {
+     "att": 0.606,
+     "def": 1.668,
+     "gp": 38
+    },
+    "Espanol": {
+     "att": 0.838,
+     "def": 1.021,
+     "gp": 38
+    },
+    "Villarreal": {
+     "att": 1.353,
+     "def": 1.021,
+     "gp": 38
+    },
+    "Ath Madrid": {
+     "att": 1.303,
+     "def": 0.672,
+     "gp": 38
+    }
+   },
+   "league": {
+    "LH": 1.451,
+    "LA": 1.165,
+    "L": 1.309
+   },
+   "backtest": {
+    "brier3": 0.593,
+    "accuracy": 0.5026,
+    "n": 380,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "La Liga (Spain)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "bundesliga": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/D1.csv",
+   "elo": {
+    "M'gladbach": 1475.1,
+    "Leverkusen": 1599.1,
+    "Augsburg": 1483.5,
+    "Werder Bremen": 1521.2,
+    "Freiburg": 1534.5,
+    "Stuttgart": 1509.2,
+    "Hoffenheim": 1443.9,
+    "Holstein Kiel": 1413.5,
+    "Mainz": 1525.6,
+    "Union Berlin": 1474.8,
+    "RB Leipzig": 1514.5,
+    "Bochum": 1409.7,
+    "Dortmund": 1554.0,
+    "Ein Frankfurt": 1556.0,
+    "Wolfsburg": 1479.6,
+    "Bayern Munich": 1646.9,
+    "St Pauli": 1438.4,
+    "Heidenheim": 1420.5
+   },
+   "strengths": {
+    "M'gladbach": {
+     "att": 1.026,
+     "def": 1.057,
+     "gp": 34
+    },
+    "Leverkusen": {
+     "att": 1.284,
+     "def": 0.844,
+     "gp": 34
+    },
+    "Augsburg": {
+     "att": 0.722,
+     "def": 0.965,
+     "gp": 34
+    },
+    "Werder Bremen": {
+     "att": 1.011,
+     "def": 1.057,
+     "gp": 34
+    },
+    "Freiburg": {
+     "att": 0.935,
+     "def": 0.996,
+     "gp": 34
+    },
+    "Stuttgart": {
+     "att": 1.163,
+     "def": 0.996,
+     "gp": 34
+    },
+    "Hoffenheim": {
+     "att": 0.889,
+     "def": 1.224,
+     "gp": 34
+    },
+    "Holstein Kiel": {
+     "att": 0.935,
+     "def": 1.406,
+     "gp": 34
+    },
+    "Mainz": {
+     "att": 1.026,
+     "def": 0.844,
+     "gp": 34
+    },
+    "Union Berlin": {
+     "att": 0.722,
+     "def": 0.965,
+     "gp": 34
+    },
+    "RB Leipzig": {
+     "att": 0.996,
+     "def": 0.92,
+     "gp": 34
+    },
+    "Bochum": {
+     "att": 0.692,
+     "def": 1.209,
+     "gp": 34
+    },
+    "Dortmund": {
+     "att": 1.269,
+     "def": 0.965,
+     "gp": 34
+    },
+    "Ein Frankfurt": {
+     "att": 1.224,
+     "def": 0.889,
+     "gp": 34
+    },
+    "Wolfsburg": {
+     "att": 1.041,
+     "def": 1.011,
+     "gp": 34
+    },
+    "Bayern Munich": {
+     "att": 1.695,
+     "def": 0.677,
+     "gp": 34
+    },
+    "St Pauli": {
+     "att": 0.616,
+     "def": 0.813,
+     "gp": 34
+    },
+    "Heidenheim": {
+     "att": 0.753,
+     "def": 1.163,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.623,
+    "LA": 1.492,
+    "L": 1.567
+   },
+   "backtest": {
+    "brier3": 0.631,
+    "accuracy": 0.4641,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Bundesliga (Germany)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "ligue-1": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/F1.csv",
+   "elo": {
+    "Le Havre": 1448.1,
+    "Paris SG": 1650.6,
+    "Brest": 1509.8,
+    "Marseille": 1565.1,
+    "Reims": 1428.6,
+    "Lille": 1555.1,
+    "Monaco": 1555.3,
+    "St Etienne": 1426.3,
+    "Auxerre": 1482.4,
+    "Nice": 1560.5,
+    "Angers": 1449.7,
+    "Lens": 1517.6,
+    "Montpellier": 1347.3,
+    "Strasbourg": 1553.9,
+    "Toulouse": 1480.3,
+    "Nantes": 1461.3,
+    "Rennes": 1467.0,
+    "Lyon": 1541.1
+   },
+   "strengths": {
+    "Le Havre": {
+     "att": 0.83,
+     "def": 1.326,
+     "gp": 34
+    },
+    "Paris SG": {
+     "att": 1.662,
+     "def": 0.75,
+     "gp": 34
+    },
+    "Brest": {
+     "att": 1.022,
+     "def": 1.134,
+     "gp": 34
+    },
+    "Marseille": {
+     "att": 1.374,
+     "def": 0.942,
+     "gp": 34
+    },
+    "Reims": {
+     "att": 0.718,
+     "def": 0.942,
+     "gp": 34
+    },
+    "Lille": {
+     "att": 1.022,
+     "def": 0.766,
+     "gp": 34
+    },
+    "Monaco": {
+     "att": 1.198,
+     "def": 0.846,
+     "gp": 34
+    },
+    "St Etienne": {
+     "att": 0.814,
+     "def": 1.422,
+     "gp": 34
+    },
+    "Auxerre": {
+     "att": 0.958,
+     "def": 1.006,
+     "gp": 34
+    },
+    "Nice": {
+     "att": 1.246,
+     "def": 0.846,
+     "gp": 34
+    },
+    "Angers": {
+     "att": 0.702,
+     "def": 1.038,
+     "gp": 34
+    },
+    "Lens": {
+     "att": 0.862,
+     "def": 0.814,
+     "gp": 34
+    },
+    "Montpellier": {
+     "att": 0.558,
+     "def": 1.454,
+     "gp": 34
+    },
+    "Strasbourg": {
+     "att": 1.086,
+     "def": 0.894,
+     "gp": 34
+    },
+    "Toulouse": {
+     "att": 0.894,
+     "def": 0.878,
+     "gp": 34
+    },
+    "Nantes": {
+     "att": 0.814,
+     "def": 1.022,
+     "gp": 34
+    },
+    "Rennes": {
+     "att": 1.006,
+     "def": 0.99,
+     "gp": 34
+    },
+    "Lyon": {
+     "att": 1.23,
+     "def": 0.926,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.601,
+    "LA": 1.362,
+    "L": 1.489
+   },
+   "backtest": {
+    "brier3": 0.5865,
+    "accuracy": 0.5392,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Ligue 1 (France)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "championship": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/E1.csv",
+   "elo": {
+    "Blackburn": 1496.3,
+    "Derby": 1459.2,
+    "Preston": 1456.6,
+    "Sheffield United": 1587.4,
+    "Cardiff": 1432.2,
+    "Sunderland": 1519.4,
+    "Hull": 1454.9,
+    "Bristol City": 1532.8,
+    "Leeds": 1653.0,
+    "Portsmouth": 1475.8,
+    "Middlesbrough": 1484.8,
+    "Swansea": 1499.4,
+    "Millwall": 1525.7,
+    "Watford": 1446.5,
+    "Oxford": 1472.5,
+    "Norwich": 1472.2,
+    "QPR": 1483.2,
+    "West Brom": 1501.3,
+    "Stoke": 1465.9,
+    "Coventry": 1530.6,
+    "Sheffield Weds": 1473.9,
+    "Plymouth": 1451.0,
+    "Luton": 1459.5,
+    "Burnley": 1666.0
+   },
+   "strengths": {
+    "Blackburn": {
+     "att": 0.949,
+     "def": 0.873,
+     "gp": 46
+    },
+    "Derby": {
+     "att": 0.873,
+     "def": 0.994,
+     "gp": 46
+    },
+    "Preston": {
+     "att": 0.873,
+     "def": 1.04,
+     "gp": 46
+    },
+    "Sheffield United": {
+     "att": 1.1,
+     "def": 0.692,
+     "gp": 46
+    },
+    "Cardiff": {
+     "att": 0.873,
+     "def": 1.251,
+     "gp": 46
+    },
+    "Sunderland": {
+     "att": 1.025,
+     "def": 0.813,
+     "gp": 46
+    },
+    "Hull": {
+     "att": 0.813,
+     "def": 0.964,
+     "gp": 46
+    },
+    "Bristol City": {
+     "att": 1.04,
+     "def": 0.979,
+     "gp": 46
+    },
+    "Leeds": {
+     "att": 1.584,
+     "def": 0.601,
+     "gp": 46
+    },
+    "Portsmouth": {
+     "att": 1.025,
+     "def": 1.221,
+     "gp": 46
+    },
+    "Middlesbrough": {
+     "att": 1.115,
+     "def": 0.994,
+     "gp": 46
+    },
+    "Swansea": {
+     "att": 0.919,
+     "def": 0.994,
+     "gp": 46
+    },
+    "Millwall": {
+     "att": 0.858,
+     "def": 0.889,
+     "gp": 46
+    },
+    "Watford": {
+     "att": 0.949,
+     "def": 1.07,
+     "gp": 46
+    },
+    "Oxford": {
+     "att": 0.889,
+     "def": 1.13,
+     "gp": 46
+    },
+    "Norwich": {
+     "att": 1.221,
+     "def": 1.176,
+     "gp": 46
+    },
+    "QPR": {
+     "att": 0.949,
+     "def": 1.1,
+     "gp": 46
+    },
+    "West Brom": {
+     "att": 1.009,
+     "def": 0.858,
+     "gp": 46
+    },
+    "Stoke": {
+     "att": 0.828,
+     "def": 1.085,
+     "gp": 46
+    },
+    "Coventry": {
+     "att": 1.115,
+     "def": 1.025,
+     "gp": 46
+    },
+    "Sheffield Weds": {
+     "att": 1.055,
+     "def": 1.191,
+     "gp": 46
+    },
+    "Plymouth": {
+     "att": 0.919,
+     "def": 1.478,
+     "gp": 46
+    },
+    "Luton": {
+     "att": 0.828,
+     "def": 1.191,
+     "gp": 46
+    },
+    "Burnley": {
+     "att": 1.191,
+     "def": 0.39,
+     "gp": 46
+    }
+   },
+   "league": {
+    "LH": 1.434,
+    "LA": 1.019,
+    "L": 1.226
+   },
+   "backtest": {
+    "brier3": 0.6275,
+    "accuracy": 0.4819,
+    "n": 552,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Championship (England)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "serie-b": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/I2.csv",
+   "elo": {
+    "Brescia": 1477.9,
+    "Palermo": 1503.3,
+    "Bari": 1494.5,
+    "Juve Stabia": 1513.0,
+    "Pisa": 1582.8,
+    "Spezia": 1551.1,
+    "Salernitana": 1463.5,
+    "Cittadella": 1441.7,
+    "Sudtirol": 1490.8,
+    "Modena": 1476.8,
+    "Catanzaro": 1524.7,
+    "Sassuolo": 1607.1,
+    "Cesena": 1512.1,
+    "Carrarese": 1478.8,
+    "Cosenza": 1417.7,
+    "Cremonese": 1548.6,
+    "Frosinone": 1488.6,
+    "Sampdoria": 1476.2,
+    "Reggiana": 1474.2,
+    "Mantova": 1476.7
+   },
+   "strengths": {
+    "Brescia": {
+     "att": 0.915,
+     "def": 1.021,
+     "gp": 38
+    },
+    "Palermo": {
+     "att": 1.092,
+     "def": 0.933,
+     "gp": 38
+    },
+    "Bari": {
+     "att": 0.898,
+     "def": 0.88,
+     "gp": 38
+    },
+    "Juve Stabia": {
+     "att": 0.915,
+     "def": 0.898,
+     "gp": 38
+    },
+    "Pisa": {
+     "att": 1.268,
+     "def": 0.827,
+     "gp": 38
+    },
+    "Spezia": {
+     "att": 1.215,
+     "def": 0.756,
+     "gp": 38
+    },
+    "Salernitana": {
+     "att": 0.827,
+     "def": 1.004,
+     "gp": 38
+    },
+    "Cittadella": {
+     "att": 0.721,
+     "def": 1.127,
+     "gp": 38
+    },
+    "Sudtirol": {
+     "att": 1.056,
+     "def": 1.18,
+     "gp": 38
+    },
+    "Modena": {
+     "att": 1.021,
+     "def": 1.056,
+     "gp": 38
+    },
+    "Catanzaro": {
+     "att": 1.074,
+     "def": 0.968,
+     "gp": 38
+    },
+    "Sassuolo": {
+     "att": 1.551,
+     "def": 0.845,
+     "gp": 38
+    },
+    "Cesena": {
+     "att": 0.986,
+     "def": 1.004,
+     "gp": 38
+    },
+    "Carrarese": {
+     "att": 0.862,
+     "def": 1.039,
+     "gp": 38
+    },
+    "Cosenza": {
+     "att": 0.739,
+     "def": 1.162,
+     "gp": 38
+    },
+    "Cremonese": {
+     "att": 1.268,
+     "def": 0.951,
+     "gp": 38
+    },
+    "Frosinone": {
+     "att": 0.827,
+     "def": 1.056,
+     "gp": 38
+    },
+    "Sampdoria": {
+     "att": 0.845,
+     "def": 1.039,
+     "gp": 38
+    },
+    "Reggiana": {
+     "att": 0.915,
+     "def": 1.092,
+     "gp": 38
+    },
+    "Mantova": {
+     "att": 1.004,
+     "def": 1.162,
+     "gp": 38
+    }
+   },
+   "league": {
+    "LH": 1.356,
+    "LA": 1.109,
+    "L": 1.232
+   },
+   "backtest": {
+    "brier3": 0.6567,
+    "accuracy": 0.4079,
+    "n": 380,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Serie B (Italy)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "la-liga-2": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/SP2.csv",
+   "elo": {
+    "Granada": 1529.7,
+    "Albacete": 1511.6,
+    "Mirandes": 1571.3,
+    "Cordoba": 1496.9,
+    "Cadiz": 1499.5,
+    "Zaragoza": 1466.9,
+    "Eibar": 1509.5,
+    "Castellon": 1479.7,
+    "Ferrol": 1383.8,
+    "Malaga": 1484.5,
+    "La Coruna": 1485.1,
+    "Oviedo": 1582.5,
+    "Santander": 1538.9,
+    "Almeria": 1544.6,
+    "Sp Gijon": 1492.9,
+    "Levante": 1602.2,
+    "Burgos": 1490.1,
+    "Cartagena": 1350.1,
+    "Elche": 1588.6,
+    "Huesca": 1512.8,
+    "Eldense": 1451.0,
+    "Tenerife": 1427.8
+   },
+   "strengths": {
+    "Granada": {
+     "att": 1.188,
+     "def": 1.014,
+     "gp": 42
+    },
+    "Albacete": {
+     "att": 1.061,
+     "def": 1.061,
+     "gp": 42
+    },
+    "Mirandes": {
+     "att": 1.093,
+     "def": 0.792,
+     "gp": 42
+    },
+    "Cordoba": {
+     "att": 1.093,
+     "def": 1.156,
+     "gp": 42
+    },
+    "Cadiz": {
+     "att": 1.029,
+     "def": 0.998,
+     "gp": 42
+    },
+    "Zaragoza": {
+     "att": 1.045,
+     "def": 1.156,
+     "gp": 42
+    },
+    "Eibar": {
+     "att": 0.856,
+     "def": 0.808,
+     "gp": 42
+    },
+    "Castellon": {
+     "att": 1.188,
+     "def": 1.156,
+     "gp": 42
+    },
+    "Ferrol": {
+     "att": 0.508,
+     "def": 1.172,
+     "gp": 42
+    },
+    "Malaga": {
+     "att": 0.824,
+     "def": 0.887,
+     "gp": 42
+    },
+    "La Coruna": {
+     "att": 1.045,
+     "def": 1.014,
+     "gp": 42
+    },
+    "Oviedo": {
+     "att": 1.045,
+     "def": 0.824,
+     "gp": 42
+    },
+    "Santander": {
+     "att": 1.188,
+     "def": 0.966,
+     "gp": 42
+    },
+    "Almeria": {
+     "att": 1.298,
+     "def": 1.029,
+     "gp": 42
+    },
+    "Sp Gijon": {
+     "att": 1.061,
+     "def": 1.014,
+     "gp": 42
+    },
+    "Levante": {
+     "att": 1.251,
+     "def": 0.824,
+     "gp": 42
+    },
+    "Burgos": {
+     "att": 0.808,
+     "def": 0.919,
+     "gp": 42
+    },
+    "Cartagena": {
+     "att": 0.682,
+     "def": 1.393,
+     "gp": 42
+    },
+    "Elche": {
+     "att": 1.093,
+     "def": 0.697,
+     "gp": 42
+    },
+    "Huesca": {
+     "att": 1.077,
+     "def": 0.935,
+     "gp": 42
+    },
+    "Eldense": {
+     "att": 0.856,
+     "def": 1.156,
+     "gp": 42
+    },
+    "Tenerife": {
+     "att": 0.713,
+     "def": 1.029,
+     "gp": 42
+    }
+   },
+   "league": {
+    "LH": 1.449,
+    "LA": 1.082,
+    "L": 1.265
+   },
+   "backtest": {
+    "brier3": 0.6292,
+    "accuracy": 0.4654,
+    "n": 462,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "La Liga 2 (Spain)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "ligue-2": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/F2.csv",
+   "elo": {
+    "Ajaccio": 1483.3,
+    "Rodez": 1479.3,
+    "Amiens": 1469.0,
+    "Red Star": 1465.8,
+    "Clermont": 1445.7,
+    "Pau FC": 1479.9,
+    "Dunkerque": 1523.3,
+    "Annecy": 1512.4,
+    "Grenoble": 1493.3,
+    "Laval": 1511.3,
+    "Guingamp": 1527.0,
+    "Troyes": 1493.2,
+    "Caen": 1383.0,
+    "Paris FC": 1593.6,
+    "Martigues": 1439.6,
+    "Lorient": 1600.6,
+    "Metz": 1584.6,
+    "Bastia": 1515.4
+   },
+   "strengths": {
+    "Ajaccio": {
+     "att": 0.745,
+     "def": 0.966,
+     "gp": 34
+    },
+    "Rodez": {
+     "att": 1.225,
+     "def": 1.188,
+     "gp": 34
+    },
+    "Amiens": {
+     "att": 0.892,
+     "def": 1.114,
+     "gp": 34
+    },
+    "Red Star": {
+     "att": 0.874,
+     "def": 1.132,
+     "gp": 34
+    },
+    "Clermont": {
+     "att": 0.745,
+     "def": 1.04,
+     "gp": 34
+    },
+    "Pau FC": {
+     "att": 0.911,
+     "def": 1.169,
+     "gp": 34
+    },
+    "Dunkerque": {
+     "att": 1.058,
+     "def": 0.929,
+     "gp": 34
+    },
+    "Annecy": {
+     "att": 0.966,
+     "def": 0.985,
+     "gp": 34
+    },
+    "Grenoble": {
+     "att": 0.985,
+     "def": 1.003,
+     "gp": 34
+    },
+    "Laval": {
+     "att": 1.003,
+     "def": 0.892,
+     "gp": 34
+    },
+    "Guingamp": {
+     "att": 1.243,
+     "def": 1.022,
+     "gp": 34
+    },
+    "Troyes": {
+     "att": 0.855,
+     "def": 0.818,
+     "gp": 34
+    },
+    "Caen": {
+     "att": 0.763,
+     "def": 1.262,
+     "gp": 34
+    },
+    "Paris FC": {
+     "att": 1.206,
+     "def": 0.8,
+     "gp": 34
+    },
+    "Martigues": {
+     "att": 0.726,
+     "def": 1.225,
+     "gp": 34
+    },
+    "Lorient": {
+     "att": 1.446,
+     "def": 0.763,
+     "gp": 34
+    },
+    "Metz": {
+     "att": 1.372,
+     "def": 0.818,
+     "gp": 34
+    },
+    "Bastia": {
+     "att": 0.985,
+     "def": 0.874,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.503,
+    "LA": 1.074,
+    "L": 1.289
+   },
+   "backtest": {
+    "brier3": 0.619,
+    "accuracy": 0.5033,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Ligue 2 (France)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "bundesliga-2": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/D2.csv",
+   "elo": {
+    "FC Koln": 1561.0,
+    "Hamburg": 1554.6,
+    "Hannover": 1522.8,
+    "Regensburg": 1414.0,
+    "Hertha": 1488.2,
+    "Paderborn": 1532.6,
+    "Karlsruhe": 1522.9,
+    "Nurnberg": 1498.4,
+    "Magdeburg": 1524.2,
+    "Elversberg": 1562.3,
+    "Schalke 04": 1454.7,
+    "Braunschweig": 1463.0,
+    "Darmstadt": 1478.3,
+    "Fortuna Dusseldorf": 1528.2,
+    "Greuther Furth": 1466.0,
+    "Preu\u00dfen M\u00fcnster": 1469.9,
+    "Ulm": 1436.9,
+    "Kaiserslautern": 1522.0
+   },
+   "strengths": {
+    "FC Koln": {
+     "att": 1.025,
+     "def": 0.789,
+     "gp": 34
+    },
+    "Hamburg": {
+     "att": 1.419,
+     "def": 0.884,
+     "gp": 34
+    },
+    "Hannover": {
+     "att": 0.836,
+     "def": 0.758,
+     "gp": 34
+    },
+    "Regensburg": {
+     "att": 0.553,
+     "def": 1.309,
+     "gp": 34
+    },
+    "Hertha": {
+     "att": 0.962,
+     "def": 0.994,
+     "gp": 34
+    },
+    "Paderborn": {
+     "att": 1.073,
+     "def": 0.915,
+     "gp": 34
+    },
+    "Karlsruhe": {
+     "att": 1.088,
+     "def": 1.057,
+     "gp": 34
+    },
+    "Nurnberg": {
+     "att": 1.136,
+     "def": 1.088,
+     "gp": 34
+    },
+    "Magdeburg": {
+     "att": 1.199,
+     "def": 1.01,
+     "gp": 34
+    },
+    "Elversberg": {
+     "att": 1.199,
+     "def": 0.773,
+     "gp": 34
+    },
+    "Schalke 04": {
+     "att": 1.01,
+     "def": 1.167,
+     "gp": 34
+    },
+    "Braunschweig": {
+     "att": 0.789,
+     "def": 1.199,
+     "gp": 34
+    },
+    "Darmstadt": {
+     "att": 1.073,
+     "def": 1.057,
+     "gp": 34
+    },
+    "Fortuna Dusseldorf": {
+     "att": 1.088,
+     "def": 1.01,
+     "gp": 34
+    },
+    "Greuther Furth": {
+     "att": 0.899,
+     "def": 1.12,
+     "gp": 34
+    },
+    "Preu\u00dfen M\u00fcnster": {
+     "att": 0.821,
+     "def": 0.868,
+     "gp": 34
+    },
+    "Ulm": {
+     "att": 0.758,
+     "def": 0.947,
+     "gp": 34
+    },
+    "Kaiserslautern": {
+     "att": 1.073,
+     "def": 1.057,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.63,
+    "LA": 1.378,
+    "L": 1.511
+   },
+   "backtest": {
+    "brier3": 0.6571,
+    "accuracy": 0.4379,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Bundesliga 2 (Germany)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "eredivisie": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/N1.csv",
+   "elo": {
+    "Groningen": 1470.4,
+    "NAC Breda": 1428.0,
+    "Feyenoord": 1591.0,
+    "Willem II": 1388.1,
+    "Nijmegen": 1491.6,
+    "Twente": 1523.4,
+    "Almere City": 1404.4,
+    "AZ Alkmaar": 1546.0,
+    "PSV Eindhoven": 1632.5,
+    "Waalwijk": 1415.8,
+    "Sparta Rotterdam": 1483.5,
+    "Heracles": 1470.4,
+    "Go Ahead Eagles": 1516.9,
+    "For Sittard": 1471.5,
+    "Utrecht": 1569.4,
+    "Zwolle": 1491.7,
+    "Ajax": 1622.3,
+    "Heerenveen": 1483.2
+   },
+   "strengths": {
+    "Groningen": {
+     "att": 0.828,
+     "def": 1.035,
+     "gp": 34
+    },
+    "NAC Breda": {
+     "att": 0.733,
+     "def": 1.115,
+     "gp": 34
+    },
+    "Feyenoord": {
+     "att": 1.402,
+     "def": 0.796,
+     "gp": 34
+    },
+    "Willem II": {
+     "att": 0.733,
+     "def": 1.083,
+     "gp": 34
+    },
+    "Nijmegen": {
+     "att": 1.004,
+     "def": 0.924,
+     "gp": 34
+    },
+    "Twente": {
+     "att": 1.179,
+     "def": 0.972,
+     "gp": 34
+    },
+    "Almere City": {
+     "att": 0.557,
+     "def": 1.211,
+     "gp": 34
+    },
+    "AZ Alkmaar": {
+     "att": 1.115,
+     "def": 0.78,
+     "gp": 34
+    },
+    "PSV Eindhoven": {
+     "att": 1.833,
+     "def": 0.812,
+     "gp": 34
+    },
+    "Waalwijk": {
+     "att": 0.892,
+     "def": 1.37,
+     "gp": 34
+    },
+    "Sparta Rotterdam": {
+     "att": 0.812,
+     "def": 0.876,
+     "gp": 34
+    },
+    "Heracles": {
+     "att": 0.86,
+     "def": 1.195,
+     "gp": 34
+    },
+    "Go Ahead Eagles": {
+     "att": 1.099,
+     "def": 1.067,
+     "gp": 34
+    },
+    "For Sittard": {
+     "att": 0.78,
+     "def": 1.051,
+     "gp": 34
+    },
+    "Utrecht": {
+     "att": 1.179,
+     "def": 0.908,
+     "gp": 34
+    },
+    "Zwolle": {
+     "att": 0.876,
+     "def": 1.004,
+     "gp": 34
+    },
+    "Ajax": {
+     "att": 1.259,
+     "def": 0.701,
+     "gp": 34
+    },
+    "Heerenveen": {
+     "att": 0.86,
+     "def": 1.099,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.687,
+    "LA": 1.286,
+    "L": 1.493
+   },
+   "backtest": {
+    "brier3": 0.5955,
+    "accuracy": 0.5065,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Eredivisie (Netherlands)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "primeira-liga": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/P1.csv",
+   "elo": {
+    "Sp Lisbon": 1652.6,
+    "Rio Ave": 1466.0,
+    "AVS": 1414.6,
+    "Nacional": 1440.4,
+    "Casa Pia": 1487.7,
+    "Boavista": 1392.5,
+    "Porto": 1591.9,
+    "Gil Vicente": 1444.5,
+    "Estoril": 1508.4,
+    "Santa Clara": 1539.0,
+    "Famalicao": 1506.6,
+    "Benfica": 1642.6,
+    "Farense": 1423.5,
+    "Moreirense": 1469.9,
+    "Sp Braga": 1588.2,
+    "Estrela": 1415.5,
+    "Arouca": 1477.7,
+    "Guimaraes": 1538.4
+   },
+   "strengths": {
+    "Sp Lisbon": {
+     "att": 1.822,
+     "def": 0.691,
+     "gp": 34
+    },
+    "Rio Ave": {
+     "att": 0.913,
+     "def": 1.21,
+     "gp": 34
+    },
+    "AVS": {
+     "att": 0.654,
+     "def": 1.303,
+     "gp": 34
+    },
+    "Nacional": {
+     "att": 0.784,
+     "def": 1.117,
+     "gp": 34
+    },
+    "Casa Pia": {
+     "att": 0.913,
+     "def": 1.006,
+     "gp": 34
+    },
+    "Boavista": {
+     "att": 0.635,
+     "def": 1.284,
+     "gp": 34
+    },
+    "Porto": {
+     "att": 1.395,
+     "def": 0.747,
+     "gp": 34
+    },
+    "Gil Vicente": {
+     "att": 0.821,
+     "def": 1.062,
+     "gp": 34
+    },
+    "Estoril": {
+     "att": 1.08,
+     "def": 1.173,
+     "gp": 34
+    },
+    "Santa Clara": {
+     "att": 0.858,
+     "def": 0.784,
+     "gp": 34
+    },
+    "Famalicao": {
+     "att": 1.006,
+     "def": 0.913,
+     "gp": 34
+    },
+    "Benfica": {
+     "att": 1.748,
+     "def": 0.71,
+     "gp": 34
+    },
+    "Farense": {
+     "att": 0.654,
+     "def": 1.043,
+     "gp": 34
+    },
+    "Moreirense": {
+     "att": 0.969,
+     "def": 1.117,
+     "gp": 34
+    },
+    "Sp Braga": {
+     "att": 1.21,
+     "def": 0.747,
+     "gp": 34
+    },
+    "Estrela": {
+     "att": 0.635,
+     "def": 1.117,
+     "gp": 34
+    },
+    "Arouca": {
+     "att": 0.839,
+     "def": 1.099,
+     "gp": 34
+    },
+    "Guimaraes": {
+     "att": 1.062,
+     "def": 0.876,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.402,
+    "LA": 1.166,
+    "L": 1.284
+   },
+   "backtest": {
+    "brier3": 0.5837,
+    "accuracy": 0.5065,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Primeira Liga (Portugal)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "super-lig": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/T1.csv",
+   "elo": {
+    "Galatasaray": 1688.2,
+    "Hatayspor": 1405.6,
+    "Kasimpasa": 1500.8,
+    "Konyaspor": 1480.8,
+    "Antalyaspor": 1472.3,
+    "Goztep": 1497.2,
+    "Fenerbahce": 1637.6,
+    "Ad. Demirspor": 1340.9,
+    "Sivasspor": 1429.4,
+    "Trabzonspor": 1518.3,
+    "Alanyaspor": 1488.1,
+    "Eyupspor": 1497.2,
+    "Samsunspor": 1550.6,
+    "Besiktas": 1552.4,
+    "Bodrumspor": 1456.4,
+    "Gaziantep": 1475.4,
+    "Rizespor": 1497.4,
+    "Buyuksehyr": 1509.6,
+    "Kayserispor": 1501.9
+   },
+   "strengths": {
+    "Galatasaray": {
+     "att": 1.591,
+     "def": 0.662,
+     "gp": 36
+    },
+    "Hatayspor": {
+     "att": 0.91,
+     "def": 1.328,
+     "gp": 36
+    },
+    "Kasimpasa": {
+     "att": 1.142,
+     "def": 1.157,
+     "gp": 36
+    },
+    "Konyaspor": {
+     "att": 0.879,
+     "def": 0.956,
+     "gp": 36
+    },
+    "Antalyaspor": {
+     "att": 0.755,
+     "def": 1.142,
+     "gp": 36
+    },
+    "Goztep": {
+     "att": 1.095,
+     "def": 0.956,
+     "gp": 36
+    },
+    "Fenerbahce": {
+     "att": 1.575,
+     "def": 0.786,
+     "gp": 36
+    },
+    "Ad. Demirspor": {
+     "att": 0.708,
+     "def": 1.606,
+     "gp": 36
+    },
+    "Sivasspor": {
+     "att": 0.863,
+     "def": 1.111,
+     "gp": 36
+    },
+    "Trabzonspor": {
+     "att": 1.08,
+     "def": 0.879,
+     "gp": 36
+    },
+    "Alanyaspor": {
+     "att": 0.848,
+     "def": 0.956,
+     "gp": 36
+    },
+    "Eyupspor": {
+     "att": 0.987,
+     "def": 0.91,
+     "gp": 36
+    },
+    "Samsunspor": {
+     "att": 1.033,
+     "def": 0.817,
+     "gp": 36
+    },
+    "Besiktas": {
+     "att": 1.095,
+     "def": 0.739,
+     "gp": 36
+    },
+    "Bodrumspor": {
+     "att": 0.584,
+     "def": 0.848,
+     "gp": 36
+    },
+    "Gaziantep": {
+     "att": 0.879,
+     "def": 0.956,
+     "gp": 36
+    },
+    "Rizespor": {
+     "att": 0.987,
+     "def": 1.08,
+     "gp": 36
+    },
+    "Buyuksehyr": {
+     "att": 1.111,
+     "def": 1.049,
+     "gp": 36
+    },
+    "Kayserispor": {
+     "att": 0.879,
+     "def": 1.064,
+     "gp": 36
+    }
+   },
+   "league": {
+    "LH": 1.659,
+    "LA": 1.266,
+    "L": 1.468
+   },
+   "backtest": {
+    "brier3": 0.5746,
+    "accuracy": 0.5205,
+    "n": 342,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Super Lig (Turkey)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "super-league-greece": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/G1.csv",
+   "elo": {
+    "PAOK": 1561.2,
+    "Panserraikos": 1436.4,
+    "Volos NFC": 1448.9,
+    "Olympiakos": 1652.7,
+    "Levadeiakos": 1503.9,
+    "Athens Kallithea": 1443.7,
+    "Panathinaikos": 1573.5,
+    "Asteras Tripolis": 1490.3,
+    "Atromitos": 1499.1,
+    "Aris": 1556.2,
+    "AEK": 1526.5,
+    "OFI Crete": 1467.5,
+    "Panetolikos": 1475.6,
+    "Lamia": 1364.6
+   },
+   "strengths": {
+    "PAOK": {
+     "att": 1.469,
+     "def": 0.958,
+     "gp": 32
+    },
+    "Panserraikos": {
+     "att": 0.948,
+     "def": 1.329,
+     "gp": 35
+    },
+    "Volos NFC": {
+     "att": 0.834,
+     "def": 1.119,
+     "gp": 35
+    },
+    "Olympiakos": {
+     "att": 1.388,
+     "def": 0.65,
+     "gp": 32
+    },
+    "Levadeiakos": {
+     "att": 1.081,
+     "def": 0.967,
+     "gp": 35
+    },
+    "Athens Kallithea": {
+     "att": 0.815,
+     "def": 1.176,
+     "gp": 35
+    },
+    "Panathinaikos": {
+     "att": 1.06,
+     "def": 0.855,
+     "gp": 32
+    },
+    "Asteras Tripolis": {
+     "att": 0.917,
+     "def": 1.019,
+     "gp": 32
+    },
+    "Atromitos": {
+     "att": 0.999,
+     "def": 0.958,
+     "gp": 32
+    },
+    "Aris": {
+     "att": 1.06,
+     "def": 0.855,
+     "gp": 32
+    },
+    "AEK": {
+     "att": 1.183,
+     "def": 0.773,
+     "gp": 32
+    },
+    "OFI Crete": {
+     "att": 1.019,
+     "def": 1.162,
+     "gp": 32
+    },
+    "Panetolikos": {
+     "att": 0.719,
+     "def": 0.776,
+     "gp": 35
+    },
+    "Lamia": {
+     "att": 0.586,
+     "def": 1.348,
+     "gp": 35
+    }
+   },
+   "league": {
+    "LH": 1.288,
+    "LA": 1.158,
+    "L": 1.221
+   },
+   "backtest": {
+    "brier3": 0.6125,
+    "accuracy": 0.515,
+    "n": 233,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Super League (Greece)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "jupiler-pro": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/B1.csv",
+   "elo": {
+    "Anderlecht": 1520.1,
+    "St Truiden": 1465.6,
+    "Beerschot VA": 1393.6,
+    "Oud-Heverlee Leuven": 1457.3,
+    "Charleroi": 1521.9,
+    "Antwerp": 1508.9,
+    "Club Brugge": 1629.5,
+    "Mechelen": 1483.4,
+    "Dender": 1455.9,
+    "St. Gilloise": 1652.2,
+    "Genk": 1595.6,
+    "Standard": 1463.1,
+    "Kortrijk": 1447.0,
+    "Gent": 1465.2,
+    "Westerlo": 1488.7,
+    "Cercle Brugge": 1451.9
+   },
+   "strengths": {
+    "Anderlecht": {
+     "att": 1.104,
+     "def": 0.771,
+     "gp": 40
+    },
+    "St Truiden": {
+     "att": 1.006,
+     "def": 1.27,
+     "gp": 36
+    },
+    "Beerschot VA": {
+     "att": 0.775,
+     "def": 1.336,
+     "gp": 36
+    },
+    "Oud-Heverlee Leuven": {
+     "att": 0.756,
+     "def": 0.953,
+     "gp": 40
+    },
+    "Charleroi": {
+     "att": 0.998,
+     "def": 0.862,
+     "gp": 40
+    },
+    "Antwerp": {
+     "att": 1.028,
+     "def": 0.922,
+     "gp": 40
+    },
+    "Club Brugge": {
+     "att": 1.467,
+     "def": 0.802,
+     "gp": 40
+    },
+    "Mechelen": {
+     "att": 1.104,
+     "def": 1.028,
+     "gp": 40
+    },
+    "Dender": {
+     "att": 0.968,
+     "def": 1.255,
+     "gp": 40
+    },
+    "St. Gilloise": {
+     "att": 1.24,
+     "def": 0.59,
+     "gp": 40
+    },
+    "Genk": {
+     "att": 1.21,
+     "def": 0.832,
+     "gp": 40
+    },
+    "Standard": {
+     "att": 0.575,
+     "def": 0.817,
+     "gp": 40
+    },
+    "Kortrijk": {
+     "att": 0.841,
+     "def": 1.221,
+     "gp": 36
+    },
+    "Gent": {
+     "att": 0.847,
+     "def": 1.149,
+     "gp": 40
+    },
+    "Westerlo": {
+     "att": 1.21,
+     "def": 1.149,
+     "gp": 40
+    },
+    "Cercle Brugge": {
+     "att": 0.825,
+     "def": 1.122,
+     "gp": 36
+    }
+   },
+   "league": {
+    "LH": 1.587,
+    "LA": 1.163,
+    "L": 1.378
+   },
+   "backtest": {
+    "brier3": 0.6224,
+    "accuracy": 0.4744,
+    "n": 312,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Jupiler Pro League (Belgium)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "scottish-premiership": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/SC0.csv",
+   "elo": {
+    "Hearts": 1512.0,
+    "Rangers": 1595.3,
+    "Motherwell": 1476.8,
+    "Ross County": 1421.5,
+    "Dundee United": 1494.2,
+    "Dundee": 1447.7,
+    "St Mirren": 1503.3,
+    "Hibernian": 1557.7,
+    "Celtic": 1645.6,
+    "Kilmarnock": 1460.9,
+    "St Johnstone": 1402.8,
+    "Aberdeen": 1482.2
+   },
+   "strengths": {
+    "Hearts": {
+     "att": 0.938,
+     "def": 0.864,
+     "gp": 38
+    },
+    "Rangers": {
+     "att": 1.349,
+     "def": 0.776,
+     "gp": 38
+    },
+    "Motherwell": {
+     "att": 0.849,
+     "def": 1.099,
+     "gp": 38
+    },
+    "Ross County": {
+     "att": 0.717,
+     "def": 1.129,
+     "gp": 38
+    },
+    "Dundee United": {
+     "att": 0.835,
+     "def": 0.967,
+     "gp": 38
+    },
+    "Dundee": {
+     "att": 1.011,
+     "def": 1.305,
+     "gp": 38
+    },
+    "St Mirren": {
+     "att": 0.952,
+     "def": 1.04,
+     "gp": 38
+    },
+    "Hibernian": {
+     "att": 1.084,
+     "def": 0.908,
+     "gp": 38
+    },
+    "Celtic": {
+     "att": 1.819,
+     "def": 0.556,
+     "gp": 38
+    },
+    "Kilmarnock": {
+     "att": 0.835,
+     "def": 1.114,
+     "gp": 38
+    },
+    "St Johnstone": {
+     "att": 0.732,
+     "def": 1.173,
+     "gp": 38
+    },
+    "Aberdeen": {
+     "att": 0.879,
+     "def": 1.07,
+     "gp": 38
+    }
+   },
+   "league": {
+    "LH": 1.681,
+    "LA": 1.263,
+    "L": 1.48
+   },
+   "backtest": {
+    "brier3": 0.5878,
+    "accuracy": 0.5439,
+    "n": 228,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Scottish Premiership",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  },
+  "mls": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (usa.1, 2025 MLS regular season)",
+   "elo": {
+    "Inter Miami CF": 1581.7,
+    "New York City FC": 1537.8,
+    "LAFC": 1556.4,
+    "Minnesota United FC": 1544.4,
+    "FC Cincinnati": 1574.7,
+    "Red Bull New York": 1472.7,
+    "D.C. United": 1411.8,
+    "Toronto FC": 1466.5,
+    "Columbus Crew": 1532.0,
+    "Chicago Fire FC": 1535.9,
+    "Atlanta United FC": 1425.5,
+    "CF Montr\u00e9al": 1432.3,
+    "Orlando City SC": 1527.7,
+    "Philadelphia Union": 1575.8,
+    "Nashville SC": 1517.4,
+    "New England Revolution": 1445.8,
+    "Austin FC": 1490.2,
+    "Sporting Kansas City": 1410.3,
+    "St. Louis CITY SC": 1439.4,
+    "Colorado Rapids": 1464.9,
+    "Houston Dynamo FC": 1458.8,
+    "FC Dallas": 1501.2,
+    "Seattle Sounders FC": 1545.8,
+    "Charlotte FC": 1550.7,
+    "San Jose Earthquakes": 1472.4,
+    "Real Salt Lake": 1468.8,
+    "Portland Timbers": 1481.4,
+    "Vancouver Whitecaps": 1562.4,
+    "LA Galaxy": 1449.1,
+    "San Diego FC": 1566.3
+   },
+   "strengths": {
+    "Inter Miami CF": {
+     "att": 1.476,
+     "def": 1.063,
+     "gp": 34
+    },
+    "New York City FC": {
+     "att": 0.984,
+     "def": 0.889,
+     "gp": 34
+    },
+    "LAFC": {
+     "att": 1.222,
+     "def": 0.825,
+     "gp": 34
+    },
+    "Minnesota United FC": {
+     "att": 1.079,
+     "def": 0.81,
+     "gp": 34
+    },
+    "FC Cincinnati": {
+     "att": 1.016,
+     "def": 0.825,
+     "gp": 34
+    },
+    "Red Bull New York": {
+     "att": 0.952,
+     "def": 0.937,
+     "gp": 34
+    },
+    "D.C. United": {
+     "att": 0.667,
+     "def": 1.238,
+     "gp": 34
+    },
+    "Toronto FC": {
+     "att": 0.778,
+     "def": 0.889,
+     "gp": 34
+    },
+    "Columbus Crew": {
+     "att": 1.063,
+     "def": 1.0,
+     "gp": 34
+    },
+    "Chicago Fire FC": {
+     "att": 1.27,
+     "def": 1.143,
+     "gp": 34
+    },
+    "Atlanta United FC": {
+     "att": 0.794,
+     "def": 1.19,
+     "gp": 34
+    },
+    "CF Montr\u00e9al": {
+     "att": 0.73,
+     "def": 1.143,
+     "gp": 34
+    },
+    "Orlando City SC": {
+     "att": 1.19,
+     "def": 1.0,
+     "gp": 34
+    },
+    "Philadelphia Union": {
+     "att": 1.095,
+     "def": 0.746,
+     "gp": 34
+    },
+    "Nashville SC": {
+     "att": 1.111,
+     "def": 0.905,
+     "gp": 34
+    },
+    "New England Revolution": {
+     "att": 0.889,
+     "def": 1.0,
+     "gp": 34
+    },
+    "Austin FC": {
+     "att": 0.778,
+     "def": 0.905,
+     "gp": 34
+    },
+    "Sporting Kansas City": {
+     "att": 0.921,
+     "def": 1.302,
+     "gp": 34
+    },
+    "St. Louis CITY SC": {
+     "att": 0.889,
+     "def": 1.111,
+     "gp": 34
+    },
+    "Colorado Rapids": {
+     "att": 0.889,
+     "def": 1.079,
+     "gp": 34
+    },
+    "Houston Dynamo FC": {
+     "att": 0.873,
+     "def": 1.079,
+     "gp": 34
+    },
+    "FC Dallas": {
+     "att": 1.016,
+     "def": 1.063,
+     "gp": 34
+    },
+    "Seattle Sounders FC": {
+     "att": 1.111,
+     "def": 0.952,
+     "gp": 34
+    },
+    "Charlotte FC": {
+     "att": 1.063,
+     "def": 0.921,
+     "gp": 34
+    },
+    "San Jose Earthquakes": {
+     "att": 1.143,
+     "def": 1.19,
+     "gp": 34
+    },
+    "Real Salt Lake": {
+     "att": 0.794,
+     "def": 0.968,
+     "gp": 34
+    },
+    "Portland Timbers": {
+     "att": 0.841,
+     "def": 0.952,
+     "gp": 34
+    },
+    "Vancouver Whitecaps": {
+     "att": 1.238,
+     "def": 0.794,
+     "gp": 34
+    },
+    "LA Galaxy": {
+     "att": 0.921,
+     "def": 1.238,
+     "gp": 34
+    },
+    "San Diego FC": {
+     "att": 1.206,
+     "def": 0.841,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.635,
+    "LA": 1.357,
+    "L": 1.5
+   },
+   "backtest": {
+    "brier3": 0.6348,
+    "accuracy": 0.4824,
+    "n": 510,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "MLS (USA)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2025"
+  },
+  "brasileirao": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (bra.1, 2025 Brazilian Serie A)",
+   "elo": {
+    "Cruzeiro": 1574.5,
+    "Mirassol": 1570.2,
+    "Flamengo": 1606.8,
+    "Internacional": 1461.7,
+    "Fortaleza": 1482.6,
+    "Fluminense": 1561.1,
+    "Juventude": 1431.1,
+    "Vit\u00f3ria": 1488.1,
+    "S\u00e3o Paulo": 1489.9,
+    "Sport": 1347.1,
+    "Gr\u00eamio": 1490.8,
+    "Atl\u00e9tico-MG": 1482.8,
+    "Bahia": 1517.1,
+    "Corinthians": 1477.3,
+    "Vasco da Gama": 1461.0,
+    "Santos": 1499.2,
+    "Palmeiras": 1584.1,
+    "Botafogo": 1555.2,
+    "Red Bull Bragantino": 1464.5,
+    "Cear\u00e1": 1454.7
+   },
+   "strengths": {
+    "Cruzeiro": {
+     "att": 1.121,
+     "def": 0.708,
+     "gp": 38
+    },
+    "Mirassol": {
+     "att": 1.259,
+     "def": 0.846,
+     "gp": 38
+    },
+    "Flamengo": {
+     "att": 1.518,
+     "def": 0.639,
+     "gp": 38
+    },
+    "Internacional": {
+     "att": 0.932,
+     "def": 1.156,
+     "gp": 38
+    },
+    "Fortaleza": {
+     "att": 0.915,
+     "def": 1.173,
+     "gp": 38
+    },
+    "Fluminense": {
+     "att": 1.035,
+     "def": 0.846,
+     "gp": 38
+    },
+    "Juventude": {
+     "att": 0.777,
+     "def": 1.363,
+     "gp": 38
+    },
+    "Vit\u00f3ria": {
+     "att": 0.777,
+     "def": 1.07,
+     "gp": 38
+    },
+    "S\u00e3o Paulo": {
+     "att": 0.915,
+     "def": 0.984,
+     "gp": 38
+    },
+    "Sport": {
+     "att": 0.656,
+     "def": 1.466,
+     "gp": 38
+    },
+    "Gr\u00eamio": {
+     "att": 0.984,
+     "def": 1.035,
+     "gp": 38
+    },
+    "Atl\u00e9tico-MG": {
+     "att": 0.915,
+     "def": 0.932,
+     "gp": 38
+    },
+    "Bahia": {
+     "att": 1.035,
+     "def": 0.966,
+     "gp": 38
+    },
+    "Corinthians": {
+     "att": 0.897,
+     "def": 0.984,
+     "gp": 38
+    },
+    "Vasco da Gama": {
+     "att": 1.121,
+     "def": 1.208,
+     "gp": 38
+    },
+    "Santos": {
+     "att": 0.949,
+     "def": 1.035,
+     "gp": 38
+    },
+    "Palmeiras": {
+     "att": 1.311,
+     "def": 0.742,
+     "gp": 38
+    },
+    "Botafogo": {
+     "att": 1.173,
+     "def": 0.829,
+     "gp": 38
+    },
+    "Red Bull Bragantino": {
+     "att": 0.949,
+     "def": 1.156,
+     "gp": 38
+    },
+    "Cear\u00e1": {
+     "att": 0.76,
+     "def": 0.863,
+     "gp": 38
+    }
+   },
+   "league": {
+    "LH": 1.523,
+    "LA": 1.001,
+    "L": 1.262
+   },
+   "backtest": {
+    "brier3": 0.5998,
+    "accuracy": 0.5053,
+    "n": 380,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Serie A (Brazil)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2025"
+  },
+  "liga-mx": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (mex.1, 2025 Liga MX regular seasons (Clausura + Apertura; liguilla excluded))",
+   "elo": {
+    "Quer\u00e9taro": 1472.5,
+    "Am\u00e9rica": 1588.5,
+    "Tijuana": 1489.4,
+    "Toluca": 1619.9,
+    "Mazatl\u00e1n FC": 1432.6,
+    "FC Ju\u00e1rez": 1495.3,
+    "Atl\u00e9tico de San Luis": 1428.0,
+    "Tigres UANL": 1601.9,
+    "Guadalajara": 1526.9,
+    "Santos": 1417.8,
+    "Cruz Azul": 1600.1,
+    "Atlas": 1452.8,
+    "Monterrey": 1556.7,
+    "Puebla": 1390.2,
+    "Pumas UNAM": 1485.6,
+    "Necaxa": 1492.0,
+    "Le\u00f3n": 1449.1,
+    "Pachuca": 1500.6
+   },
+   "strengths": {
+    "Quer\u00e9taro": {
+     "att": 0.766,
+     "def": 1.037,
+     "gp": 34
+    },
+    "Am\u00e9rica": {
+     "att": 1.261,
+     "def": 0.638,
+     "gp": 34
+    },
+    "Tijuana": {
+     "att": 1.117,
+     "def": 1.117,
+     "gp": 34
+    },
+    "Toluca": {
+     "att": 1.533,
+     "def": 0.83,
+     "gp": 34
+    },
+    "Mazatl\u00e1n FC": {
+     "att": 0.766,
+     "def": 1.069,
+     "gp": 34
+    },
+    "FC Ju\u00e1rez": {
+     "att": 0.878,
+     "def": 0.973,
+     "gp": 34
+    },
+    "Atl\u00e9tico de San Luis": {
+     "att": 0.909,
+     "def": 1.181,
+     "gp": 34
+    },
+    "Tigres UANL": {
+     "att": 1.133,
+     "def": 0.67,
+     "gp": 34
+    },
+    "Guadalajara": {
+     "att": 0.941,
+     "def": 0.878,
+     "gp": 34
+    },
+    "Santos": {
+     "att": 0.782,
+     "def": 1.213,
+     "gp": 34
+    },
+    "Cruz Azul": {
+     "att": 1.117,
+     "def": 0.766,
+     "gp": 34
+    },
+    "Atlas": {
+     "att": 0.973,
+     "def": 1.261,
+     "gp": 34
+    },
+    "Monterrey": {
+     "att": 1.229,
+     "def": 1.021,
+     "gp": 34
+    },
+    "Puebla": {
+     "att": 0.718,
+     "def": 1.261,
+     "gp": 34
+    },
+    "Pumas UNAM": {
+     "att": 0.941,
+     "def": 1.005,
+     "gp": 34
+    },
+    "Necaxa": {
+     "att": 1.149,
+     "def": 1.165,
+     "gp": 34
+    },
+    "Le\u00f3n": {
+     "att": 0.798,
+     "def": 1.021,
+     "gp": 34
+    },
+    "Pachuca": {
+     "att": 0.989,
+     "def": 0.893,
+     "gp": 34
+    }
+   },
+   "league": {
+    "LH": 1.661,
+    "LA": 1.305,
+    "L": 1.49
+   },
+   "backtest": {
+    "brier3": 0.591,
+    "accuracy": 0.5196,
+    "n": 306,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Liga MX (Mexico)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2025"
+  },
+  "liga-profesional": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (arg.1, 2025 Liga Profesional regular phases (Apertura + Clausura; playoffs excluded))",
+   "elo": {
+    "Defensa y Justicia": 1467.5,
+    "Banfield": 1468.8,
+    "Godoy Cruz Antonio Tomba": 1446.4,
+    "Rosario Central": 1602.4,
+    "Lan\u00fas": 1539.5,
+    "Deportivo Riestra": 1542.2,
+    "Newell's Old Boys": 1456.7,
+    "Independiente Rivadavia": 1498.5,
+    "Tigre": 1521.4,
+    "V\u00e9lez Sarsfield": 1491.8,
+    "Barracas Central": 1532.7,
+    "Racing Club": 1543.6,
+    "Belgrano (C\u00f3rdoba)": 1491.0,
+    "Hurac\u00e1n": 1508.3,
+    "Independiente": 1511.4,
+    "Sarmiento (Jun\u00edn)": 1475.4,
+    "San Mart\u00edn (San Juan)": 1441.8,
+    "Atl\u00e9tico Tucum\u00e1n": 1445.4,
+    "Estudiantes de La Plata": 1484.7,
+    "Uni\u00f3n (Santa Fe)": 1498.9,
+    "Instituto (C\u00f3rdoba)": 1457.8,
+    "Gimnasia La Plata": 1473.5,
+    "Platense": 1450.2,
+    "River Plate": 1531.4,
+    "San Lorenzo": 1533.1,
+    "Talleres (C\u00f3rdoba)": 1476.5,
+    "Boca Juniors": 1586.4,
+    "Argentinos Juniors": 1551.5,
+    "Central C\u00f3rdoba (Santiago del Estero)": 1508.2,
+    "Aldosivi": 1462.8
+   },
+   "strengths": {
+    "Defensa y Justicia": {
+     "att": 1.016,
+     "def": 1.246,
+     "gp": 32
+    },
+    "Banfield": {
+     "att": 0.94,
+     "def": 1.22,
+     "gp": 32
+    },
+    "Godoy Cruz Antonio Tomba": {
+     "att": 0.685,
+     "def": 1.144,
+     "gp": 32
+    },
+    "Rosario Central": {
+     "att": 1.22,
+     "def": 0.608,
+     "gp": 32
+    },
+    "Lan\u00fas": {
+     "att": 1.042,
+     "def": 0.812,
+     "gp": 32
+    },
+    "Deportivo Riestra": {
+     "att": 1.016,
+     "def": 0.685,
+     "gp": 32
+    },
+    "Newell's Old Boys": {
+     "att": 0.838,
+     "def": 1.169,
+     "gp": 32
+    },
+    "Independiente Rivadavia": {
+     "att": 1.067,
+     "def": 1.067,
+     "gp": 32
+    },
+    "Tigre": {
+     "att": 1.016,
+     "def": 0.838,
+     "gp": 32
+    },
+    "V\u00e9lez Sarsfield": {
+     "att": 0.863,
+     "def": 1.067,
+     "gp": 32
+    },
+    "Barracas Central": {
+     "att": 1.195,
+     "def": 1.093,
+     "gp": 32
+    },
+    "Racing Club": {
+     "att": 1.271,
+     "def": 0.94,
+     "gp": 32
+    },
+    "Belgrano (C\u00f3rdoba)": {
+     "att": 0.863,
+     "def": 1.067,
+     "gp": 32
+    },
+    "Hurac\u00e1n": {
+     "att": 0.94,
+     "def": 0.889,
+     "gp": 32
+    },
+    "Independiente": {
+     "att": 1.144,
+     "def": 0.838,
+     "gp": 32
+    },
+    "Sarmiento (Jun\u00edn)": {
+     "att": 0.812,
+     "def": 1.118,
+     "gp": 32
+    },
+    "San Mart\u00edn (San Juan)": {
+     "att": 0.659,
+     "def": 1.067,
+     "gp": 32
+    },
+    "Atl\u00e9tico Tucum\u00e1n": {
+     "att": 1.067,
+     "def": 1.297,
+     "gp": 32
+    },
+    "Estudiantes de La Plata": {
+     "att": 1.093,
+     "def": 1.144,
+     "gp": 32
+    },
+    "Uni\u00f3n (Santa Fe)": {
+     "att": 0.991,
+     "def": 0.965,
+     "gp": 32
+    },
+    "Instituto (C\u00f3rdoba)": {
+     "att": 0.838,
+     "def": 1.144,
+     "gp": 32
+    },
+    "Gimnasia La Plata": {
+     "att": 0.787,
+     "def": 1.067,
+     "gp": 32
+    },
+    "Platense": {
+     "att": 0.838,
+     "def": 1.118,
+     "gp": 32
+    },
+    "River Plate": {
+     "att": 1.246,
+     "def": 0.812,
+     "gp": 32
+    },
+    "San Lorenzo": {
+     "att": 0.889,
+     "def": 0.736,
+     "gp": 32
+    },
+    "Talleres (C\u00f3rdoba)": {
+     "att": 0.71,
+     "def": 0.889,
+     "gp": 32
+    },
+    "Boca Juniors": {
+     "att": 1.526,
+     "def": 0.787,
+     "gp": 32
+    },
+    "Argentinos Juniors": {
+     "att": 1.271,
+     "def": 0.761,
+     "gp": 32
+    },
+    "Central C\u00f3rdoba (Santiago del Estero)": {
+     "att": 1.169,
+     "def": 1.042,
+     "gp": 32
+    },
+    "Aldosivi": {
+     "att": 0.991,
+     "def": 1.373,
+     "gp": 32
+    }
+   },
+   "league": {
+    "LH": 1.12,
+    "LA": 0.852,
+    "L": 0.98
+   },
+   "backtest": {
+    "brier3": 0.6567,
+    "accuracy": 0.4083,
+    "n": 480,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Liga Profesional (Argentina)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2025"
+  },
+  "brasileirao-b": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (bra.2, 2025 Brazilian Serie B)",
+   "elo": {
+    "Am\u00e9rica Mineiro": 1485.4,
+    "Botafogo-SP": 1471.2,
+    "Coritiba": 1565.3,
+    "Vila Nova": 1480.9,
+    "CRB": 1515.6,
+    "Chapecoense": 1541.8,
+    "Volta Redonda": 1435.3,
+    "Cuiab\u00e1": 1505.5,
+    "Ferrovi\u00e1ria": 1447.4,
+    "Remo": 1555.3,
+    "Ava\u00ed": 1526.4,
+    "Novorizontino": 1538.1,
+    "Atl\u00e9tico Goianiense": 1504.3,
+    "Athletic": 1470.2,
+    "Athletico-PR": 1565.1,
+    "Crici\u00fama": 1545.1,
+    "Amazonas": 1440.4,
+    "Paysandu": 1400.6,
+    "Oper\u00e1rio PR": 1483.7,
+    "Goi\u00e1s": 1522.5
+   },
+   "strengths": {
+    "Am\u00e9rica Mineiro": {
+     "att": 0.978,
+     "def": 1.037,
+     "gp": 38
+    },
+    "Botafogo-SP": {
+     "att": 0.801,
+     "def": 1.193,
+     "gp": 38
+    },
+    "Coritiba": {
+     "att": 0.939,
+     "def": 0.625,
+     "gp": 38
+    },
+    "Vila Nova": {
+     "att": 0.958,
+     "def": 1.037,
+     "gp": 38
+    },
+    "CRB": {
+     "att": 1.056,
+     "def": 0.958,
+     "gp": 38
+    },
+    "Chapecoense": {
+     "att": 1.193,
+     "def": 0.86,
+     "gp": 38
+    },
+    "Volta Redonda": {
+     "att": 0.684,
+     "def": 1.017,
+     "gp": 38
+    },
+    "Cuiab\u00e1": {
+     "att": 1.017,
+     "def": 1.037,
+     "gp": 38
+    },
+    "Ferrovi\u00e1ria": {
+     "att": 1.017,
+     "def": 1.193,
+     "gp": 38
+    },
+    "Remo": {
+     "att": 1.174,
+     "def": 0.939,
+     "gp": 38
+    },
+    "Ava\u00ed": {
+     "att": 1.154,
+     "def": 0.958,
+     "gp": 38
+    },
+    "Novorizontino": {
+     "att": 1.017,
+     "def": 0.801,
+     "gp": 38
+    },
+    "Atl\u00e9tico Goianiense": {
+     "att": 0.939,
+     "def": 0.919,
+     "gp": 38
+    },
+    "Athletic": {
+     "att": 1.017,
+     "def": 1.213,
+     "gp": 38
+    },
+    "Athletico-PR": {
+     "att": 1.2,
+     "def": 1.02,
+     "gp": 37
+    },
+    "Crici\u00fama": {
+     "att": 1.1,
+     "def": 0.799,
+     "gp": 37
+    },
+    "Amazonas": {
+     "att": 0.939,
+     "def": 1.26,
+     "gp": 37
+    },
+    "Paysandu": {
+     "att": 0.879,
+     "def": 1.18,
+     "gp": 37
+    },
+    "Oper\u00e1rio PR": {
+     "att": 0.939,
+     "def": 1.04,
+     "gp": 37
+    },
+    "Goi\u00e1s": {
+     "att": 1.0,
+     "def": 0.919,
+     "gp": 37
+    }
+   },
+   "league": {
+    "LH": 1.297,
+    "LA": 0.929,
+    "L": 1.109
+   },
+   "backtest": {
+    "brier3": 0.6383,
+    "accuracy": 0.4615,
+    "n": 377,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Serie B (Brazil)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2025"
+  },
+  "nacional-b": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (arg.2, 2025 Primera Nacional regular phase (reducido playoffs excluded))",
+   "elo": {
+    "Chaco For Ever": 1528.8,
+    "Estudiantes (Buenos Aires)": 1559.3,
+    "Arsenal Sarandi": 1457.5,
+    "All Boys": 1494.1,
+    "Nueva Chicago": 1488.1,
+    "San Telmo": 1471.0,
+    "San Miguel": 1523.3,
+    "Trist\u00e1n Su\u00e1rez": 1540.8,
+    "Colegiales": 1519.3,
+    "Alvarado (Mar del Plata)": 1454.7,
+    "Gimnasia (Mendoza)": 1575.7,
+    "Estudiantes de R\u00edo Cuarto": 1564.9,
+    "Los Andes": 1473.5,
+    "Patronato": 1510.6,
+    "Quilmes": 1464.1,
+    "Gimnasia y Tiro (Salta)": 1532.0,
+    "Almagro": 1448.9,
+    "San Mart\u00edn (Tucum\u00e1n)": 1502.9,
+    "Almirante Brown": 1472.8,
+    "Deportivo Mor\u00f3n": 1557.8,
+    "Central Norte": 1449.6,
+    "Talleres de Remedios": 1398.0,
+    "Ferro Carril Oeste": 1484.6,
+    "G\u00fcemes": 1500.3,
+    "Gimnasia y Esgrima (Jujuy)": 1539.5,
+    "Defensores de Belgrano": 1510.3,
+    "Mitre (Santiago del Estero)": 1473.0,
+    "Defensores Unidos": 1395.8,
+    "Racing (C\u00f3rdoba)": 1471.3,
+    "Deportivo Maip\u00fa": 1515.5,
+    "Agropecuario": 1545.0,
+    "Chacarita Juniors": 1503.2,
+    "Atlanta": 1533.0,
+    "Deportivo Madryn": 1573.5,
+    "Temperley": 1549.8,
+    "Col\u00f3n (Santa Fe)": 1417.6
+   },
+   "strengths": {
+    "Chaco For Ever": {
+     "att": 1.086,
+     "def": 0.875,
+     "gp": 34
+    },
+    "Estudiantes (Buenos Aires)": {
+     "att": 1.27,
+     "def": 0.77,
+     "gp": 34
+    },
+    "Arsenal Sarandi": {
+     "att": 1.191,
+     "def": 1.428,
+     "gp": 34
+    },
+    "All Boys": {
+     "att": 0.816,
+     "def": 0.87,
+     "gp": 33
+    },
+    "Nueva Chicago": {
+     "att": 0.902,
+     "def": 1.06,
+     "gp": 34
+    },
+    "San Telmo": {
+     "att": 1.007,
+     "def": 1.297,
+     "gp": 34
+    },
+    "San Miguel": {
+     "att": 1.033,
+     "def": 0.928,
+     "gp": 34
+    },
+    "Trist\u00e1n Su\u00e1rez": {
+     "att": 1.06,
+     "def": 0.796,
+     "gp": 34
+    },
+    "Colegiales": {
+     "att": 0.875,
+     "def": 0.875,
+     "gp": 34
+    },
+    "Alvarado (Mar del Plata)": {
+     "att": 0.665,
+     "def": 1.06,
+     "gp": 34
+    },
+    "Gimnasia (Mendoza)": {
+     "att": 1.112,
+     "def": 0.665,
+     "gp": 34
+    },
+    "Estudiantes de R\u00edo Cuarto": {
+     "att": 1.112,
+     "def": 0.77,
+     "gp": 34
+    },
+    "Los Andes": {
+     "att": 0.95,
+     "def": 0.95,
+     "gp": 33
+    },
+    "Patronato": {
+     "att": 1.007,
+     "def": 0.928,
+     "gp": 34
+    },
+    "Quilmes": {
+     "att": 0.981,
+     "def": 1.033,
+     "gp": 34
+    },
+    "Gimnasia y Tiro (Salta)": {
+     "att": 1.086,
+     "def": 0.796,
+     "gp": 34
+    },
+    "Almagro": {
+     "att": 0.823,
+     "def": 1.007,
+     "gp": 34
+    },
+    "San Mart\u00edn (Tucum\u00e1n)": {
+     "att": 1.033,
+     "def": 0.954,
+     "gp": 34
+    },
+    "Almirante Brown": {
+     "att": 0.928,
+     "def": 1.191,
+     "gp": 34
+    },
+    "Deportivo Mor\u00f3n": {
+     "att": 1.139,
+     "def": 0.691,
+     "gp": 34
+    },
+    "Central Norte": {
+     "att": 0.902,
+     "def": 1.27,
+     "gp": 34
+    },
+    "Talleres de Remedios": {
+     "att": 0.638,
+     "def": 1.244,
+     "gp": 34
+    },
+    "Ferro Carril Oeste": {
+     "att": 0.823,
+     "def": 1.06,
+     "gp": 34
+    },
+    "G\u00fcemes": {
+     "att": 0.928,
+     "def": 1.033,
+     "gp": 34
+    },
+    "Gimnasia y Esgrima (Jujuy)": {
+     "att": 1.139,
+     "def": 0.717,
+     "gp": 34
+    },
+    "Defensores de Belgrano": {
+     "att": 0.981,
+     "def": 0.875,
+     "gp": 34
+    },
+    "Mitre (Santiago del Estero)": {
+     "att": 0.928,
+     "def": 1.007,
+     "gp": 34
+    },
+    "Defensores Unidos": {
+     "att": 0.638,
+     "def": 1.56,
+     "gp": 34
+    },
+    "Racing (C\u00f3rdoba)": {
+     "att": 1.191,
+     "def": 1.376,
+     "gp": 34
+    },
+    "Deportivo Maip\u00fa": {
+     "att": 1.086,
+     "def": 0.981,
+     "gp": 34
+    },
+    "Agropecuario": {
+     "att": 1.323,
+     "def": 1.086,
+     "gp": 34
+    },
+    "Chacarita Juniors": {
+     "att": 1.165,
+     "def": 0.954,
+     "gp": 34
+    },
+    "Atlanta": {
+     "att": 1.007,
+     "def": 0.928,
+     "gp": 34
+    },
+    "Deportivo Madryn": {
+     "att": 1.376,
+     "def": 0.928,
+     "gp": 34
+    },
+    "Temperley": {
+     "att": 1.004,
+     "def": 0.789,
+     "gp": 33
+    },
+    "Col\u00f3n (Santa Fe)": {
+     "att": 0.789,
+     "def": 1.247,
+     "gp": 33
+    }
+   },
+   "league": {
+    "LH": 1.116,
+    "LA": 0.704,
+    "L": 0.904
+   },
+   "backtest": {
+    "brier3": 0.6299,
+    "accuracy": 0.4426,
+    "n": 610,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Primera Nacional (Argentina)",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2025"
+  }
+ },
+ "control": {
+  "epl": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "football-data.co.uk results CSV https://www.football-data.co.uk/mmz4281/2425/E0.csv",
+   "elo": {
+    "Man United": 1450.5,
+    "Fulham": 1502.0,
+    "Ipswich": 1365.4,
+    "Liverpool": 1616.1,
+    "Arsenal": 1594.5,
+    "Wolves": 1465.2,
+    "Everton": 1513.5,
+    "Brighton": 1547.4,
+    "Newcastle": 1549.9,
+    "Southampton": 1326.3,
+    "Nott'm Forest": 1537.8,
+    "Bournemouth": 1512.9,
+    "West Ham": 1458.5,
+    "Aston Villa": 1562.4,
+    "Brentford": 1521.3,
+    "Crystal Palace": 1531.2,
+    "Chelsea": 1569.2,
+    "Man City": 1583.2,
+    "Leicester": 1376.8,
+    "Tottenham": 1415.7
+   },
+   "strengths": {
+    "Man United": {
+     "att": 0.826,
+     "def": 0.974,
+     "gp": 38
+    },
+    "Fulham": {
+     "att": 0.974,
+     "def": 0.974,
+     "gp": 38
+    },
+    "Ipswich": {
+     "att": 0.707,
+     "def": 1.389,
+     "gp": 38
+    },
+    "Liverpool": {
+     "att": 1.448,
+     "def": 0.781,
+     "gp": 38
+    },
+    "Arsenal": {
+     "att": 1.196,
+     "def": 0.678,
+     "gp": 38
+    },
+    "Wolves": {
+     "att": 0.974,
+     "def": 1.196,
+     "gp": 38
+    },
+    "Everton": {
+     "att": 0.796,
+     "def": 0.826,
+     "gp": 38
+    },
+    "Brighton": {
+     "att": 1.152,
+     "def": 1.048,
+     "gp": 38
+    },
+    "Newcastle": {
+     "att": 1.182,
+     "def": 0.87,
+     "gp": 38
+    },
+    "Southampton": {
+     "att": 0.559,
+     "def": 1.448,
+     "gp": 38
+    },
+    "Nott'm Forest": {
+     "att": 1.033,
+     "def": 0.856,
+     "gp": 38
+    },
+    "Bournemouth": {
+     "att": 1.033,
+     "def": 0.856,
+     "gp": 38
+    },
+    "West Ham": {
+     "att": 0.856,
+     "def": 1.093,
+     "gp": 38
+    },
+    "Aston Villa": {
+     "att": 1.033,
+     "def": 0.93,
+     "gp": 38
+    },
+    "Brentford": {
+     "att": 1.152,
+     "def": 1.019,
+     "gp": 38
+    },
+    "Crystal Palace": {
+     "att": 0.93,
+     "def": 0.93,
+     "gp": 38
+    },
+    "Chelsea": {
+     "att": 1.122,
+     "def": 0.811,
+     "gp": 38
+    },
+    "Man City": {
+     "att": 1.241,
+     "def": 0.826,
+     "gp": 38
+    },
+    "Leicester": {
+     "att": 0.663,
+     "def": 1.359,
+     "gp": 38
+    },
+    "Tottenham": {
+     "att": 1.122,
+     "def": 1.137,
+     "gp": 38
+    }
+   },
+   "league": {
+    "LH": 1.51,
+    "LA": 1.414,
+    "L": 1.467
+   },
+   "backtest": {
+    "brier3": 0.6037,
+    "accuracy": 0.5,
+    "n": 380,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Premier League (England) \u2014 control",
+   "fitted_at": "2026-10-24T22:10:02+00:00",
+   "season": "2024-25"
+  }
+ },
+ "note": "Per-league fits (football-data.co.uk, season 2024-25; MLS from ESPN usa.1 day pulls, 2025 regular season). 'control' is the EPL fitted by this same code for comparison against the shipped v5-soccer.json; the checker never prices from control \u2014 EPL prices from v5-soccer.json exactly as before."
+}

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
-BetFi 11 — the betmodel v5.3 mobile shell (public name: BetFi;
-internal id: Bet_Finder).
+BetFi Xii — the betmodel v5.4 mobile shell (public name:
+BetFi_Xii; display name: BetFi Xii; internal id: Bet_Finder —
+UNCHANGED from BetFi 11, so on-device storage, snapshots and
+the evidence pack carry over; a rename must never orphan the
+record).
 
 The ENTIRE app in one file, per the Pilot's 1-script preference:
 this shell plus the engine (betmodel5.py, one self-contained
@@ -79,6 +82,32 @@ place. F5 (engine v5.3): the GOLDEN bar at +2.0, the CLV &
 drift ledger on the Lab face (measurement only), and the
 Kelly staking advisory on the Slip (advice only — it never
 places or queues a bet).
+
+v12.0 (2026-10-24) — BetFi Xii (engine v5.4): the app is
+renamed (PUBLIC_NAME BetFi_Xii, display "BetFi Xii";
+INTERNAL_ID and the storage path are unchanged on purpose).
+(1) The Universal Model (engine Organ 8): a registry over
+every fit on the device plus per-pull coverage reporting, and
+multi-league soccer — Serie A, La Liga, Bundesliga and Ligue 1
+fits built from real results (tools/fit_soccer_leagues.py)
+price alongside the shipped EPL fit, which keeps first
+precedence and its exact numbers. (2) Auto-pull: the menu
+pulls itself on start and every 4 minutes while the app is
+open (never overlapping a running pull); a failed pull keeps
+the last good pull and its STALE / UNVERIFIED stamp — prices
+are never invented to fill a gap. (3) Copy mechanic: team and
+player NAMES copy individually (a name is what searches);
+the slip-label copy stays. (4) Xii Charts on the 3D
+destination, above the snapshot instruments: edge distribution,
+PRICED vs UNPRICED by sport, and model-vs-implied for the top
+priced markets — built from the current pull on every pull,
+zoom via + / − / reset buttons (no sliders), tap a bar for
+its detail line. (5) The Protected Slip: GOLDEN BET / BET
+HERE markets auto-populate a slip panel with engine Kelly
+stakes (quarter-Kelly, 5% hard cap, damping printed), total
+stake and max loss = total stake printed; the user places it
+on FanDuel themselves and marks it placed here — the app
+never places a bet and never touches a sportsbook account.
 """
 
 from __future__ import annotations
@@ -89,6 +118,7 @@ import os
 import re
 import sys
 import threading
+import time
 from datetime import datetime, timedelta, timezone
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -101,11 +131,288 @@ import flet as ft
 # ------------------------------------------------------------------
 # Bet_Finder identity + storage
 
-PUBLIC_NAME = "BetFi"
-INTERNAL_ID = "Bet_Finder"
-APP_VERSION = "11.0.2"
-BUILD_NUMBER = 15
-DISPLAY_NAME = "BetFi 11"
+PUBLIC_NAME = "BetFi_Xii"
+INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
+# internal id (and therefore the on-device storage path,
+# snapshot filename and engine-data folder) is UNCHANGED from
+# BetFi 11 — renaming the app must not orphan the user's data.
+APP_VERSION = "12.0.0"
+BUILD_NUMBER = 16
+DISPLAY_NAME = "BetFi Xii"
+# Auto-pull (v12): on start and every 4 minutes while the app
+# is open. The loop only starts inside the real ft.run entry
+# path (AUTO_PULL_ENABLED is set by the __main__ block), so
+# headless harnesses that build the control tree never fire a
+# network pull.
+AUTO_PULL_INTERVAL_S = 4 * 60
+AUTO_PULL_ENABLED = False
+
+# ------------------------------------------------------------------
+# BetFi Xii ICE design system (v12, from the artist's
+# DESIGN-RESCUE.md — "an X-ray of a bet": dark film field, bone
+# linework, one cyan glow wherever the model sees something
+# real). Glow is a SIGNAL, never decoration: cyan glow only on
+# priced/live elements, gold glow only on GOLDEN surfaces, and
+# NO glow on UNPRICED or empty states.
+
+BONE = "#EAF8FF"          # primary linework / text (artist: bone)
+BONE_DIM = "#CDE8F8"      # secondary linework, axis labels
+INK_DIM = "#8FA8C8"       # secondary text (contrast floor)
+CYAN_HI = "#7DE0FF"       # glow core highlights
+CYAN_DEEP = "#0E3C60"     # keylines under bone strokes
+HAIRLINE = "#1E3A5F"      # 1dp borders / chart grid (artist)
+PANEL_RAISED_C = "#101E3D"  # elevated surface (artist panelRaised)
+XRAY_FILL = "#8C0D2B45"   # panelXray: #0D2B45 @ ~55% alpha
+GOLD = "#F5C451"          # GOLDEN only — nowhere else (artist)
+GOLD_DEEP = "#2A1F06"     # GOLDEN surface base
+ICE = "#38BDF8"           # the X-ray cyan (== ACCENT, named here
+#                           for the pulse system)
+NUM_FONT = "Roboto Mono"  # tabular figures for new surfaces
+#                           (Flet 1.0.4 has no tabular-numerals
+#                           toggle; a mono font is the honest
+#                           mechanism — 11.0's finding stands)
+
+# Elevation tokens (artist depth law: surface colour + hairline
+# first, shadow second; three layers, no more)
+ELEV_L0 = None
+ELEV_L1 = ft.BoxShadow(blur_radius=12, spread_radius=0,
+                       color="#00000059", offset=ft.Offset(0, 4))
+ELEV_L2 = [ft.BoxShadow(blur_radius=18, spread_radius=0,
+                        color="#00000073", offset=ft.Offset(0, 6)),
+           ft.BoxShadow(blur_radius=6, spread_radius=0,
+                        color="#1F38BDF8", offset=ft.Offset(0, 1))]
+GOLD_GLOW = [ft.BoxShadow(blur_radius=16, spread_radius=0,
+                          color="#73F5C451",
+                          offset=ft.Offset(0, 4)),
+             ft.BoxShadow(blur_radius=6, spread_radius=0,
+                          color="#00000059",
+                          offset=ft.Offset(0, 2))]
+ICE_GLOW = [ft.BoxShadow(blur_radius=14, spread_radius=0,
+                         color="#6638BDF8",
+                         offset=ft.Offset(0, 3)),
+            ft.BoxShadow(blur_radius=5, spread_radius=0,
+                         color="#00000059",
+                         offset=ft.Offset(0, 2))]
+
+# Gradient washes (Flet 1.0.4 has no backdrop blur; the frosted
+# "ice" header is layered translucent gradients instead — real
+# mechanism, no invented API)
+FIELD_GRADIENT = ft.LinearGradient(
+    begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+    colors=["#0A1730", "#060B1A"])
+PANEL_GRADIENT = ft.LinearGradient(
+    begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+    colors=["#0D1834", "#0B1329"])
+FROST_GRADIENT = ft.LinearGradient(
+    begin=ft.Alignment(-1, 0), end=ft.Alignment(1, 0),
+    colors=["#2938BDF8", "#0D1834", "#2938BDF8"])
+GOLD_GRADIENT = ft.LinearGradient(
+    begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+    colors=["#3A2A08", GOLD_DEEP])
+
+# ------------------------------------------------------------------
+# Button weights (9c) — a real weight system, named once:
+#   PRIMARY   heavy: filled, 48dp+, bold w700, layered shadow —
+#             the actions that move the app (Pull, Protected
+#             Slip confirm/mark, chart zoom).
+#   SECONDARY tonal mid-weight: raised surface fill, 44dp.
+#   TERTIARY  text-only, light: navigation-grade actions.
+
+BTN_PRIMARY_HEIGHT = 52    # artist §2: primary 52dp / w700
+BTN_SECONDARY_HEIGHT = 48  # secondary 48dp / w600, hairline side
+
+
+def primary_button(text, on_click, icon=None):
+    # Two-layer shadow per artist §2 (black y2/blur6 + cyan glow
+    # blur12 @25%): ButtonStyle carries ONE shadow_color, so the
+    # cyan glow rides the shadow_color and the black layer rides
+    # the material elevation — the closest honest expression in
+    # Flet 1.0.4 (no per-button shadow lists exist).
+    return ft.Button(
+        text, icon=icon, on_click=on_click, height=BTN_PRIMARY_HEIGHT,
+        style=ft.ButtonStyle(
+            bgcolor=ICE, color="#060B1A", elevation=4,
+            shadow_color="#4038BDF8",
+            text_style=ft.TextStyle(weight=ft.FontWeight.W_700,
+                                    size=15),
+            shape=ft.RoundedRectangleBorder(radius=14),
+            padding=ft.Padding(left=24, right=24, top=14,
+                               bottom=14)))
+
+
+def secondary_button(text, on_click, icon=None):
+    return ft.Button(
+        text, icon=icon, on_click=on_click,
+        height=BTN_SECONDARY_HEIGHT,
+        style=ft.ButtonStyle(
+            bgcolor=CARD_BG, color=BONE, elevation=1,
+            shadow_color="#40000000",
+            side=ft.BorderSide(1.5, HAIRLINE),
+            text_style=ft.TextStyle(weight=ft.FontWeight.W_600,
+                                    size=14),
+            shape=ft.RoundedRectangleBorder(radius=14),
+            padding=ft.Padding(left=18, right=18, top=12,
+                               bottom=12)))
+
+
+def tertiary_button(text, on_click):
+    return ft.TextButton(
+        text, on_click=on_click,
+        style=ft.ButtonStyle(
+            color=ICE,
+            text_style=ft.TextStyle(weight=ft.FontWeight.W_600,
+                                    size=14)))
+
+
+# ------------------------------------------------------------------
+# Ice pulse machinery (9a/9b) — ONE daemon loop shape for every
+# pulse in the app. A loop breathes its targets' opacity on a
+# ~1.8 s ease cycle (sinusoidal), touches AT MOST 3 controls,
+# and stops permanently when its stop event is set. Loops start
+# only in the real entry path (AUTO_PULL_ENABLED); headless
+# harnesses never start one.
+
+PULSE_PERIOD_S = 2.0      # the live dot's period (artist §1.2)
+PULSE_PERIODS = {"splash": 3.2, "dot": 2.0, "golden": 2.8,
+                 "shimmer": 1.5}
+_PULSE_TARGETS = {"splash": [], "dot": [], "golden": [],
+                  "shimmer": []}
+_PULSE_STOPS = {}
+_DOT_FRESH = {"fresh": False}   # the live dot's freshness gate
+# (artist §1.2): the dot loop runs, but writes nothing while the
+# displayed pull is stale — the dot sits frozen at 60% instead.
+# Performance budget (artist §5): at most 3 looping animations
+# stand at once in this app (dot + golden + splash-or-shimmer —
+# splash and shimmer never coexist), under the hard cap of 6.
+# Every pulse writes OPACITY ONLY, on a pre-rendered glow layer
+# (Flet cannot animate shadow blur), ticking at 120 ms (>= the
+# artist's 100 ms floor). Flet 1.0.4 exposes no app-lifecycle
+# or battery API, so background/battery pausing cannot be
+# wired in this build — the loops are daemon, opacity-only and
+# stop the moment their surface leaves the tree.
+
+
+def _pulse_value(key, elapsed):
+    """The opacity a pulse key wants at `elapsed` seconds.
+    splash: the §1.1 keyframe envelope for the first 2.4 s
+    (ignition .0->.55, swell .55->.35, swell .35->.60, hold .60),
+    then the idle breath (period 3.2 s, alpha .25<->.40).
+    dot: period 2.0 s, alpha 1.0<->.45. golden: period 2.8 s,
+    alpha .35<->.50. shimmer: 1.2 s sweep + 0.3 s flat, peak
+    alpha .12 (the sheen layer's own opacity)."""
+    import math
+    if key == "splash":
+        if elapsed < 0.6:
+            return 0.55 * (elapsed / 0.6)
+        if elapsed < 1.2:
+            return 0.55 - 0.20 * ((elapsed - 0.6) / 0.6)
+        if elapsed < 1.8:
+            return 0.35 + 0.25 * ((elapsed - 1.2) / 0.6)
+        if elapsed < 2.4:
+            return 0.60
+        ph = ((elapsed - 2.4) % 3.2) / 3.2
+        return 0.325 + 0.075 * math.sin(ph * 2 * math.pi)
+    if key == "dot":
+        ph = (elapsed % 2.0) / 2.0
+        return 0.725 + 0.275 * math.sin(ph * 2 * math.pi)
+    if key == "golden":
+        ph = (elapsed % 2.8) / 2.8
+        return 0.425 + 0.075 * math.sin(ph * 2 * math.pi)
+    if key == "shimmer":
+        ph = elapsed % 1.5
+        if ph >= 1.2:
+            return 0.0
+        return 0.12 * math.sin((ph / 1.2) * math.pi)
+    return 1.0
+
+
+def ice_pulse_loop(key):
+    """Daemon body: breathe the registered glow-layer targets
+    for `key` until its stop event is set. Touches at most 3
+    controls per tick (golden: top 3 surfaces; shimmer: the
+    registered sheen layers, capped at registration)."""
+    import time as _time
+    stop = _PULSE_STOPS.setdefault(key, threading.Event())
+    t0 = _time.monotonic()
+    while not stop.is_set():
+        if key == "dot" and not _DOT_FRESH["fresh"]:
+            stop.wait(0.25)
+            continue
+        value = _pulse_value(key, _time.monotonic() - t0)
+        limit = 4 if key == "shimmer" else 3
+        for ctrl in list(_PULSE_TARGETS.get(key) or [])[:limit]:
+            try:
+                ctrl.opacity = value
+                ctrl.update()
+            except Exception:
+                pass
+        stop.wait(0.12)
+
+
+def start_pulse(key):
+    if key in _PULSE_STOPS and not _PULSE_STOPS[key].is_set():
+        return
+    _PULSE_STOPS[key] = threading.Event()
+    threading.Thread(target=ice_pulse_loop, args=(key,),
+                     daemon=True).start()
+
+
+def stop_pulse(key):
+    ev = _PULSE_STOPS.get(key)
+    if ev is not None:
+        ev.set()
+    _PULSE_TARGETS[key] = []
+
+
+_SPLASH_PARTS = {}
+
+
+def build_splash():
+    """The startup ICE splash (9a; artist MOTION §1.1): the XII
+    badge on the deep field over a PRE-RENDERED glow layer (a
+    shadow-carrying container whose OPACITY the pulse loop
+    breathes — Flet cannot animate shadow blur), the lockup
+    wordmark, and the standing truth (pull running, analysis
+    only). Pure builder — main() wires it into page.overlay in
+    the real entry path only, resolves it in 240 ms when the
+    first pull lands (or on tap), and the pulse stops with it."""
+    glow = ft.Container(
+        width=120, height=120, border_radius=60,
+        shadow=ICE_GLOW, opacity=0.0,
+        animate_opacity=ft.Animation(
+            120, ft.AnimationCurve.EASE_IN_OUT))
+    ring = ft.Container(
+        width=120, height=120, border_radius=60,
+        border=_border_all(2, ICE),
+        scale=ft.Scale(scale=0.94),
+        animate_scale=ft.Animation(600,
+                                   ft.AnimationCurve.EASE_OUT),
+        alignment=ft.Alignment(0, 0),
+        content=ft.Text("XII", size=30, color=BONE,
+                        weight=ft.FontWeight.BOLD,
+                        font_family="Georgia"))
+    _PULSE_TARGETS["splash"] = [glow]
+    _SPLASH_PARTS["glow"] = glow
+    _SPLASH_PARTS["ring"] = ring
+    return ft.Container(
+        bgcolor="#F2060B1A", alignment=ft.Alignment(0, 0),
+        animate_opacity=ft.Animation(
+            240, ft.AnimationCurve.EASE_IN_OUT),
+        content=ft.Column(
+            spacing=14, tight=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
+                ft.Stack(width=120, height=120,
+                         controls=[glow, ring]),
+                ft.Row(spacing=0, tight=True, controls=[
+                    ft.Text("BetFi ", size=30, color=BONE,
+                            weight=ft.FontWeight.W_700),
+                    ft.Text("Xii", size=30, color=ICE,
+                            weight=ft.FontWeight.W_700)]),
+                ft.Text("Pulling the live menu…", size=13,
+                        color=INK_DIM),
+                ft.Text("Analysis only — never places a bet.",
+                        size=11, color=FAINT)]))
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
 # lanes shown on the Record screen (engine lane_record is safe for
@@ -253,6 +560,8 @@ def repoint_engine_storage() -> None:
                                            "nfl-week6-pricing.json")
         b5.NBA_FIT_PATH = os.path.join(data, "v5-nba.json")
         b5.SOCCER_FIT_PATH = os.path.join(data, "v5-soccer.json")
+        b5.SOCCER_LEAGUES_PATH = os.path.join(
+            data, "v5-soccer-leagues.json")
     except Exception:
         pass  # the shell must never die over storage bookkeeping
 
@@ -882,6 +1191,47 @@ def _copy_label(e, label: str):
         pass
 
 
+def copy_name(name: str) -> str:
+    """The v12 copy mechanic: a team or player NAME, alone —
+    exactly what a FanDuel (or any) search box wants. Copying
+    the whole slip label into a search yields nothing; the name
+    is the search key. Returns the string that goes on the
+    clipboard (the name, stripped, nothing added)."""
+    return (name or "").strip()
+
+
+def _copy_name(e, name: str):
+    _copy_label(e, copy_name(name))
+
+
+def name_chip(name: str) -> ft.Row:
+    """One copyable name: the name itself (tap it or its copy
+    icon and JUST the name lands on the clipboard)."""
+    return ft.Row(
+        spacing=2, tight=True,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        controls=[
+            ft.Text(name, size=12, color=INK,
+                    weight=ft.FontWeight.BOLD),
+            ft.IconButton(
+                icon=ft.Icons.CONTENT_COPY, icon_size=13,
+                icon_color=ACCENT, width=30, height=30,
+                tooltip=f"Copy the name '{name}'",
+                on_click=lambda e, n=name: _copy_name(e, n))])
+
+
+def market_names(mkt: dict) -> list:
+    """The copyable names a market carries: the player on a
+    prop, else both teams (full names as a bettor reads them)."""
+    if mkt.get("player"):
+        return [mkt["player"]]
+    names = []
+    for side in ("home", "away"):
+        if mkt.get(side):
+            names.append(team_name(mkt, side))
+    return names
+
+
 # ------------------------------------------------------------------
 # Skeletons (F3/F4): the shell paints these while a pull or the
 # first pricing pass is in flight — a shaped placeholder in the
@@ -890,17 +1240,35 @@ def _copy_label(e, label: str):
 
 
 def skeleton_card() -> ft.Container:
-    bar = lambda w, h, c=RAISED: ft.Container(  # noqa: E731
-        width=w, height=h, bgcolor=c, border_radius=4)
+    # ICE shimmer (9e; artist §3.4): panelXray blocks + an
+    # ice-gradient sheen layer whose opacity the shimmer pulse
+    # sweeps (1200 ms sweep + 300 ms flat, peak alpha 12%, all
+    # blocks in phase on one clock). Flet gradients cannot
+    # translate without a rebuild, so the sweep is expressed as
+    # the sheen layer's opacity envelope — no per-frame layout.
+    bar = lambda w, h, c=XRAY_FILL: ft.Container(  # noqa: E731
+        width=w, height=h, bgcolor=c, border_radius=6)
+    sheen = ft.Container(
+        gradient=ft.LinearGradient(
+            begin=ft.Alignment(-1, 0), end=ft.Alignment(1, 0),
+            colors=["#007DE0FF", "#1F7DE0FF", "#007DE0FF"]),
+        opacity=0.0, border_radius=14,
+        animate_opacity=ft.Animation(
+            120, ft.AnimationCurve.EASE_IN_OUT))
+    if len(_PULSE_TARGETS["shimmer"]) < 4:
+        _PULSE_TARGETS["shimmer"].append(sheen)
     return ft.Container(
-        bgcolor=CARD_BG, border_radius=10, padding=12,
-        border=_border_all(1, BORDER),
-        content=ft.Column(spacing=8, controls=[
-            bar(150, 16), bar(230, 20), bar(190, 12, DIM),
-            bar(120, 26), bar(260, 12)]))
+        bgcolor=CARD_BG, border_radius=14, padding=12,
+        border=_border_all(1, HAIRLINE),
+        content=ft.Stack(controls=[
+            ft.Column(spacing=8, controls=[
+                bar(150, 16), bar(230, 20), bar(190, 12),
+                bar(120, 26), bar(260, 12)]),
+            sheen]))
 
 
 def skeleton_cards(n: int = 3) -> list:
+    _PULSE_TARGETS["shimmer"] = []
     return [skeleton_card() for _ in range(n)]
 
 # ------------------------------------------------------------------
@@ -1152,6 +1520,36 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         coh_lines = ["insufficient quotes in this pull to audit"]
 
     face = []
+    # X-ray film strip (9d; artist §3.2): a 22dp panelXray band
+    # on the card's top edge — sprocket perforations at texture
+    # alpha, the league chip left, the pull time right (tabular),
+    # a cyan registration corner mark on PRICED cards only.
+    # UNPRICED cards get the same band, flat: no mark, no glow.
+    _sprockets = ft.Row(
+        spacing=18, tight=True,
+        controls=[ft.Container(width=8, height=4,
+                               bgcolor="#14EAF8FF",
+                               border_radius=2)
+                  for _ in range(10)])
+    _strip_bits = [
+        ft.Text(SPORT_LABELS.get(
+            mkt.get("sport"), (mkt.get("sport") or "?").upper()),
+            size=10, color=BONE_DIM, weight=ft.FontWeight.BOLD),
+        ft.Container(expand=True),
+        ft.Text(str((rec or {}).get("pulled_at") or "")[11:16],
+                size=10, color=BONE_DIM, font_family=NUM_FONT)]
+    if state == "PRICED":
+        _strip_bits.append(ft.Container(
+            width=14, height=14,
+            border=ft.Border(top=ft.BorderSide(2, "#8038BDF8"),
+                             right=ft.BorderSide(2, "#8038BDF8"))))
+    face.append(ft.Container(
+        height=22, bgcolor=XRAY_FILL, border_radius=4,
+        padding=ft.Padding(left=6, right=6, top=2, bottom=2),
+        border=ft.Border(bottom=ft.BorderSide(1, HAIRLINE)),
+        content=ft.Stack(controls=[
+            _sprockets,
+            ft.Row(spacing=6, controls=_strip_bits)])))
     if rank is not None:
         face.append(_line(
             f"FIND #{rank}"
@@ -1200,6 +1598,17 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
                 tooltip="Copy the exact slip label",
                 on_click=lambda e, lbl=name["slip_label"]:
                 _copy_label(e, lbl))]))
+    # v12 copy mechanic: the NAMES are the primary copy targets
+    # (a name is what a search box wants; the slip label above
+    # stays for notes). Each name copies alone.
+    _names = market_names(mkt)
+    if _names:
+        face.append(ft.Row(
+            spacing=6, wrap=True,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[ft.Text("Copy name:", size=11, color=FAINT,
+                              weight=ft.FontWeight.BOLD)]
+            + [name_chip(n) for n in _names]))
     face.append(_line(f"Win {w} · Lose {l}   ({lane} lane record)",
                       11, DIM))
     # hero row: probability left (promoted), edge right, colored
@@ -1310,11 +1719,9 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
             begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
             colors=["#191405", CARD_BG])
     return ft.Container(
-        bgcolor=CARD_BG, gradient=gradient, border_radius=10,
+        bgcolor=CARD_BG, gradient=gradient, border_radius=14,
         padding=12,
-        shadow=ft.BoxShadow(blur_radius=14, spread_radius=0,
-                            color="#00000066",
-                            offset=ft.Offset(0, 4)),
+        shadow=GOLD_GLOW if term == "GOLDEN BET" else ELEV_L1,
         border=ft.Border(
             left=ft.BorderSide(3, stripe_color),
             top=ft.BorderSide(1, BORDER),
@@ -1366,6 +1773,265 @@ def distill_finds(markets: list, verdicts: list):
                               -(t[2] if t[2] is not None
                                 else -1e9)))
     return golden, finds, flagged, counter
+
+
+# ------------------------------------------------------------------
+# Xii Charts (v12) — charts built from native Flet controls
+# (containers — pinned Flet 1.0.4 core has no chart control and
+# flet-charts is not a dependency of this app) from the CURRENT
+# pull's
+# verdicts, rebuilt on every pull: (a) the edge distribution of
+# priced markets, (b) PRICED vs UNPRICED by sport, (c) model
+# probability vs implied probability for the top priced markets
+# by |edge|. Zoom is a factor the + / − / reset buttons adjust
+# (the shell owns the factor; these builders take it as data) —
+# no sliders anywhere in this app. Every bar carries its detail
+# as a tooltip AND as a labelled tap target under the chart;
+# either tap writes the detail line. Zero priced markets render
+# an honest empty state — never a fake bar.
+
+EDGE_BUCKETS = [("< −5", None, -5.0), ("−5…−2", -5.0, -2.0),
+                ("−2…0", -2.0, 0.0), ("0…+2", 0.0, 2.0),
+                ("+2…+5", 2.0, 5.0), ("+5…+8", 5.0, 8.0),
+                ("> +8", 8.0, None)]
+
+
+def xii_chart_data(entries: list) -> dict:
+    """The chart facts, computed once from (market, verdict,
+    edge) triples — the same triples the Board renders, so the
+    charts can never disagree with the cards."""
+    priced = [(m, v, e) for m, v, e in entries
+              if v.get("state") == "PRICED" and e is not None]
+    buckets = []
+    for label, lo, hi in EDGE_BUCKETS:
+        n = sum(1 for _m, _v, e in priced
+                if (lo is None or e >= lo)
+                and (hi is None or e < hi))
+        buckets.append({"label": label, "count": n})
+    by_sport = {}
+    for m, v, _e in entries:
+        s = m.get("sport") or "?"
+        slot = by_sport.setdefault(
+            s, {"sport": s, "priced": 0, "unpriced": 0})
+        slot["priced" if v.get("state") == "PRICED"
+             else "unpriced"] += 1
+    top = sorted(priced, key=lambda t: -abs(t[2]))[:40]
+    pairs = []
+    for m, v, e in top:
+        nm = bet_name(m, v)
+        pairs.append({
+            "label": nm["selection"],
+            "model": (v.get("p") or 0) * 100,
+            "implied": b5.implied_prob(m["price"]) * 100
+            if m.get("price") is not None else 0.0,
+            "edge": e, "grade": v.get("grade"),
+            "detail": f"{nm['selection']} · {nm['market']} · "
+                      f"model {(v.get('p') or 0) * 100:.1f}% vs "
+                      f"implied "
+                      f"{b5.implied_prob(m['price']) * 100:.1f}% "
+                      f"at {int(m['price']):+d} · edge {e:+.1f} "
+                      f"pts · grade {v.get('grade') or '—'}"
+            if m.get("price") is not None else
+            f"{nm['selection']} · edge {e:+.1f} pts"})
+    return {"buckets": buckets,
+            "by_sport": [by_sport[k] for k in sorted(by_sport)],
+            "pairs": pairs, "n_priced": len(priced),
+            "n_total": len(entries)}
+
+
+def _bar_chart(groups, zoom, color, max_v=None, on_tap=None):
+    """One bar chart drawn from native Flet containers (the
+    pinned Flet 1.0.4 core ships NO chart control — charts moved
+    to the separate flet-charts package, which is not in this
+    app's requirements; a bar here is a sized Container, which
+    keeps the charts dependency-free, serializable and tappable
+    on-device). groups: list of {label, rods:[(value, color,
+    tooltip)]}. Bars scale with the zoom factor; tapping a bar
+    (or its label chip below) writes the detail line."""
+    top = max_v or max((r[0] for g in groups for r in g["rods"]),
+                       default=0) or 1
+    plot_h = 120 * zoom
+    cols = []
+    for g in groups:
+        rods = []
+        for val, c, tt in g["rods"]:
+            h = max(2.0, (float(val) / float(top)) * plot_h) \
+                if val else 2.0
+            rods.append(ft.Container(
+                width=max(8.0, 14 * zoom), height=h, bgcolor=c,
+                border_radius=ft.BorderRadius(
+                    top_left=3, top_right=3, bottom_left=0,
+                    bottom_right=0),
+                tooltip=tt,
+                on_click=(lambda e, d=tt: on_tap(d))
+                if on_tap is not None else None))
+        cols.append(ft.Column(
+            spacing=3, tight=True,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
+                ft.Container(
+                    height=plot_h,
+                    alignment=ft.Alignment(0, 1),
+                    content=ft.Row(spacing=2, tight=True,
+                                   vertical_alignment=
+                                   ft.CrossAxisAlignment.END,
+                                   controls=rods)),
+                ft.Text(g["label"], size=9, color=DIM)]))
+    return ft.Row(spacing=8, tight=False,
+                  vertical_alignment=ft.CrossAxisAlignment.END,
+                  controls=cols)
+
+
+def _tap_chips(items, on_tap):
+    """Labelled tap targets, one per bar — tapping writes the
+    detail line under the chart (the bars carry the same detail
+    as tooltips)."""
+    if on_tap is None:
+        return []
+    return [ft.Row(spacing=6, wrap=True, controls=[
+        ft.TextButton(
+            it["chip"], style=ft.ButtonStyle(color=ACCENT),
+            on_click=lambda e, d=it["detail"]: on_tap(d))
+        for it in items])]
+
+
+def build_xii_charts(entries: list, zoom: float = 1.0,
+                     on_tap=None, on_zoom=None,
+                     detail: str = "") -> list:
+    """The Xii Charts section controls for one pull's entries.
+    Empty pull -> one honest line; a pull with no priced markets
+    still draws PRICED vs UNPRICED and prints the empty state
+    for the priced-only charts."""
+    data = xii_chart_data(entries or [])
+    out = [section_header("Xii Charts — this pull, live", ACCENT),
+           ft.Text("Built from the current pull's verdicts on "
+                   "every pull — the same numbers the cards "
+                   "carry. Zoom with the buttons; tap a bar's "
+                   "label for its detail.", size=11, color=DIM,
+                   height=1.3)]
+    if on_zoom is not None:
+        # chart zoom is a PRIMARY-weight action (Pilot 9c)
+        out.append(ft.Row(spacing=6, controls=[
+            primary_button("− Zoom",
+                           lambda e: on_zoom(1 / 1.25)),
+            secondary_button("Reset", lambda e: on_zoom(0)),
+            primary_button("+ Zoom",
+                           lambda e: on_zoom(1.25)),
+            ft.Text(f"zoom ×{zoom:.2f}", size=11, color=FAINT,
+                    font_family=NUM_FONT)]))
+    if not entries:
+        out.append(ft.Text(
+            "No pull yet — pull the menu and the charts build "
+            "from it. Nothing is drawn from nothing.",
+            size=12, color=DIM, height=1.35))
+        return out
+    if detail:
+        out.append(ft.Text(detail, size=12, color=INK,
+                           height=1.35))
+    # (a) edge distribution
+    out.append(ft.Text("EDGE DISTRIBUTION — priced markets by "
+                       "edge (points)", size=12, color=INK,
+                       weight=ft.FontWeight.BOLD))
+    if data["n_priced"]:
+        groups = [{"label": b["label"], "rods": [(
+            b["count"],
+            EDGE_POS if not b["label"].startswith(("<", "−"))
+            else EDGE_NEG,
+            f"{b['label']} pts: {b['count']} priced markets")]}
+            for b in data["buckets"]]
+        out.append(ft.Row(scroll=ft.ScrollMode.AUTO,
+                          controls=[_bar_chart(groups, zoom,
+                                               EDGE_POS,
+                                               on_tap=on_tap)]))
+        out += _tap_chips(
+            [{"chip": f"{b['label']}: {b['count']}",
+              "detail": f"Edge bucket {b['label']} pts — "
+                        f"{b['count']} priced markets on this "
+                        f"pull"} for b in data["buckets"]],
+            on_tap)
+    else:
+        out.append(ft.Text("No priced markets on this pull — "
+                           "no distribution to draw.",
+                           size=12, color=DIM))
+    # (b) priced vs unpriced by sport
+    out.append(ft.Text("PRICED vs UNPRICED — by sport",
+                       size=12, color=INK,
+                       weight=ft.FontWeight.BOLD))
+    groups = [{"label": SPORT_LABELS.get(s["sport"], s["sport"]),
+               "rods": [(s["priced"], EDGE_POS,
+                         f"{s['sport']}: {s['priced']} priced"),
+                        (s["unpriced"], UNPRICED_FG,
+                         f"{s['sport']}: {s['unpriced']} "
+                         f"unpriced")]}
+              for s in data["by_sport"]]
+    out.append(ft.Row(scroll=ft.ScrollMode.AUTO,
+                      controls=[_bar_chart(groups, zoom,
+                                           EDGE_POS,
+                                           on_tap=on_tap)]))
+    out += _tap_chips(
+        [{"chip": f"{SPORT_LABELS.get(s['sport'], s['sport'])} "
+                  f"{s['priced']}/{s['priced'] + s['unpriced']}",
+          "detail": f"{SPORT_LABELS.get(s['sport'], s['sport'])}"
+                    f" — {s['priced']} PRICED · {s['unpriced']} "
+                    f"UNPRICED on this pull"}
+         for s in data["by_sport"]], on_tap)
+    # (c) model vs implied, top priced by |edge|
+    out.append(ft.Text("MODEL vs IMPLIED — top priced markets "
+                       "by |edge| (model in blue, implied in grey)",
+                       size=12, color=INK,
+                       weight=ft.FontWeight.BOLD))
+    if data["pairs"]:
+        groups = [{"label": str(i + 1), "rods": [
+            (p["model"], ACCENT, p["detail"]),
+            (p["implied"], UNPRICED_FG, p["detail"])]}
+            for i, p in enumerate(data["pairs"])]
+        out.append(ft.Row(scroll=ft.ScrollMode.AUTO,
+                          controls=[_bar_chart(groups, zoom,
+                                               ACCENT,
+                                               on_tap=on_tap)]))
+        out += _tap_chips(
+            [{"chip": f"{i + 1}. {p['label']}",
+              "detail": p["detail"]}
+             for i, p in enumerate(data["pairs"])], on_tap)
+    else:
+        out.append(ft.Text("No priced markets on this pull — "
+                           "nothing to compare against the "
+                           "market's implied numbers.",
+                           size=12, color=DIM))
+    return out
+
+
+# ------------------------------------------------------------------
+# Marked slips (v12) — the user's own placement marks for the
+# Protected Slip. Device-local JSON beside the snapshot; a slip
+# is written ONLY when the user taps "Mark placed on FanDuel"
+# (after the confirm step) — never before, never by the app on
+# its own. The app places nothing; this file is the user's
+# record of what THEY placed.
+
+def marked_slips_path() -> str:
+    return os.path.join(storage_dir(),
+                        f"{INTERNAL_ID}-marked-slips.json")
+
+
+def load_marked_slips() -> list:
+    try:
+        with open(marked_slips_path()) as f:
+            slips = json.load(f)
+        return slips if isinstance(slips, list) else []
+    except Exception:
+        return []
+
+
+def append_marked_slip(slip: dict) -> list:
+    slips = load_marked_slips()
+    slips.append(slip)
+    try:
+        with open(marked_slips_path(), "w") as f:
+            json.dump(slips, f, indent=1)
+    except Exception:
+        pass
+    return slips
 
 
 # ------------------------------------------------------------------
@@ -1716,7 +2382,7 @@ def main(page: ft.Page):
     page.title = DISPLAY_NAME
     page.bgcolor = PAGE_BG
     page.theme_mode = ft.ThemeMode.DARK
-    page.padding = 12
+    page.padding = 16   # artist spacing grid: screen padding 16dp
     page.spacing = 8
     page.scroll = ft.ScrollMode.AUTO
 
@@ -1728,11 +2394,27 @@ def main(page: ft.Page):
              "parlay_legs": [], "view": "board",
              "board_seg": "all", "slip_seg": "parse",
              "instrument_url": None, "animate_next": False,
-             "toggles_for": None, "bankroll": ""}
+             "toggles_for": None, "bankroll": "",
+             "chart_zoom": 1.0, "chart_detail": "",
+             "pull_busy": False, "last_pull_at": 0.0,
+             "protected_confirm": False}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM)
     status = ft.Text("", size=12, color=ACCENT)
+    # the live-pull dot (9b; artist §1.2): 8dp cyan circle with
+    # a bone ring and a static pre-rendered ice halo; the dot
+    # pulse breathes its OPACITY on a 2000 ms cycle — and only
+    # while the displayed pull is fresh (< 4 min, the auto-pull
+    # cadence). Stale: frozen at 60%, halo off, gold suffix.
+    pull_dot = ft.Container(
+        width=8, height=8, border_radius=4, bgcolor=ICE,
+        border=_border_all(1, BONE), shadow=ICE_GLOW,
+        opacity=1.0, animate_opacity=ft.Animation(
+            120, ft.AnimationCurve.EASE_IN_OUT))
+    _PULSE_TARGETS["dot"] = [pull_dot]
+    stale_ctrl = ft.Text("", size=11, color=GOLD,
+                         weight=ft.FontWeight.BOLD)
 
     # view containers — the five destinations (v10.4.1 nav):
     # Board (cards + finds behind a segment), Slip (Parse /
@@ -1744,6 +2426,7 @@ def main(page: ft.Page):
     parse_view = ft.Column(spacing=8)
     parlay_view = ft.Column(spacing=8)
     solver_view = ft.Column(spacing=8)
+    protected_view = ft.Column(spacing=8)
     slip_view = ft.Column(spacing=8)
     record_view = ft.Column(spacing=8)
     stage_view = ft.Column(spacing=8)
@@ -1810,6 +2493,7 @@ def main(page: ft.Page):
             render_parlay()
         else:
             render_solver()
+        render_protected()
         page.update()
 
     def on_slip_seg(e):
@@ -1830,6 +2514,33 @@ def main(page: ft.Page):
         text, deg = stamp_of(state["slate"])
         stamp_ctrl.value = f"Menu: {text}"
         stamp_ctrl.color = WARN if deg else DIM
+        # freshness gate for the live dot (artist §1.2): fresh
+        # (< 4 min since the pull) pulses; stale freezes.
+        rec = state["slate"] or {}
+        fresh = False
+        raw = rec.get("pulled_at")
+        if raw:
+            try:
+                dt = datetime.fromisoformat(
+                    str(raw).replace("Z", "+00:00"))
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=timezone.utc)
+                age = (datetime.now().astimezone()
+                       - dt).total_seconds()
+                fresh = age < AUTO_PULL_INTERVAL_S
+            except ValueError:
+                fresh = False
+        _DOT_FRESH["fresh"] = fresh
+        if fresh:
+            stale_ctrl.value = ""
+            pull_dot.shadow = ICE_GLOW
+            if AUTO_PULL_ENABLED:
+                start_pulse("dot")
+        else:
+            pull_dot.opacity = 0.6
+            pull_dot.shadow = None
+            if rec.get("verified"):
+                stale_ctrl.value = "Stale — tap Pull to refresh"
 
     def ensure_verdicts():
         rec = state["slate"]
@@ -2065,6 +2776,8 @@ def main(page: ft.Page):
                 "by the same checker pass.", size=10, color=FAINT))
         if state.pop("animate_next", False):
             _animate_cards(cards_list.controls)
+        stop_pulse("shimmer")   # real content landed (artist
+        # §3.4: shimmer stops the moment content lands)
         page.update()
 
     def _toggle(key, e):
@@ -2080,24 +2793,49 @@ def main(page: ft.Page):
     # ---------------- pull / price workers ----------------
 
     def on_pull(_e):
+        # A manual tap resets the auto-pull clock (v12).
+        state["last_pull_at"] = time.monotonic()
         status.value = "Pulling the live FanDuel menu…"
         cards_list.controls = skeleton_cards()
+        if AUTO_PULL_ENABLED:
+            start_pulse("shimmer")
         page.update()
         page.run_thread(_pull_worker)
 
-    def _pull_worker():
+    def _pull_worker(auto=False):
         # Off the event-handler thread (page.run_thread): the pull
         # plus the first render's pricing pass can take a minute or
         # more, and doing it inside the click handler froze the app
         # on-device behind Dart null-check error banners (v7.0,
         # 2026-10-20). A failure now lands in the status line as
         # the actual Python error — visible, never silent.
+        # v12 auto-pull law: a FAILED auto-pull keeps the last
+        # good pull and its stamp (the engine calls an old pull
+        # STALE, and an unverified one UNVERIFIED — both print);
+        # a failed MANUAL pull keeps its v11 behaviour of
+        # recording the unverified attempt. Prices are never
+        # invented to fill either gap.
+        if state["pull_busy"]:
+            return
+        state["pull_busy"] = True
         try:
             rec = pull_menu()
+            state["last_pull_at"] = time.monotonic()
+            if auto and not rec.get("verified") \
+                    and state["slate"] is not None \
+                    and state["slate"].get("verified"):
+                status.value = (
+                    "Auto-pull didn't land — keeping the last "
+                    "good pull; its stamp stands (STALE past the "
+                    "engine's window). Nothing was assumed in "
+                    "its place.")
+                page.update()
+                return
             state["slate"] = rec
             state["verdicts"] = None
             state["card_limit"] = CARD_PAGE
             state["parlay_legs"] = []
+            state["protected_confirm"] = False
             save_snapshot(rec)
             refresh_stamp()
             if rec.get("verified"):
@@ -2119,6 +2857,12 @@ def main(page: ft.Page):
                                 f"every market stamps UNPRICED.")
             state["animate_next"] = True
             render_cards()
+            if state["view"] == "stage":
+                render_stage()
+            if state["view"] == "slip":
+                render_protected()
+            if state.get("dismiss_splash"):
+                state["dismiss_splash"]()
             page.update()
         except Exception as e:
             status.value = (f"Pull failed on this device: "
@@ -2127,6 +2871,24 @@ def main(page: ft.Page):
                 page.update()
             except Exception:
                 pass
+        finally:
+            state["pull_busy"] = False
+
+    def _auto_pull_loop():
+        # v12 auto-pull: a daemon loop while the app is open.
+        # First tick pulls immediately (the on-start auto-pull);
+        # then every AUTO_PULL_INTERVAL_S. Never overlaps a
+        # running pull (the worker itself refuses, and the loop
+        # also skips a tick while one is busy). Started ONLY from
+        # the real entry path — see the __main__ block and
+        # AUTO_PULL_ENABLED; the harness never starts it.
+        while True:
+            try:
+                if not state["pull_busy"]:
+                    page.run_thread(_pull_worker, True)
+            except Exception:
+                pass
+            time.sleep(AUTO_PULL_INTERVAL_S)
 
     def _boot_worker():
         # The first pricing pass, off the paint path (F4).
@@ -2137,6 +2899,9 @@ def main(page: ft.Page):
                 status.value = ""
             if state["view"] == "board":
                 show_board_segment(state["board_seg"])
+            refresh_stamp()
+            if state.get("dismiss_splash"):
+                state["dismiss_splash"]()
             page.update()
         except Exception as e:
             status.value = (f"Pricing the last pull failed on "
@@ -2293,6 +3058,212 @@ def main(page: ft.Page):
                 lane=market_lane(mkt),
                 cal_tag=verdict.get("cal_tag"),
                 priced=verdict.get("state") == "PRICED"))
+        page.update()
+
+    # ---------------- Protected Slip (v12) ----------------
+    # GOLDEN BET / BET HERE markets auto-populate this panel.
+    # Protection is arithmetic printed in the open: every leg
+    # sized by the engine's Kelly organ (quarter-Kelly, 5% hard
+    # cap, UNCALIBRATED damping in its reasons), total stake,
+    # max loss = total stake (every leg can lose — that IS the
+    # max loss, printed, not hidden), and the warnings. The app
+    # NEVER places anything: the user places the slip on
+    # FanDuel themselves, then marks it here; only the mark is
+    # written, to the Pilot Book view, as PLACED (user-marked).
+
+    def protected_candidates():
+        rec = state["slate"]
+        if not rec:
+            return []
+        verdicts = ensure_verdicts() or []
+        out = []
+        for m, v in zip(rec.get("markets", []), verdicts):
+            term, _r = card_verdict(v)
+            if v.get("state") == "PRICED" \
+                    and term in ("GOLDEN BET", "BET HERE") \
+                    and v.get("p") is not None \
+                    and m.get("price") is not None:
+                out.append((m, v))
+        out.sort(key=lambda t: (
+            verdict_rank(card_verdict(t[1])[0]),
+            -(market_edge_pts(t[0], t[1]) or 0)))
+        return out
+
+    def render_protected():
+        protected_view.controls = []
+        cands = protected_candidates()
+        bankroll = None
+        try:
+            bankroll = float(state.get("bankroll") or "") or None
+        except (TypeError, ValueError):
+            bankroll = None
+        rows = [ft.Text("PROTECTED SLIP — PLACEMENT-READY",
+                        size=13, color=ACCENT,
+                        weight=ft.FontWeight.BOLD),
+                ft.Text("Auto-built from this pull's GOLDEN BET / "
+                        "BET HERE markets, sized by the engine's "
+                        "Kelly organ. You place it on FanDuel "
+                        "yourself — the app never places a bet "
+                        "and never touches a sportsbook account.",
+                        size=11, color=DIM, height=1.35)]
+        if not cands:
+            rows.append(ft.Text(
+                "No GOLDEN BET or BET HERE markets on this pull "
+                "— the slip stays empty rather than promote a "
+                "market the engine did not bless.",
+                size=12, color=DIM, height=1.35))
+            protected_view.controls = [ft.Container(
+                bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+                border_radius=14, padding=12, shadow=ELEV_L1,
+                content=ft.Column(spacing=6, controls=rows))]
+            page.update()
+            return
+        total_units = 0.0
+        total_dollars = 0.0 if bankroll else None
+        warnings = []
+        legs = []
+        seen_games = {}
+        any_golden = False
+        for m, v in cands:
+            term, _r = card_verdict(v)
+            any_golden = any_golden or term == "GOLDEN BET"
+            adv = b5.kelly_advice(
+                v["p"], m["price"], bankroll=bankroll,
+                cal_tag=v.get("cal_tag"), priced=True)
+            nm = bet_name(m, v)
+            stake_txt = f"{adv['stake_units']:.1f}u"
+            if adv["stake_dollars"] is not None:
+                stake_txt += f" (${adv['stake_dollars']:,.0f})"
+                total_dollars += adv["stake_dollars"]
+            total_units += adv["stake_units"]
+            legs.append({"name": nm["slip_label"], "term": term,
+                         "price": int(m["price"]),
+                         "stake_units": adv["stake_units"],
+                         "stake_dollars": adv["stake_dollars"]})
+            rows.append(ft.Row(
+                spacing=8, vertical_alignment=
+                ft.CrossAxisAlignment.START, controls=[
+                    verdict_pill(term),
+                    ft.Column(spacing=2, tight=True, expand=True,
+                              controls=[
+                                  ft.Text(nm["selection"],
+                                          size=13, color=INK,
+                                          weight=ft.FontWeight
+                                          .BOLD),
+                                  ft.Text(
+                                      f"{nm['market']} · "
+                                      f"{int(m['price']):+d} · "
+                                      f"Kelly stake {stake_txt}",
+                                      size=11, color=DIM,
+                                      font_family=NUM_FONT)])]))
+            for reason in adv["reasons"]:
+                if "UNCALIBRATED" in reason or "hard cap" in reason:
+                    warnings.append(f"{nm['selection']}: {reason}")
+            if v.get("note"):
+                warnings.append(
+                    f"{nm['selection']}: {v['note']}")
+            gkey = (m.get("sport"), m.get("home"), m.get("away"))
+            if gkey in seen_games:
+                warnings.append(
+                    "Multiple legs from the same game "
+                    f"({nm['matchup']}) — they are not "
+                    "independent; one game can sink several "
+                    "legs at once.")
+            seen_games[gkey] = True
+        total_txt = f"Total stake {total_units:.1f}u"
+        if total_dollars is not None:
+            total_txt += f" (${total_dollars:,.0f})"
+        rows.append(ft.Text(total_txt, size=15, color=INK,
+                            weight=ft.FontWeight.BOLD,
+                            font_family=NUM_FONT))
+        rows.append(ft.Text(
+            f"Max loss = the total stake above "
+            f"({total_units:.1f}u"
+            + (f" / ${total_dollars:,.0f}" if total_dollars
+               is not None else "")
+            + ") — every leg can lose, and the slip loses no "
+              "more than what is staked. There is no scenario "
+              "worse than that printed here.",
+            size=12, color=WARN, height=1.35))
+        if warnings:
+            rows.append(ft.Text("WARNINGS — READ BEFORE PLACING",
+                                size=11, color=WARN,
+                                weight=ft.FontWeight.BOLD))
+            for w in dict.fromkeys(warnings):
+                rows.append(ft.Row(spacing=6, controls=[
+                    ft.Icon(ft.Icons.WARNING_AMBER, size=14,
+                            color=WARN),
+                    ft.Text(w, size=11, color=WARN, height=1.3,
+                            expand=True)]))
+        if not state["protected_confirm"]:
+            rows.append(primary_button(
+                "Mark placed on FanDuel",
+                lambda _e: _protected_confirm(cands, legs,
+                                              total_units,
+                                              total_dollars)))
+            rows.append(ft.Text(
+                "Tapping asks you to confirm the legs + total "
+                "first. Nothing is written until you confirm — "
+                "and what is written is YOUR mark, in the Pilot "
+                "Book, as PLACED (user-marked).",
+                size=10, color=FAINT, height=1.3))
+        else:
+            rows.append(ft.Text(
+                "Confirm: you placed exactly these legs on "
+                "FanDuel at the prices above?",
+                size=12, color=INK, weight=ft.FontWeight.BOLD))
+            rows.append(ft.Row(spacing=8, controls=[
+                primary_button(
+                    "Yes — mark it placed",
+                    lambda _e: _protected_mark(legs, total_units,
+                                               total_dollars)),
+                secondary_button(
+                    "Not yet",
+                    lambda _e: _protected_unconfirm())]))
+        panel_controls = []
+        if any_golden:
+            # the GOLDEN warm pulse lives on this glow bar: a
+            # pre-rendered gold glow layer whose opacity the
+            # golden pulse breathes (2800 ms) — the only warm
+            # pulse in the app, on a GOLDEN surface only.
+            glow_bar = ft.Container(
+                height=6, border_radius=3, bgcolor=GOLD,
+                shadow=GOLD_GLOW, opacity=0.425,
+                animate_opacity=ft.Animation(
+                    120, ft.AnimationCurve.EASE_IN_OUT))
+            _PULSE_TARGETS["golden"] = [glow_bar]
+            panel_controls.append(glow_bar)
+        panel_controls.append(ft.Container(
+            bgcolor=CARD_BG,
+            gradient=GOLD_GRADIENT if any_golden else PANEL_GRADIENT,
+            border=_border_all(1.5 if any_golden else 1,
+                               GOLD if any_golden else HAIRLINE),
+            border_radius=14, padding=12, shadow=ELEV_L2,
+            content=ft.Column(spacing=6, controls=rows)))
+        protected_view.controls = panel_controls
+        page.update()
+
+    def _protected_confirm(cands, legs, total_units, total_dollars):
+        state["protected_confirm"] = True
+        render_protected()
+
+    def _protected_unconfirm():
+        state["protected_confirm"] = False
+        render_protected()
+
+    def _protected_mark(legs, total_units, total_dollars):
+        slip = {"marked_at": datetime.now().astimezone()
+                .isoformat(timespec="seconds"),
+                "status": "PLACED (user-marked)",
+                "legs": legs, "total_units": total_units,
+                "total_dollars": total_dollars,
+                "pull": (state["slate"] or {}).get("pulled_at")}
+        append_marked_slip(slip)
+        state["protected_confirm"] = False
+        status.value = ("Marked as placed — written to the "
+                        "Pilot Book view as PLACED (user-marked). "
+                        "The app placed nothing.")
+        render_protected()
         page.update()
 
     # ---------------- Parlay ----------------
@@ -2800,7 +3771,19 @@ def main(page: ft.Page):
         golden, finds, flagged, counter = distill_finds(markets,
                                                          verdicts)
         betfi_view.controls.append(section_header("GOLDEN BETS",
-                                                  "#FFD700"))
+                                                  GOLD))
+        if golden:
+            # the GOLDEN warm pulse (2800 ms) breathes this
+            # pre-rendered glow layer's opacity — gold only,
+            # GOLDEN surface only; the empty panel below gets
+            # NO glow and NO pulse (artist §1.3 / rescue §6).
+            _glow = ft.Container(
+                height=6, border_radius=3, bgcolor=GOLD,
+                shadow=GOLD_GLOW, opacity=0.425,
+                animate_opacity=ft.Animation(
+                    120, ft.AnimationCurve.EASE_IN_OUT))
+            _PULSE_TARGETS["golden"] = [_glow]
+            betfi_view.controls.append(_glow)
         if not golden:
             betfi_view.controls.append(empty_inline(
                 ft.Icons.STAR_OUTLINE, "No golden bets on this pull"))
@@ -2881,7 +3864,7 @@ def main(page: ft.Page):
                 "This build shipped without the lab evidence "
                 "pack, so the Lab shows no record at all — never "
                 "an empty ledger dressed as 0-0. The full BetFi "
-                "build carries the pack."))
+                "Xii build carries the pack."))
             page.update()
             return
         exported = str(pack.get("exported_at") or "")
@@ -3042,6 +4025,24 @@ def main(page: ft.Page):
         record_view.controls.append(book_header(
             "PILOT BOOK — HIS PLAYS, THEIR OWN LINES",
             header_lines, "#EAB308"))  # gold edge: the Pilot Book
+        _marked = load_marked_slips()
+        if _marked:
+            record_view.controls.append(ft.Text(
+                "PLACED (user-marked) — slips you marked placed "
+                "from the Protected Slip. Your marks, on this "
+                "device; the app placed none of them.",
+                size=11, color=WARN, height=1.35))
+            for _ms in _marked:
+                _legs_txt = "; ".join(
+                    f"{lg['name']} · {lg['stake_units']:.1f}u"
+                    for lg in _ms.get("legs") or [])
+                record_view.controls.append(ledger_row(
+                    str(_ms.get("marked_at") or "")[:10],
+                    _legs_txt, "—", "—", "PLACED",
+                    f"{float(_ms.get('total_units') or 0):.1f}u",
+                    zebra=False,
+                    bet_note="PLACED (user-marked) · "
+                             f"{_ms.get('marked_at')}"))
         record_view.controls.append(ledger_header())
         for _ti, t in enumerate(tickets):
             res = t.get("result") or "PENDING"
@@ -3557,7 +4558,7 @@ def main(page: ft.Page):
         identity = ft.Container(
             bgcolor=CARD_BG, border_radius=10, padding=12,
             content=ft.Column(spacing=6, controls=[
-                ft.Text("BetFi", size=16, color=INK,
+                ft.Text(DISPLAY_NAME, size=16, color=INK,
                         weight=ft.FontWeight.BOLD),
                 _kv_row("App version", f"{APP_VERSION}"),
                 _kv_row("Build", str(BUILD_NUMBER)),
@@ -3576,8 +4577,8 @@ def main(page: ft.Page):
         credit = ft.Container(
             bgcolor=RAISED, border_radius=10, padding=12,
             content=ft.Column(spacing=6, controls=[
-                ft.Text("BetFi — by T. Abram.", size=13, color=INK,
-                        weight=ft.FontWeight.BOLD),
+                ft.Text("BetFi Xii — by T. Abram.", size=13,
+                        color=INK, weight=ft.FontWeight.BOLD),
                 ft.Text("Engine: betmodel. Built with Praxis.",
                         size=12, color=DIM),
                 ft.Row(spacing=6, vertical_alignment=
@@ -3633,11 +4634,45 @@ def main(page: ft.Page):
             page.update()
         return _open
 
+    def _chart_tap(detail):
+        state["chart_detail"] = detail
+        render_stage()
+
+    def _chart_zoom(factor):
+        if factor == 0:
+            state["chart_zoom"] = 1.0
+        else:
+            state["chart_zoom"] = min(
+                6.0, max(0.5, state["chart_zoom"] * factor))
+        render_stage()
+
     def render_stage():
         stage_view.controls = [screen_title(
             "Instruments",
-            "The lab's instruments — snapshots and live models, "
-            "each labelled as what it is.")]
+            "Xii Charts from the live pull, above the lab's "
+            "snapshot instruments — each labelled as what it is.")]
+        # Xii Charts (v12): built from the CURRENT pull's
+        # verdicts, rebuilt here on every render — and render_
+        # stage is called after every successful pull, so an
+        # open chart view re-renders on the new pull in place.
+        _entries = []
+        if state["slate"]:
+            _vs = ensure_verdicts() or []
+            _entries = [(m, v, market_edge_pts(m, v))
+                        for m, v in zip(
+                            state["slate"].get("markets", []), _vs)]
+        stage_view.controls += build_xii_charts(
+            _entries, zoom=state["chart_zoom"],
+            on_tap=_chart_tap, on_zoom=_chart_zoom,
+            detail=state["chart_detail"])
+        stage_view.controls.append(ft.Divider(color=HAIRLINE))
+        stage_view.controls.append(section_header(
+            "SNAPSHOT INSTRUMENTS — OPEN IN BROWSER", ACCENT))
+        stage_view.controls.append(ft.Text(
+            "The lab's instruments below are SNAPSHOTS (each "
+            "carries its label) and open full-screen via the "
+            "browser route — they are not live charts and never "
+            "pretend to be.", size=11, color=DIM, height=1.3))
         n, _total = instruments_bundled()
         if n == 0:
             stage_view.controls.append(empty_full(
@@ -3645,7 +4680,7 @@ def main(page: ft.Page):
                 "Instruments not bundled in this edition",
                 "This build shipped without the instruments "
                 "folder, so the shelf prints its state instead "
-                "of a dead list. The full BetFi build "
+                "of a dead list. The full BetFi Xii build "
                 "carries all 11."))
             page.update()
             return
@@ -3722,25 +4757,44 @@ def main(page: ft.Page):
 
     # ---------------- assembly ----------------
 
+    # Frosted ice header (9d; artist §3.3): L2 gradient at
+    # translucent stops over the field (Flet has no backdrop
+    # blur — the frost is layered translucency, not a filter),
+    # the XII badge (serif, keylined) + the two-tone lockup
+    # (BetFi in bone, Xii in cyan, both w700 — artist §1), and
+    # the live dot left of the pull stamp.
     header = ft.Container(
-        gradient=ft.LinearGradient(
-            begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
-            colors=["#0D1730", PAGE_BG]),
+        gradient=FROST_GRADIENT,
         border=ft.Border(
-            bottom=ft.BorderSide(1, BORDER)),
+            bottom=ft.BorderSide(1, HAIRLINE)),
         padding=ft.Padding(left=2, right=2, top=2, bottom=8),
         content=ft.Column(spacing=4, controls=[
-            ft.Text(PUBLIC_NAME, size=22, color=INK,
-                    weight=ft.FontWeight.BOLD),
+            ft.Row(spacing=8, vertical_alignment=
+                   ft.CrossAxisAlignment.CENTER, controls=[
+                       ft.Container(
+                           width=26, height=26, border_radius=7,
+                           bgcolor=PANEL_RAISED_C,
+                           border=_border_all(1, CYAN_DEEP),
+                           alignment=ft.Alignment(0, 0),
+                           content=ft.Text(
+                               "XII", size=11, color=BONE,
+                               weight=ft.FontWeight.BOLD,
+                               font_family="Georgia")),
+                       ft.Text("BetFi", size=22, color=BONE,
+                               weight=ft.FontWeight.W_700),
+                       ft.Text("Xii", size=22, color=ICE,
+                               weight=ft.FontWeight.W_700)]),
             ft.Text(f"{DISPLAY_NAME} · engine {ENGINE_VERSION} · "
                     f"analysis only — never places a bet",
                     size=11, color=FAINT),
-            stamp_ctrl,
+            ft.Row(spacing=6, vertical_alignment=
+                   ft.CrossAxisAlignment.CENTER,
+                   controls=[pull_dot, stamp_ctrl, stale_ctrl]),
         ]))
     cards_view.controls = [
         ft.Row(spacing=8, controls=[
-            ft.Button("Pull Menu", on_click=on_pull),
-            ft.Button("Price Slate", on_click=on_price)]),
+            primary_button("Pull Menu", on_pull),
+            secondary_button("Price Slate", on_price)]),
         status,
         ft.Row(spacing=8, controls=[
             ft.Icon(ft.Icons.SORT, size=18, color=ACCENT),
@@ -3765,7 +4819,8 @@ def main(page: ft.Page):
         screen_title("Slip", "The ticket tools — read a slip, "
                              "build a parlay, size a stake."),
         slip_seg_ctrl,
-        slip_switcher]
+        slip_switcher,
+        protected_view]
     page.add(header, view_switcher)
 
     nav_bar_cls = getattr(ft, "NavigationBar", None)
@@ -3816,6 +4871,61 @@ def main(page: ft.Page):
     page.update()
     page.run_thread(_boot_worker)
 
+    # ---- v12 startup: splash + auto-pull (real entry only) --
+    # Everything in this block is gated on AUTO_PULL_ENABLED,
+    # which only the __main__ entry sets: headless harnesses
+    # build the same tree with no overlay, no pulse threads and
+    # no network. The splash OVERLAYS the async load above — it
+    # never gates first paint (the board is already painted
+    # under it) and adds no second control tree (one overlay
+    # container, ~8 controls).
+    splash = {"ctrl": None}
+
+    def dismiss_splash():
+        ctrl = splash["ctrl"]
+        if ctrl is None:
+            return
+        splash["ctrl"] = None
+        stop_pulse("splash")
+
+        def _fade_out():
+            try:
+                ctrl.opacity = 0
+                ctrl.update()
+            except Exception:
+                pass
+
+            def _remove():
+                try:
+                    page.overlay.remove(ctrl)
+                except Exception:
+                    pass
+                try:
+                    page.update()
+                except Exception:
+                    pass
+            threading.Timer(0.26, _remove).start()
+        page.run_thread(_fade_out)
+
+    state["dismiss_splash"] = dismiss_splash
+    if AUTO_PULL_ENABLED:
+        try:
+            splash["ctrl"] = build_splash()
+            splash["ctrl"].on_click = lambda _e: dismiss_splash()
+            page.overlay.append(splash["ctrl"])
+            page.update()
+            ring = _SPLASH_PARTS.get("ring")
+            if ring is not None:
+                ring.scale = ft.Scale(scale=1.0)
+            start_pulse("splash")
+            start_pulse("shimmer")
+            start_pulse("golden")
+        except Exception:
+            splash["ctrl"] = None
+        threading.Thread(target=_auto_pull_loop, daemon=True).start()
+    refresh_stamp()
+
 
 if __name__ == "__main__":
+    AUTO_PULL_ENABLED = True
     ft.run(main)

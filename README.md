@@ -1,10 +1,18 @@
-# BetFi 10 — betmodel v5.2 engine, the Android app
+# BetFi Xii — betmodel v5.4 engine, the Android app
 
-**Public name: BetFi. Internal id: Bet_Finder. App release: v10.4.1
-(build 12)** with the betmodel **v5.2** engine. v10.4.1 is the
-combination release: one engine (v5.2 in the lab and the app
-alike), the bets lab's record wing, and the lab's 3D instruments,
-folded into the same app. The service's core:
+**Public name: BetFi_Xii (display: BetFi Xii). Internal id:
+Bet_Finder — unchanged in the Xii rename, so on-device data
+carries over. App release: 12.0.0 (build 16)** with the
+betmodel **v5.4** engine. BetFi Xii (2026-10-24) is the
+Universal Model release: the engine's Organ 8 registry indexes
+every fit on the device, soccer prices across five leagues
+(EPL from the shipped fit; Serie A, La Liga, Bundesliga and
+Ligue 1 from real-results league fits), the menu auto-pulls on
+start and every 4 minutes, team/player names copy individually
+for search, Xii Charts render the live pull in-app (zoom via
+buttons — no sliders anywhere), and a Protected Slip sizes
+GOLDEN BET / BET HERE markets with the Kelly organ for the
+user to place and mark themselves. The service's core:
 the betmodel engine (deep mathematics, a multi-source ensemble, a
 fitted reparametrization layer, a cross-market coherence audit, and
 a coverage law — no bet left unchecked) behind a phone app whose
@@ -29,7 +37,7 @@ engine. Two Python files, no package tree, no module sprawl:
 | `instruments/` | The lab's 11 self-contained HTML instruments (179,693 bytes), served in-app by the 3D shelf. |
 | `requirements.txt` | `flet==1.0.4` and nothing else (the engine is stdlib-only). |
 | `.github/workflows/build-apk.yml` | The GitHub Actions build (below). |
-| `BetFi-10.escb` | The Complete Edition — the whole app as ONE file, ESCB/2 format (see the `.escb` section below). Generated, never hand-edited. |
+| `BetFi-Xii.escb` | The current Complete Edition — the whole app as ONE file, ESCB/2 format (see the `.escb` section below). Generated, never hand-edited. (`BetFi-10.escb` / `BetFi-11.escb` are kept as history.) |
 | `build_escb.py` | The `.escb` builder: wraps `main.py` + `betmodel5.py` into the bundle. |
 | `armor.py` | The ESCB-T transmission armorer: base85 all-text form of a bundle. |
 | `ESCB-SPEC.md` | The `.escb` format specification and ruleset (v1 + v2). |
@@ -309,14 +317,16 @@ guides does not apply to a Flet app and is dead.)
    whole app folder: `data/` and `instruments/` ride along as
    app assets — that is what makes the Lab populated and the 3D
    shelf live on the phone.)
-3. In the repo: **Actions → "Build BetFi APK" → Run workflow**
+3. In the repo: **Actions → "Build BetFi Xii APK" → Run workflow**
    (it also runs automatically on pushes to `main`). First run
    takes a while: Flet fetches its Flutter SDK and builds with
    JDK 17.
 4. When the run is green, open it and download the artifact
-   **`betfi-10-apk`** — that zip contains exactly two files:
-   **BetFi-10.apk** (release, the one to install) and
-   **BetFi-10-debug.apk** (debug build).
+   **`betfi-xii-apk`** — that zip contains exactly two files:
+   **BetFi-Xii.apk** (release, the one to install — the
+   arm64-v8a split, selected by name in the workflow; the
+   Snapdragon 8 Gen 3 target build) and **BetFi-Xii-debug.apk**
+   (debug build).
 5. Copy the APK to the phone and sideload it (allow "install via
    USB" / install the file; it's signed with the build's default
    key for personal use — no Play Store involved).
@@ -331,7 +341,7 @@ surface either way.
 
 - [ ] App **opens** to the Board (All cards segment); the nav
       reads **Board · Slip · Lab · 3D · More**; header reads
-      BetFi / BetFi 10 · engine betmodel v5.2 · analysis only.
+      BetFi Xii · engine betmodel v5.4 · analysis only.
 - [ ] With no pull yet, the menu stamp reads **UNVERIFIED** and
       the screen says so — nothing is pre-filled or assumed.
 - [ ] **Pull Menu**: the stamp updates to the pull time and

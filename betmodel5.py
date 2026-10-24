@@ -106,6 +106,22 @@ mirrored from timestamped pulls (FanDuel JSON endpoints for the
 `menu` command — constants below; the lab's verified ESPN odds feed
 for `menu-feed`); a failed pull stamps its scope UNVERIFIED. UX is
 level 1 (the card); everything under it is engine level 5.
+
+v5.4 (2026-10-24, BetFi Xii) — Organ 8, the Universal Fit
+Registry: universal_registry() indexes every fit file in DATA
+(soccer EPL + leagues, NBA, phi, CFB/NHL ratings + histories,
+NFL pricing, lane history, recal params) and reports per
+sport/league the fit kind, covered teams/players count,
+fitted_at/source and the backtest block VERBATIM; a league with
+no file is absent, never synthesized. universal_coverage()
+reports, per sport/league on a pull, PRICED-capable vs UNPRICED
+with the named missing piece — pure reporting, no verdict
+changes. Soccer goes multi-league: data/v5-soccer-leagues.json
+(tools/fit_soccer_leagues.py, real football-data.co.uk results,
+same walk-forward protocol as fit_soccer) is selected by TEAM
+MEMBERSHIP when both teams sit in exactly one league's
+strengths. The shipped EPL fit keeps first precedence and its
+numbers are unchanged — EPL grading is byte-for-byte v5.3's.
 """
 
 import argparse
@@ -117,6 +133,7 @@ import random
 import statistics
 import sys
 import time
+import unicodedata
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
@@ -131,7 +148,7 @@ PHI_PATH = os.path.join(DATA, "v5-phi.json")
 HISTORY_PATH = os.path.join(DATA, "v5-lane-history.json")
 NFL_PRICING_PATH = os.path.join(DATA, "nfl-week6-pricing.json")
 
-ENGINE_VERSION = "5.3"   # v5.3 — golden bar +2.0 (Pilot 2026-10-22) + CLV/drift + Kelly organs
+ENGINE_VERSION = "5.4"   # v5.4 — BetFi Xii: Organ 8 universal fit registry + coverage, multi-league soccer (v5.3 was golden bar +2.0 + CLV/drift + Kelly)
 # policy (Pilot order 2026-10-20); v5.1 was the verdict ladder
 
 # ------------------------------------------------------------------
@@ -300,6 +317,50 @@ def load_games(sport):
     with open(path) as f:
         games = json.load(f)
     return [g for g in games if g["date"] < POOL_CUTOFF]
+
+
+# ----------------------------------------------------------------
+# Fit caching (v5.4, Snapdragon pass — item 10c). The checker
+# pass used to RE-FIT the CFB/NHL lanes from their game pools on
+# every market (fit_ratings ran the full sequential Elo over
+# hundreds of games per call; cProfile on a 991-market pull:
+# 281 fit_ratings calls ≈ 0.89 s of a 1.71 s pass) and re-read
+# fit JSON from disk per market. Fits are pure functions of
+# their files, so they are cached keyed by (path, mtime): a
+# file rewritten on disk (a refit, a fresher pack seed) changes
+# its mtime and the cache misses honestly. Cached values are
+# returned as the SAME object — callers must not mutate them
+# (the checkers never did; they read).
+
+_FIT_CACHE = {}
+
+
+def _mtime_key(paths):
+    out = []
+    for p in paths:
+        try:
+            out.append((p, os.path.getmtime(p)))
+        except OSError:
+            out.append((p, None))
+    return tuple(out)
+
+
+def _cached(key, builder):
+    if key not in _FIT_CACHE:
+        _FIT_CACHE[key] = builder()
+    return _FIT_CACHE[key]
+
+
+def _load_json_cached(path):
+    """json.load with the mtime cache (missing file -> None)."""
+    if not os.path.exists(path):
+        return None
+    key = ("json",) + _mtime_key([path])
+
+    def build():
+        with open(path) as f:
+            return json.load(f)
+    return _cached(key, build)
 
 
 def elo_expected(diff):
@@ -543,7 +604,18 @@ def rating_sigma(sport, n_games):
 
 def fit_ratings(sport):
     """Returns {team: {mu, sigma, games}} from the cached results pool
-    (v1 load_games — today's games are excluded by POOL_CUTOFF)."""
+    (v1 load_games — today's games are excluded by POOL_CUTOFF).
+    v5.4: the fit is computed ONCE per games-file mtime and
+    cached (see _FIT_CACHE) — identical numbers, no refit per
+    market."""
+    fn = "cfb_games_2026.json" if sport == "cfb" \
+        else "nhl_games_2026-27.json"
+    key = ("fit_ratings", sport) + _mtime_key(
+        [os.path.join(DATA, fn)])
+    return _cached(key, lambda: _fit_ratings_uncached(sport))
+
+
+def _fit_ratings_uncached(sport):
     games = load_games(sport)
     ratings, _ = run_elo(games, sport)
     counts = {}
@@ -573,7 +645,14 @@ def fit_margin_lane():
     """CFB margin lane on the like-for-like pool, fit on the FULL
     completed pool (pre-game diffs from the walk-forward Elo records,
     so no result leaks into its own prediction). No-intercept OLS,
-    the v1.1-B form. Returns slope, residual SD, pool size."""
+    the v1.1-B form. Returns slope, residual SD, pool size.
+    v5.4: cached per games-file mtime (see _FIT_CACHE)."""
+    key = ("fit_margin_lane",) + _mtime_key(
+        [os.path.join(DATA, "cfb_games_2026.json")])
+    return _cached(key, _fit_margin_lane_uncached)
+
+
+def _fit_margin_lane_uncached():
     games = load_games("cfb")
     _, recs = run_elo(games, "cfb")
     pool, _ = like_for_like(recs, games)
@@ -1606,10 +1685,7 @@ def fit_nfl_phi(persist=True):
 
 
 def load_phi_registry():
-    if os.path.exists(PHI_PATH):
-        with open(PHI_PATH) as f:
-            return json.load(f)
-    return None
+    return _load_json_cached(PHI_PATH)
 
 
 def lane_phi(lane):
@@ -2270,6 +2346,7 @@ def prop_from_scoring_plays(player, stat_name, line, side, price):
 # CACHE is defined in the header constants
 NBA_FIT_PATH = os.path.join(DATA, "v5-nba.json")
 SOCCER_FIT_PATH = os.path.join(DATA, "v5-soccer.json")
+SOCCER_LEAGUES_PATH = os.path.join(DATA, "v5-soccer-leagues.json")
 STALE_AFTER_H = 6.0   # a menu pull older than this degrades the stamp
 
 
@@ -2415,10 +2492,7 @@ def fit_nba(persist=True):
 
 
 def load_nba():
-    if os.path.exists(NBA_FIT_PATH):
-        with open(NBA_FIT_PATH) as f:
-            return json.load(f)
-    return None
+    return _load_json_cached(NBA_FIT_PATH)
 
 
 def nba_probs(fit, home, away):
@@ -2613,24 +2687,688 @@ def fit_soccer(persist=True):
 
 
 def load_soccer():
-    if os.path.exists(SOCCER_FIT_PATH):
-        with open(SOCCER_FIT_PATH) as f:
-            return json.load(f)
-    return None
+    return _load_json_cached(SOCCER_FIT_PATH)
 
 
 def soccer_fixture_grid(fit, home, away):
-    if home not in fit["strengths"] or away not in fit["strengths"]:
+    hk = soccer_fit_key(fit, home)
+    ak = soccer_fit_key(fit, away)
+    if hk is None or ak is None:
         return None
-    lh, la = soccer_lambdas(fit["strengths"], fit["league"], home, away)
+    lh, la = soccer_lambdas(fit["strengths"], fit["league"], hk, ak)
     return soccer_grid(lh, la)
 
 
-# ---------------------------------------------------------------- engine
-# One dispatcher every checker and the price command share.
-# Returns (p_side, info) or (None, reason). p_side is the MODEL
-# probability of the side bet — before phi (phi is per-lane and
-# applies at grading, as in the price command).
+# ----------------------------------------------------------------
+# Soccer name resolution (v5.4 fix — "fix the laziness" pass).
+# FanDuel prints DISPLAY names ("AC Milan", "Man Utd",
+# "Paris St-G", "Los Angeles FC"); the fits key teams by their
+# fit-source names (the shipped EPL fit by CODE — MAN/LEE/SUN;
+# football-data by its short forms — "Milan", "Ath Bilbao",
+# "M'gladbach"; the MLS fit by ESPN display names). Before this
+# layer, every name-form mismatch stamped UNPRICED even when the
+# club's fitted math was sitting in the app — the single biggest
+# UNPRICED bucket on the live coverage queue (soccer moneyline,
+# 252 markets). ONE canonical resolver now serves every soccer
+# consumer: soccer_fit_for, soccer_league_for, _soccer_grid_or_none
+# (via soccer_fixture_grid) and universal_coverage.
+#
+# Safety law: an alias maps a name INTO THE SAME CLUB's fit entry,
+# never into a different club, and resolution only ever runs
+# against ONE fit's own team list at a time, so a name can never
+# wander into another league's fit through an alias. A fixture
+# whose teams resolve into DIFFERENT league fits still stamps
+# UNPRICED "teams split across league fits" — cross-competition
+# honesty is unchanged.
+
+def _soccer_norm(name):
+    """Accent/punctuation-insensitive normal form of a team name."""
+    if not name:
+        return ""
+    s = unicodedata.normalize("NFKD", str(name))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    s = s.lower().replace("'", "").replace("’", "")
+    s = "".join(c if c.isalnum() else " " for c in s)
+    return " ".join(s.split())
+
+
+# FanDuel display name (normalized) -> fit-source name
+# (normalized), for the pairs normalization alone cannot bridge:
+# renames, initials and abbreviations. Targets are the names the
+# fits themselves print.
+SOCCER_NAME_ALIASES = {
+    # Italy (football-data I1/I2 forms)
+    "ac milan": "milan", "inter milan": "inter",
+    "internazionale": "inter", "as roma": "roma",
+    "hellas verona": "verona", "us sassuolo": "sassuolo",
+    # France (F1/F2)
+    "paris st g": "paris sg", "paris st germain": "paris sg",
+    "paris saint germain": "paris sg", "psg": "paris sg",
+    "estac troyes": "troyes", "ea guingamp": "guingamp",
+    "stade lavallois": "laval", "stade brestois 29": "brest",
+    "stade rennais": "rennes",
+    # Spain (SP1/SP2)
+    "athletic bilbao": "ath bilbao", "athletic club": "ath bilbao",
+    "atletico madrid": "ath madrid",
+    "atletico de madrid": "ath madrid",
+    "celta vigo": "celta", "rc celta": "celta",
+    "real betis": "betis", "real sociedad": "sociedad",
+    "rayo vallecano": "vallecano", "deportivo alaves": "alaves",
+    "ca osasuna": "osasuna", "racing santander": "santander",
+    "sporting gijon": "sp gijon", "real sporting": "sp gijon",
+    "real valladolid": "valladolid", "ud las palmas": "las palmas",
+    "rcd mallorca": "mallorca", "cd leganes": "leganes",
+    # Germany (D1/D2)
+    "eintracht frankfurt": "ein frankfurt",
+    "borussia monchengladbach": "mgladbach",
+    "borussia m gladbach": "mgladbach",
+    "borussia mgladbach": "mgladbach",
+    "bayer leverkusen": "leverkusen",
+    "bayer 04 leverkusen": "leverkusen",
+    "vfb stuttgart": "stuttgart", "vfl wolfsburg": "wolfsburg",
+    "tsg hoffenheim": "hoffenheim",
+    "1 fc union berlin": "union berlin",
+    "sc freiburg": "freiburg", "fc augsburg": "augsburg",
+    "1 fc heidenheim": "heidenheim", "fsv mainz 05": "mainz",
+    "mainz 05": "mainz", "werder": "werder bremen",
+    "hamburger sv": "hamburg", "hertha bsc": "hertha",
+    "1 fc koln": "fc koln", "schalke": "schalke 04",
+    "hannover": "hannover 96", "fortuna dusseldorf": "dusseldorf",
+    "1 fc kaiserslautern": "kaiserslautern",
+    "karlsruher sc": "karlsruhe", "sc paderborn": "paderborn",
+    "sc paderborn 07": "paderborn", "paderborn 07": "paderborn",
+    "1 fc magdeburg": "magdeburg",
+    # England (E1 short forms)
+    "sheffield wednesday": "sheffield weds",
+    "stoke city": "stoke", "swansea city": "swansea",
+    "cardiff city": "cardiff", "blackburn rovers": "blackburn",
+    "luton town": "luton", "oxford united": "oxford",
+    "queens park rangers": "qpr", "norwich city": "norwich",
+    "coventry city": "coventry", "hull city": "hull",
+    "west bromwich albion": "west brom",
+    # Netherlands / Portugal / Greece / Scotland / Belgium
+    "psv": "psv eindhoven", "az": "az alkmaar",
+    "sporting lisbon": "sp lisbon", "sporting cp": "sp lisbon",
+    "sporting clube de portugal": "sp lisbon",
+    "sporting braga": "sp braga", "sc braga": "sp braga",
+    "braga": "sp braga",
+    "sl benfica": "benfica", "vitoria guimaraes": "guimaraes",
+    "olympiacos": "olympiakos", "aek": "aek athens",
+    "heart of midlothian": "hearts",
+    "rsc anderlecht": "anderlecht", "krc genk": "genk",
+    "kaa gent": "gent", "union saint gilloise": "st gilloise",
+    "union sg": "st gilloise",
+    "royale union saint gilloise": "st gilloise",
+    "standard liege": "standard", "oh leuven": "oud heverlee leuven",
+    "sint truiden": "st truiden",
+    # MLS (FanDuel forms -> ESPN fit names)
+    "los angeles fc": "lafc",
+    "new york red bulls": "red bull new york",
+    "ny red bulls": "red bull new york",
+    "dc utd": "d c united", "dc united": "d c united",
+    "kansas city": "sporting kansas city",
+    "orlando city": "orlando city sc",
+    "inter miami": "inter miami cf",
+    "nycfc": "new york city fc", "new york city": "new york city fc",
+    "atlanta utd": "atlanta united",
+    "toronto": "toronto fc", "montreal impact": "cf montreal",
+    "vancouver whitecaps": "vancouver whitecaps fc",
+    "seattle sounders": "seattle sounders fc",
+    "new england": "new england revolution",
+    "chicago fire": "chicago fire fc",
+    "columbus": "columbus crew",
+    "houston dynamo": "houston dynamo fc",
+    "austin": "austin fc", "charlotte": "charlotte fc",
+    "colorado": "colorado rapids",
+    "philadelphia": "philadelphia union",
+    "salt lake": "real salt lake", "utah": "real salt lake",
+    "nashville": "nashville sc",
+    "st louis city": "st louis city sc",
+    "st louis": "st louis city sc", "san diego": "san diego fc",
+    # Brazil (FanDuel forms -> ESPN bra.1 fit names)
+    "se palmeiras": "palmeiras",
+    "atletico mineiro": "atletico mg",
+    "spfc": "sao paulo", "sao paulo fc": "sao paulo",
+    "sc corinthians": "corinthians",
+    "corinthians paulista": "corinthians",
+    "gremio fbpa": "gremio", "sc internacional": "internacional",
+    "cr flamengo": "flamengo", "fluminense fc": "fluminense",
+    "ec bahia": "bahia", "ec vitoria": "vitoria",
+    "vasco": "vasco da gama", "botafogo rj": "botafogo",
+    "cruzeiro ec": "cruzeiro", "america mg": "america mineiro",
+    "athletico paranaense": "athletico pr",
+    "atletico goianiense": "atletico go",
+    # Liga MX (FanDuel -> ESPN mex.1)
+    "pumas": "pumas unam", "tigres": "tigres uanl",
+    "club america": "america", "cf america": "america",
+    "chivas": "guadalajara", "cd guadalajara": "guadalajara",
+    "atletico san luis": "atletico de san luis",
+    "mazatlan fc": "mazatlan",
+    "club tijuana": "tijuana", "xolos": "tijuana",
+    "club leon": "leon", "club puebla": "puebla",
+    "club necaxa": "necaxa", "santos laguna": "santos",
+    "club santos laguna": "santos",
+    "queretaro fc": "queretaro", "juarez": "fc juarez",
+    # Argentina (FanDuel -> ESPN arg.1)
+    "newells": "newells old boys",
+    "racing": "racing club", "racing club avellaneda": "racing club",
+    "ca river plate": "river plate", "ca boca juniors": "boca juniors",
+    "ca independiente": "independiente",
+    "ca huracan": "huracan", "ca talleres": "talleres",
+    "talleres cordoba": "talleres",
+    "velez": "velez sarsfield",
+    "colon": "colon santa fe",
+}
+
+# The shipped EPL fit keys teams by CODE (v5-soccer.json). FanDuel
+# prints names; this table bridges name -> code for that fit only.
+EPL_CODE_BY_NAME = {
+    "arsenal": "ARS", "aston villa": "AVL", "brighton": "BHA",
+    "brighton and hove albion": "BHA", "brighton hove albion": "BHA",
+    "bournemouth": "BOU", "afc bournemouth": "BOU",
+    "brentford": "BRE", "burnley": "BUR", "chelsea": "CHE",
+    "crystal palace": "CRY", "everton": "EVE", "fulham": "FUL",
+    "leeds": "LEE", "leeds united": "LEE", "liverpool": "LIV",
+    "man utd": "MAN", "man united": "MAN",
+    "manchester united": "MAN", "man city": "MNC",
+    "manchester city": "MNC", "newcastle": "NEW",
+    "newcastle united": "NEW", "nottm forest": "NFO",
+    "nottingham forest": "NFO", "sunderland": "SUN",
+    "tottenham": "TOT", "tottenham hotspur": "TOT", "spurs": "TOT",
+    "west ham": "WHU", "west ham united": "WHU",
+    "wolves": "WOL", "wolverhampton": "WOL",
+    "wolverhampton wanderers": "WOL",
+}
+
+# Club-affix tokens that naming variants add or drop freely
+# ("FC Porto" vs "Porto", "AJ Auxerre" vs "Auxerre"). Stripping is
+# token-exact and only ever produces EXTRA candidate forms — the
+# exact normalized name is always tried first.
+SOCCER_STRIP_LEAD = {"fc", "afc", "sc", "ac", "ca", "cd", "rc",
+                     "as", "ogc", "aj", "us", "ea"}
+SOCCER_STRIP_TAIL = {"fc", "sc", "cf", "ec"}
+
+
+def _soccer_name_forms(name):
+    """Every normalized form under which `name` may sit as a fit
+    key: itself, affix-stripped variants, utd->united and
+    saint->st token swaps, the explicit alias target (and its own
+    affix-stripped variants), and — for EPL names — the shipped
+    fit's team code."""
+    base = _soccer_norm(name)
+    if not base:
+        return set()
+    forms = {base}
+    toks = base.split()
+    if len(toks) > 1 and toks[0] in SOCCER_STRIP_LEAD:
+        forms.add(" ".join(toks[1:]))
+    if len(toks) > 1 and toks[-1] in SOCCER_STRIP_TAIL:
+        forms.add(" ".join(toks[:-1]))
+    if "utd" in toks:
+        forms.add(" ".join("united" if t == "utd" else t
+                           for t in toks))
+    if "saint" in toks:
+        forms.add(" ".join("st" if t == "saint" else t
+                           for t in toks))
+    tgt = SOCCER_NAME_ALIASES.get(base)
+    if tgt:
+        forms.add(tgt)
+        tt = tgt.split()
+        if len(tt) > 1 and tt[0] in SOCCER_STRIP_LEAD:
+            forms.add(" ".join(tt[1:]))
+        if len(tt) > 1 and tt[-1] in SOCCER_STRIP_TAIL:
+            forms.add(" ".join(tt[:-1]))
+    code = EPL_CODE_BY_NAME.get(base)
+    if code:
+        forms.add(_soccer_norm(code))
+    return forms
+
+
+def soccer_fit_key(fit, name):
+    """The key under which `name` sits in fit's strengths, resolved
+    through the alias layer, or None. Resolution is scoped to THIS
+    fit's own team list — a name resolves only into a club this fit
+    actually holds."""
+    if not fit or name is None:
+        return None
+    st = fit.get("strengths") or {}
+    if name in st:
+        return name
+    want = _soccer_name_forms(name)
+    if not want:
+        return None
+    for k in st:
+        if _soccer_name_forms(k) & want:
+            return k
+    return None
+
+
+# ----------------------------------------------------------------
+# Soccer, multi-league (v5.4, BetFi Xii). data/v5-soccer-leagues
+# .json (built by tools/fit_soccer_leagues.py from real
+# football-data.co.uk results) carries one fit per league in the
+# v5-soccer.json schema family. Selection is by TEAM MEMBERSHIP:
+# the shipped EPL fit (v5-soccer.json) is consulted FIRST and its
+# numbers are untouched — EPL grading is byte-for-byte what it
+# was before this file existed. Only when a fixture is NOT in
+# the EPL fit does the leagues file get a say, and only when both
+# teams sit in exactly ONE league's strengths (zero = no fit;
+# two or more = ambiguous, and an ambiguous fixture is not
+# priced on a coin flip). The leagues file's "control" block
+# (the EPL refit) is never priced from — it exists to be
+# compared against the shipped fit.
+
+def load_soccer_leagues():
+    return _load_json_cached(SOCCER_LEAGUES_PATH)
+
+
+def soccer_league_for(home, away, blob=None):
+    """The one league key whose strengths hold BOTH teams, or
+    None (no league holds both, or more than one does). Team
+    membership is tested through the alias resolver
+    (soccer_fit_key), so FanDuel display names resolve into the
+    fit's own name forms."""
+    blob = blob if blob is not None else load_soccer_leagues()
+    if not blob:
+        return None
+    hits = [k for k, lg in (blob.get("leagues") or {}).items()
+            if soccer_fit_key(lg, home) is not None
+            and soccer_fit_key(lg, away) is not None]
+    return hits[0] if len(hits) == 1 else None
+
+
+def soccer_missing_reason(home, away):
+    """Why a fixture has no fit, named exactly: if BOTH clubs
+    are held by some fit but never the same one, the fixture is
+    cross-competition (a cup / Champions-League pairing) and the
+    honest stamp is the split — not 'team not in the fit'."""
+    fits = [load_soccer()] + list(
+        (load_soccer_leagues() or {}).get("leagues", {}).values())
+    known = [any(f and soccer_fit_key(f, t) is not None
+                 for f in fits)
+             for t in (home, away)]
+    if all(known):
+        return ("teams split across league fits — no single "
+                "league fit holds both")
+    return None
+
+
+def soccer_fit_for(home, away):
+    """(fit, league_key) for a fixture: the shipped EPL fit when
+    it holds both teams (league_key 'epl'), else the unique
+    leagues-file fit, else (None, None). Membership goes through
+    soccer_fit_key, so exact fit names price byte-for-byte as
+    before and FanDuel display names resolve to the same clubs."""
+    fit = load_soccer()
+    if fit is not None and soccer_fit_key(fit, home) is not None \
+            and soccer_fit_key(fit, away) is not None:
+        return fit, "epl"
+    blob = load_soccer_leagues()
+    key = soccer_league_for(home, away, blob)
+    if key is not None:
+        return blob["leagues"][key], key
+    return None, None
+
+
+# ================================================================ ORGAN 8
+# The Universal Fit Registry (v5.4, BetFi Xii). One index over
+# every fit the engine owns, read from the files in DATA — the
+# registry REPORTS the fits; it never computes one. A sport or
+# league with no file on disk is ABSENT from the registry, never
+# synthesized, and universal_coverage() names that absence on any
+# pull that carries the league. Coverage is pure reporting: it
+# reads the same fits the checkers read and changes no verdict.
+
+def _registry_entry(sport, league, kind, path, covered=None,
+                    teams=None, fitted_at=None, source=None,
+                    backtest=None, note=None):
+    e = {"sport": sport, "league": league, "kind": kind,
+         "file": os.path.basename(path),
+         "present": os.path.exists(path),
+         "covered": covered, "fitted_at": fitted_at,
+         "source": source, "backtest": backtest}
+    if teams is not None:
+        e["teams"] = teams
+    if note:
+        e["note"] = note
+    return e
+
+
+def _load_json(path):
+    # registry reads ride the same mtime cache (item 10c):
+    # the registry is read per render, never per market, and
+    # now never re-reads disk while files are unchanged.
+    try:
+        return _load_json_cached(path)
+    except Exception:
+        return None
+
+
+def universal_registry(data_dir=None):
+    """Every registered fit, organized per (sport, league,
+    bet-type, team/player) — the Universal Model's index. Each
+    entry names: the lane's SPECIALIZED math kind; the bet
+    types it can price vs the ones it stamps (with the missing
+    piece); the LEAGUE-level parameters AS FITTED FOR THAT
+    LEAGUE (scoring environment / home advantage — never one
+    global value); the TEAM-level entries it holds (rating or
+    strengths per team); fitted_at/source; and the walk-forward
+    backtest block VERBATIM from its file (None when the file
+    carries none — reported as none, never filled in)."""
+    d = data_dir or DATA
+    out = []
+
+    def P(name):
+        return os.path.join(d, name)
+
+    def entry(sport, league, kind, path, **kw):
+        e = _registry_entry(sport, league, kind, path, **kw)
+        out.append(e)
+        return e
+
+    soc = _load_json(P("v5-soccer.json"))
+    if soc is not None:
+        st = soc.get("strengths") or {}
+        e = entry("soccer", "epl", "Poisson goals grid + Elo "
+                  "check", P("v5-soccer.json"), covered=len(st),
+                  teams=sorted(st), fitted_at=soc.get("fitted_at"),
+                  source=soc.get("source"),
+                  backtest=soc.get("backtest"))
+        e["league_params"] = {"league_rates": soc.get("league"),
+                              "params": soc.get("params")}
+        e["team_entries"] = st
+        e["bet_types"] = {
+            "moneyline": "PRICED-capable (1X2 off the grid)",
+            "spread": "PRICED-capable (.5 handicaps off the grid)",
+            "totals": "PRICED-capable (grid totals)",
+            "btts": "PRICED-capable", "draw-no-bet": "PRICED-capable",
+            "double-chance": "PRICED-capable",
+            "correct-score": "PRICED-capable",
+            "team-props": "PRICED-capable (team totals off the grid)"}
+    blob = _load_json(P("v5-soccer-leagues.json"))
+    if blob is not None:
+        for key, lg in sorted((blob.get("leagues") or {}).items()):
+            st = lg.get("strengths") or {}
+            e = entry("soccer", key, "Poisson goals grid + Elo "
+                      "check", P("v5-soccer-leagues.json"),
+                      covered=len(st), teams=sorted(st),
+                      fitted_at=lg.get("fitted_at"),
+                      source=lg.get("source"),
+                      backtest=lg.get("backtest"))
+            e["league_params"] = {
+                "league_rates": lg.get("league"),
+                "params": lg.get("params"),
+                "season": lg.get("season")}
+            e["team_entries"] = st
+            e["bet_types"] = {
+                "moneyline": "PRICED-capable (1X2 off the grid)",
+                "spread": "PRICED-capable (.5 handicaps)",
+                "totals": "PRICED-capable (grid totals)",
+                "btts": "PRICED-capable",
+                "draw-no-bet": "PRICED-capable",
+                "double-chance": "PRICED-capable",
+                "correct-score": "PRICED-capable",
+                "team-props": "PRICED-capable"}
+        for key, lg in sorted((blob.get("control") or {}).items()):
+            st = lg.get("strengths") or {}
+            e = entry("soccer", f"{key}-control",
+                      "Poisson goals grid + Elo check",
+                      P("v5-soccer-leagues.json"), covered=len(st),
+                      teams=sorted(st), fitted_at=lg.get("fitted_at"),
+                      source=lg.get("source"),
+                      backtest=lg.get("backtest"),
+                      note="control refit — compared against the "
+                           "shipped fit, never priced from")
+            e["league_params"] = {"league_rates": lg.get("league"),
+                                  "params": lg.get("params")}
+            e["team_entries"] = st
+    nba = _load_json(P("v5-nba.json"))
+    if nba is not None:
+        r = nba.get("ratings") or {}
+        e = entry("nba", nba.get("season") or "nba",
+                  "Elo (sequential, K=20, HFA=100) + OLS margin map",
+                  P("v5-nba.json"), covered=len(r), teams=sorted(r),
+                  fitted_at=nba.get("fitted_at"),
+                  source=nba.get("source"),
+                  backtest=nba.get("backtest"))
+        e["league_params"] = {"margin_map": nba.get("margin_map"),
+                              "params": nba.get("params")}
+        e["team_entries"] = r
+        e["bet_types"] = {
+            "moneyline": "PRICED-capable (Elo)",
+            "spread": "PRICED-capable (margin map — FRAGILE lineage)",
+            "totals": "UNPRICED — no totals distribution for this "
+                      "lane yet"}
+    nflp = _load_json(P("nfl-week6-pricing.json"))
+    if isinstance(nflp, dict) and isinstance(
+            nflp.get("ratings"), dict):
+        r = nflp["ratings"]
+        e = entry("nfl", "nfl",
+                  "phi/Elo moneyline + margin distribution "
+                  "N(mu, 13.9) for covers",
+                  P("nfl-week6-pricing.json"), covered=len(r),
+                  teams=sorted(r))
+        e["league_params"] = {"margin_sd": NFL_MARGIN_SD,
+                              "games_on_file": len(
+                                  nflp.get("games") or [])}
+        e["team_entries"] = r
+        e["bet_types"] = {
+            "moneyline": "PRICED-capable (phi/Elo lane)",
+            "spread": "PRICED-capable (margin distribution)",
+            "alt-spread": "PRICED-capable (margin distribution)",
+            "totals": "UNPRICED — no totals distribution for this "
+                      "lane yet"}
+    cfb = _load_json(P("ratings_cfb.json"))
+    if isinstance(cfb, dict):
+        e = entry("ncaaf", "cfb",
+                  "distributional ratings (Elo mu/sigma per team) "
+                  "+ margin lane (like-for-like OLS)",
+                  P("ratings_cfb.json"), covered=len(cfb),
+                  teams=sorted(cfb))
+        try:
+            lane = fit_margin_lane()
+        except Exception:
+            lane = None
+        e["league_params"] = {"margin_lane": lane,
+                              "hfa_elo": CFB_HFA_ELO}
+        e["team_entries"] = cfb
+        e["bet_types"] = {
+            "moneyline": "PRICED-capable (margin distribution)",
+            "spread": "PRICED-capable (margin lane)",
+            "alt-spread": "PRICED-capable (margin lane)",
+            "totals": "UNPRICED — no totals distribution for this "
+                      "lane yet"}
+    nhl = _load_json(P("ratings_nhl.json"))
+    if isinstance(nhl, dict):
+        e = entry("nhl", "nhl",
+                  "Elo (sigma-integrated win prob) + home-ice",
+                  P("ratings_nhl.json"), covered=len(nhl),
+                  teams=sorted(nhl))
+        e["league_params"] = {"K": NHL_K, "hfa_elo": NHL_HFA_ELO}
+        e["team_entries"] = nhl
+        e["bet_types"] = {
+            "moneyline": "PRICED-capable (Elo)",
+            "spread": "UNPRICED — no NHL engine for spread/"
+                      "puck-line (moneyline only)",
+            "totals": "UNPRICED — no totals distribution for this "
+                      "lane yet"}
+    phi = _load_json(P("v5-phi.json"))
+    if phi is not None:
+        e = entry("multi", phi.get("lane") or "phi",
+                  "reparametrization (phi)", P("v5-phi.json"),
+                  fitted_at=phi.get("fitted_at"),
+                  source=phi.get("status"),
+                  backtest={"selected": phi.get("selected"),
+                            "cv_brier": phi.get("cv_brier"),
+                            "os_test": phi.get("os_test")})
+        e["league_params"] = {"status_reason":
+                              phi.get("status_reason")}
+    for fn, sport, kind in (
+            ("nhl_games_2026-27.json", "nhl", "game history"),
+            ("cfb_games_2026.json", "ncaaf", "game history")):
+        games = _load_json(P(fn))
+        if isinstance(games, list):
+            entry(sport, sport, kind, P(fn), covered=len(games),
+                  note="games on file (history, not a fit)")
+    hist = _load_json(P("v5-lane-history.json"))
+    if isinstance(hist, dict):
+        e = entry("multi", "lane-history", "scored lane history",
+                  P("v5-lane-history.json"), covered=len(hist),
+                  teams=sorted(hist))
+        e["team_entries"] = hist
+    recal = _load_json(P("recal_params.json"))
+    if isinstance(recal, dict):
+        e = entry("multi", "recal", "recalibration params",
+                  P("recal_params.json"), covered=len(recal),
+                  teams=sorted(recal))
+        e["league_params"] = recal
+    # props + live + groupings: engine organs whose data is not
+    # a single fit file — registered from what is on disk, with
+    # their limits named, never inflated.
+    cache_dir = os.path.join(d, "cache")
+    gamelogs = []
+    if os.path.isdir(cache_dir):
+        gamelogs = [f for f in os.listdir(cache_dir)
+                    if f.startswith("gamelog_")
+                    and f.endswith(".json")]
+    e = entry("props", "player-props",
+              "per-player gamelog distribution (two-family band: "
+              "normal vs lognormal on the player's own game log)",
+              P("cache"), covered=len(gamelogs),
+              note="distributions keyed by athlete id in "
+                   "data/cache/gamelog_<id>.json; a player with "
+                   "no cached gamelog has no distribution — the "
+                   "checker stamps those props UNPRICED")
+    e["bet_types"] = {"player-props": "PRICED-capable only where "
+                                      "the player's gamelog is "
+                                      "cached"}
+    states = [f for f in os.listdir(d)
+              if f.startswith("state-") and f.endswith(".json")] \
+        if os.path.isdir(d) else []
+    e = entry("live", "live",
+              "Live Matrix (in-game state pricing)",
+              P("state-*.json"), covered=len(states),
+              note="in-game states on file; live markets price "
+                   "only from a recorded state, never assumed")
+    e["bet_types"] = {"live": "PRICED-capable only from a "
+                              "recorded in-game state"}
+    e = entry("multi", "parlay",
+              "groupings: combined probability under printed "
+              "independence + weakest-leg grade cap",
+              P("betmodel5.py"), covered=None,
+              note="same-game groupings stamp UNPRICED — no "
+                   "correlation engine exists for them")
+    e["bet_types"] = {
+        "parlay": "PRICED-capable across games (independence "
+                  "printed on the slip)",
+        "same-game-parlay": "UNPRICED — no correlation engine "
+                            "for same-game groupings"}
+    return out
+
+
+def universal_coverage(markets, data_dir=None):
+    """Coverage at (sport, league, bet-type) grain. For every
+    cell present in `markets`: how many markets are
+    PRICED-capable (the lane's specialized math exists AND both
+    sides / the player are in it) vs UNPRICED, each UNPRICED
+    with the named missing piece — per BET TYPE, so a league
+    can show PRICED-capable moneylines while its totals stamp
+    'no totals distribution for this lane yet'. Pure reporting
+    over the same fits the checkers use; no verdict changes."""
+    d = data_dir or DATA
+    reg = universal_registry(d)
+    team_sets = {}
+    for e in reg:
+        if e.get("teams"):
+            team_sets.setdefault(e["sport"], set()).update(
+                e["teams"])
+
+    def league_of(mkt):
+        if mkt.get("sport") == "soccer":
+            _fit, key = soccer_fit_for(mkt.get("home"),
+                                       mkt.get("away"))
+            if key:
+                return key
+            blob = load_soccer_leagues()
+            hits = set()
+            for k, lg in (blob or {}).get("leagues", {}).items():
+                if soccer_fit_key(lg, mkt.get("home")) is not None \
+                        or soccer_fit_key(lg, mkt.get("away")) \
+                        is not None:
+                    hits.add(k)
+            if len(hits) == 1:
+                return hits.pop()
+            soc = load_soccer()
+            if soc and (soccer_fit_key(soc, mkt.get("home"))
+                        is not None
+                        or soccer_fit_key(soc, mkt.get("away"))
+                        is not None):
+                return "epl"
+            return "unresolved"
+        return mkt.get("league") or mkt.get("sport") or "?"
+
+    def cell_missing(mkt, league):
+        sport = mkt.get("sport") or "?"
+        bt = mkt.get("market") or "?"
+        if bt in ("parlay", "same-game-parlay"):
+            return ("no correlation engine for same-game "
+                    "groupings — legs price individually only")
+        if sport == "soccer":
+            fit, _k = soccer_fit_for(mkt.get("home"),
+                                     mkt.get("away"))
+            if fit is not None:
+                return None
+            fits = [load_soccer()] + list(
+                (load_soccer_leagues() or {}).get(
+                    "leagues", {}).values())
+            for team in (mkt.get("home"), mkt.get("away")):
+                if not any(f and soccer_fit_key(f, team) is not None
+                           for f in fits):
+                    return f"team not in the soccer fit: {team}"
+            return ("teams split across league fits — no single "
+                    "league fit holds both")
+        if bt in ("totals", "alt-total"):
+            return "no totals distribution for this lane yet"
+        if bt in ("player-props", "team-props", "game-props"):
+            pid = mkt.get("player_id") or mkt.get("athlete_id")
+            if pid and os.path.exists(os.path.join(
+                    d, "cache", f"gamelog_{pid}.json")):
+                return None
+            who = mkt.get("player") or "this player"
+            return (f"no fitted gamelog distribution on file "
+                    f"for player: {who}")
+        if sport == "nhl" and bt in ("spread", "alt-spread"):
+            return ("no NHL engine for spread/puck-line "
+                    "(moneyline only)")
+        entries = team_sets.get(sport)
+        if not entries:
+            return f"no fit registered for league {league}"
+        for side in ("home", "away"):
+            t = mkt.get(side)
+            if t is not None and t not in entries:
+                return f"team not in the {league} fit: {t}"
+        return None
+
+    out = {}
+    for mkt in markets or []:
+        sport = mkt.get("sport") or "?"
+        league = league_of(mkt)
+        bt = mkt.get("market") or "?"
+        key = (sport, league, bt)
+        slot = out.setdefault(key, {
+            "sport": sport, "league": league, "bet_type": bt,
+            "markets": 0, "priced_capable": 0, "unpriced": 0,
+            "missing": []})
+        slot["markets"] += 1
+        missing = cell_missing(mkt, league)
+        if missing is None:
+            slot["priced_capable"] += 1
+        else:
+            slot["unpriced"] += 1
+            if missing not in slot["missing"]:
+                slot["missing"].append(missing)
+    return [out[k] for k in sorted(out)]
+
 
 def engine_price(sport, kind, home, away, side="home", line=None):
     if sport == "nfl":
@@ -2692,12 +3430,17 @@ def engine_price(sport, kind, home, away, side="home", line=None):
                  "fragile": True}
         return None, "no NBA engine for this market"
     if sport == "soccer":
-        fit = load_soccer()
+        fit, _league_key = soccer_fit_for(home, away)
         if fit is None:
-            return None, "soccer fit not run (betmodel5.py fit-soccer)"
+            if load_soccer() is None \
+                    and load_soccer_leagues() is None:
+                return None, "soccer fit not run (betmodel5.py fit-soccer)"
+            return None, soccer_missing_reason(home, away) \
+                or f"team not in the soccer fit ({home}/{away})"
         grid = soccer_fixture_grid(fit, home, away)
         if grid is None:
-            return None, f"team not in the soccer fit ({home}/{away})"
+            return None, soccer_missing_reason(home, away) \
+                or f"team not in the soccer fit ({home}/{away})"
         M = grid["matrix"]
         det = (f"Poisson grid λ {grid['lambda_home']:.2f} / "
                f"{grid['lambda_away']:.2f} (fit {fit['fitted_at']}; "
@@ -2706,8 +3449,10 @@ def engine_price(sport, kind, home, away, side="home", line=None):
             p = {"home": grid["p_home"], "draw": grid["p_draw"],
                  "away": grid["p_away"]}[side]
             elo = fit["elo"]
-            elo_fav = "home" if elo[home] + SOC_HFA >= elo[away] \
-                else "away"
+            hk = soccer_fit_key(fit, home) or home
+            ak = soccer_fit_key(fit, away) or away
+            elo_fav = "home" if elo.get(hk, 1500.0) + SOC_HFA \
+                >= elo.get(ak, 1500.0) else "away"
             grid_fav = "home" if grid["p_home"] >= grid["p_away"] \
                 else "away"
             return p, {"detail": det,
@@ -3077,7 +3822,7 @@ def _chk_player_props(mkt, ctx):
 @register("team-props")
 def _chk_team_props(mkt, ctx):
     if mkt.get("sport") == "soccer":
-        fit = load_soccer()
+        fit, _league_key = soccer_fit_for(mkt["home"], mkt["away"])
         if fit is None:
             return _verdict(mkt, "UNPRICED", note="soccer fit not run")
         grid = soccer_fixture_grid(fit, mkt["home"], mkt["away"])
@@ -3269,12 +4014,16 @@ def _chk_round_robin(mkt, ctx):
 
 
 def _soccer_grid_or_none(mkt):
-    fit = load_soccer()
+    fit, _league_key = soccer_fit_for(mkt["home"], mkt["away"])
     if fit is None:
-        return None, "soccer fit not run (betmodel5.py fit-soccer)"
+        if load_soccer() is None and load_soccer_leagues() is None:
+            return None, "soccer fit not run (betmodel5.py fit-soccer)"
+        return None, soccer_missing_reason(
+            mkt["home"], mkt["away"]) or "team not in the soccer fit"
     grid = soccer_fixture_grid(fit, mkt["home"], mkt["away"])
     if grid is None:
-        return None, "team not in the soccer fit"
+        return None, soccer_missing_reason(
+            mkt["home"], mkt["away"]) or "team not in the soccer fit"
     return grid, ""
 
 

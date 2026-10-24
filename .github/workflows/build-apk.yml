@@ -1,12 +1,31 @@
-name: Build BetFi APK
+name: Build BetFi Xii APK
 
-# Builds the BetFi Android app (internal id: Bet_Finder; engine:
-# betmodel v5.2) with flet build apk and uploads the APKs as a
-# workflow artifact. Runs on demand and on pushes to main.
+# Builds the BetFi Xii Android app (internal id: Bet_Finder —
+# UNCHANGED by the Xii rename, so on-device data carries over;
+# engine: betmodel v5.4) with flet build apk and uploads the
+# APKs as a workflow artifact. Runs on demand and on pushes
+# to main.
 #
-# App release v10 (2026-10-20): staging/artifact names move to
-# BetFi-10 (artifact betfi-10-apk; files BetFi-10.apk +
-# BetFi-10-debug.apk); build mechanics unchanged from v7.
+# App release v12 (2026-10-24) — BetFi Xii:
+# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.0.0,
+#   build 16; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
+#   artifact betfi-xii-apk.
+# - Snapdragon 8 Gen 3 target (Galaxy S24 generation, Adreno
+#   750, arm64-v8a): the release build uses --split-per-abi
+#   (verified present in flet 1.0.4 --help) and the staging
+#   step selects the arm64-v8a APK by name as BetFi-Xii.apk.
+#   FALLBACK: if no arm64-v8a split is produced and exactly
+#   one universal APK exists, that universal APK is staged
+#   instead, with a loud warning in the log — a split failure
+#   must never silently ship the wrong file or no file.
+# - Icon: flet 1.0.4 `build apk` has NO --icon flag (verified
+#   against --help 2026-10-24). The icon is wired by placing
+#   the artist's icon.png at assets/icon.png (Flet's project
+#   convention); do not invent an icon flag.
+#
+# App release v10 (2026-10-20): staging/artifact names moved to
+# BetFi-10 (artifact betfi-10-apk); build mechanics unchanged
+# from v7.
 #
 # App release v7 (2026-10-19) - this workflow's changelog:
 # - Artifact contains exactly TWO files, staged into out/:
@@ -82,16 +101,24 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "BetFi" --product "BetFi 10" --build-version "10.4.1" --build-number "12"
+        run: flet build apk --yes --skip-flutter-doctor --split-per-abi --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.0.0" --build-number "16"
 
-      - name: Stage the release APK (exactly one)
+      - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
           mkdir -p out
-          count=$(find build/apk -maxdepth 1 -name '*.apk' | wc -l)
           echo "APKs in build/apk:"
           find build/apk -maxdepth 1 -name '*.apk'
-          test "$count" -eq 1
-          cp build/apk/*.apk out/BetFi-10.apk
+          arm64=$(find build/apk -maxdepth 1 -name '*arm64-v8a*.apk' | head -n 1)
+          if [ -n "$arm64" ]; then
+            echo "Selected arm64-v8a release APK: $arm64"
+            cp "$arm64" out/BetFi-Xii.apk
+          else
+            count=$(find build/apk -maxdepth 1 -name '*.apk' | wc -l)
+            echo "::warning::No arm64-v8a split APK found — falling back to the universal APK (count=$count)"
+            test "$count" -eq 1
+            cp build/apk/*.apk out/BetFi-Xii.apk
+          fi
+          ls -la out/
 
       - name: Build and stage the debug APK (same generated project)
         # Flet generated the Flutter project in build/flutter and the
@@ -118,15 +145,18 @@ jobs:
           test -d "$SERIOUS_PYTHON_SITE_PACKAGES"
           test -d "$SERIOUS_PYTHON_APP"
           (cd build/flutter && "$FLUTTER" build apk --debug)
-          debug_apk=$(find build/flutter/build -name 'app-debug.apk' | head -n 1)
+          debug_apk=$(find build/flutter/build -name '*arm64-v8a*debug.apk' | head -n 1)
+          if [ -z "$debug_apk" ]; then
+            debug_apk=$(find build/flutter/build -name 'app-debug.apk' | head -n 1)
+          fi
           echo "debug APK: $debug_apk"
           test -n "$debug_apk"
-          cp "$debug_apk" out/BetFi-10-debug.apk
+          cp "$debug_apk" out/BetFi-Xii-debug.apk
           ls -la out/
 
       - name: Upload the APKs (release + debug only)
         uses: actions/upload-artifact@v4
         with:
-          name: betfi-10-apk
+          name: betfi-xii-apk
           path: out/*.apk
           if-no-files-found: error
