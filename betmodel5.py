@@ -153,6 +153,7 @@ numbers are unchanged — EPL grading is byte-for-byte v5.3's.
 """
 
 import argparse
+import gzip
 import itertools
 import json
 import math
@@ -165,6 +166,7 @@ import unicodedata
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
+from functools import lru_cache
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "..", "data")
@@ -511,15 +513,60 @@ def cmd_fetch():
     print(f"[betmodel] NHL completed games cached: {len(nhl)}")
 
 
-def _norm_name(s):
+def _norm_name_uncached(s):
     """Name comparison form: lowercased, diacritics stripped
     ('San José' -> 'san jose'), apostrophes dropped ('Hawai'i'
     -> 'hawaii'). FanDuel prints both plain-ASCII forms; the
     ESPN-sourced fit keys do not always."""
-    import unicodedata
     s = unicodedata.normalize("NFKD", str(s))
     s = "".join(c for c in s if not unicodedata.combining(c))
     return s.replace("'", "").replace("’", "").strip().lower()
+
+
+@lru_cache(maxsize=65536)
+def _norm_name_cached(s):
+    return _norm_name_uncached(s)
+
+
+def _norm_name(s):
+    """Memoized wrapper for the pure name normalizer. Only
+    strings use the cache, preserving the historical behavior
+    for every other input type exactly."""
+    if isinstance(s, str):
+        return _norm_name_cached(s)
+    return _norm_name_uncached(s)
+
+
+_RESOLUTION_INDEX_CACHE = {}
+
+
+def _resolution_index(ratings, aliases):
+    """Precomputed normalized forms for one ratings/aliases pair.
+
+    The resolver's semantics are deliberately unchanged: this
+    index only avoids normalizing every candidate key on every
+    lookup. Strong references in the cache entry prevent id()
+    reuse from ever pairing an index with a different dict, and
+    the cache is bounded because fit dictionaries are the only
+    long-lived inputs expected here."""
+    key = (id(ratings), id(aliases) if aliases is not None else None)
+    ent = _RESOLUTION_INDEX_CACHE.get(key)
+    if ent is not None and ent[0] is ratings and ent[1] is aliases:
+        return ent[2]
+    pairs = tuple((k, _norm_name(k)) for k in ratings)
+    exact = {}
+    for k, nk in pairs:
+        exact.setdefault(nk, k)
+    alias_exact = {}
+    if aliases:
+        for name, target in aliases.items():
+            if target in ratings:
+                alias_exact.setdefault(_norm_name(name), target)
+    index = (pairs, exact, alias_exact)
+    if len(_RESOLUTION_INDEX_CACHE) >= 64:
+        _RESOLUTION_INDEX_CACHE.clear()
+    _RESOLUTION_INDEX_CACHE[key] = (ratings, aliases, index)
+    return index
 
 
 def _resolve_or_none(ratings, query, aliases=None):
@@ -537,19 +584,17 @@ def _resolve_or_none(ratings, query, aliases=None):
     q = _norm_name(query)
     if not q:
         return None
-    for t in ratings:
-        if _norm_name(t) == q:
-            return t
-    if aliases:
-        for name, target in aliases.items():
-            if _norm_name(name) == q and target in ratings:
-                return target
-    hits = [t for t in ratings if _norm_name(t).startswith(q + " ")]
+    pairs, exact, alias_exact = _resolution_index(ratings, aliases)
+    if q in exact:
+        return exact[q]
+    if aliases and q in alias_exact:
+        return alias_exact[q]
+    hits = [t for t, nt in pairs if nt.startswith(q + " ")]
     if len(hits) == 1:
         return hits[0]
     if len(hits) > 1:
         return None
-    hits = [t for t in ratings if q in _norm_name(t)]
+    hits = [t for t, nt in pairs if q in nt]
     if len(hits) == 1:
         return hits[0]
     return None
@@ -3157,6 +3202,54 @@ def _exam_passed(backtest):
             and bt["brier"] < bt["naive_brier"])
 
 
+_TENNIS_INDEX_CACHE = {}
+
+
+def _tennis_index(tour_blk, tour):
+    """Normalized-name indexes for one tour fit block.
+
+    Built once per fit-block object (fit files are loaded through
+    the mtime cache and treated as immutable). Every index stores
+    keys in the fit's original iteration order; the resolver below
+    applies the same stages and ambiguity rules as before."""
+    key = (id(tour_blk), tour)
+    ent = _TENNIS_INDEX_CACHE.get(key)
+    elo = tour_blk.get("elo") or {}
+    if ent is not None and ent[0] is tour_blk and ent[1] is elo:
+        return ent[2]
+    if tour == "atp":
+        exact = {}
+        by_tokens = {}
+        by_surname = {}
+        for k in elo:
+            nk = _norm_name(k)
+            exact.setdefault(nk, k)
+            token_key = tuple(sorted(
+                nk.replace("-", " ").split()))
+            by_tokens.setdefault(token_key, []).append(k)
+            kt = nk.split()
+            if len(kt) >= 2:
+                by_surname.setdefault(
+                    " ".join(kt[:-1]), []).append((k, kt[-1]))
+        index = (exact, by_tokens, by_surname)
+    else:
+        exact = {}
+        by_surname_initial = {}
+        for k in elo:
+            toks = str(k).replace(".", " ").split()
+            if len(toks) >= 2 and len(toks[-1]) == 1:
+                sn = " ".join(toks[:-1]).lower()
+                ini = toks[-1].lower()
+                exact.setdefault(f"{sn} {ini}", k)
+                by_surname_initial.setdefault(
+                    (sn, ini), []).append(k)
+        index = (exact, by_surname_initial)
+    if len(_TENNIS_INDEX_CACHE) >= 16:
+        _TENNIS_INDEX_CACHE.clear()
+    _TENNIS_INDEX_CACHE[key] = (tour_blk, elo, index)
+    return index
+
+
 def resolve_tennis_player(query, tour_blk, tour):
     """FanDuel name -> the tour fit's player key, or None.
 
@@ -3175,16 +3268,14 @@ def resolve_tennis_player(query, tour_blk, tour):
     if not q:
         return None
     if tour == "atp":
-        for key in elo:
-            if _norm_name(key) == q:
-                return key
+        exact, by_tokens, by_surname = _tennis_index(tour_blk, tour)
+        if q in exact:
+            return exact[q]
         # token multiset, hyphens split ('Jan-Lennard' and
         # 'Jan Lennard' are the same name tokens; key order
         # varies between sources)
-        qtok = sorted(q.replace("-", " ").split())
-        hits = [k for k in elo
-                if sorted(_norm_name(k).replace("-", " ")
-                          .split()) == qtok]
+        qtok = tuple(sorted(q.replace("-", " ").split()))
+        hits = by_tokens.get(qtok, [])
         if len(hits) == 1:
             return hits[0]
         if len(hits) > 1:
@@ -3192,26 +3283,17 @@ def resolve_tennis_player(query, tour_blk, tour):
         parts = q.split()
         if len(parts) >= 2:
             surname, first = " ".join(parts[1:]), parts[0]
-            hits = []
-            for k in elo:
-                kt = _norm_name(k).split()
-                if len(kt) >= 2 and " ".join(kt[:-1]) == surname \
-                        and (kt[-1] == first
-                             or kt[-1].startswith(first[0])):
-                    hits.append(k)
+            hits = [k for k, last in by_surname.get(surname, [])
+                    if last == first
+                    or last.startswith(first[0])]
             if len(hits) == 1:
                 return hits[0]
         return None
     # wta: keys 'Surname I.'
-    parsed = {}
-    for k in elo:
-        toks = str(k).replace(".", " ").split()
-        if len(toks) >= 2 and len(toks[-1]) == 1:
-            parsed[k] = (" ".join(toks[:-1]).lower(),
-                         toks[-1].lower())
-    for k, (sn, ini) in parsed.items():
-        if f"{sn} {ini}" == q.replace(".", " ").strip():
-            return k
+    exact, by_surname_initial = _tennis_index(tour_blk, tour)
+    q_form = q.replace(".", " ").strip()
+    if q_form in exact:
+        return exact[q_form]
     parts = q.split()
     if len(parts) >= 2:
         ini = parts[0][0]
@@ -3220,8 +3302,9 @@ def resolve_tennis_player(query, tour_blk, tour):
         # 'Carol Young Suh Lee' has surname 'Lee')
         surnames = {" ".join(parts[k:]).lower()
                     for k in range(1, len(parts))}
-        hits = [k for k, (sn, i2) in parsed.items()
-                if i2 == ini and sn in surnames]
+        hits = []
+        for sn in surnames:
+            hits.extend(by_surname_initial.get((sn, ini), []))
         if len(hits) == 1:
             return hits[0]
     return None
@@ -3521,7 +3604,7 @@ def soccer_fixture_grid(fit, home, away):
 # UNPRICED "teams split across league fits" — cross-competition
 # honesty is unchanged.
 
-def _soccer_norm(name):
+def _soccer_norm_uncached(name):
     """Accent/punctuation-insensitive normal form of a team name."""
     if not name:
         return ""
@@ -3530,6 +3613,17 @@ def _soccer_norm(name):
     s = s.lower().replace("'", "").replace("’", "")
     s = "".join(c if c.isalnum() else " " for c in s)
     return " ".join(s.split())
+
+
+@lru_cache(maxsize=65536)
+def _soccer_norm_cached(name):
+    return _soccer_norm_uncached(name)
+
+
+def _soccer_norm(name):
+    if isinstance(name, str):
+        return _soccer_norm_cached(name)
+    return _soccer_norm_uncached(name)
 
 
 # FanDuel display name (normalized) -> fit-source name
@@ -3726,7 +3820,7 @@ SOCCER_STRIP_LEAD = {"fc", "afc", "sc", "ac", "ca", "cd", "rc",
 SOCCER_STRIP_TAIL = {"fc", "sc", "cf", "ec", "fk"}
 
 
-def _soccer_name_forms(name):
+def _soccer_name_forms_uncached(name):
     """Every normalized form under which `name` may sit as a fit
     key: itself, affix-stripped variants, utd->united and
     saint->st token swaps, the explicit alias target (and its own
@@ -3775,6 +3869,46 @@ def _soccer_name_forms(name):
     return forms
 
 
+@lru_cache(maxsize=65536)
+def _soccer_name_forms_cached(name):
+    return frozenset(_soccer_name_forms_uncached(name))
+
+
+def _soccer_name_forms(name):
+    """The historical set-returning API over the memoized forms."""
+    if isinstance(name, str):
+        return set(_soccer_name_forms_cached(name))
+    return _soccer_name_forms_uncached(name)
+
+
+_SOCCER_FIT_INDEX_CACHE = {}
+
+
+def _soccer_fit_index(fit):
+    """(strengths, [(key, forms), ...]) for one fit, built once.
+
+    Entries preserve the strengths dict's iteration order, which
+    is the historical resolver's tie/order behavior. The cache
+    holds strong references and validates the strengths object,
+    so a rebuilt fit can never inherit another fit's index."""
+    key = id(fit)
+    ent = _SOCCER_FIT_INDEX_CACHE.get(key)
+    if ent is not None and ent[0] is fit:
+        strengths = fit.get("strengths") or {}
+        if ent[1] is strengths:
+            return strengths, ent[2]
+    strengths = fit.get("strengths") or {}
+    entries = tuple(
+        (k, _soccer_name_forms_cached(k)
+         if isinstance(k, str)
+         else frozenset(_soccer_name_forms_uncached(k)))
+        for k in strengths)
+    if len(_SOCCER_FIT_INDEX_CACHE) >= 128:
+        _SOCCER_FIT_INDEX_CACHE.clear()
+    _SOCCER_FIT_INDEX_CACHE[key] = (fit, strengths, entries)
+    return strengths, entries
+
+
 def soccer_fit_key(fit, name):
     """The key under which `name` sits in fit's strengths, resolved
     through the alias layer, or None. Resolution is scoped to THIS
@@ -3782,14 +3916,16 @@ def soccer_fit_key(fit, name):
     actually holds."""
     if not fit or name is None:
         return None
-    st = fit.get("strengths") or {}
+    st, entries = _soccer_fit_index(fit)
     if name in st:
         return name
-    want = _soccer_name_forms(name)
+    want = (_soccer_name_forms_cached(name)
+            if isinstance(name, str)
+            else _soccer_name_forms_uncached(name))
     if not want:
         return None
-    for k in st:
-        if _soccer_name_forms(k) & want:
+    for k, forms in entries:
+        if forms & want:
             return k
     return None
 
@@ -7849,9 +7985,20 @@ def fetch_menu_json(url):
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) "
                       "AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/126.0 Safari/537.36",
-        "Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=25) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip"})
+    # A fresh opener per call keeps fd_get/fetch_menu_json safe to
+    # call from the pull's worker threads: no request state is
+    # shared between calls. Gzip is decoded only when the server
+    # explicitly labels the response with that content encoding.
+    opener = urllib.request.build_opener()
+    with opener.open(req, timeout=25) as resp:
+        raw = resp.read()
+        encoding = (resp.headers.get("Content-Encoding")
+                    or "").lower()
+        if "gzip" in (part.strip() for part in encoding.split(",")):
+            raw = gzip.decompress(raw)
+        return json.loads(raw.decode("utf-8"))
 
 
 def fd_get(path, params):

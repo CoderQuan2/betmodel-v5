@@ -119,6 +119,7 @@ import re
 import sys
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -274,8 +275,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.1.0"
-BUILD_NUMBER = 17
+APP_VERSION = "12.2.0"
+BUILD_NUMBER = 18
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): on start and every 4 minutes while the app
 # is open. The loop only starts inside the real ft.run entry
@@ -1051,7 +1052,15 @@ def pull_menu() -> dict:
         rec["tree_error"] = f"{type(e).__name__}: {e}"
         return rec
     markets = []
-    for sport in b5.FANDUEL_EVENT_TYPES:
+    sports_in_order = list(b5.FANDUEL_EVENT_TYPES)
+
+    def _fetch_sport_page(sport):
+        """Fetch (only) one sport page, with its custom-page merge.
+
+        Network work belongs here so the pages can be fetched in
+        parallel; parsing and slate assembly stay in the canonical
+        order below, making the merged market order identical to
+        the historical sequential pull."""
         try:
             page = b5.fd_get(b5.FANDUEL_PAGE_ENDPOINT, {
                 "page": "SPORT",
@@ -1070,6 +1079,18 @@ def pull_menu() -> dict:
                         att[key] = merged
                 except Exception:
                     pass  # SPORT page only — degraded, not failed
+            return sport, page, None
+        except Exception as e:
+            return sport, None, f"{type(e).__name__}: {e}"
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        fetched_pages = list(pool.map(_fetch_sport_page,
+                                      sports_in_order))
+    for sport, page, fetch_error in fetched_pages:
+        if fetch_error is not None:
+            rec["sports"][sport] = {"error": fetch_error}
+            continue
+        try:
             slate, inventory, n_games, routed = \
                 b5.fd_parse_sport_page(page, sport)
             rec["sports"][sport] = {
@@ -1102,16 +1123,24 @@ def pull_menu() -> dict:
                 seen[eid] = m.get("market_time") or "9999"
         soonest = sorted(seen.items(),
                          key=lambda kv: kv[1])[:EVENT_MENU_CAP]
-        for eid, _t in soonest:
+
+        def _fetch_event_menu(item):
+            eid, _t = item
             try:
                 menu = b5.fd_event_menu(eid)
                 menu["fetched_at"] = rec["pulled_at"]
-                rec["event_menus"][str(eid)] = menu
+                return eid, menu
             except Exception as e:
-                rec["event_menus"][str(eid)] = {
+                return eid, {
                     "event_id": eid,
                     "error": f"{type(e).__name__}: {e}",
                     "fetched_at": rec["pulled_at"]}
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            fetched_menus = list(pool.map(_fetch_event_menu,
+                                          soonest))
+        for eid, menu in fetched_menus:
+            rec["event_menus"][str(eid)] = menu
     except Exception as e:
         rec["event_menus_error"] = f"{type(e).__name__}: {e}"
     return rec
@@ -1134,6 +1163,116 @@ def load_snapshot() -> dict | None:
     except Exception:
         pass
     return None
+
+
+# ------------------------------------------------------------------
+# Verdict fingerprint cache (v12.2) — a market is repriced only
+# when the market itself, the slate context that can affect a
+# checker, or a fit/record file changes. This is deliberately
+# conservative: the market fingerprint covers the complete market
+# record, not a hand-picked subset of fields, so no checker input
+# can drift underneath a reused verdict.
+
+
+def _fit_files_stamp() -> str:
+    """A hash of (path, mtime_ns, size) for the engine's fit and
+    record files. Explicit *_PATH globals are included as well as
+    every JSON file under the engine DATA/CACHE roots, covering
+    lane fits, game pools, scorecard/history/phi state, outrights
+    and the gamelog cache. A missing path is part of the stamp, so
+    a file appearing later invalidates just as a rewrite does."""
+    entries = {}
+
+    def add_file(path):
+        try:
+            st = os.stat(path)
+            entries[path] = (st.st_mtime_ns, st.st_size)
+        except OSError:
+            entries[path] = None
+
+    def walk(root):
+        if not root or not os.path.isdir(root):
+            return
+        for base, _dirs, files in os.walk(root):
+            for fn in files:
+                if fn.endswith(".json"):
+                    add_file(os.path.join(base, fn))
+
+    roots = set()
+    for name, value in vars(b5).items():
+        if not isinstance(value, str):
+            continue
+        if name.endswith("_PATH"):
+            if os.path.isdir(value):
+                roots.add(value)
+            else:
+                add_file(value)
+    for root in (getattr(b5, "DATA", None),
+                 getattr(b5, "CACHE", None)):
+        if isinstance(root, str):
+            roots.add(root)
+    for root in sorted(roots):
+        walk(root)
+    blob = repr(sorted(entries.items())).encode("utf-8")
+    return hashlib.sha256(blob).hexdigest()
+
+
+def _verdict_context_key(slate: dict) -> tuple:
+    """The slate-level checker context, reduced to what can alter
+    a verdict. A verified pull reuses across pull timestamps (the
+    engine only consumes source/degraded state for a verified
+    context); an unverified slate keys on its full stamp because
+    that stamp is printed into its verdict reasons."""
+    ctx = {"pulled_at": slate.get("pulled_at"),
+           "source": slate.get("source"),
+           "verified": slate.get("verified", True)}
+    stamp, degraded = b5.menu_stamp(ctx)
+    if ctx.get("verified"):
+        return ("verified", ctx.get("source"), bool(degraded))
+    return ("unverified", stamp)
+
+
+def _market_fingerprint(mkt: dict, fit_stamp: str,
+                        context_key: tuple) -> str:
+    blob = json.dumps(
+        {"market": mkt, "fit_stamp": fit_stamp,
+         "context": context_key},
+        sort_keys=True, separators=(",", ":"), default=repr)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _price_markets_cached(markets: list, slate: dict,
+                          previous_cache: dict | None):
+    """(verdicts, current_cache) for `markets`, reusing exact
+    verdict objects for unchanged fingerprints and applying the
+    engine's run_slate central stamping to newly checked markets.
+    The returned cache contains only this slate's entries."""
+    ctx = {"pulled_at": slate.get("pulled_at"),
+           "source": slate.get("source"),
+           "verified": slate.get("verified", True)}
+    fit_stamp = _fit_files_stamp()
+    context_key = _verdict_context_key(slate)
+    card = b5.load_scorecard()
+    previous_cache = previous_cache or {}
+    verdicts = []
+    current_cache = {}
+    for mkt in markets:
+        key = _market_fingerprint(mkt, fit_stamp, context_key)
+        v = previous_cache.get(key)
+        if v is None:
+            v = b5.run_checker(mkt, ctx)
+            if v["state"] == "PRICED" and v["p"] is not None:
+                lane = b5._lane_for(mkt)
+                v["cal_tag"] = b5.calibration_tag(lane, card)
+                if mkt.get("price") is not None:
+                    v["stance"] = b5.bet_stance(
+                        v["p"],
+                        (v["p"] - b5.implied_prob(mkt["price"]))
+                        * 100,
+                        mkt["price"])
+        current_cache[key] = v
+        verdicts.append(v)
+    return verdicts, current_cache
 
 
 # ------------------------------------------------------------------
@@ -3253,6 +3392,7 @@ def main(page: ft.Page):
     register_sounds(page)
 
     state = {"slate": load_snapshot(), "verdicts": None,
+             "verdict_cache": {},
              "sort": "verdict", "card_limit": CARD_PAGE, "search": "",
              "toggles": {"priced_only": False, "golden_only": False,
                          "hide_dnb": False, "quick_only": False,
@@ -3426,7 +3566,11 @@ def main(page: ft.Page):
         if not rec:
             return None
         if state["verdicts"] is None:
-            state["verdicts"] = b5.run_slate(rec, print_out=False)
+            verdicts, cache = _price_markets_cached(
+                rec.get("markets", []), rec,
+                state.get("verdict_cache"))
+            state["verdicts"] = verdicts
+            state["verdict_cache"] = cache
         return state["verdicts"]
 
     # ---------------- Cards ----------------

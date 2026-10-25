@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.1.0", app.APP_VERSION == "12.1.0")
-    check("BUILD_NUMBER is 17", app.BUILD_NUMBER == 17)
+    check("APP_VERSION is 12.2.0", app.APP_VERSION == "12.2.0")
+    check("BUILD_NUMBER is 18", app.BUILD_NUMBER == 18)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1273,11 +1273,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.1 version unified: README release line",
-          "12.1.0 (build 17)" in _readme)
-    check("v12.1 version unified: workflow build args",
-          '--build-version "12.1.0"' in _wf
-          and '--build-number "17"' in _wf)
+    check("v12.2 version unified: README release line",
+          "12.2.0 (build 18)" in _readme)
+    check("v12.2 version unified: workflow build args",
+          '--build-version "12.2.0"' in _wf
+          and '--build-number "18"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1396,6 +1396,89 @@ def main():
           and os.path.exists(_setfile)
           and app.play_sound("tick") is None)
     app.set_sound_enabled(True)
+
+    # ---------- v12.2 performance ----------
+    _norm_battery = ["San José", "Hawai'i", "  Ångström O’Neil ",
+                     "Jannik Sinner", "Świątek", "FC Porto"]
+    b5._norm_name_cached.cache_clear()
+    _norm_out = [b5._norm_name(_n) for _n in _norm_battery]
+    _norm_expected = [b5._norm_name_uncached(_n)
+                      for _n in _norm_battery]
+    b5._norm_name(_norm_battery[0])
+    check("v12.2: _norm_name memoization is output-identical",
+          _norm_out == _norm_expected
+          and _norm_out[:3] == ["san jose", "hawaii",
+                                "angstrom oneil"]
+          and b5._norm_name_cached.cache_info().hits >= 1)
+
+    _tennis_fit = b5.load_tennis()
+    _atp_blk = _tennis_fit["tours"]["atp"]
+    _wta_blk = _tennis_fit["tours"]["wta"]
+    _atp_synth = {"elo": {"Smith John": 1500.0,
+                          "Smith Jane": 1490.0}}
+    _wta_synth = {"elo": {"Lee C.": 1500.0,
+                          "Smith Jones A.": 1490.0,
+                          "Jones A.": 1480.0}}
+    check("v12.2: tennis indexed resolution matches known "
+          "exact/token/surname outcomes",
+          b5.resolve_tennis_player(
+              "Jannik Sinner", _atp_blk, "atp") == "Jannik Sinner"
+          and b5.resolve_tennis_player(
+              "Sinner Jannik", _atp_blk, "atp") == "Jannik Sinner"
+          and b5.resolve_tennis_player(
+              "John Smith", _atp_synth, "atp") == "Smith John"
+          and b5.resolve_tennis_player(
+              "Iga Swiatek", _wta_blk, "wta") == "Swiatek I."
+          and b5.resolve_tennis_player(
+              "Carol Young Suh Lee", _wta_synth, "wta") == "Lee C.")
+    check("v12.2: tennis indexed resolution keeps ambiguity "
+          "ambiguous (never guesses)",
+          b5.resolve_tennis_player(
+              "J Smith", _atp_synth, "atp") is None
+          and b5.resolve_tennis_player(
+              "Alice Smith Jones", _wta_synth, "wta") is None)
+
+    _sample = [dict(m) for m in _rec["markets"][:16]]
+    _orig_run_checker = b5.run_checker
+    _checker_calls = []
+
+    def _counting_checker(mkt, ctx=None):
+        _checker_calls.append(mkt)
+        return _orig_run_checker(mkt, ctx)
+
+    b5.run_checker = _counting_checker
+    try:
+        _first_v, _fp_cache = app._price_markets_cached(
+            _sample, _rec, {})
+        _first_calls = len(_checker_calls)
+        _checker_calls.clear()
+        _second_v, _fp_cache = app._price_markets_cached(
+            _sample, _rec, _fp_cache)
+        _second_calls = len(_checker_calls)
+        _changed = [dict(m) for m in _sample]
+        _price_idx = [i for i, m in enumerate(_changed)
+                      if m.get("price") is not None][:2]
+        for _i in _price_idx:
+            _changed[_i]["price"] = -105 \
+                if _changed[_i]["price"] >= 0 else 125
+        _checker_calls.clear()
+        _third_v, _fp_cache = app._price_markets_cached(
+            _changed, _rec, _fp_cache)
+        _changed_calls = len(_checker_calls)
+    finally:
+        b5.run_checker = _orig_run_checker
+    _fresh_changed = b5.run_slate(
+        {**_rec, "markets": _changed}, print_out=False)
+    check("v12.2: fingerprint cache prices a sample slate once, "
+          "then reuses every unchanged verdict",
+          _first_calls == len(_sample)
+          and _second_calls == 0
+          and _second_v == _first_v)
+    check("v12.2: fingerprint cache reprices only odds-changed "
+          "markets and matches a full fresh pass",
+          len(_price_idx) == 2
+          and _changed_calls == 2
+          and _third_v == _fresh_changed)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "
