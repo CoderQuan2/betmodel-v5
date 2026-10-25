@@ -338,8 +338,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.4.3"
-BUILD_NUMBER = 23
+APP_VERSION = "12.5.0"
+BUILD_NUMBER = 24
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -2034,20 +2034,6 @@ def _border_all(width: float, color: str) -> ft.Border:
     return ft.Border(top=side, right=side, bottom=side, left=side)
 
 
-def _tile(title: str, gloss: str, body_lines: list) -> ft.ExpansionTile:
-    """A depth tile: the engine's section name, a one-line plain
-    gloss under it (language report S4 — gloss, don't rename), then
-    the engine's lines."""
-    controls = [_line(gloss, 11, DIM)]
-    controls += [_line(t) for t in body_lines]
-    return ft.ExpansionTile(
-        title=ft.Text(title, size=12, color=ACCENT,
-                      weight=ft.FontWeight.BOLD),
-        controls=[ft.Container(
-            padding=8,
-            content=ft.Column(spacing=2, controls=controls))])
-
-
 def verdict_pill(term: str, unpriced: bool = False) -> ft.Container:
     """The verdict pill. GOLDEN BET is the only gold text; every
     other verdict is white on its warm tint — except UNPRICED,
@@ -2247,17 +2233,24 @@ def lane_contexts(markets: list) -> dict:
 # ------------------------------------------------------------------
 # Card rendering — one builder shared by the Cards screen, the
 # BetFi finds feed and the Parse match block (a find IS a card,
-# face + collapsible depth). Anatomy order is fixed (design
+# face + inline depth). Anatomy order is fixed (design
 # report §2): matchup → meta → record → odds → hero probability
 # row → grade row + calibration chip → verdict + stance pills →
-# stamp / note → depth tiles.
+# stamp / note → verdict lead → details (inline, v12.5).
+
+# Card v2 (v12.5): which cards currently show their depth
+# sections inline. Keyed by FanDuel market id when the menu
+# carried one, else (sport, away, home, name) — the toggle
+# state survives re-renders because it lives here, not on
+# the (rebuilt) controls.
+_CARD_DETAILS_OPEN = set()
 
 
 def build_market_card(mkt: dict, verdict: dict, rec: dict,
                       quotes_by_game: dict, rank: int | None = None,
                       edge_pts: float | None = None,
                       lane_ctx: dict | None = None,
-                      on_chart=None) -> ft.Container:
+                      on_chart=None, on_toggle=None) -> ft.Container:
     lane = market_lane(mkt)
     if lane_ctx is not None and lane in lane_ctx:
         (w, l, rec_src, phi, phi_state, uncal, cal_tag) = \
@@ -2285,36 +2278,17 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         coh_lines = ["insufficient quotes in this pull to audit"]
 
     face = []
-    # X-ray film strip (9d; artist §3.2): a 22dp panelXray band
-    # on the card's top edge — sprocket perforations at texture
-    # alpha, the league chip left, the pull time right (tabular),
-    # a cyan registration corner mark on PRICED cards only.
-    # UNPRICED cards get the same band, flat: no mark, no glow.
-    _sprockets = ft.Row(
-        spacing=18, tight=True,
-        controls=[ft.Container(width=8, height=4,
-                               bgcolor="#14EAF8FF",
-                               border_radius=2)
-                  for _ in range(10)])
-    _strip_bits = [
-        ft.Text(SPORT_LABELS.get(
-            mkt.get("sport"), (mkt.get("sport") or "?").upper()),
-            size=10, color=BONE_DIM, weight=ft.FontWeight.BOLD),
-        ft.Container(expand=True),
-        ft.Text(str((rec or {}).get("pulled_at") or "")[11:16],
-                size=10, color=BONE_DIM, font_family=NUM_FONT)]
+    # Card v2 top line (v12.5): the X-ray film strip (an
+    # ft.Stack band) is GONE — the card subtree is flat
+    # primitives only, the shapes that demonstrably paint on
+    # device. League + pull time ride as one plain text line;
+    # PRICED is a text marker now, not a corner glyph.
+    _top_line = (
+        f"{SPORT_LABELS.get(mkt.get('sport'), (mkt.get('sport') or '?').upper())}"
+        f" · {str((rec or {}).get('pulled_at') or '')[11:16]}")
     if state == "PRICED":
-        _strip_bits.append(ft.Container(
-            width=14, height=14,
-            border=ft.Border(top=ft.BorderSide(2, "#8038BDF8"),
-                             right=ft.BorderSide(2, "#8038BDF8"))))
-    face.append(ft.Container(
-        height=22, bgcolor=XRAY_FILL, border_radius=4,
-        padding=ft.Padding(left=6, right=6, top=2, bottom=2),
-        border=ft.Border(bottom=ft.BorderSide(1, HAIRLINE)),
-        content=ft.Stack(controls=[
-            _sprockets,
-            ft.Row(spacing=6, controls=_strip_bits)])))
+        _top_line += " · PRICED"
+    face.append(ft.Text(_top_line, size=10, color=BONE_DIM))
     if rank is not None:
         face.append(_line(
             f"FIND #{rank}"
@@ -2418,8 +2392,9 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
     if verdict.get("note"):
         face.append(_line(plain_note(verdict["note"]), 10, FAINT))
 
-    # the engine's verdict + its named reason lead the collapsible
-    # depth — first line, verbatim
+    # the engine's verdict + its named reason lead the depth —
+    # first line, verbatim (v12.5: it also prints on the face,
+    # always visible, right after the pills — see below)
     anatomy = []
     if vreason:
         anatomy.append(f"{term} — {vreason}")
@@ -2476,29 +2451,57 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
 
     stripe_color = UNPRICED_BORDER if state == "UNPRICED" else \
         VERDICT_BG.get(term, BORDER)
-    gradient = None
-    if term == "GOLDEN BET":
-        # the only gradient on a card: a restrained gold wash
-        # over the standing card surface (F3 depth pass)
-        gradient = ft.LinearGradient(
-            begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
-            colors=["#191405", CARD_BG])
-    depth = [
-        _tile("PRICE ANATOMY", "where the probability came from",
-              anatomy),
-        _tile("SCALE",
-              "phi — the fitted map that adjusts this lane's "
-              "raw probabilities toward what its record has "
-              "earned", scale),
-        _tile("COHERENCE",
-              "do this game's prices agree with each other?"
-              if mkt.get("sport") != "soccer" else
-              "do this match's prices agree with each other?",
-              coh_lines),
-        _tile("PROVENANCE",
-              "where every number came from, and when",
-              provenance),
+    # Card v2 depth (v12.5): no ExpansionTile, no gradient, no
+    # shadow — the four depth sections render INLINE as plain
+    # text when this card's details are open, behind a text
+    # toggle. Same titles, glosses and body lines the tiles
+    # carried; the anatomy body is unchanged.
+    _sections = [
+        ("PRICE ANATOMY", "where the probability came from",
+         anatomy),
+        ("SCALE",
+         "phi — the fitted map that adjusts this lane's "
+         "raw probabilities toward what its record has "
+         "earned", scale),
+        ("COHERENCE",
+         "do this game's prices agree with each other?"
+         if mkt.get("sport") != "soccer" else
+         "do this match's prices agree with each other?",
+         coh_lines),
+        ("PROVENANCE",
+         "where every number came from, and when",
+         provenance),
     ]
+    # the verdict lead line — always on the face (v12.5)
+    if vreason:
+        face.append(_line(f"{term} — {vreason}"))
+    _ckey = mkt.get("fd_market_id") or (
+        mkt.get("sport"), mkt.get("away"), mkt.get("home"),
+        mkt.get("name"))
+    _details_open = _ckey in _CARD_DETAILS_OPEN
+
+    def _toggle_details(_e, _k=_ckey):
+        if _k in _CARD_DETAILS_OPEN:
+            _CARD_DETAILS_OPEN.discard(_k)
+        else:
+            _CARD_DETAILS_OPEN.add(_k)
+        if on_toggle is not None:
+            on_toggle()
+
+    face.append(ft.TextButton(
+        "Hide details" if _details_open else
+        "Details — anatomy, scale, coherence, provenance",
+        icon=ft.Icons.EXPAND_LESS if _details_open
+        else ft.Icons.EXPAND_MORE,
+        style=ft.ButtonStyle(color=ACCENT),
+        on_click=_toggle_details))
+    if _details_open:
+        for _sec_title, _sec_gloss, _sec_body in _sections:
+            face.append(_line(_sec_title, 12, ACCENT, True))
+            face.append(_line(_sec_gloss, 11, DIM))
+            for _sec_line in _sec_body:
+                face.append(_line(_sec_line))
+    depth = []
     if on_chart is not None:
         # depth affordance: this market, highlighted in the
         # 3D panel's Charts segment
@@ -2508,12 +2511,17 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
                 icon=ft.Icons.SHOW_CHART,
                 style=ft.ButtonStyle(color=ACCENT),
                 on_click=lambda e, m=mkt: on_chart(m))]))
+    # Card v2 root (v12.5): FLAT. No gradient, no shadow —
+    # GOLDEN BET reads as a flat gold tint + a heavier gold
+    # left rule instead of the old wash/glow.
+    _is_golden = term == "GOLDEN BET"
     return ft.Container(
-        bgcolor=CARD_BG, gradient=gradient, border_radius=14,
-        padding=12,
-        shadow=GOLD_GLOW if term == "GOLDEN BET" else CARD_SHADOW,
+        bgcolor="#1A1405" if _is_golden else CARD_BG,
+        border_radius=14, padding=12,
         border=ft.Border(
-            left=ft.BorderSide(3, stripe_color),
+            left=ft.BorderSide(5 if _is_golden else 3,
+                               GOLD if _is_golden
+                               else stripe_color),
             top=ft.BorderSide(1, BORDER),
             right=ft.BorderSide(1, BORDER),
             bottom=ft.BorderSide(1, BORDER)),
@@ -4347,7 +4355,8 @@ def main(page: ft.Page):
                     sport_header(last_sport, n_sport))
             cards_list.controls.append(build_card_safe(
                 mkt, verdict, rec, quotes, edge_pts=edge,
-                lane_ctx=ctx, on_chart=_card_chart))
+                lane_ctx=ctx, on_chart=_card_chart,
+                on_toggle=render_cards))
         if not shown:
             cards_list.controls.append(empty_inline(
                 ft.Icons.SEARCH_OFF, "No markets in this view",
@@ -4813,7 +4822,8 @@ def main(page: ft.Page):
                 mkt, verdict, rec, game_quotes(markets),
                 edge_pts=market_edge_pts(mkt, verdict),
                 lane_ctx=lane_contexts(markets),
-                on_chart=_card_chart))
+                on_chart=_card_chart,
+                on_toggle=lambda: on_parse(None)))
             parse_result.controls.append(_kelly_block(
                 verdict.get("p"), mkt.get("price"),
                 lane=market_lane(mkt),
@@ -5626,7 +5636,8 @@ def main(page: ft.Page):
         for mkt, verdict, edge in golden:
             betfi_view.controls.append(build_card_safe(
                 mkt, verdict, rec, quotes, edge_pts=edge,
-                lane_ctx=ctx, on_chart=_card_chart))
+                lane_ctx=ctx, on_chart=_card_chart,
+                on_toggle=render_betfi))
         betfi_view.controls.append(section_header(
             f"FINDS — verdict ladder, then edge ({len(finds)})",
             ACCENT))
@@ -5640,7 +5651,8 @@ def main(page: ft.Page):
                 finds[:CARD_PAGE], start=1):
             betfi_view.controls.append(build_card_safe(
                 mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
-                lane_ctx=ctx, on_chart=_card_chart))
+                lane_ctx=ctx, on_chart=_card_chart,
+                on_toggle=render_betfi))
         if len(finds) > CARD_PAGE:
             betfi_view.controls.append(ft.Text(
                 f"+{len(finds) - CARD_PAGE} more finds past the "
@@ -5654,7 +5666,8 @@ def main(page: ft.Page):
             for mkt, verdict, edge in flagged:
                 betfi_view.controls.append(build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
-                    lane_ctx=ctx, on_chart=_card_chart))
+                    lane_ctx=ctx, on_chart=_card_chart,
+                    on_toggle=render_betfi))
         counter_lines = []
         for _m, v, e in counter:
             _nm = bet_name(_m, v)

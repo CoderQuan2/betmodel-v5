@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.4.3", app.APP_VERSION == "12.4.3")
-    check("BUILD_NUMBER is 23", app.BUILD_NUMBER == 23)
+    check("APP_VERSION is 12.5.0", app.APP_VERSION == "12.5.0")
+    check("BUILD_NUMBER is 24", app.BUILD_NUMBER == 24)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -293,14 +293,60 @@ def main():
                               for t in ct[:i_path]))
     check("F1: card carries a FanDuel navigation path",
           any(t.startswith("FanDuel → ") for t in ct))
-    check("F3: cards cast the depth shadow",
-          getattr(card, "shadow", None) is not None)
+    check("v12.5 re-pin (was F3: cards cast the depth shadow): "
+          "Card v2 is FLAT — the card root carries no shadow "
+          "and no gradient (primitives only on device)",
+          getattr(card, "shadow", None) is None
+          and getattr(card, "gradient", None) is None)
     check("v12.4 re-pin (was F3 first-render animation): a "
           "filter re-render does not replay entrances — cards "
           "arrive static; the animated first render is pinned "
           "on the fresh-boot Price Slate path in v12.1 below",
           getattr(card, "opacity", 1) == 1
           and getattr(card, "animate_opacity", None) is None)
+
+    # v12.5 Card v2: the card subtree is flat primitives only
+    # (no Stack, no ExpansionTile), the top line is plain text
+    # carrying league + pull time (+ the PRICED marker in
+    # text), and the Details toggle opens the depth inline.
+    _card_types = {type(c).__name__ for c in walk(card)}
+    check("v12.5 Card v2: no Stack and no ExpansionTile "
+          "inside a card",
+          "Stack" not in _card_types
+          and "ExpansionTile" not in _card_types)
+    _roots = [c for c in walk(cards_view)
+              if type(c).__name__ == "Container"
+              and any("Find it:" in t for t in texts(c))]
+    _tops = [texts(r)[0] for r in _roots if texts(r)]
+    import re as _re
+    check("v12.5 Card v2: top line is league · HH:MM as text, "
+          "with the PRICED marker in text on priced cards",
+          any(_re.match(r"^(NFL|NCAAF) · \d{2}:\d{2}"
+                        r"( · PRICED)?$", t)
+              for t in _tops)
+          and any(t.endswith(" · PRICED") for t in _tops),
+          f"tops={_tops[:4]}")
+    check("v12.5 Card v2: depth stays closed until toggled",
+          not any(t == "PRICE ANATOMY"
+                  for t in texts(cards_view)))
+    _det = next(c for c in walk(cards_view)
+                if type(c).__name__ == "TextButton"
+                and getattr(c, "content", "")
+                == "Details — anatomy, scale, coherence, "
+                   "provenance")
+    _det.on_click(SimpleNamespace())
+    _open_txts = texts(cards_view)
+    check("v12.5 Card v2: the Details toggle opens the depth "
+          "inline (anatomy + provenance as plain text)",
+          any(t == "PRICE ANATOMY" for t in _open_txts)
+          and any(t == "PROVENANCE" for t in _open_txts))
+    _hide = next(c for c in walk(cards_view)
+                 if type(c).__name__ == "TextButton"
+                 and getattr(c, "content", "") == "Hide details")
+    _hide.on_click(SimpleNamespace())
+    check("v12.5 Card v2: toggling again hides the depth",
+          not any(t == "PRICE ANATOMY"
+                  for t in texts(cards_view)))
 
     # finds segment: the golden panel is honest on this slate
     seg = next(c for c in walk(board)
@@ -1312,11 +1358,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.4 version unified: README release line",
-          "12.4.3 (build 23)" in _readme)
-    check("v12.4 version unified: workflow build args",
-          '--build-version "12.4.3"' in _wf
-          and '--build-number "23"' in _wf)
+    check("v12.5 version unified: README release line",
+          "12.5.0 (build 24)" in _readme)
+    check("v12.5 version unified: workflow build args",
+          '--build-version "12.5.0"' in _wf
+          and '--build-number "24"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
