@@ -1,0 +1,223 @@
+{
+ "sport": "nba",
+ "lane": "nba-totals",
+ "fitted_at": "2026-10-24T22:03:09+00:00",
+ "source": "ESPN NBA scoreboard day pulls (cached 2026-10-19; data/cache/nba_games_2025-26.json)",
+ "history_n": 1231,
+ "params": {
+  "prior_games": 10,
+  "distribution": "normal",
+  "burn_in": 100,
+  "model": "lam_home = LH*off[h]*def[a]; lam_away = LA*off[a]*def[h]; total ~ distribution(mu, sigma)"
+ },
+ "distribution_why": "Normal on total points: ~100 possessions a side; totals tightly near-normal around a pace-driven mean.",
+ "league": {
+  "LH": 116.483,
+  "LA": 114.738,
+  "mean_team_score": 115.61,
+  "total_mean": 231.22,
+  "total_sd": 19.869
+ },
+ "sigma": 18.992,
+ "teams": {
+  "ATL": {
+   "off": 1.022,
+   "def": 1.0034,
+   "gp": 82
+  },
+  "BKN": {
+   "off": 0.9253,
+   "def": 1.0023,
+   "gp": 82
+  },
+  "BOS": {
+   "off": 0.9942,
+   "def": 0.9348,
+   "gp": 82
+  },
+  "CHA": {
+   "off": 1.0031,
+   "def": 0.9659,
+   "gp": 82
+  },
+  "CHI": {
+   "off": 1.0054,
+   "def": 1.0455,
+   "gp": 82
+  },
+  "CLE": {
+   "off": 1.0302,
+   "def": 0.9985,
+   "gp": 82
+  },
+  "DAL": {
+   "off": 0.9885,
+   "def": 1.031,
+   "gp": 82
+  },
+  "DEN": {
+   "off": 1.0498,
+   "def": 1.0102,
+   "gp": 82
+  },
+  "DET": {
+   "off": 1.0166,
+   "def": 0.9537,
+   "gp": 82
+  },
+  "GS": {
+   "off": 0.9923,
+   "def": 0.9966,
+   "gp": 82
+  },
+  "HOU": {
+   "off": 0.9971,
+   "def": 0.9568,
+   "gp": 82
+  },
+  "IND": {
+   "off": 0.9755,
+   "def": 1.037,
+   "gp": 82
+  },
+  "LAC": {
+   "off": 0.9858,
+   "def": 0.9771,
+   "gp": 82
+  },
+  "LAL": {
+   "off": 1.0056,
+   "def": 0.9921,
+   "gp": 82
+  },
+  "MEM": {
+   "off": 0.9928,
+   "def": 1.0391,
+   "gp": 82
+  },
+  "MIA": {
+   "off": 1.0405,
+   "def": 1.0226,
+   "gp": 82
+  },
+  "MIL": {
+   "off": 0.9616,
+   "def": 1.0095,
+   "gp": 82
+  },
+  "MIN": {
+   "off": 1.0184,
+   "def": 0.9926,
+   "gp": 82
+  },
+  "NO": {
+   "off": 0.9993,
+   "def": 1.034,
+   "gp": 82
+  },
+  "NY": {
+   "off": 1.0072,
+   "def": 0.9579,
+   "gp": 83
+  },
+  "OKC": {
+   "off": 1.0263,
+   "def": 0.9404,
+   "gp": 82
+  },
+  "ORL": {
+   "off": 1.001,
+   "def": 0.9961,
+   "gp": 82
+  },
+  "PHI": {
+   "off": 1.0021,
+   "def": 1.0035,
+   "gp": 82
+  },
+  "PHX": {
+   "off": 0.9767,
+   "def": 0.9654,
+   "gp": 82
+  },
+  "POR": {
+   "off": 0.999,
+   "def": 1.0012,
+   "gp": 82
+  },
+  "SA": {
+   "off": 1.0319,
+   "def": 0.9696,
+   "gp": 83
+  },
+  "SAC": {
+   "off": 0.9645,
+   "def": 1.0416,
+   "gp": 82
+  },
+  "TOR": {
+   "off": 0.9925,
+   "def": 0.9707,
+   "gp": 82
+  },
+  "UTAH": {
+   "off": 1.0152,
+   "def": 1.0802,
+   "gp": 82
+  },
+  "WSH": {
+   "off": 0.9791,
+   "def": 1.0715,
+   "gp": 82
+  }
+ },
+ "backtest": {
+  "n": 1131,
+  "mae_model": 15.149,
+  "mae_naive": 16.018,
+  "brier_model": 0.2327,
+  "brier_naive": 0.25,
+  "logscore_model": -3.4467,
+  "logscore_naive": -3.4968,
+  "sigma_resid": 18.992,
+  "verdict": "PASS",
+  "protocol": "walk-forward (strengths/league rates from prior games only); naive = expanding league-average total; Brier scored on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED",
+ "note": "All-Star exhibition games (STARS/STRIPES/WORLD) excluded from the history \u2014 showcase totals are not the league's scoring environment. Team codes match the shipped v5-nba.json keys (GS, UTAH).",
+ "aliases": {
+  "Atlanta Hawks": "ATL",
+  "Boston Celtics": "BOS",
+  "Brooklyn Nets": "BKN",
+  "Charlotte Hornets": "CHA",
+  "Chicago Bulls": "CHI",
+  "Cleveland Cavaliers": "CLE",
+  "Dallas Mavericks": "DAL",
+  "Denver Nuggets": "DEN",
+  "Detroit Pistons": "DET",
+  "Golden State Warriors": "GS",
+  "Houston Rockets": "HOU",
+  "Indiana Pacers": "IND",
+  "LA Clippers": "LAC",
+  "Los Angeles Lakers": "LAL",
+  "Memphis Grizzlies": "MEM",
+  "Miami Heat": "MIA",
+  "Milwaukee Bucks": "MIL",
+  "Minnesota Timberwolves": "MIN",
+  "New Orleans Pelicans": "NO",
+  "New York Knicks": "NY",
+  "Oklahoma City Thunder": "OKC",
+  "Orlando Magic": "ORL",
+  "Philadelphia 76ers": "PHI",
+  "Phoenix Suns": "PHX",
+  "Portland Trail Blazers": "POR",
+  "Sacramento Kings": "SAC",
+  "San Antonio Spurs": "SA",
+  "Team Stars": "STARS",
+  "Team Stripes": "STRIPES",
+  "Toronto Raptors": "TOR",
+  "Utah Jazz": "UTAH",
+  "Washington Wizards": "WSH",
+  "World": "WORLD"
+ }
+}

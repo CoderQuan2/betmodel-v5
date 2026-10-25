@@ -1,0 +1,1475 @@
+{
+ "pilot": "soccer title outrights (Monte Carlo season simulation from fitted league strengths)",
+ "backtest": {
+  "seasons": [
+   {
+    "season": "2023-24",
+    "champion": "Man City",
+    "p_champion_model": 0.2318,
+    "p_champion_naive": 0.0693,
+    "brier_model": 0.8927,
+    "brier_naive": 0.918,
+    "logloss_model": 1.4621,
+    "logloss_naive": 2.6695,
+    "sim_from": "matchweek 19 (190 played, 190 simulated)",
+    "top3_model": [
+     [
+      "Liverpool",
+      0.5214
+     ],
+     [
+      "Man City",
+      0.23175
+     ],
+     [
+      "Arsenal",
+      0.15575
+     ]
+    ]
+   },
+   {
+    "season": "2024-25",
+    "champion": "Liverpool",
+    "p_champion_model": 0.9284,
+    "p_champion_naive": 0.0869,
+    "brier_model": 0.0094,
+    "brier_naive": 0.8829,
+    "logloss_model": 0.0743,
+    "logloss_naive": 2.4433,
+    "sim_from": "matchweek 19 (190 played, 190 simulated)",
+    "top3_model": [
+     [
+      "Liverpool",
+      0.9284
+     ],
+     [
+      "Arsenal",
+      0.06485
+     ],
+     [
+      "Chelsea",
+      0.004
+     ]
+    ]
+   },
+   {
+    "season": "2025-26",
+    "champion": "Arsenal",
+    "p_champion_model": 0.7149,
+    "p_champion_naive": 0.0859,
+    "brier_model": 0.1575,
+    "brier_naive": 0.8849,
+    "logloss_model": 0.3355,
+    "logloss_naive": 2.4548,
+    "sim_from": "matchweek 19 (190 played, 190 simulated)",
+    "top3_model": [
+     [
+      "Arsenal",
+      0.71495
+     ],
+     [
+      "Man City",
+      0.27605
+     ],
+     [
+      "Aston Villa",
+      0.00845
+     ]
+    ]
+   }
+  ],
+  "seasons_won": 3,
+  "mean_brier_model": 0.3532,
+  "mean_brier_naive": 0.8953,
+  "mean_logloss_model": 0.624,
+  "mean_logloss_naive": 2.5225,
+  "verdict": "PASS",
+  "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+  "sims_per_season": 20000
+ },
+ "leagues": {
+  "epl": {
+   "league": "epl",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Man City",
+      "p_champion_model": 0.2318,
+      "p_champion_naive": 0.0693,
+      "brier_model": 0.8927,
+      "brier_naive": 0.918,
+      "logloss_model": 1.4621,
+      "logloss_naive": 2.6695,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Liverpool",
+        0.5214
+       ],
+       [
+        "Man City",
+        0.23175
+       ],
+       [
+        "Arsenal",
+        0.15575
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Liverpool",
+      "p_champion_model": 0.9284,
+      "p_champion_naive": 0.0869,
+      "brier_model": 0.0094,
+      "brier_naive": 0.8829,
+      "logloss_model": 0.0743,
+      "logloss_naive": 2.4433,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Liverpool",
+        0.9284
+       ],
+       [
+        "Arsenal",
+        0.06485
+       ],
+       [
+        "Chelsea",
+        0.004
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Arsenal",
+      "p_champion_model": 0.7149,
+      "p_champion_naive": 0.0859,
+      "brier_model": 0.1575,
+      "brier_naive": 0.8849,
+      "logloss_model": 0.3355,
+      "logloss_naive": 2.4548,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Arsenal",
+        0.71495
+       ],
+       [
+        "Man City",
+        0.27605
+       ],
+       [
+        "Aston Villa",
+        0.00845
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.3532,
+    "mean_brier_naive": 0.8953,
+    "mean_logloss_model": 0.624,
+    "mean_logloss_naive": 2.5225,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-24T23:59:19.411383+00:00",
+   "source": "ESPN eng.1 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 75,
+   "remaining": 305,
+   "sims": 20000,
+   "names": {
+    "ARS": "Arsenal",
+    "COV": "Coventry City",
+    "HUL": "Hull City",
+    "MAN": "Manchester United",
+    "EVE": "Everton",
+    "CRY": "Crystal Palace",
+    "IPS": "Ipswich Town",
+    "SUN": "Sunderland",
+    "NFO": "Nottingham Forest",
+    "LEE": "Leeds United",
+    "BRE": "Brentford",
+    "TOT": "Tottenham Hotspur",
+    "BHA": "Brighton & Hove Albion",
+    "AVL": "Aston Villa",
+    "MNC": "Manchester City",
+    "BOU": "AFC Bournemouth",
+    "NEW": "Newcastle United",
+    "LIV": "Liverpool",
+    "FUL": "Fulham",
+    "CHE": "Chelsea"
+   },
+   "shares": {
+    "BHA": 0.7874,
+    "MNC": 0.1237,
+    "ARS": 0.0864,
+    "BRE": 0.0014,
+    "CHE": 0.0006,
+    "LEE": 0.0003,
+    "LIV": 0.0001
+   }
+  },
+  "la-liga": {
+   "league": "la-liga",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Real Madrid",
+      "p_champion_model": 0.7719,
+      "p_champion_naive": 0.0938,
+      "brier_model": 0.0983,
+      "brier_naive": 0.8729,
+      "logloss_model": 0.259,
+      "logloss_naive": 2.3671,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Real Madrid",
+        0.77185
+       ],
+       [
+        "Girona",
+        0.2149
+       ],
+       [
+        "Barcelona",
+        0.00565
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Barcelona",
+      "p_champion_model": 0.1906,
+      "p_champion_naive": 0.0731,
+      "brier_model": 0.9808,
+      "brier_naive": 0.9094,
+      "logloss_model": 1.6576,
+      "logloss_naive": 2.6162,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Ath Madrid",
+        0.4291
+       ],
+       [
+        "Real Madrid",
+        0.37625
+       ],
+       [
+        "Barcelona",
+        0.1906
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Barcelona",
+      "p_champion_model": 0.8151,
+      "p_champion_naive": 0.0942,
+      "brier_model": 0.054,
+      "brier_naive": 0.869,
+      "logloss_model": 0.2044,
+      "logloss_naive": 2.362,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Barcelona",
+        0.8151
+       ],
+       [
+        "Real Madrid",
+        0.1312
+       ],
+       [
+        "Villarreal",
+        0.0508
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 2,
+    "mean_brier_model": 0.3777,
+    "mean_brier_naive": 0.8838,
+    "mean_logloss_model": 0.707,
+    "mean_logloss_naive": 2.4484,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:01:13.085096+00:00",
+   "source": "ESPN esp.1 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 94,
+   "remaining": 286,
+   "sims": 20000,
+   "names": {
+    "ALA": "Alav\u00e9s",
+    "GET": "Getafe",
+    "SEV": "Sevilla",
+    "RAY": "Rayo Vallecano",
+    "RAC": "Racing Santander",
+    "VIL": "Villarreal",
+    "ESP": "Espanyol",
+    "LEV": "Levante",
+    "DEP": "Deportivo",
+    "ELC": "Elche",
+    "ATM": "Atl\u00e9tico Madrid",
+    "MCF": "M\u00e1laga",
+    "BET": "Real Betis",
+    "RSO": "Real Sociedad",
+    "ATH": "Athletic Club",
+    "VAL": "Valencia",
+    "CEL": "Celta Vigo",
+    "RMA": "Real Madrid",
+    "BAR": "Barcelona",
+    "OSA": "Osasuna"
+   },
+   "shares": {
+    "BAR": 0.9727,
+    "RMA": 0.0146,
+    "ATM": 0.0127
+   }
+  },
+  "bundesliga": {
+   "league": "bundesliga",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Leverkusen",
+      "p_champion_model": 0.5471,
+      "p_champion_naive": 0.1069,
+      "brier_model": 0.4101,
+      "brier_naive": 0.8515,
+      "logloss_model": 0.6031,
+      "logloss_naive": 2.236,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Leverkusen",
+        0.5471
+       ],
+       [
+        "Bayern Munich",
+        0.45275
+       ],
+       [
+        "RB Leipzig",
+        0.0001
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Bayern Munich",
+      "p_champion_model": 0.9769,
+      "p_champion_naive": 0.0981,
+      "brier_model": 0.001,
+      "brier_naive": 0.8671,
+      "logloss_model": 0.0234,
+      "logloss_naive": 2.3215,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Bayern Munich",
+        0.9769
+       ],
+       [
+        "Leverkusen",
+        0.02095
+       ],
+       [
+        "Ein Frankfurt",
+        0.00215
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Bayern Munich",
+      "p_champion_model": 0.9999,
+      "p_champion_naive": 0.1108,
+      "brier_model": 0.0,
+      "brier_naive": 0.843,
+      "logloss_model": 0.0002,
+      "logloss_naive": 2.1996,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Bayern Munich",
+        0.99985
+       ],
+       [
+        "Dortmund",
+        0.00015
+       ],
+       [
+        "Augsburg",
+        0.0
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.137,
+    "mean_brier_naive": 0.8539,
+    "mean_logloss_model": 0.2089,
+    "mean_logloss_naive": 2.2524,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:02:49.596458+00:00",
+   "source": "ESPN ger.1 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 61,
+   "remaining": 245,
+   "sims": 20000,
+   "names": {
+    "MUN": "Bayern Munich",
+    "VFB": "VfB Stuttgart",
+    "FCU": "1. FC Union Berlin",
+    "SGE": "Eintracht Frankfurt",
+    "KOE": "FC Cologne",
+    "TSG": "TSG Hoffenheim",
+    "M05": "Mainz",
+    "SCP": "SC Paderborn 07",
+    "RBL": "RB Leipzig",
+    "BMG": "Borussia M\u00f6nchengladbach",
+    "ELV": "SV Elversberg",
+    "B04": "Bayer Leverkusen",
+    "DOR": "Borussia Dortmund",
+    "HSV": "Hamburg SV",
+    "SCF": "SC Freiburg",
+    "SVW": "Werder Bremen",
+    "FCA": "FC Augsburg",
+    "S04": "Schalke 04"
+   },
+   "shares": {
+    "MUN": 0.7978,
+    "SCF": 0.0773,
+    "DOR": 0.0659,
+    "B04": 0.0381,
+    "RBL": 0.0191,
+    "SVW": 0.0011,
+    "FCA": 0.0004,
+    "M05": 0.0001,
+    "ELV": 0.0001
+   }
+  },
+  "serie-a": {
+   "league": "serie-a",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Inter",
+      "p_champion_model": 0.9254,
+      "p_champion_naive": 0.0927,
+      "brier_model": 0.0107,
+      "brier_naive": 0.8723,
+      "logloss_model": 0.0775,
+      "logloss_naive": 2.3788,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Inter",
+        0.92545
+       ],
+       [
+        "Juventus",
+        0.07175
+       ],
+       [
+        "Milan",
+        0.0028
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Napoli",
+      "p_champion_model": 0.1757,
+      "p_champion_naive": 0.0858,
+      "brier_model": 1.1789,
+      "brier_naive": 0.885,
+      "logloss_model": 1.7393,
+      "logloss_naive": 2.4561,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Inter",
+        0.6952
+       ],
+       [
+        "Napoli",
+        0.17565
+       ],
+       [
+        "Atalanta",
+        0.1265
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Inter",
+      "p_champion_model": 0.8178,
+      "p_champion_naive": 0.0817,
+      "brier_model": 0.0459,
+      "brier_naive": 0.8932,
+      "logloss_model": 0.2011,
+      "logloss_naive": 2.5046,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Inter",
+        0.81785
+       ],
+       [
+        "Milan",
+        0.0915
+       ],
+       [
+        "Napoli",
+        0.0635
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 2,
+    "mean_brier_model": 0.4118,
+    "mean_brier_naive": 0.8835,
+    "mean_logloss_model": 0.6726,
+    "mean_logloss_naive": 2.4465,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:03:48.614107+00:00",
+   "source": "ESPN ita.1 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 75,
+   "remaining": 305,
+   "sims": 20000,
+   "names": {
+    "INT": "Internazionale",
+    "MON": "Monza",
+    "UDI": "Udinese",
+    "COMO": "Como",
+    "GEN": "Genoa",
+    "NAP": "Napoli",
+    "PAR": "Parma",
+    "CAG": "Cagliari",
+    "FRO": "Frosinone",
+    "JUV": "Juventus",
+    "VEN": "Venezia",
+    "LEC": "Lecce",
+    "ATA": "Atalanta",
+    "SAS": "Sassuolo",
+    "TOR": "Torino",
+    "MIL": "AC Milan",
+    "BOL": "Bologna",
+    "LAZ": "Lazio",
+    "ROMA": "AS Roma",
+    "FIO": "Fiorentina"
+   },
+   "shares": {
+    "INT": 0.3451,
+    "ROMA": 0.3013,
+    "LAZ": 0.296,
+    "MIL": 0.0332,
+    "COMO": 0.0216,
+    "FRO": 0.0021,
+    "NAP": 0.0003,
+    "TOR": 0.0003,
+    "JUV": 0.0001
+   }
+  },
+  "ligue-1": {
+   "league": "ligue-1",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Paris SG",
+      "p_champion_model": 0.95,
+      "p_champion_naive": 0.0969,
+      "brier_model": 0.0035,
+      "brier_naive": 0.8687,
+      "logloss_model": 0.0513,
+      "logloss_naive": 2.3346,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Paris SG",
+        0.95
+       ],
+       [
+        "Nice",
+        0.0274
+       ],
+       [
+        "Monaco",
+        0.015
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Paris SG",
+      "p_champion_model": 0.9619,
+      "p_champion_naive": 0.1014,
+      "brier_model": 0.0028,
+      "brier_naive": 0.8596,
+      "logloss_model": 0.0388,
+      "logloss_naive": 2.2885,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Paris SG",
+        0.9619
+       ],
+       [
+        "Marseille",
+        0.0361
+       ],
+       [
+        "Monaco",
+        0.00075
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Paris SG",
+      "p_champion_model": 0.5313,
+      "p_champion_naive": 0.0915,
+      "brier_model": 0.3988,
+      "brier_naive": 0.8793,
+      "logloss_model": 0.6324,
+      "logloss_naive": 2.3909,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Paris SG",
+        0.5313
+       ],
+       [
+        "Lens",
+        0.4215
+       ],
+       [
+        "Marseille",
+        0.0381
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.135,
+    "mean_brier_naive": 0.8692,
+    "mean_logloss_model": 0.2408,
+    "mean_logloss_naive": 2.338,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:04:42.565281+00:00",
+   "source": "ESPN fra.1 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 65,
+   "remaining": 241,
+   "sims": 20000,
+   "names": {
+    "OLM": "Marseille",
+    "STR": "Strasbourg",
+    "RCL": "Lens",
+    "AUX": "AJ Auxerre",
+    "MNS": "Le Mans",
+    "BRE": "Brest",
+    "NICE": "Nice",
+    "LOR": "Lorient",
+    "TOU": "Toulouse",
+    "LYON": "Lyon",
+    "TRY": "Troyes",
+    "PAR": "Paris FC",
+    "ANG": "Angers",
+    "LILL": "Lille",
+    "HAC": "Le Havre AC",
+    "MON": "AS Monaco",
+    "REN": "Stade Rennais",
+    "PSG": "Paris Saint-Germain"
+   },
+   "shares": {
+    "LYON": 0.4193,
+    "PSG": 0.18,
+    "LILL": 0.1261,
+    "MON": 0.1122,
+    "PAR": 0.0583,
+    "RCL": 0.0384,
+    "OLM": 0.0266,
+    "REN": 0.0204,
+    "LOR": 0.0073,
+    "TOU": 0.0069,
+    "BRE": 0.0036,
+    "NICE": 0.0006,
+    "AUX": 0.0001,
+    "STR": 0.0001,
+    "ANG": 0.0001
+   }
+  },
+  "mls": {
+   "league": "mls",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023",
+      "champion": "CLB",
+      "p_champion_model": 0.026,
+      "p_champion_naive": 0.0393,
+      "brier_model": 1.1271,
+      "brier_naive": 0.9584,
+      "logloss_model": 3.6497,
+      "logloss_naive": 3.2373,
+      "sim_from": "snapshot at 263 regular games (every club >= 17 played); 230 regular + playoff bracket simulated",
+      "top3_model": [
+       [
+        "CIN",
+        0.3241
+       ],
+       [
+        "LAFC",
+        0.171
+       ],
+       [
+        "NSH",
+        0.15625
+       ]
+      ]
+     },
+     {
+      "season": "2024",
+      "champion": "LA",
+      "p_champion_model": 0.0674,
+      "p_champion_naive": 0.0468,
+      "brier_model": 1.0016,
+      "brier_naive": 0.9437,
+      "logloss_model": 2.6964,
+      "logloss_naive": 3.0612,
+      "sim_from": "snapshot at 268 regular games (every club >= 17 played); 225 regular + playoff bracket simulated",
+      "top3_model": [
+       [
+        "RSL",
+        0.2465
+       ],
+       [
+        "MIA",
+        0.17965
+       ],
+       [
+        "CLB",
+        0.13305
+       ]
+      ]
+     },
+     {
+      "season": "2025",
+      "champion": "MIA",
+      "p_champion_model": 0.0825,
+      "p_champion_naive": 0.0393,
+      "brier_model": 0.9444,
+      "brier_naive": 0.9578,
+      "logloss_model": 2.495,
+      "logloss_naive": 3.2375,
+      "sim_from": "snapshot at 297 regular games (every club >= 17 played); 213 regular + playoff bracket simulated",
+      "top3_model": [
+       [
+        "SD",
+        0.17415
+       ],
+       [
+        "PHI",
+        0.1645
+       ],
+       [
+        "VAN",
+        0.13935
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 1,
+    "mean_brier_model": 1.0244,
+    "mean_brier_naive": 0.9533,
+    "mean_logloss_model": 2.947,
+    "mean_logloss_naive": 3.1787,
+    "verdict": "FAILED-EXAM",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000,
+    "protocol_note": "MLS champion is the MLS Cup winner: the simulation adds the 2023-25 playoff bracket (wild card, best-of-3 first round, single-game semis/finals, shootouts on drawn playoff games) to the pilot's regular-season simulation"
+   }
+  },
+  "championship": {
+   "league": "championship",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Leicester",
+      "p_champion_model": 0.9505,
+      "p_champion_naive": 0.0759,
+      "brier_model": 0.004,
+      "brier_naive": 0.8942,
+      "logloss_model": 0.0508,
+      "logloss_naive": 2.5781,
+      "sim_from": "matchweek 23 (276 played, 276 simulated)",
+      "top3_model": [
+       [
+        "Leicester",
+        0.95045
+       ],
+       [
+        "Ipswich",
+        0.0375
+       ],
+       [
+        "Leeds",
+        0.0112
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Leeds",
+      "p_champion_model": 0.5097,
+      "p_champion_naive": 0.0646,
+      "brier_model": 0.347,
+      "brier_naive": 0.9162,
+      "logloss_model": 0.674,
+      "logloss_naive": 2.7395,
+      "sim_from": "matchweek 23 (276 played, 276 simulated)",
+      "top3_model": [
+       [
+        "Leeds",
+        0.50965
+       ],
+       [
+        "Burnley",
+        0.2343
+       ],
+       [
+        "Sheffield United",
+        0.2253
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Coventry",
+      "p_champion_model": 0.9439,
+      "p_champion_naive": 0.0678,
+      "brier_model": 0.0045,
+      "brier_naive": 0.9089,
+      "logloss_model": 0.0577,
+      "logloss_naive": 2.6909,
+      "sim_from": "matchweek 23 (276 played, 276 simulated)",
+      "top3_model": [
+       [
+        "Coventry",
+        0.94395
+       ],
+       [
+        "Ipswich",
+        0.02855
+       ],
+       [
+        "Middlesbrough",
+        0.02345
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.1185,
+    "mean_brier_naive": 0.9064,
+    "mean_logloss_model": 0.2608,
+    "mean_logloss_naive": 2.6695,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:20:56.340567+00:00",
+   "source": "ESPN eng.2 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 144,
+   "remaining": 408,
+   "sims": 20000,
+   "names": {
+    "WOL": "Wolverhampton Wanderers",
+    "BLK": "Blackburn Rovers",
+    "BOL": "Bolton Wanderers",
+    "PNE": "Preston North End",
+    "BRC": "Bristol City",
+    "MIL": "Millwall",
+    "CHA": "Charlton Athletic",
+    "DER": "Derby County",
+    "MID": "Middlesbrough",
+    "LCN": "Lincoln City",
+    "NOR": "Norwich City",
+    "WBA": "West Bromwich Albion",
+    "POR": "Portsmouth",
+    "QPR": "Queens Park Rangers",
+    "STK": "Stoke City",
+    "SWA": "Swansea City",
+    "SHU": "Sheffield United",
+    "BIR": "Birmingham City",
+    "WAT": "Watford",
+    "SOU": "Southampton",
+    "BUR": "Burnley",
+    "WHU": "West Ham United",
+    "CAR": "Cardiff City",
+    "WXM": "Wrexham"
+   },
+   "shares": {
+    "WHU": 0.4172,
+    "SOU": 0.2801,
+    "MID": 0.1945,
+    "QPR": 0.0407,
+    "BIR": 0.0394,
+    "WOL": 0.0099,
+    "SWA": 0.0094,
+    "WBA": 0.0042,
+    "STK": 0.0019,
+    "BLK": 0.0019,
+    "CAR": 0.0003,
+    "POR": 0.0002,
+    "SHU": 0.0001,
+    "BRC": 0.0001,
+    "MIL": 0.0001,
+    "NOR": 0.0001
+   }
+  },
+  "serie-b": {
+   "league": "serie-b",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Parma",
+      "p_champion_model": 0.8614,
+      "p_champion_naive": 0.0802,
+      "brier_model": 0.0247,
+      "brier_naive": 0.8935,
+      "logloss_model": 0.1492,
+      "logloss_naive": 2.5228,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Parma",
+        0.8614
+       ],
+       [
+        "Venezia",
+        0.06025
+       ],
+       [
+        "Cremonese",
+        0.03545
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Sassuolo",
+      "p_champion_model": 0.7648,
+      "p_champion_naive": 0.0855,
+      "brier_model": 0.0897,
+      "brier_naive": 0.8827,
+      "logloss_model": 0.2682,
+      "logloss_naive": 2.4594,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Sassuolo",
+        0.76475
+       ],
+       [
+        "Spezia",
+        0.17565
+       ],
+       [
+        "Pisa",
+        0.05935
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Venezia",
+      "p_champion_model": 0.2956,
+      "p_champion_naive": 0.075,
+      "brier_model": 0.8488,
+      "brier_naive": 0.9049,
+      "logloss_model": 1.2187,
+      "logloss_naive": 2.5909,
+      "sim_from": "matchweek 19 (190 played, 190 simulated)",
+      "top3_model": [
+       [
+        "Frosinone",
+        0.5879
+       ],
+       [
+        "Venezia",
+        0.2956
+       ],
+       [
+        "Monza",
+        0.07335
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.3211,
+    "mean_brier_naive": 0.8937,
+    "mean_logloss_model": 0.5454,
+    "mean_logloss_naive": 2.5244,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:22:19.842238+00:00",
+   "source": "ESPN ita.2 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 78,
+   "remaining": 302,
+   "sims": 20000,
+   "names": {
+    "VIC": "Vicenza",
+    "CAT": "Catanzaro",
+    "CAR": "Carrarese",
+    "MAN": "Mantova",
+    "SUD": "Sudtirol",
+    "ENT": "Virtus Entella",
+    "BEN": "Benevento",
+    "MOD": "Modena",
+    "EMP": "Empoli",
+    "CRE": "Cremonese",
+    "AVE": "US Avellino",
+    "ARE": "Arezzo",
+    "VER": "Hellas Verona",
+    "ASC": "Ascoli",
+    "PIS": "Pisa",
+    "PAD": "Padova",
+    "CES": "Cesena",
+    "SAM": "Sampdoria",
+    "PAL": "Palermo",
+    "JVS": "Juve Stabia"
+   },
+   "shares": {
+    "PAL": 0.5545,
+    "ASC": 0.1475,
+    "MOD": 0.1176,
+    "MAN": 0.0796,
+    "BEN": 0.0541,
+    "PIS": 0.0348,
+    "SUD": 0.0061,
+    "AVE": 0.0029,
+    "VER": 0.0014,
+    "JVS": 0.001,
+    "ENT": 0.0003,
+    "CAR": 0.0001,
+    "VIC": 0.0001
+   }
+  },
+  "la-liga-2": {
+   "league": "la-liga-2",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Leganes",
+      "p_champion_model": 0.6928,
+      "p_champion_naive": 0.0625,
+      "brier_model": 0.1152,
+      "brier_naive": 0.9228,
+      "logloss_model": 0.3669,
+      "logloss_naive": 2.7726,
+      "sim_from": "matchweek 21 (231 played, 231 simulated)",
+      "top3_model": [
+       [
+        "Leganes",
+        0.69285
+       ],
+       [
+        "Sp Gijon",
+        0.10525
+       ],
+       [
+        "Ferrol",
+        0.0783
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Levante",
+      "p_champion_model": 0.0972,
+      "p_champion_naive": 0.056,
+      "brier_model": 0.9966,
+      "brier_naive": 0.9366,
+      "logloss_model": 2.3315,
+      "logloss_naive": 2.8824,
+      "sim_from": "matchweek 21 (231 played, 231 simulated)",
+      "top3_model": [
+       [
+        "Almeria",
+        0.2896
+       ],
+       [
+        "Elche",
+        0.2111
+       ],
+       [
+        "Mirandes",
+        0.2063
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Santander",
+      "p_champion_model": 0.3165,
+      "p_champion_naive": 0.0606,
+      "brier_model": 0.6114,
+      "brier_naive": 0.9262,
+      "logloss_model": 1.1503,
+      "logloss_naive": 2.8034,
+      "sim_from": "matchweek 21 (231 played, 231 simulated)",
+      "top3_model": [
+       [
+        "Las Palmas",
+        0.3363
+       ],
+       [
+        "Santander",
+        0.31655
+       ],
+       [
+        "Almeria",
+        0.1215
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 2,
+    "mean_brier_model": 0.5744,
+    "mean_brier_naive": 0.9285,
+    "mean_logloss_model": 1.2829,
+    "mean_logloss_naive": 2.8195,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:23:31.388134+00:00",
+   "source": "ESPN esp.2 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 116,
+   "remaining": 335,
+   "sims": 20000,
+   "names": {
+    "RSO2": "Real Sociedad II",
+    "CAS": "Castell\u00f3n",
+    "AND": "FC Andorra",
+    "CEU": "Ceuta",
+    "CAD": "C\u00e1diz",
+    "CEL": "RC Celta Fortuna",
+    "OVI": "Real Oviedo",
+    "GRA": "Granada",
+    "MLL": "Mallorca",
+    "VLL": "Real Valladolid",
+    "EIB": "Eibar",
+    "TEN": "Tenerife",
+    "BUR": "Burgos",
+    "COR": "C\u00f3rdoba",
+    "GIR": "Girona",
+    "LEG": "Legan\u00e9s",
+    "LPA": "Las Palmas",
+    "ALB": "Albacete",
+    "RSG": "Sporting Gij\u00f3n",
+    "CDS": "CD Sabadell",
+    "ALM": "Almer\u00eda",
+    "ELD": "Eldense"
+   },
+   "shares": {
+    "CAS": 0.5708,
+    "ALM": 0.299,
+    "GIR": 0.0882,
+    "EIB": 0.0204,
+    "MLL": 0.0146,
+    "GRA": 0.0027,
+    "RSG": 0.0012,
+    "CDS": 0.0011,
+    "BUR": 0.001,
+    "OVI": 0.0006,
+    "ELD": 0.0001
+   }
+  },
+  "bundesliga-2": {
+   "league": "bundesliga-2",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "St Pauli",
+      "p_champion_model": 0.4023,
+      "p_champion_naive": 0.078,
+      "brier_model": 0.4705,
+      "brier_naive": 0.9038,
+      "logloss_model": 0.9104,
+      "logloss_naive": 2.5509,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "St Pauli",
+        0.40235
+       ],
+       [
+        "Holstein Kiel",
+        0.25835
+       ],
+       [
+        "Fortuna Dusseldorf",
+        0.17445
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "FC Koln",
+      "p_champion_model": 0.2581,
+      "p_champion_naive": 0.0751,
+      "brier_model": 0.6809,
+      "brier_naive": 0.9091,
+      "logloss_model": 1.3546,
+      "logloss_naive": 2.5895,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Hamburg",
+        0.3182
+       ],
+       [
+        "FC Koln",
+        0.25805
+       ],
+       [
+        "Elversberg",
+        0.11465
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Schalke 04",
+      "p_champion_model": 0.4185,
+      "p_champion_naive": 0.0867,
+      "brier_model": 0.4746,
+      "brier_naive": 0.887,
+      "logloss_model": 0.871,
+      "logloss_naive": 2.4459,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Schalke 04",
+        0.41855
+       ],
+       [
+        "Elversberg",
+        0.33315
+       ],
+       [
+        "Darmstadt",
+        0.1305
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.542,
+    "mean_brier_naive": 0.9,
+    "mean_logloss_model": 1.0453,
+    "mean_logloss_naive": 2.5288,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:24:38.339946+00:00",
+   "source": "ESPN ger.2 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 78,
+   "remaining": 228,
+   "sims": 20000,
+   "names": {
+    "BOC": "VfL Bochum",
+    "BSC": "Hertha Berlin",
+    "HDH": "1. FC Heidenheim 1846",
+    "OSN": "VfL Osnabruck",
+    "FCM": "1. FC Magdeburg",
+    "EBS": "TSV Eintracht Braunschweig",
+    "KSC": "Karlsruher SC",
+    "DSC": "Arminia Bielefeld",
+    "SVD": "SV Darmstadt 98",
+    "KSV": "Holstein Kiel",
+    "WOB": "VfL Wolfsburg",
+    "FCK": "Kaiserslautern",
+    "FCN": "1. FC N\u00fcrnberg",
+    "SGD": "Dynamo Dresden",
+    "COT": "Energie Cottbus",
+    "H96": "Hannover 96",
+    "STP": "St. Pauli",
+    "SGF": "SpVgg Greuther F\u00fcrth"
+   },
+   "shares": {
+    "BSC": 0.7889,
+    "FCN": 0.0833,
+    "WOB": 0.0554,
+    "FCM": 0.037,
+    "FCK": 0.0335,
+    "HDH": 0.0014,
+    "STP": 0.0003,
+    "SGF": 0.0001,
+    "COT": 0.0001,
+    "DSC": 0.0001
+   }
+  },
+  "ligue-2": {
+   "league": "ligue-2",
+   "exam": {
+    "seasons": [
+     {
+      "season": "2023-24",
+      "champion": "Auxerre",
+      "p_champion_model": 0.4644,
+      "p_champion_naive": 0.0741,
+      "brier_model": 0.539,
+      "brier_naive": 0.9061,
+      "logloss_model": 0.7669,
+      "logloss_naive": 2.6027,
+      "sim_from": "matchweek 19 (190 played, 189 simulated)",
+      "top3_model": [
+       [
+        "Angers",
+        0.50155
+       ],
+       [
+        "Auxerre",
+        0.46445
+       ],
+       [
+        "Grenoble",
+        0.0236
+       ]
+      ]
+     },
+     {
+      "season": "2024-25",
+      "champion": "Lorient",
+      "p_champion_model": 0.4495,
+      "p_champion_naive": 0.078,
+      "brier_model": 0.372,
+      "brier_naive": 0.9032,
+      "logloss_model": 0.7996,
+      "logloss_naive": 2.5509,
+      "sim_from": "matchweek 17 (153 played, 153 simulated)",
+      "top3_model": [
+       [
+        "Lorient",
+        0.4495
+       ],
+       [
+        "Paris FC",
+        0.1763
+       ],
+       [
+        "Metz",
+        0.14815
+       ]
+      ]
+     },
+     {
+      "season": "2025-26",
+      "champion": "Troyes",
+      "p_champion_model": 0.74,
+      "p_champion_naive": 0.0916,
+      "brier_model": 0.0868,
+      "brier_naive": 0.8773,
+      "logloss_model": 0.3011,
+      "logloss_naive": 2.3907,
+      "sim_from": "matchweek 17 (153 played, 152 simulated)",
+      "top3_model": [
+       [
+        "Troyes",
+        0.74
+       ],
+       [
+        "Reims",
+        0.0982
+       ],
+       [
+        "St Etienne",
+        0.0872
+       ]
+      ]
+     }
+    ],
+    "seasons_won": 3,
+    "mean_brier_model": 0.3326,
+    "mean_brier_naive": 0.8955,
+    "mean_logloss_model": 0.6225,
+    "mean_logloss_naive": 2.5148,
+    "verdict": "PASS",
+    "bar": "model beats naive on Brier AND log-loss in >= 2 of 3 seasons and on both 3-season means",
+    "sims_per_season": 20000
+   },
+   "fitted_at": "2026-10-25T00:25:51.690339+00:00",
+   "source": "ESPN fra.2 day pulls 2026-27 (played table + remaining fixtures); strengths refit in-season on the played games with the shipped shrinkage protocol (the backtest exam's method); the shipped v5-soccer.json fit is NOT the input \u2014 it carries last season's teams",
+   "played": 88,
+   "remaining": 218,
+   "sims": 20000,
+   "names": {
+    "BOU": "Boulogne",
+    "ASNL": "AS Nancy Lorraine",
+    "CLE": "Clermont Foot",
+    "REIM": "Stade de Reims",
+    "DUN": "Dunkerque",
+    "GRE": "Grenoble",
+    "METZ": "Metz",
+    "EAG": "Guingamp",
+    "MON": "Montpellier",
+    "DIJO": "Dijon FCO",
+    "NAN": "Nantes",
+    "RSFC": "Red Star FC 93",
+    "PAU": "Pau",
+    "ANN": "Annecy",
+    "AVE": "Rodez Aveyron",
+    "SLFC": "Stade Laval",
+    "SOC": "Sochaux",
+    "ASSE": "Saint-\u00c9tienne"
+   },
+   "shares": {
+    "ASSE": 0.8574,
+    "REIM": 0.0638,
+    "MON": 0.0541,
+    "ASNL": 0.0144,
+    "RSFC": 0.005,
+    "PAU": 0.0026,
+    "ANN": 0.0019,
+    "METZ": 0.0007,
+    "BOU": 0.0001,
+    "DIJO": 0.0001,
+    "DUN": 0.0001
+   }
+  }
+ }
+}

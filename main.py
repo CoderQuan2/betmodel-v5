@@ -415,6 +415,11 @@ def build_splash():
                         size=11, color=FAINT)]))
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
+# Per pull cycle, the soonest this many slate games also get
+# their full per-game menu (all tabs) refreshed from the event
+# page into rec["event_menus"] — capped so the 4-minute cycle
+# stays a pull, not a crawl (Pilot addition, R2).
+EVENT_MENU_CAP = 8
 # lanes shown on the Record screen (engine lane_record is safe for
 # any lane name: an unknown lane reports 0-0, "no scored record")
 RECORD_LANES = ["nfl-ml", "ml", "cover", "live", "nba-ml", "props",
@@ -452,13 +457,30 @@ UNPRICED_FG = "#9CA3AF"
 UNPRICED_BORDER = "#4B5563"
 
 SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
-                "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer"}
+                "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer",
+                # R2: the rest of FanDuel's menu tree, pulled
+                # since engine v5.4 (fix-guy) — labels only;
+                # these stamp UNPRICED until fitted.
+                "tennis": "Tennis", "mma": "MMA", "golf": "Golf",
+                "boxing": "Boxing", "cricket": "Cricket",
+                "darts": "Darts", "motorsport": "Motor Sport",
+                "rugby-union": "Rugby Union",
+                "rugby-league": "Rugby League",
+                "lacrosse": "Lacrosse", "snooker": "Snooker",
+                "table-tennis": "Table Tennis"}
 SPORT_ICONS = {"nfl": ft.Icons.SPORTS_FOOTBALL,
                "ncaaf": ft.Icons.SPORTS_FOOTBALL,
                "nba": ft.Icons.SPORTS_BASKETBALL,
                "nhl": ft.Icons.SPORTS_HOCKEY,
                "mlb": ft.Icons.SPORTS_BASEBALL,
-               "soccer": ft.Icons.SPORTS_SOCCER}
+               "soccer": ft.Icons.SPORTS_SOCCER,
+               "tennis": ft.Icons.SPORTS_TENNIS,
+               "mma": ft.Icons.SPORTS_MMA,
+               "golf": ft.Icons.SPORTS_GOLF,
+               "cricket": ft.Icons.SPORTS_CRICKET,
+               "motorsport": ft.Icons.SPORTS_MOTORSPORTS,
+               "rugby-union": ft.Icons.SPORTS_RUGBY,
+               "rugby-league": ft.Icons.SPORTS_RUGBY}
 
 # Card screen paging + sorts (v7.1's six, labels corrected —
 # edge is points, not percent — plus grade order in v10). Paging,
@@ -559,6 +581,12 @@ def repoint_engine_storage() -> None:
         b5.NFL_PRICING_PATH = os.path.join(data,
                                            "nfl-week6-pricing.json")
         b5.NBA_FIT_PATH = os.path.join(data, "v5-nba.json")
+        b5.MLB_FIT_PATH = os.path.join(data, "v5-mlb.json")
+        b5.TENNIS_FIT_PATH = os.path.join(data, "v5-tennis.json")
+        b5.MMA_FIT_PATH = os.path.join(data, "v5-mma.json")
+        b5.CRICKET_FIT_PATH = os.path.join(data, "v5-cricket.json")
+        b5.RUGBY_FIT_PATH = os.path.join(data, "v5-rugby.json")
+        b5.F1_FIT_PATH = os.path.join(data, "v5-f1.json")
         b5.SOCCER_FIT_PATH = os.path.join(data, "v5-soccer.json")
         b5.SOCCER_LEAGUES_PATH = os.path.join(
             data, "v5-soccer-leagues.json")
@@ -646,6 +674,37 @@ def seed_evidence_pack() -> dict:
                 with open(dp, "wb") as f:
                     f.write(blob)
                 copied += 1
+        # R4 (fix-guy): recurse into the bundled cache — the
+        # stripped gamelog cache + athlete index are what let
+        # on-device props price beyond the legacy players.
+        # Same ownership rule as the top level, one level down:
+        # missing files copy; a fresher pack refreshes the
+        # cache files it owns (listed as "cache/<fn>" in
+        # engine_data_files); cache files the pack does not
+        # carry are never touched or deleted.
+        cache_src = os.path.join(src, "cache")
+        cache_copied = 0
+        if os.path.isdir(cache_src):
+            cache_dst = os.path.join(dst, "cache")
+            os.makedirs(cache_dst, exist_ok=True)
+            for fn in sorted(os.listdir(cache_src)):
+                if not (fn == "athlete_index.json"
+                        or (fn.startswith("gamelog_")
+                            and fn.endswith(".json"))):
+                    continue
+                sp = os.path.join(cache_src, fn)
+                if not os.path.isfile(sp):
+                    continue
+                dp = os.path.join(cache_dst, fn)
+                if not os.path.exists(dp) or (
+                        fresher
+                        and f"cache/{fn}" in pack_files):
+                    with open(sp, "rb") as f:
+                        blob = f.read()
+                    with open(dp, "wb") as f:
+                        f.write(blob)
+                    cache_copied += 1
+        status["cache_files"] = cache_copied
         status["seeded"] = True
         status["files"] = copied
         return status
@@ -865,6 +924,38 @@ def pull_menu() -> dict:
                                     f"{type(e).__name__}: {e}"}
     rec["markets"] = markets
     rec["verified"] = bool(markets)
+    # ---- per-game full menus (Pilot addition, R2): the sport
+    # pages above carry each game's PRIMARY markets; the full
+    # per-game menu (all tabs) lives on the event page. Refresh
+    # it here for the soonest games on this slate — capped, so
+    # a pull stays a pull: EVENT_MENU_CAP games, soonest first,
+    # each stamped with this pull's time; a failed event stamps
+    # itself, never the pull. The harvest is an inventory
+    # (every market name on every tab) — it keeps the app's
+    # picture of each game's full menu current on every cycle
+    # instead of letting it silently go stale behind the sport
+    # pages. Pricing still rides the slate + checkers.
+    rec["event_menus"] = {}
+    try:
+        seen = {}
+        for m in markets:
+            eid = m.get("fd_event_id")
+            if eid is not None and eid not in seen:
+                seen[eid] = m.get("market_time") or "9999"
+        soonest = sorted(seen.items(),
+                         key=lambda kv: kv[1])[:EVENT_MENU_CAP]
+        for eid, _t in soonest:
+            try:
+                menu = b5.fd_event_menu(eid)
+                menu["fetched_at"] = rec["pulled_at"]
+                rec["event_menus"][str(eid)] = menu
+            except Exception as e:
+                rec["event_menus"][str(eid)] = {
+                    "event_id": eid,
+                    "error": f"{type(e).__name__}: {e}",
+                    "fetched_at": rec["pulled_at"]}
+    except Exception as e:
+        rec["event_menus_error"] = f"{type(e).__name__}: {e}"
     return rec
 
 
@@ -1281,6 +1372,28 @@ def _line(text: str, size: int = 11, color: str = DIM,
                    weight=ft.FontWeight.BOLD if bold else None)
 
 
+def plain_note(text):
+    """Engine text, in the app's own words, for user surfaces
+    (label standard, 2026-10-24): one status vocabulary, no
+    developer language. The engine's own strings stay precise in
+    the record; what the phone SHOWS is plain: FAILED-EXAM reads
+    as benched on its backtest, file names and tool paths never
+    print, and 'checker' is the app's model, not a part name."""
+    if not text:
+        return text
+    t = str(text)
+    t = t.replace("FAILED-EXAM",
+                  "benched — failed its backtest")
+    t = t.replace("no checker registered for",
+                  "no model on file for")
+    t = t.replace(" — see coverage queue", "")
+    t = re.sub(r"\(tools/[^)]*\)", "", t)
+    t = re.sub(r"\(betmodel5\.py[^)]*\)", "", t)
+    t = re.sub(r"\bv5-[\w.-]+\.json\b", "the fit file", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    return t
+
+
 def _border_all(width: float, color: str) -> ft.Border:
     side = ft.BorderSide(width, color)
     return ft.Border(top=side, right=side, bottom=side, left=side)
@@ -1492,7 +1605,8 @@ def lane_contexts(markets: list) -> dict:
 def build_market_card(mkt: dict, verdict: dict, rec: dict,
                       quotes_by_game: dict, rank: int | None = None,
                       edge_pts: float | None = None,
-                      lane_ctx: dict | None = None) -> ft.Container:
+                      lane_ctx: dict | None = None,
+                      on_chart=None) -> ft.Container:
     lane = market_lane(mkt)
     if lane_ctx is not None and lane in lane_ctx:
         (w, l, rec_src, phi, phi_state, uncal, cal_tag) = \
@@ -1651,7 +1765,7 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         # the engine's stamp, verbatim on the face
         face.append(_line(uncal, 11, WARN, True))
     if verdict.get("note"):
-        face.append(_line(verdict["note"], 10, FAINT))
+        face.append(_line(plain_note(verdict["note"]), 10, FAINT))
 
     # the engine's verdict + its named reason lead the collapsible
     # depth — first line, verbatim
@@ -1681,9 +1795,9 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         anatomy.append(f"line: {mkt['line']} · side: "
                        f"{side_label(mkt)}")
     if verdict.get("detail"):
-        anatomy.append(f"checker detail: {verdict['detail']}")
+        anatomy.append(f"detail: {plain_note(verdict['detail'])}")
     if verdict.get("note"):
-        anatomy.append(f"checker note: {verdict['note']}")
+        anatomy.append(f"reason: {plain_note(verdict['note'])}")
 
     phi_params = ({k: v for k, v in phi.items() if k != "kind"}
                   if isinstance(phi, dict) else {})
@@ -1718,6 +1832,31 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         gradient = ft.LinearGradient(
             begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
             colors=["#191405", CARD_BG])
+    depth = [
+        _tile("PRICE ANATOMY", "where the probability came from",
+              anatomy),
+        _tile("SCALE",
+              "phi — the fitted map that adjusts this lane's "
+              "raw probabilities toward what its record has "
+              "earned", scale),
+        _tile("COHERENCE",
+              "do this game's prices agree with each other?"
+              if mkt.get("sport") != "soccer" else
+              "do this match's prices agree with each other?",
+              coh_lines),
+        _tile("PROVENANCE",
+              "where every number came from, and when",
+              provenance),
+    ]
+    if on_chart is not None:
+        # depth affordance: this market, highlighted in the
+        # 3D panel's Charts segment
+        depth.append(ft.Row(spacing=4, controls=[
+            ft.TextButton(
+                "Chart — see this market in the 3D panel",
+                icon=ft.Icons.SHOW_CHART,
+                style=ft.ButtonStyle(color=ACCENT),
+                on_click=lambda e, m=mkt: on_chart(m))]))
     return ft.Container(
         bgcolor=CARD_BG, gradient=gradient, border_radius=14,
         padding=12,
@@ -1727,22 +1866,7 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
             top=ft.BorderSide(1, BORDER),
             right=ft.BorderSide(1, BORDER),
             bottom=ft.BorderSide(1, BORDER)),
-        content=ft.Column(spacing=6, controls=face + [
-            _tile("PRICE ANATOMY", "where the probability came from",
-                  anatomy),
-            _tile("SCALE",
-                  "phi — the fitted map that adjusts this lane's "
-                  "raw probabilities toward what its record has "
-                  "earned", scale),
-            _tile("COHERENCE",
-                  "do this game's prices agree with each other?"
-                  if mkt.get("sport") != "soccer" else
-                  "do this match's prices agree with each other?",
-                  coh_lines),
-            _tile("PROVENANCE",
-                  "where every number came from, and when",
-                  provenance),
-        ]))
+        content=ft.Column(spacing=6, controls=face + depth))
 
 
 # ------------------------------------------------------------------
@@ -1796,6 +1920,13 @@ EDGE_BUCKETS = [("< −5", None, -5.0), ("−5…−2", -5.0, -2.0),
                 ("> +8", 8.0, None)]
 
 
+def chart_market_key(m: dict) -> str:
+    """Stable identity for one market in the current pull — used
+    by the Charts highlight and the card -> chart cross-link."""
+    return "|".join(str(m.get(k) or "") for k in
+                    ("sport", "home", "away", "market", "side"))
+
+
 def xii_chart_data(entries: list) -> dict:
     """The chart facts, computed once from (market, verdict,
     edge) triples — the same triples the Board renders, so the
@@ -1821,6 +1952,8 @@ def xii_chart_data(entries: list) -> dict:
         nm = bet_name(m, v)
         pairs.append({
             "label": nm["selection"],
+            "key": chart_market_key(m), "sport": m.get("sport"),
+            "home": m.get("home"), "away": m.get("away"),
             "model": (v.get("p") or 0) * 100,
             "implied": b5.implied_prob(m["price"]) * 100
             if m.get("price") is not None else 0.0,
@@ -1865,18 +1998,28 @@ def _bar_chart(groups, zoom, color, max_v=None, on_tap=None):
                 tooltip=tt,
                 on_click=(lambda e, d=tt: on_tap(d))
                 if on_tap is not None else None))
+        plot = ft.Container(
+            height=plot_h,
+            alignment=ft.Alignment(0, 1),
+            content=ft.Row(spacing=2, tight=True,
+                           vertical_alignment=
+                           ft.CrossAxisAlignment.END,
+                           controls=rods))
+        if g.get("mark"):
+            # the highlighted market (card -> chart cross-link):
+            # an accent frame around its bars, drawn, not said
+            plot = ft.Container(
+                content=plot, padding=3, border_radius=6,
+                border=_border_all(2, ACCENT))
         cols.append(ft.Column(
             spacing=3, tight=True,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
-                ft.Container(
-                    height=plot_h,
-                    alignment=ft.Alignment(0, 1),
-                    content=ft.Row(spacing=2, tight=True,
-                                   vertical_alignment=
-                                   ft.CrossAxisAlignment.END,
-                                   controls=rods)),
-                ft.Text(g["label"], size=9, color=DIM)]))
+                plot,
+                ft.Text(g["label"], size=9,
+                        color=ACCENT if g.get("mark") else DIM,
+                        weight=ft.FontWeight.BOLD
+                        if g.get("mark") else None)]))
     return ft.Row(spacing=8, tight=False,
                   vertical_alignment=ft.CrossAxisAlignment.END,
                   controls=cols)
@@ -1897,7 +2040,8 @@ def _tap_chips(items, on_tap):
 
 def build_xii_charts(entries: list, zoom: float = 1.0,
                      on_tap=None, on_zoom=None,
-                     detail: str = "") -> list:
+                     detail: str = "", on_point=None,
+                     highlight: str = "") -> list:
     """The Xii Charts section controls for one pull's entries.
     Empty pull -> one honest line; a pull with no priced markets
     still draws PRICED vs UNPRICED and prints the empty state
@@ -1981,24 +2125,569 @@ def build_xii_charts(entries: list, zoom: float = 1.0,
                        size=12, color=INK,
                        weight=ft.FontWeight.BOLD))
     if data["pairs"]:
-        groups = [{"label": str(i + 1), "rods": [
-            (p["model"], ACCENT, p["detail"]),
-            (p["implied"], UNPRICED_FG, p["detail"])]}
-            for i, p in enumerate(data["pairs"])]
+        groups = [{"label": str(i + 1),
+                   "mark": bool(highlight)
+                   and p["key"] == highlight,
+                   "rods": [
+                       (p["model"], ACCENT, p["detail"]),
+                       (p["implied"], UNPRICED_FG, p["detail"])]}
+                  for i, p in enumerate(data["pairs"])]
         out.append(ft.Row(scroll=ft.ScrollMode.AUTO,
                           controls=[_bar_chart(groups, zoom,
                                                ACCENT,
                                                on_tap=on_tap)]))
-        out += _tap_chips(
-            [{"chip": f"{i + 1}. {p['label']}",
-              "detail": p["detail"]}
-             for i, p in enumerate(data["pairs"])], on_tap)
+        if on_point is not None:
+            out.append(ft.Row(spacing=6, wrap=True, controls=[
+                ft.TextButton(
+                    f"{i + 1}. {p['label']}",
+                    style=ft.ButtonStyle(color=ACCENT),
+                    on_click=lambda e, pt=p: on_point(pt))
+                for i, p in enumerate(data["pairs"])]))
+        else:
+            out += _tap_chips(
+                [{"chip": f"{i + 1}. {p['label']}",
+                  "detail": p["detail"]}
+                 for i, p in enumerate(data["pairs"])], on_tap)
     else:
         out.append(ft.Text("No priced markets on this pull — "
                            "nothing to compare against the "
                            "market's implied numbers.",
                            size=12, color=DIM))
+    # (d) edge landscape — the correlation surface: every priced
+    # market as a point in model x implied space (see below)
+    out += build_edge_landscape(entries, zoom=zoom,
+                                on_tap=on_tap, on_point=on_point)
     return out
+
+
+# ------------------------------------------------------------------
+# Xii panel (v12 panel update) — Coverage, Registry, Edge
+# Landscape, slip correlation and the full-screen viewer. All
+# builders are pure functions of the current pull / the fitted
+# registry, so the harness can drive them without a page; the
+# stage closures below only wire taps and state.
+
+
+_LEAGUE_TITLES = {"epl": "EPL", "nfl": "NFL", "ncaaf": "NCAAF",
+                  "nba": "NBA", "nhl": "NHL", "mlb": "MLB",
+                  "atp": "ATP", "wta": "WTA", "ufc": "UFC",
+                  "f1": "F1", "npc": "NPC", "bbl": "BBL",
+                  "wbbl": "WBBL", "ipl": "IPL"}
+
+
+def league_label(sport, league) -> str:
+    """Display name for one (sport, league) pair — the same name
+    on Coverage rows, Registry tiles and the Board filter."""
+    s = SPORT_LABELS.get(sport, (sport or "?").upper())
+    lg = str(league or "")
+    if not lg or lg == sport:
+        return s
+    name = _LEAGUE_TITLES.get(lg) or lg.replace("_", " ").title()
+    return f"{s} · {name}"
+
+
+def board_league_of(mkt: dict):
+    """The league a market belongs to, resolved exactly the way
+    the engine's coverage resolves it — so a Coverage row, its
+    count and the Board filter it opens can never disagree."""
+    sport = mkt.get("sport")
+    if sport == "cricket":
+        lane, _r = b5.cricket_lane_for(
+            b5.load_cricket(), mkt.get("competition"),
+            mkt.get("home"), mkt.get("away"))
+        return lane or "cricket"
+    if sport == "rugby-league":
+        return b5.rugby_league_lane(mkt.get("competition"),
+                                    mkt.get("home"),
+                                    mkt.get("away"))
+    if sport == "rugby-union":
+        return "npc"
+    if sport == "soccer":
+        _fit, key = b5.soccer_fit_for(mkt.get("home"),
+                                      mkt.get("away"))
+        if key:
+            return key
+        blob = b5.load_soccer_leagues()
+        hits = set()
+        for k, lg in (blob or {}).get("leagues", {}).items():
+            st = lg.get("strengths") or {}
+            if mkt.get("home") in st or mkt.get("away") in st:
+                hits.add(k)
+        if len(hits) == 1:
+            return hits.pop()
+        soc = b5.load_soccer()
+        if soc and (mkt.get("home") in soc["strengths"]
+                    or mkt.get("away") in soc["strengths"]):
+            return "epl"
+        return "unresolved"
+    return mkt.get("league") or sport or "?"
+
+
+def market_in_league(mkt: dict, sport, league) -> bool:
+    if mkt.get("sport") != sport:
+        return False
+    if not league or league == sport:
+        return True
+    return board_league_of(mkt) == league
+
+
+def coverage_rows(markets) -> list:
+    """universal_coverage cells aggregated to (sport, league)
+    rows with a priced share — the Coverage graph's data."""
+    cells = b5.universal_coverage(markets or [])
+    agg, order = {}, []
+    for c in cells:
+        key = (c.get("sport") or "?", c.get("league") or "?")
+        row = agg.get(key)
+        if row is None:
+            row = agg[key] = {
+                "sport": key[0], "league": key[1],
+                "label": league_label(*key), "markets": 0,
+                "priced": 0, "unpriced": 0, "missing": [],
+                "not_pulled": False}
+            order.append(key)
+        row["markets"] += c.get("markets", 0) or 0
+        row["priced"] += c.get("priced_capable", 0) or 0
+        row["unpriced"] += c.get("unpriced", 0) or 0
+        if c.get("not_pulled"):
+            row["not_pulled"] = True
+        for txt in c.get("missing") or []:
+            p = plain_note(txt)
+            if p and p not in row["missing"]:
+                row["missing"].append(p)
+    rows = [agg[k] for k in order]
+    for r in rows:
+        r["share"] = (r["priced"] / r["markets"]) \
+            if r["markets"] else 0.0
+    rows.sort(key=lambda r: (-r["markets"], r["label"]))
+    return rows
+
+
+def build_coverage_section(markets, on_league=None, stamp="",
+                           stale=False, on_expand=None) -> list:
+    """Priced share per league on the current pull — native
+    container bars like the Xii Charts, one tappable row per
+    league. The header carries the pull stamp + stale state."""
+    out = [section_header("Coverage — priced share by league",
+                          ACCENT),
+           ft.Text("Every league on this pull, and how much of "
+                   "it the model prices. The rest is never "
+                   "silent — each unpriced cell names what is "
+                   "missing. Tap a league to open its markets "
+                   "on the Board.", size=11, color=DIM,
+                   height=1.3)]
+    if stamp:
+        out.append(ft.Text(stamp, size=11,
+                           color=GOLD if stale else FAINT,
+                           height=1.3))
+    if on_expand is not None:
+        out.append(ft.Row(spacing=6, controls=[
+            secondary_button("Full screen",
+                             lambda e: on_expand())]))
+    if not markets:
+        out.append(ft.Text(
+            "No pull yet — pull the menu and coverage builds "
+            "from it. Nothing is drawn from nothing.",
+            size=12, color=DIM, height=1.35))
+        return out
+    for r in coverage_rows(markets):
+        pct = r["share"] * 100
+        body = [ft.Row(spacing=8, wrap=True, controls=[
+            ft.Text(r["label"], size=12, color=INK,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text(f"{r['priced']}/{r['markets']} priced · "
+                    f"{pct:.0f}%", size=11, color=DIM,
+                    font_family=NUM_FONT)]),
+            ft.Container(width=240, height=10, bgcolor=BORDER,
+                         border_radius=5, content=ft.Container(
+                             width=max(4.0, 240 * r["share"]),
+                             height=10, bgcolor=EDGE_POS,
+                             border_radius=5))]
+        if r["not_pulled"]:
+            body.append(ft.Text(
+                "Not on the board yet — this league is in the "
+                "registry but no pull has carried its markets.",
+                size=10, color=FAINT, height=1.3))
+        for miss in r["missing"][:2]:
+            body.append(ft.Text(miss, size=10, color=FAINT,
+                                height=1.3))
+        out.append(ft.Container(
+            bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+            border_radius=10, padding=10, margin=ft.Margin(
+                left=0, top=0, right=0, bottom=6),
+            tooltip=f"Open {r['label']} on the Board",
+            on_click=(lambda e, s=r["sport"], l=r["league"]:
+                      on_league(s, l))
+            if on_league is not None else None,
+            content=ft.Column(spacing=5, controls=body)))
+    return out
+
+
+def _backtest_headline(bt) -> str:
+    """One honest line from a registry backtest block — Brier
+    vs its naive baseline when the block carries one; never an
+    invented comparison."""
+    if not isinstance(bt, dict) or not bt:
+        return ("No backtest block on file — reported as "
+                "none, never filled in.")
+    n = bt.get("n")
+    tail = f" · n={n:,}" if isinstance(n, int) else ""
+    if bt.get("brier3") is not None:
+        return (f"Walk-forward 3-way Brier "
+                f"{bt['brier3']:.4f}{tail}")
+    if bt.get("brier") is not None:
+        naive = bt.get("naive_brier",
+                       bt.get("naive_home_brier"))
+        if naive is not None:
+            return (f"Walk-forward Brier {bt['brier']:.4f} "
+                    f"vs naive {naive:.4f}{tail}")
+        return f"Walk-forward Brier {bt['brier']:.4f}{tail}"
+    if bt.get("log_loss") is not None:
+        naive = bt.get("naive_log_loss")
+        if naive is not None:
+            return (f"Walk-forward log loss "
+                    f"{bt['log_loss']:.4f} vs naive "
+                    f"{naive:.4f}{tail}")
+        return f"Walk-forward log loss {bt['log_loss']:.4f}{tail}"
+    return "Backtest on file (walk-forward)"
+
+
+def registry_tiles() -> list:
+    """One tile per fitted league in the universal registry —
+    kind, teams covered, backtest headline, and a status in the
+    unified vocabulary (priced / benched / named gap)."""
+    tiles = []
+    for e in b5.universal_registry():
+        vals = [str(v) for v in (e.get("bet_types") or {})
+                .values()]
+        priced = any(v.startswith("PRICED-capable")
+                     for v in vals)
+        failed = any("FAILED-EXAM" in v for v in vals)
+        if priced and failed:
+            status = ("Priced in part — the rest is benched "
+                      "or named on Coverage")
+        elif priced:
+            status = "Priced — markets price off this fit"
+        elif failed:
+            status = ("Benched — failed its backtest; it does "
+                      "not price")
+        else:
+            status = "Unpriced — named gap (see Coverage)"
+        tiles.append({
+            "sport": e.get("sport"), "league": e.get("league"),
+            "label": league_label(e.get("sport"),
+                                  e.get("league")),
+            "kind": e.get("kind") or "",
+            "covered": e.get("covered"),
+            "backtest_text": _backtest_headline(
+                e.get("backtest")),
+            "status": status,
+            "gaps": [plain_note(v) for v in vals
+                     if v.startswith("UNPRICED")][:2]})
+    return tiles
+
+
+def build_registry_section(on_league=None, stamp="") -> list:
+    """The Registry map: every fitted league as a tile. Tap a
+    tile to open that league on the Board."""
+    out = [section_header("Registry — every fitted league",
+                          ACCENT),
+           ft.Text("The fits behind the prices: what kind of "
+                   "model each league runs on, how many teams "
+                   "it covers, and its walk-forward backtest "
+                   "against the naive baseline where one is on "
+                   "file. Tap a tile to open the league on the "
+                   "Board.", size=11, color=DIM, height=1.3)]
+    if stamp:
+        out.append(ft.Text(stamp, size=11, color=FAINT,
+                           height=1.3))
+    for t in registry_tiles():
+        body = [ft.Text(t["label"], size=13, color=INK,
+                        weight=ft.FontWeight.BOLD),
+                ft.Text(f"Fit: {t['kind'] or '—'} · teams "
+                        f"covered: {t['covered']}",
+                        size=11, color=DIM, height=1.3),
+                ft.Text(t["backtest_text"], size=11, color=DIM,
+                        height=1.3),
+                ft.Text(t["status"], size=11, color=ACCENT,
+                        height=1.3)]
+        for g in t["gaps"]:
+            body.append(ft.Text(g, size=10, color=FAINT,
+                                height=1.3))
+        out.append(ft.Container(
+            bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+            border_radius=10, padding=10, margin=ft.Margin(
+                left=0, top=0, right=0, bottom=6),
+            tooltip=f"Open {t['label']} on the Board",
+            on_click=(lambda e, s=t["sport"], l=t["league"]:
+                      on_league(s, l))
+            if on_league is not None else None,
+            content=ft.Column(spacing=3, controls=body)))
+    return out
+
+
+EDGE_LANDSCAPE_CAP = 60
+
+
+def edge_landscape_data(entries, cap=EDGE_LANDSCAPE_CAP) -> dict:
+    """Priced markets as points in model x implied space,
+    largest |edge| first, capped for the on-device budget —
+    the cap is stated, never silent."""
+    pts = []
+    for m, v, e in entries or []:
+        if v.get("state") != "PRICED" or e is None \
+                or m.get("price") is None or v.get("p") is None:
+            continue
+        nm = bet_name(m, v)
+        model = v["p"] * 100
+        implied = b5.implied_prob(m["price"]) * 100
+        where = ("above" if e > 0.05 else "below"
+                 if e < -0.05 else "on")
+        pts.append({
+            "key": chart_market_key(m), "label": nm["selection"],
+            "sport": m.get("sport"), "home": m.get("home"),
+            "away": m.get("away"), "model": model,
+            "implied": implied, "edge": e,
+            "grade": v.get("grade"),
+            "detail": (f"{nm['selection']} · {nm['market']} · "
+                       f"model {model:.1f}% vs implied "
+                       f"{implied:.1f}% at {int(m['price']):+d} "
+                       f"· edge {e:+.1f} pts — {where} the value "
+                       f"diagonal (model = implied)")})
+    pts.sort(key=lambda p: -abs(p["edge"]))
+    return {"points": pts[:cap], "total": len(pts),
+            "capped": len(pts) > cap, "cap": cap}
+
+
+def build_edge_landscape(entries, zoom: float = 1.0, on_tap=None,
+                         on_point=None) -> list:
+    """The Edge Landscape: one point per priced market, x =
+    the market's implied probability, y = the model's. Points
+    above the dotted diagonal are where the model sees more
+    than the price implies — the correlation a flat list
+    hides. Native containers in a Stack; tap a point (or its
+    numbered chip) for the market."""
+    out = [ft.Text("EDGE LANDSCAPE — model probability against "
+                   "the market's implied probability", size=12,
+                   color=INK, weight=ft.FontWeight.BOLD),
+           ft.Text("One point per priced market. Above the "
+                   "dotted diagonal the model rates the side "
+                   "better than its price does; below it, worse. "
+                   "Point size grows with |edge|. Tap a point "
+                   "for its market.", size=11, color=DIM,
+                   height=1.3)]
+    data = edge_landscape_data(entries)
+    if not data["points"]:
+        out.append(ft.Text("No priced markets on this pull — "
+                           "no landscape to draw.", size=12,
+                           color=DIM))
+        return out
+    W, H = 330 * zoom, 230 * zoom
+    dots = [ft.Container(width=W, height=H,
+                         bgcolor=PANEL_RAISED_C,
+                         border=_border_all(1, HAIRLINE),
+                         border_radius=8)]
+    for i in range(21):
+        x = i / 20
+        dots.append(ft.Container(
+            width=3, height=3, bgcolor=FAINT, border_radius=1.5,
+            left=x * W - 1, top=(1 - x) * H - 1))
+    for p in data["points"]:
+        size = 8 + min(6.0, abs(p["edge"]))
+        color = EDGE_POS if p["edge"] > 0.5 else EDGE_NEG \
+            if p["edge"] < -0.5 else ACCENT
+        dots.append(ft.Container(
+            width=size, height=size, border_radius=size / 2,
+            bgcolor=color, tooltip=p["label"],
+            left=p["implied"] / 100 * W - size / 2,
+            top=(1 - p["model"] / 100) * H - size / 2,
+            on_click=(lambda e, pt=p: on_point(pt))
+            if on_point is not None else
+            (lambda e, d=p["detail"]: on_tap(d))
+            if on_tap is not None else None))
+    out.append(ft.Row(scroll=ft.ScrollMode.AUTO, controls=[
+        ft.Stack(width=W, height=H, controls=dots)]))
+    out.append(ft.Row(spacing=8, controls=[
+        ft.Text("model ↑", size=10, color=FAINT),
+        ft.Container(expand=True),
+        ft.Text("implied →  0% … 100%", size=10, color=FAINT)]))
+    if data["capped"]:
+        out.append(ft.Text(
+            f"Showing the {data['cap']} largest |edge| of "
+            f"{data['total']} priced markets (on-device budget "
+            f"— the Board carries them all).", size=10,
+            color=FAINT, height=1.3))
+    if on_point is not None or on_tap is not None:
+        out.append(ft.Row(spacing=6, wrap=True, controls=[
+            ft.TextButton(
+                f"{i + 1}. {p['label']}",
+                style=ft.ButtonStyle(color=ACCENT),
+                on_click=(lambda e, pt=p: on_point(pt))
+                if on_point is not None else
+                (lambda e, d=p["detail"]: on_tap(d)))
+            for i, p in enumerate(data["points"])]))
+    return out
+
+
+def slip_correlation(legs) -> dict:
+    """Group a Protected Slip's legs by what they share: the
+    same game first, then a shared team, then the same league.
+    What shares nothing stands alone — real diversification."""
+    legs = list(legs or [])
+
+    def label(m):
+        return bet_name(m)["selection"]
+
+    clusters, used = [], set()
+    by_game = {}
+    for m in legs:
+        by_game.setdefault((m.get("sport"), m.get("home"),
+                            m.get("away")), []).append(m)
+    for _g, ms in by_game.items():
+        if len(ms) >= 2:
+            clusters.append({
+                "kind": "same game",
+                "title": f"Same game — {ms[0].get('away')} at "
+                         f"{ms[0].get('home')}",
+                "legs": [label(m) for m in ms]})
+            used.update(id(m) for m in ms)
+    rest = [m for m in legs if id(m) not in used]
+    by_team = {}
+    for m in rest:
+        for t in {m.get("home"), m.get("away")}:
+            if t:
+                by_team.setdefault((m.get("sport"), t),
+                                   []).append(m)
+    used2 = set()
+    for (_s, t), ms in by_team.items():
+        ms = [m for m in ms if id(m) not in used2]
+        if len(ms) >= 2:
+            clusters.append({"kind": "shared team",
+                             "title": f"Shared team — {t}",
+                             "legs": [label(m) for m in ms]})
+            used2.update(id(m) for m in ms)
+    singles = []
+    by_sport = {}
+    for m in rest:
+        if id(m) not in used2:
+            by_sport.setdefault(m.get("sport"), []).append(m)
+    for s, ms in by_sport.items():
+        if len(ms) >= 2:
+            clusters.append({
+                "kind": "same league",
+                "title": f"Same league — "
+                         f"{SPORT_LABELS.get(s, (s or '?').upper())}",
+                "legs": [label(m) for m in ms]})
+        else:
+            singles += [label(m) for m in ms]
+    return {"clusters": clusters, "singles": singles,
+            "n_legs": len(legs),
+            "n_clustered": sum(len(c["legs"])
+                               for c in clusters)}
+
+
+_SLIP_CLUSTER_NOTES = {
+    "same game": ("Legs that share a game are one bet in "
+                  "costumes — a single game can sink every leg "
+                  "in this group at once."),
+    "shared team": ("The same team carries more than one leg "
+                    "— its day decides all of them together."),
+    "same league": ("Same league — one slate, one set of "
+                    "conditions; results can move together.")}
+
+
+def build_slip_correlation(cands) -> list:
+    """The Protected Slip's correlation view: clustered legs
+    as proximity groups with the warning in plain words, and
+    the legs that share nothing named as the diversification."""
+    legs = [m for m, _v in cands or []]
+    out = [section_header(
+        "Protected Slip — how the legs hold together", ACCENT),
+        ft.Text("Legs that share a game, a team or a league "
+                "rise and fall together — correlation the flat "
+                "slip list hides. Spread legs are the "
+                "diversification.", size=11, color=DIM,
+                height=1.3)]
+    if not legs:
+        return out
+    corr = slip_correlation(legs)
+    if corr["n_legs"] < 2:
+        out.append(ft.Text("One leg — no correlation to draw.",
+                           size=12, color=DIM))
+        return out
+    for c in corr["clusters"]:
+        out.append(ft.Container(
+            bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+            border_radius=10, padding=10, margin=ft.Margin(
+                left=0, top=0, right=0, bottom=6),
+            content=ft.Column(spacing=3, controls=[
+                ft.Text(c["title"], size=12, color=INK,
+                        weight=ft.FontWeight.BOLD),
+                ft.Text(" · ".join(c["legs"]), size=11,
+                        color=DIM, height=1.3),
+                ft.Text(_SLIP_CLUSTER_NOTES[c["kind"]],
+                        size=11, color=WARN, height=1.3)])))
+    if corr["singles"]:
+        out.append(ft.Text(
+            "Standing alone — real diversification: "
+            + ", ".join(corr["singles"]), size=11, color=DIM,
+            height=1.3))
+    if not corr["clusters"]:
+        out.append(ft.Text(
+            "No two legs share a game, a team or a league — "
+            "this slip is spread as wide as this pull allows.",
+            size=12, color=DIM, height=1.35))
+    return out
+
+
+def viewer_zoom_clamp(z) -> float:
+    """The full-screen viewer's zoom law: 1x to 6x, always."""
+    try:
+        z = float(z)
+    except (TypeError, ValueError):
+        return 1.0
+    return min(6.0, max(1.0, z))
+
+
+def build_viewer_sheet(title, stamp, zoom, body, on_zoom=None,
+                       on_close=None, detail="") -> ft.Container:
+    """The full-screen graph viewer: a sheet whose plotting
+    area sits in an InteractiveViewer (native pinch + pan on
+    Flet 1.0.4) with button zoom rebuilding the body at the
+    shell zoom factor — buttons and pinch agree through the
+    same clamp. The detail line is the crosshair readout."""
+    controls = [ft.Row(spacing=8, wrap=True,
+                       vertical_alignment=
+                       ft.CrossAxisAlignment.CENTER, controls=[
+                           ft.Text(title, size=14, color=INK,
+                                   weight=ft.FontWeight.BOLD),
+                           ft.Text(stamp, size=11, color=FAINT),
+                           ft.IconButton(
+                               ft.Icons.CLOSE,
+                               icon_color=DIM,
+                               tooltip="Close the viewer",
+                               on_click=on_close)])]
+    if on_zoom is not None:
+        controls.append(ft.Row(spacing=6, controls=[
+            secondary_button("− Zoom",
+                             lambda e: on_zoom(1 / 1.25)),
+            secondary_button("Reset",
+                             lambda e: on_zoom(0)),
+            secondary_button("+ Zoom",
+                             lambda e: on_zoom(1.25)),
+            ft.Text(f"zoom ×{zoom:.2f}", size=11, color=FAINT,
+                    font_family=NUM_FONT)]))
+    if detail:
+        controls.append(ft.Text(detail, size=12, color=INK,
+                                height=1.35))
+    controls.append(ft.InteractiveViewer(
+        content=ft.Column(spacing=8, controls=list(body)),
+        min_scale=1.0, max_scale=6.0, pan_enabled=True,
+        scale_enabled=True, height=520))
+    return ft.Container(
+        bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+        border_radius=12, padding=12, margin=8,
+        content=ft.Column(spacing=8, controls=controls))
 
 
 # ------------------------------------------------------------------
@@ -2397,7 +3086,16 @@ def main(page: ft.Page):
              "toggles_for": None, "bankroll": "",
              "chart_zoom": 1.0, "chart_detail": "",
              "pull_busy": False, "last_pull_at": 0.0,
-             "protected_confirm": False}
+             "protected_confirm": False,
+             # Xii panel state (v12 panel update): the active
+             # segment, the highlighted market, the pending
+             # "show on Board" point, the Board league filter,
+             # the one-level return, and the full-screen viewer
+             # — segment, zoom and detail all survive pulls.
+             "panel_segment": "charts", "chart_highlight": "",
+             "chart_board": None, "league_filter": None,
+             "nav_return": None, "viewer_kind": None,
+             "viewer_zoom": 1.0, "viewer_detail": ""}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM)
@@ -2628,6 +3326,10 @@ def main(page: ft.Page):
                 continue
             if not t["sports"].get(m.get("sport"), True):
                 continue
+            lf = state.get("league_filter")
+            if lf and not market_in_league(
+                    m, lf.get("sport"), lf.get("league")):
+                continue
             if t.get("quick_only") and not is_quick(m, _anchor()):
                 continue
             if not search_hit(m, state.get("search") or ""):
@@ -2737,6 +3439,27 @@ def main(page: ft.Page):
             cards_count.value = f"{len(shown)} of {len(entries)} markets"
         else:
             cards_count.value = f"{len(entries)} markets"
+        if state.get("league_filter"):
+            # arrived from the 3D panel (Coverage / Registry):
+            # the filter is named, and one tap returns
+            lf = state["league_filter"]
+            cards_list.controls.append(ft.Row(
+                spacing=8, wrap=True,
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[
+                    ft.Icon(ft.Icons.FILTER_ALT, size=16,
+                            color=ACCENT),
+                    ft.Text(f"League: {lf['label']} — "
+                            f"{len(shown)} markets on this pull",
+                            size=12, color=INK,
+                            weight=ft.FontWeight.BOLD),
+                    ft.TextButton(
+                        "Back to 3D panel",
+                        on_click=lambda _e: nav_back()),
+                    ft.TextButton(
+                        "Clear filter",
+                        on_click=lambda _e:
+                        clear_league_filter())]))
         markets = rec.get("markets", [])
         quotes = game_quotes(markets)
         ctx = lane_contexts(markets)
@@ -2762,7 +3485,7 @@ def main(page: ft.Page):
                     sport_header(last_sport, n_sport))
             cards_list.controls.append(build_market_card(
                 mkt, verdict, rec, quotes, edge_pts=edge,
-                lane_ctx=ctx))
+                lane_ctx=ctx, on_chart=_card_chart))
         if not shown:
             cards_list.controls.append(empty_inline(
                 ft.Icons.SEARCH_OFF, "No markets pass the toggles",
@@ -2773,7 +3496,7 @@ def main(page: ft.Page):
                 on_click=on_show_more))
             cards_list.controls.append(ft.Text(
                 "Paging is display only — every market was priced "
-                "by the same checker pass.", size=10, color=FAINT))
+                "by the same pricing pass.", size=10, color=FAINT))
         if state.pop("animate_next", False):
             _animate_cards(cards_list.controls)
         stop_pulse("shimmer")   # real content landed (artist
@@ -3052,7 +3775,8 @@ def main(page: ft.Page):
             parse_result.controls.append(build_market_card(
                 mkt, verdict, rec, game_quotes(markets),
                 edge_pts=market_edge_pts(mkt, verdict),
-                lane_ctx=lane_contexts(markets)))
+                lane_ctx=lane_contexts(markets),
+                on_chart=_card_chart))
             parse_result.controls.append(_kelly_block(
                 verdict.get("p"), mkt.get("price"),
                 lane=market_lane(mkt),
@@ -3161,7 +3885,7 @@ def main(page: ft.Page):
                     warnings.append(f"{nm['selection']}: {reason}")
             if v.get("note"):
                 warnings.append(
-                    f"{nm['selection']}: {v['note']}")
+                    f"{nm['selection']}: {plain_note(v['note'])}")
             gkey = (m.get("sport"), m.get("home"), m.get("away"))
             if gkey in seen_games:
                 warnings.append(
@@ -3794,7 +4518,7 @@ def main(page: ft.Page):
         for mkt, verdict, edge in golden:
             betfi_view.controls.append(build_market_card(
                 mkt, verdict, rec, quotes, edge_pts=edge,
-                lane_ctx=ctx))
+                lane_ctx=ctx, on_chart=_card_chart))
         betfi_view.controls.append(section_header(
             f"FINDS — verdict ladder, then edge ({len(finds)})",
             ACCENT))
@@ -3808,7 +4532,7 @@ def main(page: ft.Page):
                 finds[:CARD_PAGE], start=1):
             betfi_view.controls.append(build_market_card(
                 mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
-                lane_ctx=ctx))
+                lane_ctx=ctx, on_chart=_card_chart))
         if len(finds) > CARD_PAGE:
             betfi_view.controls.append(ft.Text(
                 f"+{len(finds) - CARD_PAGE} more finds past the "
@@ -3822,7 +4546,7 @@ def main(page: ft.Page):
             for mkt, verdict, edge in flagged:
                 betfi_view.controls.append(build_market_card(
                     mkt, verdict, rec, quotes, edge_pts=edge,
-                    lane_ctx=ctx))
+                    lane_ctx=ctx, on_chart=_card_chart))
         counter_lines = []
         for _m, v, e in counter:
             _nm = bet_name(_m, v)
@@ -4128,7 +4852,7 @@ def main(page: ft.Page):
             record_view.controls.append(ft.Text(
                 "CLV grades the price you got against the "
                 "close — it feeds no grade, verdict or tag "
-                "(engine v5.3, display only).", size=11,
+                f"(engine v{b5.ENGINE_VERSION}, display only).", size=11,
                 color=FAINT, height=1.35))
         record_view.controls.append(ft.Divider(color=BORDER))
         record_view.controls.append(section_header(
@@ -4646,45 +5370,302 @@ def main(page: ft.Page):
                 6.0, max(0.5, state["chart_zoom"] * factor))
         render_stage()
 
-    def render_stage():
-        stage_view.controls = [screen_title(
-            "Instruments",
-            "Xii Charts from the live pull, above the lab's "
-            "snapshot instruments — each labelled as what it is.")]
-        # Xii Charts (v12): built from the CURRENT pull's
-        # verdicts, rebuilt here on every render — and render_
-        # stage is called after every successful pull, so an
-        # open chart view re-renders on the new pull in place.
-        _entries = []
-        if state["slate"]:
-            _vs = ensure_verdicts() or []
-            _entries = [(m, v, market_edge_pts(m, v))
-                        for m, v in zip(
-                            state["slate"].get("markets", []), _vs)]
-        stage_view.controls += build_xii_charts(
-            _entries, zoom=state["chart_zoom"],
-            on_tap=_chart_tap, on_zoom=_chart_zoom,
-            detail=state["chart_detail"])
-        stage_view.controls.append(ft.Divider(color=HAIRLINE))
-        stage_view.controls.append(section_header(
+    # ---- Xii panel: four segments, one switcher (v12) ----
+    # Charts | Coverage | Instruments | Registry — only the
+    # active segment is built per render, and the segment, the
+    # chart zoom and the tapped detail all live in state, so a
+    # pull re-renders the open segment in place with them kept.
+
+    panel_charts_col = ft.Column(spacing=8)
+    panel_coverage_col = ft.Column(spacing=8)
+    panel_instruments_col = ft.Column(spacing=8)
+    panel_registry_col = ft.Column(spacing=8)
+    _PANEL_COLS = {"charts": panel_charts_col,
+                   "coverage": panel_coverage_col,
+                   "instruments": panel_instruments_col,
+                   "registry": panel_registry_col}
+    panel_switcher = _switcher(panel_charts_col)
+
+    def show_panel_segment(seg: str):
+        state["panel_segment"] = seg
+        panel_seg_ctrl.selected = [seg]
+        render_stage()
+
+    def on_panel_seg(e):
+        sel = e.control.selected or []
+        show_panel_segment(next(iter(sel)) if sel else "charts")
+
+    panel_seg_ctrl = _segmented(
+        [("charts", "Charts"), ("coverage", "Coverage"),
+         ("instruments", "Instruments"), ("registry", "Registry")],
+        "charts", on_panel_seg)
+
+    def _panel_entries():
+        if not state["slate"]:
+            return []
+        _vs = ensure_verdicts() or []
+        return [(m, v, market_edge_pts(m, v))
+                for m, v in zip(state["slate"].get("markets", []),
+                                _vs)]
+
+    def _pull_stamp_line():
+        rec = state["slate"] or {}
+        text, _deg = stamp_of(state["slate"])
+        pulled = rec.get("pulled_at") or "no pull yet"
+        return f"Pull: {pulled} · {text}"
+
+    def _chart_point(point):
+        # a tapped landscape point / pairs chip: the detail line
+        # names the market, and the pending Board jump is armed
+        state["chart_detail"] = point["detail"]
+        state["chart_board"] = point
+        render_stage()
+
+    def _card_chart(mkt):
+        # card depth -> Charts: highlight this market's bar in
+        # the model-vs-implied chart when it is in the top 40,
+        # and say so honestly when it is not
+        data = xii_chart_data(_panel_entries())
+        key = chart_market_key(mkt)
+        hit = next((p for p in data["pairs"]
+                    if p["key"] == key), None)
+        if hit is not None:
+            state["chart_highlight"] = key
+            state["chart_detail"] = hit["detail"]
+            state["chart_board"] = hit
+        else:
+            state["chart_highlight"] = ""
+            nm = bet_name(mkt)
+            state["chart_detail"] = (
+                f"{nm['selection']} · {nm['market']} — no bar to "
+                f"highlight: the model-vs-implied chart draws "
+                f"this pull's top 40 priced markets by edge, "
+                f"and this market is not in it.")
+            state["chart_board"] = None
+        state["panel_segment"] = "charts"
+        show("stage")
+
+    # ---- cross-navigation (panel <-> Board, one level) ----
+
+    def cross_nav_league(sport, league):
+        state["nav_return"] = {
+            "view": "stage",
+            "segment": state.get("panel_segment") or "charts"}
+        mkts = (state["slate"] or {}).get("markets", [])
+        eff = league
+        if league != sport and not any(
+                m.get("sport") == sport
+                and board_league_of(m) == league for m in mkts):
+            # the fitted league key does not occur on this
+            # pull (e.g. a season-named fit) — fall back to the
+            # whole sport lane; the banner names the league
+            # either way, and the count says what matched
+            eff = sport
+        state["league_filter"] = {
+            "sport": sport, "league": eff,
+            "label": league_label(sport, league)}
+        t = state["toggles"]
+        present = {m.get("sport") for m in mkts}
+        if sport in present:
+            for s in list(t["sports"]):
+                t["sports"][s] = (s == sport)
+            t["sports"][sport] = True
+        state["search"] = ""
+        search_field.value = ""
+        state["toggles_for"] = None
+        state["card_limit"] = CARD_PAGE
+        state["board_seg"] = "all"
+        board_seg_ctrl.selected = ["all"]
+        show("board")
+
+    def cross_nav_market(point):
+        state["nav_return"] = {"view": "stage",
+                               "segment": "charts"}
+        state["league_filter"] = None
+        q = " ".join(x for x in (point.get("home"),
+                                 point.get("away")) if x)
+        state["search"] = q
+        search_field.value = q
+        t = state["toggles"]
+        mkts = (state["slate"] or {}).get("markets", [])
+        present = {m.get("sport") for m in mkts}
+        if point.get("sport") in present:
+            for s in list(t["sports"]):
+                t["sports"][s] = (s == point.get("sport"))
+        state["toggles_for"] = None
+        state["card_limit"] = CARD_PAGE
+        state["board_seg"] = "all"
+        board_seg_ctrl.selected = ["all"]
+        state["chart_board"] = None
+        show("board")
+
+    def nav_back():
+        ret = state.pop("nav_return", None) or {}
+        state["league_filter"] = None
+        state["search"] = ""
+        search_field.value = ""
+        for s in list(state["toggles"]["sports"]):
+            state["toggles"]["sports"][s] = True
+        state["toggles_for"] = None
+        if ret.get("view") == "stage":
+            state["panel_segment"] = ret.get("segment") \
+                or "charts"
+            show("stage")
+        else:
+            show(ret.get("view") or "stage")
+
+    def clear_league_filter():
+        state["league_filter"] = None
+        state["nav_return"] = None
+        for s in list(state["toggles"]["sports"]):
+            state["toggles"]["sports"][s] = True
+        state["toggles_for"] = None
+        render_cards()
+
+    # ---- full-screen graph viewer ----
+    # The sheet lives on page.overlay; its plotting area is an
+    # InteractiveViewer (native pinch + pan in Flet 1.0.4) and
+    # the zoom buttons rebuild the body at the shell factor —
+    # both routes pass through viewer_zoom_clamp, so pinch and
+    # buttons can never leave [1, 6].
+
+    _viewer = {"ctrl": None}
+
+    def _viewer_tap(detail):
+        state["viewer_detail"] = detail
+        _refresh_viewer()
+
+    def _viewer_zoom(factor):
+        if factor == 0:
+            state["viewer_zoom"] = 1.0
+        else:
+            state["viewer_zoom"] = viewer_zoom_clamp(
+                state["viewer_zoom"] * factor)
+        _refresh_viewer()
+
+    def _viewer_body(kind):
+        entries = _panel_entries()
+        if kind == "coverage":
+            rec = state["slate"] or {}
+            _txt, deg = stamp_of(state["slate"])
+            return build_coverage_section(
+                rec.get("markets", []), stamp=_pull_stamp_line(),
+                stale=bool(deg and rec))
+        if kind == "landscape":
+            return build_edge_landscape(
+                entries, zoom=state["viewer_zoom"],
+                on_tap=_viewer_tap)
+        return build_xii_charts(
+            entries, zoom=state["viewer_zoom"], on_tap=_viewer_tap,
+            detail=state["viewer_detail"],
+            highlight=state["chart_highlight"])
+
+    def _refresh_viewer():
+        kind = state.get("viewer_kind")
+        ov = getattr(page, "overlay", None)
+        if kind is None or ov is None:
+            return
+        title = {"charts": "Xii Charts — full screen",
+                 "coverage": "Coverage — full screen",
+                 "landscape": "Edge Landscape — full screen"}[kind]
+        sheet = build_viewer_sheet(
+            title, _pull_stamp_line(), state["viewer_zoom"],
+            _viewer_body(kind), on_zoom=_viewer_zoom,
+            on_close=lambda e: close_viewer(),
+            detail=state["viewer_detail"]
+            if kind == "landscape" else "")
+        if _viewer["ctrl"] is not None and _viewer["ctrl"] in ov:
+            ov[ov.index(_viewer["ctrl"])] = sheet
+        else:
+            ov.append(sheet)
+        _viewer["ctrl"] = sheet
+        page.update()
+
+    def open_viewer(kind):
+        state["viewer_kind"] = kind
+        state["viewer_zoom"] = 1.0
+        state["viewer_detail"] = ""
+        _refresh_viewer()
+
+    def close_viewer():
+        state["viewer_kind"] = None
+        ov = getattr(page, "overlay", None)
+        if ov is not None and _viewer["ctrl"] in ov:
+            ov.remove(_viewer["ctrl"])
+        _viewer["ctrl"] = None
+        page.update()
+
+    # ---- the four segment renderers ----
+
+    def render_panel_charts(col):
+        col.controls = []
+        col.controls.append(ft.Row(spacing=6, wrap=True, controls=[
+            secondary_button(
+                "Full screen — charts",
+                lambda _e: open_viewer("charts")),
+            secondary_button(
+                "Full screen — edge landscape",
+                lambda _e: open_viewer("landscape"))]))
+        entries = _panel_entries()
+        col.controls += build_xii_charts(
+            entries, zoom=state["chart_zoom"], on_tap=_chart_tap,
+            on_zoom=_chart_zoom, detail=state["chart_detail"],
+            on_point=_chart_point,
+            highlight=state["chart_highlight"])
+        if state.get("chart_board"):
+            p = state["chart_board"]
+            col.controls.append(ft.Row(
+                spacing=8, wrap=True,
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[
+                    ft.Text(f"Selected: {p['label']}", size=12,
+                            color=INK),
+                    primary_button(
+                        "Show on Board",
+                        lambda _e: cross_nav_market(p))]))
+        cands = protected_candidates()
+        if cands:
+            col.controls.append(ft.Divider(color=HAIRLINE))
+            col.controls += build_slip_correlation(cands)
+
+    def render_panel_coverage(col):
+        col.controls = []
+        rec = state["slate"] or {}
+        _txt, deg = stamp_of(state["slate"])
+        col.controls += build_coverage_section(
+            rec.get("markets", []),
+            on_league=lambda s, l: cross_nav_league(s, l),
+            stamp=_pull_stamp_line(), stale=bool(deg and rec),
+            on_expand=lambda: open_viewer("coverage"))
+
+    def render_panel_registry(col):
+        col.controls = build_registry_section(
+            on_league=lambda s, l: cross_nav_league(s, l),
+            stamp=_pull_stamp_line())
+
+    def render_panel_instruments(col):
+        col.controls = []
+        col.controls.append(section_header(
             "SNAPSHOT INSTRUMENTS — OPEN IN BROWSER", ACCENT))
-        stage_view.controls.append(ft.Text(
+        col.controls.append(ft.Text(
+            f"Current pull: {_pull_stamp_line()}", size=11,
+            color=FAINT, height=1.3))
+        col.controls.append(ft.Text(
             "The lab's instruments below are SNAPSHOTS (each "
             "carries its label) and open full-screen via the "
             "browser route — they are not live charts and never "
             "pretend to be.", size=11, color=DIM, height=1.3))
         n, _total = instruments_bundled()
         if n == 0:
-            stage_view.controls.append(empty_full(
+            col.controls.append(empty_full(
                 ft.Icons.VIEW_IN_AR,
                 "Instruments not bundled in this edition",
                 "This build shipped without the instruments "
                 "folder, so the shelf prints its state instead "
                 "of a dead list. The full BetFi Xii build "
                 "carries all 11."))
-            page.update()
             return
-        stage_view.controls.append(stage_status)
+        col.controls.append(stage_status)
         try:
             # lazy warm-up: the loopback server starts on a
             # worker thread the first time the shelf opens, so
@@ -4699,10 +5680,10 @@ def main(page: ft.Page):
                            INSTRUMENTS_DIR, i["file"]))]
             if not members:
                 continue
-            stage_view.controls.append(section_header(
+            col.controls.append(section_header(
                 family.upper(), ACCENT))
             for inst in members:
-                stage_view.controls.append(ft.Container(
+                col.controls.append(ft.Container(
                     bgcolor=CARD_BG, border_radius=10, padding=10,
                     content=ft.Column(spacing=4, controls=[
                         ft.Row(
@@ -4721,9 +5702,28 @@ def main(page: ft.Page):
                         ft.Text(inst["chip"], size=10,
                                 color=FAINT)])))
             if family == "Stocks":
-                stage_view.controls.append(ft.Text(
+                col.controls.append(ft.Text(
                     STOCKS_SAMPLE_NOTE, size=10, color=FAINT,
                     height=1.35))
+
+    def render_stage():
+        seg = state.get("panel_segment") or "charts"
+        if seg not in _PANEL_COLS:
+            seg = "charts"
+        state["panel_segment"] = seg
+        panel_seg_ctrl.selected = [seg]
+        stage_view.controls = [screen_title(
+            "Instruments",
+            "One panel, four views of the same pull and the "
+            "same fits: live charts, priced coverage, the "
+            "snapshot instruments and the registry map."),
+            panel_seg_ctrl, panel_switcher]
+        panel_switcher.content = _PANEL_COLS[seg]
+        {"charts": render_panel_charts,
+         "coverage": render_panel_coverage,
+         "instruments": render_panel_instruments,
+         "registry": render_panel_registry}[seg](
+            _PANEL_COLS[seg])
         page.update()
 
     # ---------------- navigation ----------------
@@ -4791,6 +5791,10 @@ def main(page: ft.Page):
                    ft.CrossAxisAlignment.CENTER,
                    controls=[pull_dot, stamp_ctrl, stale_ctrl]),
         ]))
+    search_field = ft.TextField(
+        hint_text="Search teams, markets, leagues\u2026",
+        prefix_icon=ft.Icons.SEARCH, text_size=13,
+        on_change=on_search)
     cards_view.controls = [
         ft.Row(spacing=8, controls=[
             primary_button("Pull Menu", on_pull),
@@ -4804,10 +5808,7 @@ def main(page: ft.Page):
                          for k, t in SORT_MODES],
                 on_select=on_sort),
             cards_count]),
-        ft.TextField(
-            hint_text="Search teams, markets, leagues\u2026",
-            prefix_icon=ft.Icons.SEARCH, text_size=13,
-            on_change=on_search),
+        search_field,
         cards_toggles,
         cards_list]
     board_view.controls = [

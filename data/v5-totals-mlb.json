@@ -1,0 +1,197 @@
+{
+ "sport": "mlb",
+ "lane": "mlb-totals",
+ "fitted_at": "2026-10-24T22:26:22+00:00",
+ "source": "ESPN MLB scoreboard day pulls, 2025 regular season (site.api.espn.com baseball/mlb scoreboard) \u2014 same source as v5-mlb.json",
+ "history_n": 2433,
+ "params": {
+  "prior_games": 10,
+  "distribution": "normal",
+  "burn_in": 200,
+  "model": "lam_home = LH*off[h]*def[a]; lam_away = LA*off[a]*def[h]; total ~ distribution(mu, sigma)"
+ },
+ "distribution_why": "Normal on total runs: a baseball total is the sum of ~76 plate appearances of run events; the empirical distribution is overdispersed vs Poisson (full-season SD 4.59 on a mean of 8.89 in Guy's candidate block) and near-normal in shape.",
+ "league": {
+  "LH": 4.492,
+  "LA": 4.404,
+  "mean_team_score": 4.448,
+  "total_mean": 8.896,
+  "total_sd": 4.592
+ },
+ "sigma": 4.596,
+ "teams": {
+  "American All-Stars": {
+   "off": 1.0317,
+   "def": 1.0522,
+   "gp": 1
+  },
+  "Arizona Diamondbacks": {
+   "off": 1.0896,
+   "def": 1.0831,
+   "gp": 163
+  },
+  "Athletics": {
+   "off": 1.0162,
+   "def": 1.126,
+   "gp": 162
+  },
+  "Atlanta Braves": {
+   "off": 1.0038,
+   "def": 1.0142,
+   "gp": 163
+  },
+  "Baltimore Orioles": {
+   "off": 0.943,
+   "def": 1.0881,
+   "gp": 162
+  },
+  "Boston Red Sox": {
+   "off": 1.0857,
+   "def": 0.9401,
+   "gp": 163
+  },
+  "Chicago Cubs": {
+   "off": 1.1022,
+   "def": 0.9038,
+   "gp": 160
+  },
+  "Chicago White Sox": {
+   "off": 0.9038,
+   "def": 1.028,
+   "gp": 162
+  },
+  "Cincinnati Reds": {
+   "off": 0.9885,
+   "def": 0.9474,
+   "gp": 165
+  },
+  "Cleveland Guardians": {
+   "off": 0.8999,
+   "def": 0.909,
+   "gp": 163
+  },
+  "Colorado Rockies": {
+   "off": 0.8384,
+   "def": 1.3926,
+   "gp": 162
+  },
+  "Detroit Tigers": {
+   "off": 1.0489,
+   "def": 0.9613,
+   "gp": 162
+  },
+  "Houston Astros": {
+   "off": 0.9548,
+   "def": 0.9273,
+   "gp": 162
+  },
+  "Kansas City Royals": {
+   "off": 0.909,
+   "def": 0.8907,
+   "gp": 162
+  },
+  "Los Angeles Angels": {
+   "off": 0.9378,
+   "def": 1.1521,
+   "gp": 162
+  },
+  "Los Angeles Dodgers": {
+   "off": 1.1366,
+   "def": 0.9567,
+   "gp": 160
+  },
+  "Miami Marlins": {
+   "off": 0.9848,
+   "def": 1.1012,
+   "gp": 162
+  },
+  "Milwaukee Brewers": {
+   "off": 1.1116,
+   "def": 0.8868,
+   "gp": 162
+  },
+  "Minnesota Twins": {
+   "off": 0.9466,
+   "def": 1.0688,
+   "gp": 163
+  },
+  "National All-Stars": {
+   "off": 1.0522,
+   "def": 1.0317,
+   "gp": 1
+  },
+  "New York Mets": {
+   "off": 1.0593,
+   "def": 0.9927,
+   "gp": 162
+  },
+  "New York Yankees": {
+   "off": 1.1678,
+   "def": 0.9535,
+   "gp": 162
+  },
+  "Philadelphia Phillies": {
+   "off": 1.075,
+   "def": 0.9051,
+   "gp": 162
+  },
+  "Pittsburgh Pirates": {
+   "off": 0.8201,
+   "def": 0.9012,
+   "gp": 162
+  },
+  "San Diego Padres": {
+   "off": 0.9757,
+   "def": 0.8698,
+   "gp": 162
+  },
+  "San Francisco Giants": {
+   "off": 0.9796,
+   "def": 0.9521,
+   "gp": 162
+  },
+  "Seattle Mariners": {
+   "off": 1.0593,
+   "def": 0.9652,
+   "gp": 162
+  },
+  "St. Louis Cardinals": {
+   "off": 0.9587,
+   "def": 1.0436,
+   "gp": 162
+  },
+  "Tampa Bay Rays": {
+   "off": 0.9914,
+   "def": 0.9508,
+   "gp": 162
+  },
+  "Texas Rangers": {
+   "off": 0.9521,
+   "def": 0.8489,
+   "gp": 162
+  },
+  "Toronto Blue Jays": {
+   "off": 1.1012,
+   "def": 1.0005,
+   "gp": 162
+  },
+  "Washington Nationals": {
+   "off": 0.9561,
+   "def": 1.2332,
+   "gp": 162
+  }
+ },
+ "backtest": {
+  "n": 2233,
+  "mae_model": 3.641,
+  "mae_naive": 3.622,
+  "brier_model": 0.2533,
+  "brier_naive": 0.2511,
+  "logscore_model": -2.0264,
+  "logscore_naive": -2.0255,
+  "sigma_resid": 4.596,
+  "verdict": "FAILED-EXAM",
+  "protocol": "walk-forward (strengths/league rates from prior games only); naive = expanding league-average total; Brier scored on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FAILED-EXAM"
+}

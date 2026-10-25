@@ -1,0 +1,1212 @@
+{
+ "sport": "ncaaf",
+ "lane": "ncaaf-totals",
+ "fitted_at": "2026-10-24T21:58:12+00:00",
+ "source": "in-repo data/cfb_games_2026.json (ESPN-sourced 2026 season game results)",
+ "history_n": 458,
+ "params": {
+  "prior_games": 4,
+  "distribution": "normal",
+  "burn_in": 60,
+  "model": "lam_home = LH*off[h]*def[a]; lam_away = LA*off[a]*def[h]; total ~ distribution(mu, sigma)"
+ },
+ "distribution_why": "Normal on total points: a CFB total is the sum of ~25 scoring events across two offenses; empirically near-normal with a wide, matchup-driven spread.",
+ "league": {
+  "LH": 34.524,
+  "LA": 19.212,
+  "mean_team_score": 26.868,
+  "total_mean": 53.736,
+  "total_sd": 15.801
+ },
+ "sigma": 15.934,
+ "teams": {
+  "Abilene Christian Wildcats": {
+   "off": 0.8744,
+   "def": 1.0456,
+   "gp": 1
+  },
+  "Air Force Falcons": {
+   "off": 1.04,
+   "def": 0.8042,
+   "gp": 5
+  },
+  "Akron Zips": {
+   "off": 0.8392,
+   "def": 1.1183,
+   "gp": 6
+  },
+  "Alabama Crimson Tide": {
+   "off": 1.3863,
+   "def": 0.8615,
+   "gp": 6
+  },
+  "Alabama State Hornets": {
+   "off": 0.9265,
+   "def": 1.0531,
+   "gp": 1
+  },
+  "Alcorn State Braves": {
+   "off": 0.8223,
+   "def": 1.1647,
+   "gp": 1
+  },
+  "App State Mountaineers": {
+   "off": 1.0588,
+   "def": 0.8876,
+   "gp": 6
+  },
+  "Arizona State Sun Devils": {
+   "off": 1.1185,
+   "def": 1.0193,
+   "gp": 5
+  },
+  "Arizona Wildcats": {
+   "off": 1.1965,
+   "def": 0.8243,
+   "gp": 6
+  },
+  "Arkansas Razorbacks": {
+   "off": 0.8317,
+   "def": 1.0178,
+   "gp": 6
+  },
+  "Arkansas State Red Wolves": {
+   "off": 1.029,
+   "def": 1.0439,
+   "gp": 6
+  },
+  "Arkansas-Pine Bluff Golden Lions": {
+   "off": 0.9042,
+   "def": 1.202,
+   "gp": 1
+  },
+  "Army Black Knights": {
+   "off": 1.0772,
+   "def": 0.8414,
+   "gp": 5
+  },
+  "Auburn Tigers": {
+   "off": 0.9986,
+   "def": 0.8869,
+   "gp": 5
+  },
+  "Austin Peay Governors": {
+   "off": 0.867,
+   "def": 1.0084,
+   "gp": 1
+  },
+  "BYU Cougars": {
+   "off": 1.1599,
+   "def": 0.7215,
+   "gp": 5
+  },
+  "Ball State Cardinals": {
+   "off": 0.8094,
+   "def": 1.2709,
+   "gp": 6
+  },
+  "Baylor Bears": {
+   "off": 1.164,
+   "def": 0.7381,
+   "gp": 5
+  },
+  "Bethune-Cookman Wildcats": {
+   "off": 0.8447,
+   "def": 1.3434,
+   "gp": 1
+  },
+  "Boise State Broncos": {
+   "off": 1.1816,
+   "def": 0.8987,
+   "gp": 6
+  },
+  "Boston College Eagles": {
+   "off": 0.8373,
+   "def": 0.9283,
+   "gp": 5
+  },
+  "Bowling Green Falcons": {
+   "off": 0.7536,
+   "def": 1.0513,
+   "gp": 6
+  },
+  "Bryant Bulldogs": {
+   "off": 0.8223,
+   "def": 1.2392,
+   "gp": 1
+  },
+  "Bucknell Bison": {
+   "off": 0.8,
+   "def": 1.2392,
+   "gp": 1
+  },
+  "Buffalo Bulls": {
+   "off": 0.8652,
+   "def": 0.9992,
+   "gp": 6
+  },
+  "Cal Poly Mustangs": {
+   "off": 0.9489,
+   "def": 1.0233,
+   "gp": 1
+  },
+  "California Golden Bears": {
+   "off": 0.9955,
+   "def": 0.9695,
+   "gp": 6
+  },
+  "Campbell Fighting Camels": {
+   "off": 0.8223,
+   "def": 1.1871,
+   "gp": 1
+  },
+  "Central Arkansas Bears": {
+   "off": 0.8521,
+   "def": 1.0531,
+   "gp": 1
+  },
+  "Central Connecticut Blue Devils": {
+   "off": 0.8744,
+   "def": 1.269,
+   "gp": 1
+  },
+  "Central Michigan Chippewas": {
+   "off": 0.7796,
+   "def": 0.9881,
+   "gp": 6
+  },
+  "Charleston Southern Buccaneers": {
+   "off": 0.8,
+   "def": 1.0308,
+   "gp": 1
+  },
+  "Charlotte 49ers": {
+   "off": 0.7573,
+   "def": 1.3416,
+   "gp": 6
+  },
+  "Cincinnati Bearcats": {
+   "off": 1.1433,
+   "def": 0.9242,
+   "gp": 5
+  },
+  "Clemson Tigers": {
+   "off": 0.8456,
+   "def": 0.9779,
+   "gp": 5
+  },
+  "Coastal Carolina Chanticleers": {
+   "off": 0.9828,
+   "def": 0.9761,
+   "gp": 7
+  },
+  "Colgate Raiders": {
+   "off": 0.8744,
+   "def": 0.8968,
+   "gp": 1
+  },
+  "Colorado Buffaloes": {
+   "off": 0.829,
+   "def": 0.9696,
+   "gp": 5
+  },
+  "Colorado State Rams": {
+   "off": 1.1965,
+   "def": 1.364,
+   "gp": 6
+  },
+  "Delaware Blue Hens": {
+   "off": 0.9099,
+   "def": 0.9992,
+   "gp": 6
+  },
+  "Delaware State Hornets": {
+   "off": 0.9265,
+   "def": 1.2392,
+   "gp": 1
+  },
+  "Duke Blue Devils": {
+   "off": 1.1475,
+   "def": 0.7422,
+   "gp": 5
+  },
+  "Duquesne Dukes": {
+   "off": 0.7101,
+   "def": 1.1753,
+   "gp": 2
+  },
+  "East Carolina Pirates": {
+   "off": 0.9248,
+   "def": 0.9322,
+   "gp": 6
+  },
+  "East Tennessee State Buccaneers": {
+   "off": 0.8223,
+   "def": 1.0605,
+   "gp": 1
+  },
+  "East Texas A&M Lions": {
+   "off": 0.8,
+   "def": 1.1126,
+   "gp": 1
+  },
+  "Eastern Illinois Panthers": {
+   "off": 0.8521,
+   "def": 1.2392,
+   "gp": 1
+  },
+  "Eastern Kentucky Colonels": {
+   "off": 0.8521,
+   "def": 1.1647,
+   "gp": 1
+  },
+  "Eastern Michigan Eagles": {
+   "off": 0.8982,
+   "def": 0.949,
+   "gp": 7
+  },
+  "Eastern Washington Eagles": {
+   "off": 0.9191,
+   "def": 1.1573,
+   "gp": 1
+  },
+  "Florida A&M Rattlers": {
+   "off": 0.8521,
+   "def": 1.3732,
+   "gp": 1
+  },
+  "Florida Atlantic Owls": {
+   "off": 1.2136,
+   "def": 0.9945,
+   "gp": 5
+  },
+  "Florida Gators": {
+   "off": 1.3305,
+   "def": 1.0476,
+   "gp": 6
+  },
+  "Florida International Panthers": {
+   "off": 0.8392,
+   "def": 0.7275,
+   "gp": 6
+  },
+  "Florida State Seminoles": {
+   "off": 1.0923,
+   "def": 0.9657,
+   "gp": 6
+  },
+  "Fordham Rams": {
+   "off": 0.7101,
+   "def": 1.1815,
+   "gp": 2
+  },
+  "Fresno State Bulldogs": {
+   "off": 1.0327,
+   "def": 0.8466,
+   "gp": 6
+  },
+  "Furman Paladins": {
+   "off": 0.867,
+   "def": 1.2169,
+   "gp": 1
+  },
+  "Gardner-Webb Runnin' Bulldogs": {
+   "off": 1.0265,
+   "def": 1.0389,
+   "gp": 2
+  },
+  "Georgia Bulldogs": {
+   "off": 1.431,
+   "def": 0.7126,
+   "gp": 6
+  },
+  "Georgia Southern Eagles": {
+   "off": 0.9422,
+   "def": 0.9084,
+   "gp": 7
+  },
+  "Georgia State Panthers": {
+   "off": 1.2591,
+   "def": 0.8373,
+   "gp": 5
+  },
+  "Georgia Tech Yellow Jackets": {
+   "off": 1.0069,
+   "def": 0.9779,
+   "gp": 5
+  },
+  "Grambling Tigers": {
+   "off": 0.8521,
+   "def": 1.269,
+   "gp": 1
+  },
+  "Hampton Pirates": {
+   "off": 0.8,
+   "def": 1.2615,
+   "gp": 1
+  },
+  "Hawai'i Rainbow Warriors": {
+   "off": 0.7722,
+   "def": 0.9732,
+   "gp": 6
+  },
+  "Holy Cross Crusaders": {
+   "off": 0.8521,
+   "def": 1.135,
+   "gp": 1
+  },
+  "Houston Christian Huskies": {
+   "off": 0.7721,
+   "def": 1.2498,
+   "gp": 2
+  },
+  "Houston Cougars": {
+   "off": 1.2933,
+   "def": 0.828,
+   "gp": 6
+  },
+  "Howard Bison": {
+   "off": 0.7101,
+   "def": 1.3676,
+   "gp": 2
+  },
+  "Idaho State Bengals": {
+   "off": 1.0159,
+   "def": 0.9265,
+   "gp": 1
+  },
+  "Idaho Vandals": {
+   "off": 0.9042,
+   "def": 1.2913,
+   "gp": 1
+  },
+  "Illinois Fighting Illini": {
+   "off": 1.1109,
+   "def": 1.0216,
+   "gp": 6
+  },
+  "Illinois State Redbirds": {
+   "off": 1.0084,
+   "def": 0.9787,
+   "gp": 1
+  },
+  "Incarnate Word Cardinals": {
+   "off": 0.8744,
+   "def": 1.269,
+   "gp": 1
+  },
+  "Indiana Hoosiers": {
+   "off": 1.297,
+   "def": 0.6643,
+   "gp": 6
+  },
+  "Indiana State Sycamores": {
+   "off": 0.9414,
+   "def": 1.1275,
+   "gp": 1
+  },
+  "Iowa Hawkeyes": {
+   "off": 1.0923,
+   "def": 0.7238,
+   "gp": 6
+  },
+  "Iowa State Cyclones": {
+   "off": 1.0625,
+   "def": 0.8838,
+   "gp": 6
+  },
+  "Jacksonville State Gamecocks": {
+   "off": 1.0099,
+   "def": 0.9016,
+   "gp": 7
+  },
+  "James Madison Dukes": {
+   "off": 1.3342,
+   "def": 0.735,
+   "gp": 6
+  },
+  "Kansas Jayhawks": {
+   "off": 1.1392,
+   "def": 0.8952,
+   "gp": 5
+  },
+  "Kansas State Wildcats": {
+   "off": 1.1806,
+   "def": 0.8414,
+   "gp": 5
+  },
+  "Kennesaw State Owls": {
+   "off": 0.8987,
+   "def": 0.9248,
+   "gp": 6
+  },
+  "Kent State Golden Flashes": {
+   "off": 0.7052,
+   "def": 1.1258,
+   "gp": 6
+  },
+  "Kentucky Wildcats": {
+   "off": 1.1742,
+   "def": 1.0253,
+   "gp": 6
+  },
+  "LSU Tigers": {
+   "off": 1.3379,
+   "def": 0.8131,
+   "gp": 6
+  },
+  "Lafayette Leopards": {
+   "off": 0.8521,
+   "def": 1.2169,
+   "gp": 1
+  },
+  "Lamar Cardinals": {
+   "off": 0.8521,
+   "def": 1.0829,
+   "gp": 1
+  },
+  "Liberty Flames": {
+   "off": 1.096,
+   "def": 0.7424,
+   "gp": 6
+  },
+  "Lindenwood Lions": {
+   "off": 0.7721,
+   "def": 1.1443,
+   "gp": 2
+  },
+  "Long Island University Sharks": {
+   "off": 0.7225,
+   "def": 1.1071,
+   "gp": 2
+  },
+  "Louisiana Ragin' Cajuns": {
+   "off": 1.0588,
+   "def": 0.8801,
+   "gp": 6
+  },
+  "Louisiana Tech Bulldogs": {
+   "off": 1.1723,
+   "def": 1.0524,
+   "gp": 5
+  },
+  "Louisville Cardinals": {
+   "off": 1.2821,
+   "def": 1.0178,
+   "gp": 6
+  },
+  "Maine Black Bears": {
+   "off": 0.7845,
+   "def": 1.1443,
+   "gp": 2
+  },
+  "Marshall Thundering Herd": {
+   "off": 0.8913,
+   "def": 1.1518,
+   "gp": 6
+  },
+  "Maryland Terrapins": {
+   "off": 1.0253,
+   "def": 1.1295,
+   "gp": 6
+  },
+  "Massachusetts Minutemen": {
+   "off": 1.0625,
+   "def": 0.8057,
+   "gp": 6
+  },
+  "McNeese Cowboys": {
+   "off": 0.9042,
+   "def": 1.269,
+   "gp": 1
+  },
+  "Memphis Tigers": {
+   "off": 1.2028,
+   "def": 0.8915,
+   "gp": 7
+  },
+  "Mercer Bears": {
+   "off": 0.8819,
+   "def": 1.1275,
+   "gp": 1
+  },
+  "Mercyhurst Lakers": {
+   "off": 0.7203,
+   "def": 1.4913,
+   "gp": 3
+  },
+  "Merrimack Warriors": {
+   "off": 0.8521,
+   "def": 1.1126,
+   "gp": 1
+  },
+  "Miami (OH) RedHawks": {
+   "off": 0.9732,
+   "def": 1.0141,
+   "gp": 6
+  },
+  "Miami Hurricanes": {
+   "off": 1.47,
+   "def": 0.6471,
+   "gp": 5
+  },
+  "Michigan State Spartans": {
+   "off": 0.8764,
+   "def": 0.9732,
+   "gp": 6
+  },
+  "Michigan Wolverines": {
+   "off": 0.92,
+   "def": 0.7711,
+   "gp": 5
+  },
+  "Middle Tennessee Blue Raiders": {
+   "off": 0.9099,
+   "def": 1.0327,
+   "gp": 6
+  },
+  "Minnesota Golden Gophers": {
+   "off": 1.0439,
+   "def": 0.8876,
+   "gp": 6
+  },
+  "Mississippi State Bulldogs": {
+   "off": 1.2509,
+   "def": 1.0234,
+   "gp": 5
+  },
+  "Mississippi Valley State Delta Devils": {
+   "off": 0.8,
+   "def": 1.1871,
+   "gp": 1
+  },
+  "Missouri State Bears": {
+   "off": 0.895,
+   "def": 1.0811,
+   "gp": 6
+  },
+  "Missouri Tigers": {
+   "off": 1.2002,
+   "def": 0.7945,
+   "gp": 6
+  },
+  "Monmouth Hawks": {
+   "off": 0.9042,
+   "def": 1.1647,
+   "gp": 1
+  },
+  "Montana Grizzlies": {
+   "off": 0.9265,
+   "def": 1.1871,
+   "gp": 1
+  },
+  "Montana State Bobcats": {
+   "off": 0.9489,
+   "def": 0.8521,
+   "gp": 1
+  },
+  "Morgan State Bears": {
+   "off": 0.8521,
+   "def": 1.3211,
+   "gp": 1
+  },
+  "Murray State Racers": {
+   "off": 0.7535,
+   "def": 1.2684,
+   "gp": 2
+  },
+  "NC State Wolfpack": {
+   "off": 1.1369,
+   "def": 1.0178,
+   "gp": 6
+  },
+  "Navy Midshipmen": {
+   "off": 1.0027,
+   "def": 0.9283,
+   "gp": 5
+  },
+  "Nebraska Cornhuskers": {
+   "off": 1.2746,
+   "def": 0.7387,
+   "gp": 6
+  },
+  "Nevada Wolf Pack": {
+   "off": 1.0193,
+   "def": 0.8993,
+   "gp": 5
+  },
+  "New Hampshire Wildcats": {
+   "off": 0.8223,
+   "def": 1.2913,
+   "gp": 1
+  },
+  "New Mexico Lobos": {
+   "off": 1.3418,
+   "def": 0.6636,
+   "gp": 5
+  },
+  "New Mexico State Aggies": {
+   "off": 0.9285,
+   "def": 0.9732,
+   "gp": 6
+  },
+  "Nicholls Colonels": {
+   "off": 0.6853,
+   "def": 1.4731,
+   "gp": 2
+  },
+  "Norfolk State Spartans": {
+   "off": 0.7473,
+   "def": 1.225,
+   "gp": 2
+  },
+  "North Alabama Lions": {
+   "off": 0.9042,
+   "def": 1.0308,
+   "gp": 1
+  },
+  "North Carolina A&T Aggies": {
+   "off": 0.8744,
+   "def": 1.2392,
+   "gp": 1
+  },
+  "North Carolina Central Eagles": {
+   "off": 0.867,
+   "def": 1.1126,
+   "gp": 1
+  },
+  "North Carolina Tar Heels": {
+   "off": 0.9283,
+   "def": 0.8373,
+   "gp": 5
+  },
+  "North Dakota Fighting Hawks": {
+   "off": 0.8521,
+   "def": 1.0531,
+   "gp": 1
+  },
+  "North Dakota State Bison": {
+   "off": 1.0513,
+   "def": 0.6308,
+   "gp": 6
+  },
+  "North Texas Mean Green": {
+   "off": 1.3416,
+   "def": 1.0513,
+   "gp": 6
+  },
+  "Northern Arizona Lumberjacks": {
+   "off": 0.8521,
+   "def": 1.0605,
+   "gp": 1
+  },
+  "Northern Colorado Bears": {
+   "off": 0.8968,
+   "def": 0.9563,
+   "gp": 1
+  },
+  "Northern Illinois Huskies": {
+   "off": 0.7008,
+   "def": 1.1599,
+   "gp": 5
+  },
+  "Northern Iowa Panthers": {
+   "off": 0.8,
+   "def": 1.2094,
+   "gp": 1
+  },
+  "Northwestern State Demons": {
+   "off": 0.8447,
+   "def": 1.3955,
+   "gp": 1
+  },
+  "Northwestern Wildcats": {
+   "off": 1.1764,
+   "def": 0.7794,
+   "gp": 5
+  },
+  "Notre Dame Fighting Irish": {
+   "off": 1.3826,
+   "def": 0.6456,
+   "gp": 6
+  },
+  "Ohio Bobcats": {
+   "off": 1.0141,
+   "def": 0.9508,
+   "gp": 6
+  },
+  "Ohio State Buckeyes": {
+   "off": 1.3528,
+   "def": 0.694,
+   "gp": 6
+  },
+  "Oklahoma Sooners": {
+   "off": 0.92,
+   "def": 0.8084,
+   "gp": 5
+  },
+  "Oklahoma State Cowboys": {
+   "off": 1.2343,
+   "def": 0.8869,
+   "gp": 5
+  },
+  "Old Dominion Monarchs": {
+   "off": 0.7832,
+   "def": 0.9997,
+   "gp": 7
+  },
+  "Ole Miss Rebels": {
+   "off": 1.2467,
+   "def": 1.0234,
+   "gp": 5
+  },
+  "Oregon Ducks": {
+   "off": 1.2922,
+   "def": 0.8993,
+   "gp": 5
+  },
+  "Oregon State Beavers": {
+   "off": 1.3342,
+   "def": 0.8913,
+   "gp": 6
+  },
+  "Penn State Nittany Lions": {
+   "off": 1.0811,
+   "def": 0.8131,
+   "gp": 6
+  },
+  "Pittsburgh Panthers": {
+   "off": 1.1779,
+   "def": 0.7275,
+   "gp": 6
+  },
+  "Portland State Vikings": {
+   "off": 0.7907,
+   "def": 1.5165,
+   "gp": 2
+  },
+  "Prairie View A&M Panthers": {
+   "off": 0.8223,
+   "def": 1.1275,
+   "gp": 1
+  },
+  "Purdue Boilermakers": {
+   "off": 1.1046,
+   "def": 1.1283,
+   "gp": 7
+  },
+  "Rhode Island Rams": {
+   "off": 0.9042,
+   "def": 1.0829,
+   "gp": 1
+  },
+  "Rice Owls": {
+   "off": 0.7796,
+   "def": 1.0141,
+   "gp": 6
+  },
+  "Richmond Spiders": {
+   "off": 0.8,
+   "def": 1.3434,
+   "gp": 1
+  },
+  "Robert Morris Colonials": {
+   "off": 0.9024,
+   "def": 1.1381,
+   "gp": 2
+  },
+  "Rutgers Scarlet Knights": {
+   "off": 1.0648,
+   "def": 1.1103,
+   "gp": 5
+  },
+  "SE Louisiana Lions": {
+   "off": 0.9892,
+   "def": 1.1257,
+   "gp": 2
+  },
+  "SMU Mustangs": {
+   "off": 1.1599,
+   "def": 0.92,
+   "gp": 5
+  },
+  "Sacramento State Hornets": {
+   "off": 0.7647,
+   "def": 1.0737,
+   "gp": 6
+  },
+  "Sacred Heart Pioneers": {
+   "off": 0.8744,
+   "def": 1.0754,
+   "gp": 1
+  },
+  "Sam Houston Bearkats": {
+   "off": 0.8355,
+   "def": 0.9471,
+   "gp": 6
+  },
+  "Samford Bulldogs": {
+   "off": 0.9042,
+   "def": 1.0456,
+   "gp": 1
+  },
+  "San Diego State Aztecs": {
+   "off": 0.9099,
+   "def": 1.1816,
+   "gp": 6
+  },
+  "San Jos\u00e9 State Spartans": {
+   "off": 0.869,
+   "def": 0.9248,
+   "gp": 6
+  },
+  "South Alabama Jaguars": {
+   "off": 1.2672,
+   "def": 1.1704,
+   "gp": 6
+  },
+  "South Carolina Gamecocks": {
+   "off": 1.2412,
+   "def": 0.9695,
+   "gp": 6
+  },
+  "South Dakota Coyotes": {
+   "off": 0.9787,
+   "def": 1.0829,
+   "gp": 1
+  },
+  "South Dakota State Jackrabbits": {
+   "off": 0.934,
+   "def": 1.0531,
+   "gp": 1
+  },
+  "South Florida Bulls": {
+   "off": 0.9843,
+   "def": 0.7871,
+   "gp": 6
+  },
+  "Southeast Missouri State Redhawks": {
+   "off": 0.8744,
+   "def": 1.0829,
+   "gp": 1
+  },
+  "Southern Illinois Salukis": {
+   "off": 0.8744,
+   "def": 1.1573,
+   "gp": 1
+  },
+  "Southern Jaguars": {
+   "off": 0.8447,
+   "def": 1.3732,
+   "gp": 1
+  },
+  "Southern Miss Golden Eagles": {
+   "off": 0.9903,
+   "def": 1.1599,
+   "gp": 5
+  },
+  "Southern Utah Thunderbirds": {
+   "off": 0.9787,
+   "def": 1.2317,
+   "gp": 1
+  },
+  "Stanford Cardinal": {
+   "off": 0.7499,
+   "def": 1.3268,
+   "gp": 6
+  },
+  "Stonehill Skyhawks": {
+   "off": 0.7969,
+   "def": 1.1071,
+   "gp": 2
+  },
+  "Stony Brook Seawolves": {
+   "off": 0.9265,
+   "def": 1.1052,
+   "gp": 1
+  },
+  "Syracuse Orange": {
+   "off": 1.1227,
+   "def": 0.9407,
+   "gp": 5
+  },
+  "TCU Horned Frogs": {
+   "off": 0.9696,
+   "def": 0.7215,
+   "gp": 5
+  },
+  "Tarleton State Texans": {
+   "off": 0.9489,
+   "def": 0.8968,
+   "gp": 1
+  },
+  "Temple Owls": {
+   "off": 0.9546,
+   "def": 0.9881,
+   "gp": 6
+  },
+  "Tennessee State Tigers": {
+   "off": 0.8223,
+   "def": 1.269,
+   "gp": 1
+  },
+  "Tennessee Volunteers": {
+   "off": 1.1742,
+   "def": 0.7461,
+   "gp": 6
+  },
+  "Texas A&M Aggies": {
+   "off": 1.0141,
+   "def": 0.8466,
+   "gp": 6
+  },
+  "Texas Longhorns": {
+   "off": 1.0937,
+   "def": 0.7753,
+   "gp": 5
+  },
+  "Texas Southern Tigers": {
+   "off": 0.7907,
+   "def": 1.3924,
+   "gp": 2
+  },
+  "Texas State Bobcats": {
+   "off": 1.2933,
+   "def": 1.1183,
+   "gp": 6
+  },
+  "Texas Tech Red Raiders": {
+   "off": 1.164,
+   "def": 0.7794,
+   "gp": 5
+  },
+  "The Citadel Bulldogs": {
+   "off": 1.1201,
+   "def": 1.1052,
+   "gp": 1
+  },
+  "Toledo Rockets": {
+   "off": 1.2188,
+   "def": 0.962,
+   "gp": 6
+  },
+  "Towson Tigers": {
+   "off": 0.8155,
+   "def": 1.2063,
+   "gp": 2
+  },
+  "Troy Trojans": {
+   "off": 1.0234,
+   "def": 0.9407,
+   "gp": 5
+  },
+  "Tulane Green Wave": {
+   "off": 0.8578,
+   "def": 0.8838,
+   "gp": 6
+  },
+  "Tulsa Golden Hurricane": {
+   "off": 1.0141,
+   "def": 0.9211,
+   "gp": 6
+  },
+  "UAB Blazers": {
+   "off": 0.9152,
+   "def": 0.9456,
+   "gp": 7
+  },
+  "UAlbany Great Danes": {
+   "off": 0.9265,
+   "def": 0.9563,
+   "gp": 1
+  },
+  "UC Davis Aggies": {
+   "off": 0.8744,
+   "def": 1.2169,
+   "gp": 1
+  },
+  "UCF Knights": {
+   "off": 1.1072,
+   "def": 0.8838,
+   "gp": 6
+  },
+  "UCLA Bruins": {
+   "off": 1.255,
+   "def": 0.8166,
+   "gp": 5
+  },
+  "UConn Huskies": {
+   "off": 1.1965,
+   "def": 0.962,
+   "gp": 6
+  },
+  "UL Monroe Warhawks": {
+   "off": 0.9407,
+   "def": 1.3667,
+   "gp": 5
+  },
+  "UNLV Rebels": {
+   "off": 0.9136,
+   "def": 0.8652,
+   "gp": 6
+  },
+  "USC Trojans": {
+   "off": 1.2264,
+   "def": 0.9591,
+   "gp": 7
+  },
+  "UT Martin Skyhawks": {
+   "off": 0.8404,
+   "def": 1.2684,
+   "gp": 2
+  },
+  "UT Rio Grande Valley Vaqueros": {
+   "off": 0.9191,
+   "def": 1.135,
+   "gp": 1
+  },
+  "UTEP Miners": {
+   "off": 0.7536,
+   "def": 1.2821,
+   "gp": 6
+  },
+  "UTSA Roadrunners": {
+   "off": 1.0997,
+   "def": 0.9769,
+   "gp": 6
+  },
+  "Utah State Aggies": {
+   "off": 0.7238,
+   "def": 0.9248,
+   "gp": 6
+  },
+  "Utah Tech Trailblazers": {
+   "off": 0.8521,
+   "def": 1.269,
+   "gp": 1
+  },
+  "Utah Utes": {
+   "off": 1.3294,
+   "def": 0.7132,
+   "gp": 5
+  },
+  "VMI Keydets": {
+   "off": 0.8223,
+   "def": 1.3434,
+   "gp": 1
+  },
+  "Vanderbilt Commodores": {
+   "off": 0.936,
+   "def": 1.0588,
+   "gp": 6
+  },
+  "Villanova Wildcats": {
+   "off": 0.8968,
+   "def": 1.2392,
+   "gp": 1
+  },
+  "Virginia Cavaliers": {
+   "off": 1.1332,
+   "def": 0.828,
+   "gp": 6
+  },
+  "Virginia Tech Hokies": {
+   "off": 1.2412,
+   "def": 0.8615,
+   "gp": 6
+  },
+  "Wagner Seahawks": {
+   "off": 0.7287,
+   "def": 1.5103,
+   "gp": 2
+  },
+  "Wake Forest Demon Deacons": {
+   "off": 1.2225,
+   "def": 0.8801,
+   "gp": 6
+  },
+  "Washington Huskies": {
+   "off": 1.0234,
+   "def": 0.9016,
+   "gp": 7
+  },
+  "Washington State Cougars": {
+   "off": 0.8131,
+   "def": 0.9285,
+   "gp": 6
+  },
+  "Weber State Wildcats": {
+   "off": 0.9563,
+   "def": 1.1871,
+   "gp": 1
+  },
+  "West Georgia Wolves": {
+   "off": 0.7101,
+   "def": 1.2808,
+   "gp": 2
+  },
+  "West Virginia Mountaineers": {
+   "off": 1.2114,
+   "def": 1.1295,
+   "gp": 6
+  },
+  "Western Carolina Catamounts": {
+   "off": 0.8744,
+   "def": 1.2615,
+   "gp": 1
+  },
+  "Western Illinois Leathernecks": {
+   "off": 0.867,
+   "def": 1.068,
+   "gp": 1
+  },
+  "Western Kentucky Hilltoppers": {
+   "off": 0.8678,
+   "def": 1.0877,
+   "gp": 7
+  },
+  "Western Michigan Broncos": {
+   "off": 0.9732,
+   "def": 0.7871,
+   "gp": 6
+  },
+  "William & Mary Tribe": {
+   "off": 0.8521,
+   "def": 1.2615,
+   "gp": 1
+  },
+  "Wisconsin Badgers": {
+   "off": 1.0978,
+   "def": 0.7877,
+   "gp": 5
+  },
+  "Wofford Terriers": {
+   "off": 0.9117,
+   "def": 1.068,
+   "gp": 1
+  },
+  "Wyoming Cowboys": {
+   "off": 0.7238,
+   "def": 0.8578,
+   "gp": 6
+  },
+  "Youngstown State Penguins": {
+   "off": 0.8968,
+   "def": 1.135,
+   "gp": 1
+  }
+ },
+ "backtest": {
+  "n": 398,
+  "mae_model": 12.773,
+  "mae_naive": 12.861,
+  "brier_model": 0.2415,
+  "brier_naive": 0.2502,
+  "logscore_model": -3.271,
+  "logscore_naive": -3.28,
+  "sigma_resid": 15.934,
+  "verdict": "PASS",
+  "protocol": "walk-forward (strengths/league rates from prior games only); naive = expanding league-average total; Brier scored on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED"
+}

@@ -1,0 +1,217 @@
+{
+ "sport": "nhl",
+ "lane": "nhl-totals",
+ "fitted_at": "2026-10-24T21:59:41+00:00",
+ "source": "ESPN NHL scoreboard day pulls, 2025-26 regular season (site.api.espn.com hockey/nhl/scoreboard)",
+ "history_n": 1312,
+ "params": {
+  "prior_games": 10,
+  "distribution": "poisson",
+  "burn_in": 60,
+  "model": "lam_home = LH*off[h]*def[a]; lam_away = LA*off[a]*def[h]; total ~ distribution(mu, sigma)"
+ },
+ "distribution_why": "Poisson on total goals: goals are low-count events (~6/game); the sum of two Poisson scoring rates is Poisson \u2014 the soccer-grid treatment, not a normal approximation.",
+ "league": {
+  "LH": 3.192,
+  "LA": 3.062,
+  "mean_team_score": 3.127,
+  "total_mean": 6.254,
+  "total_sd": 2.298
+ },
+ "sigma": 2.311,
+ "teams": {
+  "Anaheim Ducks": {
+   "off": 1.0577,
+   "def": 1.1098,
+   "gp": 82
+  },
+  "Boston Bruins": {
+   "off": 1.0542,
+   "def": 0.9777,
+   "gp": 82
+  },
+  "Buffalo Sabres": {
+   "off": 1.1098,
+   "def": 0.9464,
+   "gp": 82
+  },
+  "Calgary Flames": {
+   "off": 0.8456,
+   "def": 1.009,
+   "gp": 82
+  },
+  "Carolina Hurricanes": {
+   "off": 1.1376,
+   "def": 0.943,
+   "gp": 82
+  },
+  "Chicago Blackhawks": {
+   "off": 0.8491,
+   "def": 1.0646,
+   "gp": 82
+  },
+  "Colorado Avalanche": {
+   "off": 1.1585,
+   "def": 0.8144,
+   "gp": 82
+  },
+  "Columbus Blue Jackets": {
+   "off": 0.9882,
+   "def": 0.9882,
+   "gp": 82
+  },
+  "Dallas Stars": {
+   "off": 1.0785,
+   "def": 0.8943,
+   "gp": 82
+  },
+  "Detroit Red Wings": {
+   "off": 0.9464,
+   "def": 1.0055,
+   "gp": 82
+  },
+  "Edmonton Oilers": {
+   "off": 1.089,
+   "def": 1.0438,
+   "gp": 82
+  },
+  "Florida Panthers": {
+   "off": 0.9812,
+   "def": 1.0681,
+   "gp": 82
+  },
+  "Los Angeles Kings": {
+   "off": 0.8908,
+   "def": 0.9673,
+   "gp": 82
+  },
+  "Minnesota Wild": {
+   "off": 1.0542,
+   "def": 0.943,
+   "gp": 82
+  },
+  "Montreal Canadiens": {
+   "off": 1.0924,
+   "def": 0.9986,
+   "gp": 82
+  },
+  "Nashville Predators": {
+   "off": 0.9673,
+   "def": 1.0438,
+   "gp": 82
+  },
+  "New Jersey Devils": {
+   "off": 0.9082,
+   "def": 0.9916,
+   "gp": 82
+  },
+  "New York Islanders": {
+   "off": 0.9186,
+   "def": 0.9464,
+   "gp": 82
+  },
+  "New York Rangers": {
+   "off": 0.936,
+   "def": 0.9777,
+   "gp": 82
+  },
+  "Ottawa Senators": {
+   "off": 1.0751,
+   "def": 0.9638,
+   "gp": 82
+  },
+  "Philadelphia Flyers": {
+   "off": 0.9777,
+   "def": 0.9534,
+   "gp": 82
+  },
+  "Pittsburgh Penguins": {
+   "off": 1.1272,
+   "def": 1.0403,
+   "gp": 82
+  },
+  "San Jose Sharks": {
+   "off": 0.9812,
+   "def": 1.1237,
+   "gp": 82
+  },
+  "Seattle Kraken": {
+   "off": 0.8943,
+   "def": 1.0229,
+   "gp": 82
+  },
+  "St. Louis Blues": {
+   "off": 0.9117,
+   "def": 1.0055,
+   "gp": 82
+  },
+  "Tampa Bay Lightning": {
+   "off": 1.1168,
+   "def": 0.9117,
+   "gp": 82
+  },
+  "Toronto Maple Leafs": {
+   "off": 0.9882,
+   "def": 1.1481,
+   "gp": 82
+  },
+  "Utah Mammoth": {
+   "off": 1.0403,
+   "def": 0.943,
+   "gp": 82
+  },
+  "Vancouver Canucks": {
+   "off": 0.8595,
+   "def": 1.2072,
+   "gp": 82
+  },
+  "Vegas Golden Knights": {
+   "off": 1.0299,
+   "def": 0.9777,
+   "gp": 82
+  },
+  "Washington Capitals": {
+   "off": 1.0229,
+   "def": 0.9569,
+   "gp": 82
+  },
+  "Winnipeg Jets": {
+   "off": 0.9117,
+   "def": 1.0125,
+   "gp": 82
+  }
+ },
+ "backtest": {
+  "n": 1252,
+  "mae_model": 1.841,
+  "mae_naive": 1.841,
+  "brier_model": 0.2514,
+  "brier_naive": 0.2509,
+  "sigma_resid": 2.311,
+  "verdict": "FAILED-EXAM",
+  "protocol": "walk-forward (strengths/league rates from prior games only); naive = expanding league-average total; Brier scored on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FAILED-EXAM",
+ "refit_attempt_2": {
+  "n": 1252,
+  "goalie_coverage_scored_window": 1302,
+  "mae_model": 1.873,
+  "mae_naive": 1.841,
+  "brier_model": 0.2626,
+  "brier_naive": 0.2509,
+  "verdict": "FAILED-EXAM",
+  "b2b_off_factor": 0.9551,
+  "b2b_def_factor": 1.0226,
+  "goalies_tracked": 95,
+  "goalie_coverage": 1.0,
+  "new_information": "starting-goalie scoring environment (ESPN summary boxscores: starter = max TOI; shrunk GA/60, prior 600 min at league mean) + rest/back-to-back fitted off/def multipliers (expanding ratios, prior 20 team-games)",
+  "protocol": "same walk-forward + naive baseline + pass rule as Round 1; parameterizations fixed before the run; Round-1 model NOT re-tuned",
+  "round1": {
+   "mae_model": 1.841,
+   "mae_naive": 1.841,
+   "brier_model": 0.2514,
+   "brier_naive": 0.2509,
+   "verdict": "FAILED-EXAM"
+  }
+ }
+}

@@ -52,6 +52,7 @@ class FakePage:
 
     def __init__(self):
         self.controls = []
+        self.overlay = []
         self.navigation_bar = None
         self.services = []
         self.title = None
@@ -421,6 +422,9 @@ def main():
         {"sport": "nfl", "home": "DET", "away": "GB",
          "market": "totals", "side": "over", "line": 47.5,
          "price": -110},
+        {"sport": "nhl", "home": "Boston Bruins",
+         "away": "Toronto Maple Leafs", "market": "totals",
+         "side": "over", "line": 5.5, "price": -110},
         {"sport": "mlb", "home": "DET", "away": "NYY",
          "market": "moneyline", "side": "home", "price": -110}])
     soc_cov = next(c for c in cov if c["sport"] == "soccer"
@@ -430,20 +434,483 @@ def main():
                   and c["bet_type"] == "moneyline")
     nfl_tot = next(c for c in cov if c["sport"] == "nfl"
                    and c["bet_type"] == "totals")
+    nhl_tot = next(c for c in cov if c["sport"] == "nhl"
+                   and c["bet_type"] == "totals")
     check("Xii coverage: Serie A fixture is PRICED-capable",
           soc_cov["priced_capable"] == 1
           and soc_cov["league"] == "serie-a")
     check("Xii coverage: missing fit is named per bet type",
           any("team not in the soccer fit: FC Nowhere" in m
-              for m in soc_cov["missing"])
-          and any("no fit registered for league mlb" in m
-                  for m in mlb_cov["missing"]))
-    check("Xii coverage: bet-type grain — NFL moneyline capable "
-          "while NFL totals stamps its missing distribution",
+              for m in soc_cov["missing"]))
+    check("R2 coverage: MLB moneyline is PRICED-capable off "
+          "the fitted lane (v5-mlb.json, walk-forward passed)",
+          mlb_cov["priced_capable"] == 1
+          and ("mlb", "mlb") in leagues,
+          f"mlb_cov={mlb_cov}")
+    # R5 DISCLOSURE: this check asserted NFL totals stamps
+    # "no totals distribution". R5 wired the totals lanes
+    # (the fitted distributions, Glow's fits) into this tree
+    # for straight AND alt totals, so the truth flipped:
+    # NFL totals is now PRICED-capable in coverage too, and
+    # the check asserts the new truth.
+    check("R5 coverage: bet-type grain — NFL moneyline AND "
+          "NFL totals both PRICED-capable (totals lane wired)",
           nfl_ml["priced_capable"] == 1
-          and nfl_tot["unpriced"] == 1
-          and any("no totals distribution" in m
-                  for m in nfl_tot["missing"]))
+          and nfl_tot["priced_capable"] == 1,
+          f"nfl_tot={nfl_tot}")
+    # ---------- R2 (fix-guy): pull expansion + NFL spreads ----------
+    inv = b5.sport_inventory()
+    check("R2 inventory: all 17 tree sports pulled (NOT-PULLED "
+          "bucket closed)",
+          len(inv) == 17 and all(r["pulled"] for r in inv),
+          f"unpulled={[r['name'] for r in inv if not r['pulled']]}")
+    cov2 = b5.universal_coverage([
+        {"sport": "golf", "home": "A Player", "away": "B Player",
+         "market": "moneyline", "side": "home", "price": -110},
+        {"sport": "boxing", "home": "Fighter A", "away": "Fighter B",
+         "market": "moneyline", "side": "home", "price": -110}])
+    # R5 DISCLOSURE: the R2 wording expected the bare
+    # "no checker registered for" reason. R4 deliberately
+    # replaced that bare reason for golf/boxing with NAMED
+    # source terminals in both layers (BoxRec/DataGolf
+    # gated), so the stale expectation failed on R4's own
+    # design; the check now asserts the current truth —
+    # named terminals, never NOT-PULLED rows.
+    check("R2/R4 coverage: pulled-but-unchecked sports stamp "
+          "their named source terminals, never NOT-PULLED rows",
+          all(c["unpriced"] == 1 and any(
+              "source" in m for m in c["missing"]) for c in cov2
+              if c["bet_type"] == "moneyline")
+          and not any(c.get("not_pulled") for c in cov2))
+    # ---------- R3 (fix-guy): head-to-head lanes ----------
+    check("R3 registry: tennis tours + mma registered",
+          ("tennis", "atp") in leagues
+          and ("tennis", "wta") in leagues
+          and ("mma", "ufc") in leagues,
+          f"leagues={sorted(leagues)}")
+    _tp, _ti = b5.engine_price("tennis", "moneyline",
+                               "Novak Djokovic", "Carlos Alcaraz",
+                               side="home")
+    check("R3 tennis: ATP moneyline prices off the fitted Elo",
+          _tp is not None and 0 < _tp < 1
+          and "Tennis Elo lane (ATP" in _ti.get("detail", ""),
+          f"p={_tp} info={_ti}")
+    _wp, _wi = b5.engine_price("tennis", "moneyline",
+                               "Iga Swiatek", "Aryna Sabalenka",
+                               side="home")
+    check("R3 tennis: WTA moneyline prices (archive name form "
+          "resolved)", _wp is not None and 0 < _wp < 1
+          and "WTA" in _wi.get("detail", ""), f"p={_wp}")
+    _np, _ni = b5.engine_price("tennis", "moneyline",
+                               "A Player", "B Player", side="home")
+    check("R3 tennis: unknown player names themselves",
+          _np is None and "player not in the tennis fit" in _ni,
+          f"{_np} {_ni}")
+    _mp, _mi = b5.engine_price("mma", "moneyline",
+                               "Charles Oliveira", "Diego Lopes",
+                               side="home")
+    check("R3 mma: lane ships FAILED-EXAM with its numbers "
+          "(walk-forward did not beat naive — does not price)",
+          _mp is None and "FAILED-EXAM" in _mi
+          and "0.2454" in _mi and "0.2451" in _mi,
+          f"{_mp} {_mi}")
+    cov3 = b5.universal_coverage([
+        {"sport": "tennis", "home": "Novak Djokovic",
+         "away": "Carlos Alcaraz", "market": "moneyline",
+         "side": "home", "price": -110},
+        {"sport": "mma", "home": "Charles Oliveira",
+         "away": "Diego Lopes", "market": "moneyline",
+         "side": "home", "price": -110},
+        {"sport": "table-tennis", "home": "A B", "away": "C D",
+         "market": "moneyline", "side": "home", "price": -110}])
+    _tc = next(c for c in cov3 if c["sport"] == "tennis")
+    _mc = next(c for c in cov3 if c["sport"] == "mma")
+    _ttc = next(c for c in cov3 if c["sport"] == "table-tennis")
+    check("R3 coverage: tennis capable, mma FAILED-EXAM, table "
+          "tennis still named-unchecked (checker == coverage)",
+          _tc["priced_capable"] == 1
+          and _mc["unpriced"] == 1
+          and any("FAILED-EXAM" in m for m in _mc["missing"])
+          and any("no checker registered for table-tennis" in m
+                  for m in _ttc["missing"]),
+          f"ten={_tc} mma={_mc} tt={_ttc}")
+    check("R3 preservation: R1 CFB spread value byte-identical "
+          "(Georgia -6.5 home)",
+          abs(b5.engine_price("ncaaf", "spread", "Georgia",
+                              "Alabama", side="home", line=-6.5)[0]
+              - 0.5456033345497181) < 1e-12)
+    check("R3 preservation: R2 MLB price byte-identical "
+          "(Dodgers v Jays home)",
+          abs(b5.engine_price("mlb", "moneyline",
+                              "Los Angeles Dodgers",
+                              "Toronto Blue Jays", side="home")[0]
+              - 0.5215733330511455) < 1e-12)
+    # ---------- R4 (fix-guy): team-sport remainder ----------
+    check("R4 registry: cricket lanes + rugby + f1 registered",
+          ("cricket", "t20i_m") in leagues
+          and ("cricket", "test_m") in leagues
+          and ("rugby-union", "npc") in leagues
+          and ("rugby-league", "intl_m") in leagues
+          and ("motorsport", "f1") in leagues,
+          f"leagues={sorted(leagues)}")
+    _cp, _ci = b5.engine_price(
+        "cricket", "moneyline", "New Zealand", "India",
+        side="home", competition="International Twenty20 Matches")
+    check("R4 cricket: T20I moneyline prices off the fitted Elo",
+          _cp is not None and 0 < _cp < 1
+          and "t20i_m" in _ci.get("detail", ""), f"p={_cp}")
+    _dp, _di = b5.engine_price(
+        "cricket", "moneyline", "South Africa", "Australia",
+        side="draw", competition="Test Matches")
+    _test_blk = (b5.load_cricket().get("lanes") or {})["test_m"]
+    check("R4 cricket: the Test Draw runner prices from the "
+          "lane's fitted draw rate",
+          _dp is not None
+          and abs(_dp - _test_blk["draw_rate"]) < 1e-9,
+          f"p={_dp} rate={_test_blk.get('draw_rate')}")
+    _lp, _li = b5.engine_price(
+        "cricket", "moneyline", "Denmark", "Papua New Guinea",
+        side="home",
+        competition="ICC Cricket World Cup Challenge League")
+    check("R4 cricket: Challenge League lane ships FAILED-EXAM "
+          "with its numbers (does not price)",
+          _lp is None and "FAILED-EXAM" in _li
+          and "0.2253" in _li and "0.2234" in _li, f"{_li}")
+    _rp, _ri = b5.engine_price(
+        "rugby-union", "spread", "Canterbury", "Northland",
+        side="home", line=-6.5, competition="New Zealand - NPC")
+    check("R4 rugby union: NPC spread prices off the margin map",
+          _rp is not None and 0 < _rp < 1
+          and "margin map" in _ri.get("detail", ""), f"p={_rp}")
+    _gp, _gi = b5.engine_price(
+        "rugby-league", "moneyline", "Australia", "Fiji",
+        side="home", competition="World Cup - Men")
+    check("R4 rugby league: international lane ships "
+          "FAILED-EXAM with its numbers (does not price)",
+          _gp is None and "FAILED-EXAM" in _gi
+          and "0.2392" in _gi and "0.2308" in _gi, f"{_gi}")
+    _bp, _bi = b5.engine_price("boxing", "moneyline", "Alvarez",
+                               "Mbilli", side="home")
+    check("R4 boxing: named source terminal (BoxRec gated), "
+          "no toy-data Elo",
+          _bp is None and "BoxRec" in _bi and "403" in _bi,
+          f"{_bi}")
+    # R4 competition truth: checker and coverage print the SAME
+    # competition stamp for WNBA/NBL markets filed under "nba".
+    _ctxv = {"verified": True}
+    _wn = {"sport": "nba", "home": "Golden State Valkyries",
+           "away": "Atlanta Dream", "market": "moneyline",
+           "side": "home", "price": 120}
+    _wn_chk = b5.run_checker(_wn, _ctxv)
+    _wn_cov = next(c for c in b5.universal_coverage([_wn])
+                   if c["sport"] == "nba")
+    _wp_chk = b5.run_checker(
+        {**_wn, "market": "player-props",
+         "player": "Kayla Thornton", "stat": "points",
+         "side": "over", "line": 12.5}, _ctxv)
+    _nbl = {"sport": "nba", "home": "Cairns Taipans",
+            "away": "New Zealand Breakers",
+            "market": "team-props", "team": "home",
+            "side": "over", "line": 85.5, "price": -110}
+    _nbl_chk = b5.run_checker(_nbl, _ctxv)
+    _nbl_cov = next(c for c in b5.universal_coverage([_nbl])
+                    if c["sport"] == "nba")
+    check("R4 competition truth: WNBA moneyline + WNBA prop + "
+          "NBL team total name their real competitions in BOTH "
+          "layers",
+          "WNBA" in _wn_chk["note"]
+          and any("WNBA" in m for m in _wn_cov["missing"])
+          and "WNBA" in _wp_chk["note"]
+          and "NBL (Australia)" in _nbl_chk["note"]
+          and any("NBL (Australia)" in m
+                  for m in _nbl_cov["missing"]),
+          f"{_wn_chk['note']} || {_nbl_chk['note']}")
+    # R4 MLB alignment: checker state == coverage priced_capable
+    # on codes, full names, a spread, and an NPB fixture — the
+    # shared mlb_lane_gate/mlb_membership make them agree.
+    _mlb_cases = [
+        {"sport": "mlb", "home": "DET", "away": "NYY",
+         "market": "moneyline", "side": "home", "price": 120},
+        {"sport": "mlb", "home": "Detroit Tigers",
+         "away": "New York Yankees", "market": "moneyline",
+         "side": "home", "price": 120},
+        {"sport": "mlb", "home": "Detroit Tigers",
+         "away": "New York Yankees", "market": "spread",
+         "side": "home", "line": 1.5, "price": 120},
+        {"sport": "mlb", "home": "Yokohama Dena Baystars",
+         "away": "Fukuoka Hawks", "market": "moneyline",
+         "side": "home", "price": 152}]
+    _agree = True
+    _npb_named = True
+    for _m in _mlb_cases:
+        _st = b5.run_checker(_m, _ctxv)["state"]
+        _cell = next(c for c in b5.universal_coverage([_m])
+                     if c["sport"] == "mlb")
+        if (_st == "PRICED") != (_cell["priced_capable"] == 1):
+            _agree = False
+    _npb_chk = b5.run_checker(_mlb_cases[3], _ctxv)
+    _npb_cov = next(c for c in b5.universal_coverage(
+        [_mlb_cases[3]]) if c["sport"] == "mlb")
+    _npb_named = ("NPB (Japan)" in _npb_chk["note"]
+                  and any("NPB (Japan)" in m
+                          for m in _npb_cov["missing"]))
+    check("R4 MLB alignment: checker and coverage agree on "
+          "every case (shared resolver), NPB named in both",
+          _agree and _npb_named, f"agree={_agree}")
+    # R4 athlete index: a non-legacy player resolves + prices
+    # from the bundled cache layout (the pack the seeder ships).
+    _old_cache = b5.CACHE
+    b5.CACHE = os.path.join(HERE, "data", "cache")
+    b5._FIT_CACHE.clear()
+    try:
+        _series = b5.gamelog_series_cached("Jalen Green",
+                                           "points")
+        _band = b5.prop_band("Jalen Green", "points", 19.5,
+                             "over")
+        _idx_ok = len(_series) >= 10 and _band is not None
+    except Exception as _e:  # noqa: BLE001
+        _idx_ok = False
+        _series, _band = [], str(_e)
+    finally:
+        b5.CACHE = _old_cache
+        b5._FIT_CACHE.clear()
+    check("R4 props: non-legacy player (Jalen Green) resolves "
+          "via the athlete index and prices from the cache",
+          _idx_ok, f"series={len(_series) if isinstance(_series, list) else _series}")
+    _fut = b5.run_checker(
+        {"sport": "golf", "home": "Butterfield Bermuda "
+         "Championship", "away": "Group A", "market": "futures",
+         "side": "home", "price": None}, _ctxv)
+    _f1f = b5.run_checker(
+        {"sport": "motorsport", "home": "United States Grand "
+         "Prix", "away": "Race Winner", "market": "futures",
+         "side": "home", "price": None}, _ctxv)
+    check("R4 futures terminals: golf names the gated source, "
+          "F1 names its FAILED-EXAM",
+          "DataGolf" in _fut["note"]
+          and "FAILED-EXAM" in _f1f["note"]
+          and "2.5036" in _f1f["note"],
+          f"{_fut['note'][:60]} || {_f1f['note'][:60]}")
+    # ---------- R5 (fix-guy): alt lines, segments, F1 refit,
+    # soccer outrights ----------
+    _alt_a = b5.run_checker(
+        {"sport": "nfl", "home": "GB", "away": "DAL",
+         "market": "spread", "side": "home", "line": -3.5,
+         "price": -110}, _ctxv)
+    _alt_b = b5.run_checker(
+        {"sport": "nfl", "home": "GB", "away": "DAL",
+         "market": "alt-spread", "side": "home", "line": -3.5,
+         "price": -110}, _ctxv)
+    _alt_c = b5.run_checker(
+        {"sport": "nfl", "home": "GB", "away": "DAL",
+         "market": "totals", "side": "over", "line": 47.5,
+         "price": -110}, _ctxv)
+    _alt_d = b5.run_checker(
+        {"sport": "nfl", "home": "GB", "away": "DAL",
+         "market": "alt-total", "side": "over", "line": 47.5,
+         "price": -110}, _ctxv)
+    check("R5 alt parity: at the main line the alt form's "
+          "price equals the straight form's exactly (spread "
+          "and total)",
+          _alt_a["state"] == _alt_b["state"] == "PRICED"
+          and abs(_alt_a["p"] - _alt_b["p"]) <= 1e-9
+          and _alt_c["state"] == _alt_d["state"] == "PRICED"
+          and abs(_alt_c["p"] - _alt_d["p"]) <= 1e-9,
+          f"{_alt_a['p']} vs {_alt_b['p']}; "
+          f"{_alt_c['p']} vs {_alt_d['p']}")
+    _nhl_alt = b5.run_checker(
+        {"sport": "nhl", "home": "EDM", "away": "COL",
+         "market": "alt-total", "side": "over", "line": 6.5,
+         "price": -110}, _ctxv)
+    check("R5 totals: NHL alt-total stamps the lane's "
+          "FAILED-EXAM with its numbers (never prices)",
+          _nhl_alt["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _nhl_alt["note"]
+          and "0.2626" in _nhl_alt["note"],
+          f"{_nhl_alt['note'][:80]}")
+    _seg_nfl = b5.run_checker(
+        {"sport": "nfl", "home": "GB", "away": "DAL",
+         "market": "segment", "segment": "1st half"}, _ctxv)
+    _seg_ll = b5.run_checker(
+        {"sport": "soccer", "home": "Real Madrid",
+         "away": "Getafe", "market": "segment",
+         "segment": "1st half", "side": "over", "line": 1.5,
+         "price": -110}, _ctxv)
+    _seg_epl = b5.run_checker(
+        {"sport": "soccer", "home": "LIV", "away": "ARS",
+         "market": "segment", "segment": "1st half",
+         "side": "over", "line": 1.5, "price": -110}, _ctxv)
+    check("R5 segments: NFL 1H stamps FAILED-EXAM with its "
+          "numbers; La Liga 1H prices off the half-share "
+          "grid; EPL 1H total stamps FAILED-EXAM",
+          _seg_nfl["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _seg_nfl["note"]
+          and "7.461" in _seg_nfl["note"]
+          and _seg_ll["state"] == "PRICED"
+          and _seg_epl["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _seg_epl["note"],
+          f"{_seg_nfl['note'][:60]} || {_seg_ll['state']} || "
+          f"{_seg_epl['note'][:60]}")
+    _out = b5.run_checker(
+        {"sport": "soccer", "home": "Arsenal", "away": "x",
+         "market": "futures", "competition": "Premier League",
+         "runner": "Arsenal", "price": 250}, _ctxv)
+    _out_doc = b5.load_outrights() or {}
+    _ars = ((_out_doc.get("leagues") or {}).get("epl")
+            or {}).get("shares", {}).get("ARS")
+    check("R5 futures: an EPL outright selection prices at "
+          "the simulated title share on file",
+          _out["state"] == "PRICED" and _ars is not None
+          and abs(_out["p"] - _ars) < 1e-9,
+          f"{_out['state']} p={_out['p']} file={_ars}")
+    check("R5 futures: the F1 stamp chain carries BOTH "
+          "attempts' numbers (terminal FAILED-EXAM)",
+          "2.5036" in _f1f["note"] and "2.2126" in _f1f["note"]
+          and "TERMINAL" in _f1f["note"],
+          f"{_f1f['note'][:100]}")
+    _epl_reg = next(e for e in reg if e["sport"] == "soccer"
+                    and e["league"] == "epl")
+    _nba_reg = next(e for e in reg if e["sport"] == "nba")
+    check("R5 registry: EPL futures PRICED-capable (pilot "
+          "PASS), NBA segment FAILED-EXAM with numbers",
+          "PRICED-capable" in _epl_reg["bet_types"].get(
+              "futures", "")
+          and "FAILED-EXAM" in _nba_reg["bet_types"].get(
+              "segment", ""),
+          f"{_epl_reg['bet_types'].get('futures')}")
+    # ---------- R6 (fix-guy): per-form soccer 1H, NCAAF +
+    # quarter segment exams, per-league outrights, tennis
+    # futures FORM TERMINAL ----------
+    _seg_epl_res = b5.run_checker(
+        {"sport": "soccer", "home": "LIV", "away": "ARS",
+         "market": "segment", "segment": "1st half",
+         "side": "home", "price": -110}, _ctxv)
+    _seg_sa_res = b5.run_checker(
+        {"sport": "soccer", "home": "Inter",
+         "away": "Fiorentina", "market": "segment",
+         "segment": "1st half", "side": "home",
+         "price": -110}, _ctxv)
+    check("R6 segments: soccer 1H prices PER FORM — EPL + "
+          "Serie A 1H results price (their results passed), "
+          "EPL 1H total still stamps FAILED-EXAM quoting "
+          "both forms' numbers",
+          _seg_epl_res["state"] == "PRICED"
+          and _seg_sa_res["state"] == "PRICED"
+          and _seg_epl["state"] == "UNPRICED"
+          and "per-form" in _seg_epl["note"]
+          and "0.2302" in _seg_epl["note"]
+          and "0.6378" in _seg_epl["note"],
+          f"{_seg_epl_res['state']} / {_seg_sa_res['state']} "
+          f"|| {_seg_epl['note'][:80]}")
+    _seg_q = {}
+    for _sp, _sg, _nn in (("nba", "1st quarter", "n=2519"),
+                          ("nfl", "1st quarter", "n=512")):
+        _seg_q[_sp] = b5.run_checker(
+            {"sport": _sp,
+             "home": "GB" if _sp == "nfl" else "Boston Celtics",
+             "away": "DAL" if _sp == "nfl" else "New York Knicks",
+             "market": "segment", "segment": _sg,
+             "side": "home", "price": -110}, _ctxv)
+    _seg_cfb = b5.run_checker(
+        {"sport": "ncaaf", "home": "Georgia", "away": "Alabama",
+         "market": "segment", "segment": "1st half",
+         "side": "home", "price": -110}, _ctxv)
+    check("R6 segments: NBA/NFL 1Q + NCAAF 1H are EXAMINED "
+          "cells (FAILED-EXAM with walk-forward numbers, "
+          "never 'not fitted')",
+          all(v["state"] == "UNPRICED"
+              and "FAILED-EXAM" in v["note"]
+              for v in _seg_q.values())
+          and "n=2519" in _seg_q["nba"]["note"]
+          and "n=512" in _seg_q["nfl"]["note"]
+          and _seg_cfb["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _seg_cfb["note"]
+          and "n=1778" in _seg_cfb["note"]
+          and "1878" in _seg_cfb["note"],
+          f"{_seg_q['nba']['note'][:60]} || "
+          f"{_seg_cfb['note'][:60]}")
+    _tf = b5.run_checker(
+        {"sport": "tennis", "home": "ATP Finals 2026",
+         "away": "Tournament Winner", "market": "futures",
+         "price": None}, _ctxv)
+    check("R6 futures: tennis tournament winners are FORM "
+          "TERMINAL (draw-dependent; no raw-Elo shortcut)",
+          _tf["state"] == "UNPRICED"
+          and "FORM TERMINAL" in _tf["note"]
+          and "draw-aware tournament simulator" in _tf["note"],
+          f"{_tf['note'][:80]}")
+    _out6 = b5.load_outrights() or {}
+    _lg6 = _out6.get("leagues") or {}
+    _ok6, _det6 = True, []
+    for _key, _lg in sorted(_lg6.items()):
+        _ex = _lg.get("exam") or {}
+        _shares = _lg.get("shares") or {}
+        if _ex.get("verdict") == "PASS" and _shares:
+            _code = max(_shares, key=_shares.get)
+            _nm = (_lg.get("names") or {}).get(_code, _code)
+            _comp = {"epl": "Premier League",
+                     "la-liga": "La Liga",
+                     "bundesliga": "Bundesliga",
+                     "serie-a": "Serie A",
+                     "ligue-1": "Ligue 1",
+                     "mls": "Major League Soccer",
+                     "championship": "EFL Championship",
+                     "serie-b": "Serie B",
+                     "la-liga-2": "La Liga 2",
+                     "bundesliga-2": "2. Bundesliga",
+                     "ligue-2": "Ligue 2"}[_key]
+            _v = b5.run_checker(
+                {"sport": "soccer", "home": _nm, "away": "x",
+                 "market": "futures", "competition": _comp,
+                 "runner": _nm, "price": 500}, _ctxv)
+            _good = (_v["state"] == "PRICED"
+                     and abs(_v["p"] - _shares[_code]) < 1e-9)
+            _det6.append(f"{_key}:{'P' if _good else 'X'}")
+            _ok6 = _ok6 and _good
+        elif _ex:
+            _comp = {"epl": "Premier League",
+                     "la-liga": "La Liga",
+                     "bundesliga": "Bundesliga",
+                     "serie-a": "Serie A",
+                     "ligue-1": "Ligue 1",
+                     "mls": "Major League Soccer",
+                     "championship": "EFL Championship",
+                     "serie-b": "Serie B",
+                     "la-liga-2": "La Liga 2",
+                     "bundesliga-2": "2. Bundesliga",
+                     "ligue-2": "Ligue 2"}[_key]
+            _v = b5.run_checker(
+                {"sport": "soccer", "home": "x", "away": "x",
+                 "market": "futures", "competition": _comp,
+                 "runner": "x", "price": 500}, _ctxv)
+            _good = (_v["state"] == "UNPRICED"
+                     and "FAILED-EXAM" in _v["note"]
+                     and str(_ex.get("mean_brier_model"))
+                     in _v["note"])
+            _det6.append(f"{_key}:{'F' if _good else 'X'}")
+            _ok6 = _ok6 and _good
+    check("R6 futures: per-league outright exams — every "
+          "passing league prices its runners at the file "
+          "shares, every failing league stamps its own "
+          "numbers", _ok6 and len(_det6) >= 5,
+          " ".join(_det6))
+    _cfb_reg = next(e for e in reg if e["sport"] == "ncaaf")
+    check("R6 registry: NCAAF segment reads its exam; EPL "
+          "segment reads per-form",
+          "FAILED-EXAM" in _cfb_reg["bet_types"].get(
+              "segment", "")
+          and "1H RESULT" in _epl_reg["bet_types"].get(
+              "segment", ""),
+          f"{_cfb_reg['bet_types'].get('segment')}")
+    _p, _info = b5.engine_price("nfl", "spread", "MIN", "SF",
+                                side="home", line=-3.5)
+    check("R2 NFL spreads: an off-slate fixture prices from the "
+          "ratings-derived fair (validated map)",
+          _p is not None and "derived" in _info.get("detail", ""),
+          f"p={_p} info={_info}")
+    check("R2 menus: per-game menu refresh is wired into the "
+          "pull (cap constant + engine harvester)",
+          app.EVENT_MENU_CAP > 0 and hasattr(b5, "fd_event_menu"))
     _fams = {(e["sport"]) for e in reg}
     check("Xii registry: every lane family present with its "
           "specialized math + bet types",
@@ -495,6 +962,308 @@ def main():
     check("Xii: Serie A prices off the leagues fit",
           b5.engine_price("soccer", "moneyline", "Inter",
                           "Fiorentina", side="home")[0] is not None)
+    # ---------- R7 (fix-guy): ESPN soccer 1H, NCAAF
+    # quarters, NHL period forms, second-tier outrights —
+    # the R6 remainder, closed ----------
+    _seg_doc7 = b5.load_segments() or {}
+    _soc7 = _seg_doc7.get("soccer-1h") or {}
+    _espn7 = ("mls", "brasileirao", "liga-mx",
+              "liga-profesional", "brasileirao-b", "nacional-b",
+              "usl-championship", "usl-league-one", "peru-liga-1",
+              "colombia-primera", "ecuador-ligapro",
+              "uruguay-primera", "paraguay-primera",
+              "bolivia-profesional", "venezuela-primera",
+              "costa-rica-primera", "guatemala-liga",
+              "chile-primera", "nwsl", "liga-mx-femenil",
+              "wsl", "a-league-women", "a-league",
+              "brasileirao-c", "primera-b-ar", "liga-expansion")
+    check("R7 segments: every ESPN-sourced soccer league "
+          "carries a terminal 1H block (examined per form "
+          "or NO-DATA with evidence)",
+          all(_soc7.get(k, {}).get("status") in
+              ("FITTED", "FAILED-EXAM", "NO-DATA")
+              for k in _espn7)
+          and all(k in _soc7 for k in _espn7),
+          ", ".join(f"{k}:{_soc7.get(k, {}).get('status')}"
+                    for k in _espn7[:6]) + " ...")
+    _seg_mls_res = b5.run_checker(
+        {"sport": "soccer", "home": "Inter Miami CF",
+         "away": "LA Galaxy", "market": "segment",
+         "segment": "1st half", "side": "home",
+         "price": -110}, _ctxv)
+    _seg_mls_tot = b5.run_checker(
+        {"sport": "soccer", "home": "Inter Miami CF",
+         "away": "LA Galaxy", "market": "segment",
+         "segment": "1st half", "side": "over", "line": 1.5,
+         "price": -110}, _ctxv)
+    _seg_bra_res = b5.run_checker(
+        {"sport": "soccer", "home": "Flamengo",
+         "away": "Botafogo", "market": "segment",
+         "segment": "1st half", "side": "home",
+         "price": -110}, _ctxv)
+    _seg_bra_tot = b5.run_checker(
+        {"sport": "soccer", "home": "Flamengo",
+         "away": "Botafogo", "market": "segment",
+         "segment": "1st half", "side": "over", "line": 1.5,
+         "price": -110}, _ctxv)
+    check("R7 segments: ESPN soccer 1H prices PER FORM — "
+          "MLS result + total price (both passed), "
+          "Brasileirao result prices while its total stamps "
+          "FAILED-EXAM with its numbers",
+          _seg_mls_res["state"] == "PRICED"
+          and _seg_mls_tot["state"] == "PRICED"
+          and "ESPN" in _seg_mls_res["note"]
+          and _seg_bra_res["state"] == "PRICED"
+          and _seg_bra_tot["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _seg_bra_tot["note"]
+          and "0.2135" in _seg_bra_tot["note"],
+          f"{_seg_mls_res['state']}/{_seg_mls_tot['state']}/"
+          f"{_seg_bra_res['state']} || "
+          f"{_seg_bra_tot['note'][:80]}")
+    _nodata7 = [k for k in _espn7
+                if _soc7.get(k, {}).get("status") == "NO-DATA"]
+    check("R7 segments: NO-DATA leagues (if any) carry "
+          "their evidence in the artifact",
+          all((_soc7[k].get("evidence") and
+               (_soc7[k].get("coverage") or {})
+               .get("games_completed") is not None)
+              for k in _nodata7),
+          f"NO-DATA leagues: {_nodata7}")
+    _seg_cfb_q = {}
+    for _sg in ("1st quarter", "2nd quarter"):
+        _seg_cfb_q[_sg] = b5.run_checker(
+            {"sport": "ncaaf", "home": "Georgia",
+             "away": "Alabama", "market": "segment",
+             "segment": _sg, "side": "home", "price": -110},
+            _ctxv)
+    check("R7 segments: NCAAF 1Q + 2Q are EXAMINED cells "
+          "(FAILED-EXAM with walk-forward numbers on the "
+          "rebuilt linescore pull, n=1822 each)",
+          all(v["state"] == "UNPRICED"
+              and "FAILED-EXAM" in v["note"]
+              and "n=1822" in v["note"]
+              for v in _seg_cfb_q.values()),
+          " || ".join(v["note"][:60]
+                      for v in _seg_cfb_q.values()))
+    _seg_nhl_2p_t = b5.run_checker(
+        {"sport": "nhl", "home": "BOS", "away": "NYR",
+         "market": "segment", "segment": "2nd period",
+         "side": "over", "line": 1.5, "price": -110}, _ctxv)
+    _seg_nhl_2p_m = b5.run_checker(
+        {"sport": "nhl", "home": "BOS", "away": "NYR",
+         "market": "segment", "segment": "2nd period",
+         "side": "home", "price": -110}, _ctxv)
+    _seg_nhl_1p_m = b5.run_checker(
+        {"sport": "nhl", "home": "BOS", "away": "NYR",
+         "market": "segment", "segment": "1st period",
+         "side": "home", "price": -110}, _ctxv)
+    _seg_nhl_3p_t = b5.run_checker(
+        {"sport": "nhl", "home": "BOS", "away": "NYR",
+         "market": "segment", "segment": "3rd period",
+         "side": "over", "line": 1.5, "price": -110}, _ctxv)
+    check("R7 segments: NHL period forms are EXAMINED per "
+          "period per form (2P/3P totals + period moneylines "
+          "stamp FAILED-EXAM with their own numbers)",
+          _seg_nhl_2p_t["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _seg_nhl_2p_t["note"]
+          and "0.2399" in _seg_nhl_2p_t["note"]
+          and _seg_nhl_2p_m["state"] == "UNPRICED"
+          and "FAILED-EXAM" in _seg_nhl_2p_m["note"]
+          and "0.6686" in _seg_nhl_2p_m["note"]
+          and _seg_nhl_1p_m["state"] == "UNPRICED"
+          and "0.6759" in _seg_nhl_1p_m["note"]
+          and _seg_nhl_3p_t["state"] == "UNPRICED"
+          and "0.2309" in _seg_nhl_3p_t["note"],
+          f"{_seg_nhl_2p_t['note'][:70]} || "
+          f"{_seg_nhl_2p_m['note'][:70]}")
+    _out7 = b5.load_outrights() or {}
+    _lg7 = _out7.get("leagues") or {}
+    _t2 = ("championship", "serie-b", "la-liga-2",
+           "bundesliga-2", "ligue-2")
+    check("R7 futures: second-tier title outrights are "
+          "EXAMINED per league (Monte Carlo protocol, same "
+          "bar — an exam block with a verdict for each)",
+          all((_lg7.get(k, {}).get("exam") or {})
+              .get("verdict") in ("PASS", "FAILED-EXAM")
+              for k in _t2),
+          ", ".join(f"{k}:"
+                    f"{(_lg7.get(k, {}).get('exam') or {}).get('verdict')}"
+                    for k in _t2))
+    _nhl_reg7 = next(e for e in reg if e["sport"] == "nhl")
+    _cfb_reg7 = next(e for e in reg if e["sport"] == "ncaaf")
+    check("R7 registry: NHL segment line reads all three "
+          "periods per form; NCAAF line reads 1Q + 2Q exams",
+          "2P:" in _nhl_reg7["bet_types"].get("segment", "")
+          and "3P:" in _nhl_reg7["bet_types"].get("segment", "")
+          and "2Q:" in _cfb_reg7["bet_types"].get(
+              "segment", ""),
+          f"{_nhl_reg7['bet_types'].get('segment', '')[:90]} "
+          f"|| {_cfb_reg7['bet_types'].get('segment', '')[:90]}")
+
+    # ---------- v12 panel update: segments, Coverage,
+    # Registry, Edge Landscape, slip correlation, viewer,
+    # cross-nav ----------
+    _panel_sample = [
+        {"sport": "soccer", "home": "Inter", "away": "Fiorentina",
+         "market": "moneyline", "side": "home", "price": -145},
+        {"sport": "soccer", "home": "Inter", "away": "FC Nowhere",
+         "market": "moneyline", "side": "home", "price": -145},
+        {"sport": "nfl", "home": "DET", "away": "GB",
+         "market": "moneyline", "side": "home", "price": -150}]
+    _cov_rows = app.coverage_rows(_panel_sample)
+    _serie = next((r for r in _cov_rows
+                   if r["league"] == "serie-a"), None)
+    check("panel coverage: per-league rows, priced share "
+          "strictly between 0 and 1",
+          _serie is not None and _serie["markets"] == 2
+          and _serie["priced"] == 1
+          and 0.0 < _serie["share"] < 1.0,
+          f"rows={_cov_rows}")
+    _cov_txt = texts(ft.Column(controls=app.build_coverage_section(
+        _panel_sample, stamp="Pull: test · VERIFIED")))
+    check("panel coverage: section renders share, pull stamp "
+          "and the named gap",
+          any("1/2 priced" in t for t in _cov_txt)
+          and any("Pull: test" in t for t in _cov_txt)
+          and any("FC Nowhere" in t for t in _cov_txt),
+          f"texts={_cov_txt[:6]}")
+    _tiles = app.registry_tiles()
+    check("panel registry: tiles carry kind, covered count, "
+          "backtest text, unified status",
+          len(_tiles) >= 50
+          and all(t["backtest_text"] for t in _tiles)
+          and all(t["status"] for t in _tiles)
+          and any("Brier" in t["backtest_text"] for t in _tiles),
+          f"n={len(_tiles)}")
+    _reg_txt = texts(ft.Column(
+        controls=app.build_registry_section()))
+    check("panel registry: tiles speak the purged language "
+          "(no raw FAILED-EXAM, no fit file names)",
+          any("Registry" in t for t in _reg_txt)
+          and not any("FAILED-EXAM" in t for t in _reg_txt)
+          and not any(".json" in t for t in _reg_txt))
+    _mk_entries = []
+    for i in range(80):
+        _mk_entries.append((
+            {"sport": "nfl", "home": f"H{i}", "away": f"A{i}",
+             "market": "moneyline", "side": "home",
+             "price": -110},
+            {"state": "PRICED", "p": 0.40 + (i % 40) / 100.0,
+             "grade": "—"},
+            float(i % 17) - 8.0))
+    _land = app.edge_landscape_data(_mk_entries)
+    check("panel landscape: points capped at the stated budget; "
+          "tap detail names the market + the value diagonal",
+          len(_land["points"]) == app.EDGE_LANDSCAPE_CAP
+          and _land["total"] == 80 and _land["capped"]
+          and "diagonal" in _land["points"][0]["detail"],
+          f"land={ {k: _land[k] for k in ('total', 'capped')} }")
+    _land_txt = texts(ft.Column(
+        controls=app.build_edge_landscape(_mk_entries)))
+    check("panel landscape: plotting area + axis labels + the "
+          "cap stated on the surface",
+          any("EDGE LANDSCAPE" in t for t in _land_txt)
+          and any("implied" in t for t in _land_txt)
+          and any("largest" in t for t in _land_txt))
+    _slip_legs = [
+        {"sport": "nfl", "home": "DET", "away": "GB",
+         "market": "moneyline", "side": "home", "price": -150},
+        {"sport": "nfl", "home": "DET", "away": "GB",
+         "market": "totals", "side": "over", "line": 47.5,
+         "price": -110},
+        {"sport": "nfl", "home": "KC", "away": "BUF",
+         "market": "moneyline", "side": "home", "price": -120}]
+    _corr = app.slip_correlation(_slip_legs)
+    check("panel slip correlation: same-game legs cluster, the "
+          "spread leg stands alone",
+          _corr["n_clustered"] == 2
+          and any(c["kind"] == "same game"
+                  for c in _corr["clusters"])
+          and len(_corr["singles"]) == 1,
+          f"corr={_corr}")
+    _corr_txt = texts(ft.Column(controls=app.build_slip_correlation(
+        [(m, {}) for m in _slip_legs])))
+    check("panel slip correlation: the warning is printed in "
+          "plain words",
+          any("one bet in costumes" in t for t in _corr_txt))
+    check("panel viewer: zoom clamps to [1, 6]",
+          app.viewer_zoom_clamp(0.2) == 1.0
+          and app.viewer_zoom_clamp(9) == 6.0
+          and app.viewer_zoom_clamp(2.5) == 2.5
+          and app.viewer_zoom_clamp("x") == 1.0)
+    _sheet = app.build_viewer_sheet(
+        "T", "Pull: test", 2.0, [ft.Text("body")],
+        on_zoom=lambda f: None, on_close=lambda e: None)
+    _ivs = [c for c in walk(_sheet)
+            if type(c).__name__ == "InteractiveViewer"]
+    check("panel viewer: sheet carries a pinch/pan "
+          "InteractiveViewer clamped to [1, 6]",
+          len(_ivs) == 1 and _ivs[0].min_scale == 1.0
+          and _ivs[0].max_scale == 6.0)
+
+    # live drive: the panel segments on the real page
+    page.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=3)))
+    stage = switcher.content
+    pseg = next(c for c in walk(stage)
+                if type(c).__name__ == "SegmentedButton")
+    check("panel: segmented control carries Charts | Coverage "
+          "| Instruments | Registry",
+          {s.value for s in pseg.segments}
+          == {"charts", "coverage", "instruments", "registry"})
+    pseg.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"coverage"})))
+    cov_live = texts(switcher.content)
+    check("panel: Coverage segment renders priced share + pull "
+          "stamp on the live pull",
+          any("Coverage" in t for t in cov_live)
+          and any("priced" in t for t in cov_live)
+          and any("Pull:" in t for t in cov_live))
+    pseg.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"registry"})))
+    check("panel: Registry segment renders league tiles",
+          any("Registry" in t for t in texts(switcher.content)))
+    pseg.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"instruments"})))
+    inst_live = texts(switcher.content)
+    check("panel: Instruments segment keeps the snapshot shelf "
+          "and prints the current pull time beside it",
+          any("SNAPSHOT INSTRUMENTS" in t for t in inst_live)
+          and any("Current pull:" in t for t in inst_live))
+    pseg.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"coverage"})))
+    league_row = next(
+        c for c in walk(switcher.content)
+        if type(c).__name__ == "Container"
+        and getattr(c, "on_click", None) is not None
+        and (getattr(c, "tooltip", "") or "").startswith("Open "))
+    league_row.on_click(SimpleNamespace())
+    board_txt = texts(switcher.content)
+    check("panel cross-nav: league tap lands on the Board with "
+          "the league filter named",
+          any("League:" in t for t in board_txt)
+          and any(getattr(c, "content", "") == "Back to 3D panel"
+                  for c in walk(switcher.content)),
+          f"board={board_txt[:4]}")
+    back_btn = next(
+        c for c in walk(switcher.content)
+        if type(c).__name__ == "TextButton"
+        and getattr(c, "content", "") == "Back to 3D panel")
+    back_btn.on_click(SimpleNamespace())
+    check("panel cross-nav: back returns to the panel segment "
+          "it came from",
+          any("Coverage" in t for t in texts(switcher.content)))
+    page.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=0)))
+    chart_btn = next(
+        c for c in walk(switcher.content)
+        if type(c).__name__ == "TextButton"
+        and getattr(c, "content", "")
+        == "Chart — see this market in the 3D panel")
+    chart_btn.on_click(SimpleNamespace())
+    check("panel cross-nav: a card's Chart affordance opens the "
+          "Charts segment",
+          any("Xii Charts" in t for t in texts(switcher.content)))
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

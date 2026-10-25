@@ -90,6 +90,34 @@ distribution exists AND has a scored record, totals print UNPRICED,
 grade cap C, DO NOT BET (soccer totals DO price — off the Poisson grid,
 which is a real fitted scoring distribution).
 
+Totals, US lanes (Xii FIX-THE-LAZINESS, CODER GLOW): the stub above
+is now CLOSED lane by lane where a real distribution earned it.
+tools/fit_totals.py fits per-team off/def scoring rates x the
+league's own home/away scoring environment (Normal totals for
+nfl/ncaaf/nba, Poisson for nhl), walk-forward against the naive
+league-average baseline. Lanes that PASS price totals through
+totals_price() with the lane tagged UNTESTED (no scored totals
+record exists yet — the tag, not a cap, carries that fact). A lane
+whose fit FAILS its walk-forward ships FAILED-EXAM in its fit file
+and keeps stamping UNPRICED with the exam numbers printed. NHL is
+FAILED-EXAM as of this build (see data/v5-totals-nhl.json).
+
+Round 2 (CODER GLOW): TEAM totals are their own cell — a team's
+own scoring distribution (v5-teamtotals-<lane>.json), fitted and
+examined separately from the game total; all four lanes PASSED
+their team-level walk-forward (NFL/NCAAF/NBA solidly, NHL thinly)
+and price through team_totals_price(). NHL GAME totals got their
+one allowed refit with genuinely new information (starting-goalie
+environment at 100% coverage of 1,312 games + rest/back-to-back
+multipliers) and FAILED again (MAE 1.873 vs naive 1.841, Brier
+0.2626 vs 0.2509) — terminally FAILED-EXAM for this loop; the
+attempt lives in the fit file's refit_attempt_2 block. Props:
+tools/fetch_gamelogs.py resolves players from a live pull to
+ESPN athlete ids (search v2) and caches their game logs +
+data/cache/athlete_index.json; athlete_info() reads that index,
+so a prop prices whenever the player's log is on file and stays
+UNPRICED BY NAME when it is not.
+
 Props from scoring plays — SCOPED, not built (see
 prop_from_scoring_plays): the ESPN athlete-stats routes 404 here
 and the game-summary payload in this environment carries no
@@ -173,7 +201,39 @@ FANDUEL_EVENT_ENDPOINT = "/event-page"
 FANDUEL_PRICES_ENDPOINT = ("/api/sports/fixedodds/readonly/v1/"
                            "getMarketPrices")   # SMP host, POST
 FANDUEL_EVENT_TYPES = {"nfl": 6423, "nba": 7522, "mlb": 7511,
-                       "nhl": 7524, "soccer": 1}
+                       "nhl": 7524, "soccer": 1,
+                       # v5.4 fix-guy R2: the rest of FanDuel's
+                       # own menu tree (application-context
+                       # EVENT_TYPES, enumerated live R1). These
+                       # pages ARE pulled now — their markets
+                       # arrive and stamp UNPRICED with a
+                       # sport-level named reason until a checker
+                       # is fitted for them. Invisible -> named.
+                       "tennis": 2, "mma": 26420387, "golf": 3,
+                       "boxing": 6, "cricket": 4, "darts": 3503,
+                       "motorsport": 8, "rugby-union": 5,
+                       "rugby-league": 1477, "lacrosse": 28608997,
+                       "snooker": 6422, "table-tennis": 2593174}
+# Engine keys for tree sports that are pulled but have NO
+# checker/fit yet (R2). engine_price and universal_coverage
+# stamp them with the sport-level named reason.
+# R3 (fix-guy): tennis and mma left this list — both have
+# fitted lanes now (v5-tennis.json / v5-mma.json). Table
+# tennis, snooker and darts were ATTEMPTED in R3 and stay:
+# no public match-results source exists for them (evidence
+# in SPORT_CLOSERS / XII-SPORT-INVENTORY.md).
+# R4 (fix-guy): cricket, rugby league, rugby union and
+# motorsport left this list — each has a fitted + examined
+# lane now (v5-cricket.json / v5-rugby.json / v5-f1.json;
+# several lanes FAILED their exams and stamp FAILED-EXAM
+# from their own branches, which is a verdict, not an
+# absence). Golf, boxing and lacrosse stay: their branches
+# stamp NAMED source/form terminals (BoxRec + DataGolf are
+# gated — evidence in SPORT_CLOSERS), never a bare
+# "no checker".
+UNCHECKED_SPORTS = ("golf", "boxing",
+                    "darts", "lacrosse", "snooker",
+                    "table-tennis")
 FANDUEL_TIMEZONE = "America/Detroit"
 # The price feed carries NO server timestamp — pull times in this
 # program are stamped client-side (MODEL-V5.md's rule). Refresh
@@ -451,17 +511,322 @@ def cmd_fetch():
     print(f"[betmodel] NHL completed games cached: {len(nhl)}")
 
 
-def resolve_team(ratings, query):
-    q = query.strip().lower()
-    exact = [t for t in ratings if t.lower() == q]
-    if exact:
-        return exact[0]
-    hits = [t for t in ratings if q in t.lower()]
+def _norm_name(s):
+    """Name comparison form: lowercased, diacritics stripped
+    ('San José' -> 'san jose'), apostrophes dropped ('Hawai'i'
+    -> 'hawaii'). FanDuel prints both plain-ASCII forms; the
+    ESPN-sourced fit keys do not always."""
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return s.replace("'", "").replace("’", "").strip().lower()
+
+
+def _resolve_or_none(ratings, query, aliases=None):
+    """Canonical team-membership resolution (v5.4 fix-guy): the
+    ONE resolver the checkers and universal_coverage both use.
+    Order: exact key -> explicit alias (only when its target is
+    itself a key in this ratings dict) -> unique word-boundary
+    PREFIX match (the school-name form: 'Georgia Tech' in
+    'Georgia Tech Yellow Jackets') -> unique substring match.
+    All comparisons run through _norm_name. Ambiguous after
+    aliases -> None: a name that could be two real teams NEVER
+    resolves into one of them by guessing."""
+    if query is None:
+        return None
+    q = _norm_name(query)
+    if not q:
+        return None
+    for t in ratings:
+        if _norm_name(t) == q:
+            return t
+    if aliases:
+        for name, target in aliases.items():
+            if _norm_name(name) == q and target in ratings:
+                return target
+    hits = [t for t in ratings if _norm_name(t).startswith(q + " ")]
     if len(hits) == 1:
         return hits[0]
+    if len(hits) > 1:
+        return None
+    hits = [t for t in ratings if q in _norm_name(t)]
+    if len(hits) == 1:
+        return hits[0]
+    return None
+
+
+def resolve_team(ratings, query, aliases=None):
+    hit = _resolve_or_none(ratings, query, aliases)
+    if hit is not None:
+        return hit
+    q = _norm_name(query)
+    hits = [t for t in ratings if q in _norm_name(t)]
     if not hits:
         raise SystemExit(f"[betmodel] team not found in fitted data: '{query}'")
     raise SystemExit(f"[betmodel] ambiguous team '{query}': {sorted(hits)}")
+
+
+# FanDuel prints SCHOOL names for college football ('Georgia',
+# 'Alabama', 'Ohio'); the fit keys carry mascots ('Georgia
+# Bulldogs'). Where a school name is a prefix of more than one
+# fit key, the flagship program is the school FanDuel means —
+# enumerated explicitly here, every target verified as a key of
+# the CFB pool. An alias fires only when its target is in the
+# ratings dict being queried, so it can never invent a team.
+FD_CFB_SCHOOL_ALIASES = {
+    "Alabama": "Alabama Crimson Tide",
+    "Appalachian State": "App State Mountaineers",
+    "Arizona": "Arizona Wildcats",
+    "Arkansas": "Arkansas Razorbacks",
+    "Colorado": "Colorado Buffaloes",
+    "Delaware": "Delaware Blue Hens",
+    "FIU": "Florida International Panthers",
+    "Florida": "Florida Gators",
+    "Georgia": "Georgia Bulldogs",
+    "Houston": "Houston Cougars",
+    "Illinois": "Illinois Fighting Illini",
+    "Indiana": "Indiana Hoosiers",
+    "Iowa": "Iowa Hawkeyes",
+    "Kansas": "Kansas Jayhawks",
+    "Louisiana": "Louisiana Ragin' Cajuns",
+    "Miami": "Miami Hurricanes",
+    "Miami Florida": "Miami Hurricanes",
+    "Miami Ohio": "Miami (OH) RedHawks",
+    "Michigan": "Michigan Wolverines",
+    "Missouri": "Missouri Tigers",
+    "Montana": "Montana Grizzlies",
+    "Idaho": "Idaho Vandals",
+    "New Mexico": "New Mexico Lobos",
+    "North Carolina": "North Carolina Tar Heels",
+    "North Dakota": "North Dakota Fighting Hawks",
+    "South Carolina": "South Carolina Gamecocks",
+    "South Dakota": "South Dakota Coyotes",
+    "Northwestern": "Northwestern Wildcats",
+    "Ohio": "Ohio Bobcats",
+    "Oklahoma": "Oklahoma Sooners",
+    "Oregon": "Oregon Ducks",
+    "Sam Houston State": "Sam Houston Bearkats",
+    "Tennessee": "Tennessee Volunteers",
+    "Texas": "Texas Longhorns",
+    "UMass": "Massachusetts Minutemen",
+    "Utah": "Utah Utes",
+    "Virginia": "Virginia Cavaliers",
+    "Washington": "Washington Huskies",
+}
+
+# FanDuel prints full MLB names; the MLB fit (v5-mlb.json, R2)
+# keys on ESPN abbreviations — the same lookup-table pattern as
+# the NFL/NBA maps. A name that misses the map stays UNPRICED
+# with its name printed, never silently dropped.
+FD_MLB_TEAM_CODES = {
+    "Arizona Diamondbacks": "ARI", "Atlanta Braves": "ATL",
+    "Baltimore Orioles": "BAL", "Boston Red Sox": "BOS",
+    "Chicago Cubs": "CHC", "Chicago White Sox": "CHW",
+    "Cincinnati Reds": "CIN", "Cleveland Guardians": "CLE",
+    "Colorado Rockies": "COL", "Detroit Tigers": "DET",
+    "Houston Astros": "HOU", "Kansas City Royals": "KC",
+    "Los Angeles Angels": "LAA", "Los Angeles Dodgers": "LAD",
+    "Miami Marlins": "MIA", "Milwaukee Brewers": "MIL",
+    "Minnesota Twins": "MIN", "New York Mets": "NYM",
+    "New York Yankees": "NYY", "Athletics": "ATH",
+    "Oakland Athletics": "ATH", "Philadelphia Phillies": "PHI",
+    "Pittsburgh Pirates": "PIT", "San Diego Padres": "SD",
+    "San Francisco Giants": "SF", "Seattle Mariners": "SEA",
+    "St. Louis Cardinals": "STL", "Tampa Bay Rays": "TB",
+    "Texas Rangers": "TEX", "Toronto Blue Jays": "TOR",
+    "Washington Nationals": "WSH"}
+
+
+def resolve_mlb_team(query, ratings=None):
+    """Full FanDuel name (or a bare code) -> the MLB fit's ESPN
+    abbreviation, or None (same contract as resolve_nfl_team)."""
+    if query is None:
+        return None
+    q = str(query).strip()
+    if ratings is not None and q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_MLB_TEAM_CODES.items():
+        if name.lower() == q.lower():
+            if ratings is None or code in ratings:
+                return code
+    if ratings is not None and q in ratings:
+        return q
+    return None
+
+
+# FanDuel prints full NBA names; the NBA fit keys on codes (the
+# FD_NFL_TEAM_CODES pattern, one lane over). Every code verified
+# as a key of the shipped v5-nba fit.
+FD_NBA_TEAM_CODES = {
+    "Atlanta Hawks": "ATL", "Boston Celtics": "BOS",
+    "Brooklyn Nets": "BKN", "Charlotte Hornets": "CHA",
+    "Chicago Bulls": "CHI", "Cleveland Cavaliers": "CLE",
+    "Dallas Mavericks": "DAL", "Denver Nuggets": "DEN",
+    "Detroit Pistons": "DET", "Golden State Warriors": "GS",
+    "Houston Rockets": "HOU", "Indiana Pacers": "IND",
+    "Los Angeles Clippers": "LAC", "Los Angeles Lakers": "LAL",
+    "Memphis Grizzlies": "MEM", "Miami Heat": "MIA",
+    "Milwaukee Bucks": "MIL", "Minnesota Timberwolves": "MIN",
+    "New Orleans Pelicans": "NO", "New York Knicks": "NY",
+    "Oklahoma City Thunder": "OKC", "Orlando Magic": "ORL",
+    "Philadelphia 76ers": "PHI", "Phoenix Suns": "PHX",
+    "Portland Trail Blazers": "POR", "Sacramento Kings": "SAC",
+    "San Antonio Spurs": "SA", "Toronto Raptors": "TOR",
+    "Utah Jazz": "UTAH", "Washington Wizards": "WSH",
+}
+
+
+def resolve_nba_team(query, ratings=None):
+    """Full FanDuel name (or a bare code) -> the NBA fit's code,
+    or None. `ratings` defaults to the shipped fit's ratings."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_nba()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_NBA_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+def resolve_nfl_team(query, ratings=None):
+    """Full FanDuel name (or a bare code) -> the NFL lane's code,
+    via FD_NFL_TEAM_CODES (defined with the menu stack; resolved
+    at call time). None when the name maps to no fitted team."""
+    if query is None:
+        return None
+    q = str(query).strip()
+    if ratings is not None and q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_NFL_TEAM_CODES.items():
+        if name.lower() == q.lower():
+            if ratings is None or code in ratings:
+                return code
+    if ratings is not None and q in ratings:
+        return q
+    return None
+
+
+# Teams FanDuel files under a US sport key that belong to a
+# DIFFERENT competition this app does not model. Coverage names
+# the real competition instead of blaming the lane's fit — but
+# only for teams on this explicit list, and only when the lane's
+# own resolver has already failed on the name (so a listed name
+# can never shadow a fitted team). Rosters: CFL 9 (2025), AHL 32
+# (2025-26), NBL 10 (2025-26), WNBA 13 (2025), plus the NCAA
+# hockey programs observed on the hockey board.
+OTHER_COMPETITION_TEAMS = {}
+for _t in ("BC Lions", "Calgary Stampeders", "Edmonton Elks",
+           "Hamilton Tiger-Cats", "Montreal Alouettes",
+           "Ottawa Redblacks", "Saskatchewan Roughriders",
+           "Toronto Argonauts", "Winnipeg Blue Bombers"):
+    OTHER_COMPETITION_TEAMS[_t] = "CFL"
+for _t in ("Abbotsford Canucks", "Bakersfield Condors",
+           "Belleville Senators", "Bridgeport Islanders",
+           "Calgary Wranglers", "Charlotte Checkers",
+           "Chicago Wolves", "Cleveland Monsters",
+           "Coachella Valley Firebirds", "Colorado Eagles",
+           "Grand Rapids Griffins", "Hartford Wolf Pack",
+           "Henderson Silver Knights", "Hershey Bears",
+           "Iowa Wild", "Laval Rocket",
+           "Lehigh Valley Phantoms", "Manitoba Moose",
+           "Milwaukee Admirals", "Ontario Reign",
+           "Providence Bruins", "Rochester Americans",
+           "Rockford IceHogs", "San Diego Gulls",
+           "San Jose Barracuda", "Springfield Thunderbirds",
+           "Syracuse Crunch", "Texas Stars", "Toronto Marlies",
+           "Tucson Roadrunners", "Utica Comets",
+           "Wilkes-Barre/Scranton Penguins"):
+    OTHER_COMPETITION_TEAMS[_t] = "AHL"
+for _t in ("Bentley Falcons", "Boston University Terriers",
+           "Denver Pioneers", "Ferris State Bulldogs",
+           "Miami Ohio Redhawks", "Niagara Purple Eagles",
+           "Providence Friars"):
+    OTHER_COMPETITION_TEAMS[_t] = "NCAA hockey"
+for _t in ("Adelaide 36ers", "Brisbane Bullets",
+           "Cairns Taipans", "Illawarra Hawks",
+           "Melbourne United", "New Zealand Breakers",
+           "Perth Wildcats", "South East Melbourne Phoenix",
+           "Sydney Kings", "Tasmania JackJumpers"):
+    OTHER_COMPETITION_TEAMS[_t] = "NBL (Australia)"
+for _t in ("Atlanta Dream", "Chicago Sky", "Connecticut Sun",
+           "Dallas Wings", "Golden State Valkyries",
+           "Indiana Fever", "Las Vegas Aces", "Los Angeles Sparks",
+           "Minnesota Lynx", "New York Liberty", "Phoenix Mercury",
+           "Seattle Storm", "Washington Mystics"):
+    OTHER_COMPETITION_TEAMS[_t] = "WNBA"
+# R4 (fix-guy): FanDuel's Baseball page also files OTHER
+# leagues' fixtures under "mlb" (NPB / KBO / CPBL observed
+# live 2026-10-24), and its Basketball page files CBA and
+# other overseas leagues under "nba" (observed live the same
+# day). Rosters: NPB 12, KBO 10, CPBL 6 (2026), CBA 20
+# (2025-26); the BBL / B.League / British entries are the
+# teams observed on the live board.
+for _t in ("Chiba Lotte Marines", "Chunichi Dragons",
+           "Fukuoka Hawks", "Fukuoka SoftBank Hawks",
+           "Hanshin Tigers", "Hiroshima Toyo Carp",
+           "Hokkaido Nippon-Ham Fighters", "Orix Buffaloes",
+           "Saitama Seibu Lions",
+           "Tohoku Rakuten Golden Eagles",
+           "Tokyo Yakult Swallows", "Yokohama Dena Baystars",
+           "Yokohama DeNA BayStars", "Yomiuri Giants"):
+    OTHER_COMPETITION_TEAMS[_t] = "NPB (Japan)"
+for _t in ("Doosan Bears", "Hanwha Eagles", "Kia Tigers",
+           "Kiwoom Heroes", "KT Wiz", "LG Twins",
+           "Lotte Giants", "NC Dinos", "Samsung Lions",
+           "SSG Landers"):
+    OTHER_COMPETITION_TEAMS[_t] = "KBO (Korea)"
+for _t in ("CTBC Brothers", "Fubon Guardians",
+           "Rakuten Monkeys", "TSG Hawks",
+           "Uni-President 7-Eleven Lions", "Wei Chuan Dragons"):
+    OTHER_COMPETITION_TEAMS[_t] = "CPBL (Taiwan)"
+for _t in ("Beijing Ducks", "Beijing Royal Fighters",
+           "Fujian Sturgeons", "Guangdong Southern Tigers",
+           "Guangzhou Loong Lions", "Jiangsu Dragons",
+           "Jilin Northeast Tigers", "Liaoning Flying Leopards",
+           "Nanjing Monkey Kings", "Ningbo Rockets",
+           "Qingdao Eagles", "Shandong Heroes", "Shanghai Sharks",
+           "Shanxi Loongs", "Shenzhen Aviators",
+           "Sichuan Blue Whales", "Tianjin Pioneers",
+           "Xinjiang Flying Tigers", "Zhejiang Golden Bulls",
+           "Zhejiang Guangsha Lions"):
+    OTHER_COMPETITION_TEAMS[_t] = "CBA (China)"
+for _t in ("Phoenix Hagen", "Basketball Lowen Braunschweig"):
+    OTHER_COMPETITION_TEAMS[_t] = "BBL (Germany)"
+for _t in ("Tokyo Sun Rockers", "Nagoya Diamond Dolphins"):
+    OTHER_COMPETITION_TEAMS[_t] = "B.League (Japan)"
+for _t in ("Cheshire Phoenix", "Surrey 89ers"):
+    OTHER_COMPETITION_TEAMS[_t] = "British Basketball League"
+del _t
+
+
+def other_competition_for(home, away):
+    """(team, competition) for the first of home/away that sits
+    on OTHER_COMPETITION_TEAMS, else None. ONE lookup used by
+    every checker and by coverage, so the two layers can never
+    name different truths for the same fixture."""
+    for t in (home, away):
+        if t is not None and t in OTHER_COMPETITION_TEAMS:
+            return t, OTHER_COMPETITION_TEAMS[t]
+    return None
+
+
+def competition_missing(sport, home, away):
+    """The standard competition-truth stamp, or None when
+    neither team is a known other-competition team."""
+    hit = other_competition_for(home, away)
+    if not hit:
+        return None
+    team, comp = hit
+    return (f"competition not in this app: {comp} ({team}) — "
+            f"FanDuel files it under {sport}, it is not a "
+            f"{sport} team")
 
 
 # =============================================================== CORE — v3 odds / prop math (inlined from betmodel3.py)
@@ -499,11 +864,40 @@ ATHLETES = {  # resolved from ESPN rosters 2026-10-17
 }
 
 
+def _athlete_index():
+    """The fetched-athlete index (data/cache/athlete_index.json,
+    built by Glow's tools/fetch_gamelogs.py): name -> {id,
+    league_path, season, team} for every player whose gamelog
+    this program has resolved + cached. Absent file = empty
+    index. R4 (fix-guy): ported so the seeded on-device cache
+    resolves the same players the lab cache does."""
+    return _load_json_cached(os.path.join(
+        CACHE, "athlete_index.json")) or {}
+
+
+def athlete_info(name):
+    """Resolve a player to their ESPN gamelog coordinates: the
+    hand-resolved ATHLETES table first (the v3 three), then the
+    fetched athlete index. KeyError when neither knows the
+    player — the props checker stamps that UNPRICED by name."""
+    if name in ATHLETES:
+        return dict(ATHLETES[name])
+    ent = _athlete_index().get(name)
+    if ent:
+        return {"id": ent["id"], "team": ent.get("team"),
+                "league_path": ent.get("league_path")
+                or "football/college-football",
+                "season": ent.get("season") or 2026}
+    raise KeyError(name)
+
+
 def fetch_gamelog(name):
-    info = ATHLETES[name]
+    info = athlete_info(name)
     cache_name = f"gamelog_{info['id']}.json"
-    url = ("https://site.api.espn.com/apis/common/v3/sports/football/"
-           f"college-football/athletes/{info['id']}/gamelog?season=2026")
+    path = info.get("league_path") or "football/college-football"
+    season = info.get("season") or 2026
+    url = ("https://site.api.espn.com/apis/common/v3/sports/"
+           f"{path}/athletes/{info['id']}/gamelog?season={season}")
     return http_get(url, cache_name, max_age_h=1)
 
 
@@ -670,8 +1064,9 @@ def _margin_dist(sport, home, away, neutral=False):
     inside resid_sd — the sigma integration partially double-counts
     it. The total SD is therefore conservative (wide), by design."""
     dists = fit_ratings(sport)
-    home = resolve_team(dists, home)
-    away = resolve_team(dists, away)
+    _al = FD_CFB_SCHOOL_ALIASES if sport == "cfb" else None
+    home = resolve_team(dists, home, _al)
+    away = resolve_team(dists, away, _al)
     lane = fit_margin_lane()
     hfa = 0.0 if neutral else CFB_HFA_ELO
     dh, da = dists[home], dists[away]
@@ -996,7 +1391,7 @@ def gamelog_series_cached(name, stat_name):
     (data/cache/gamelog_<id>.json — the same files the v3 run priced
     from). Offline-safe; falls back to b3's fetch path only if the
     cache file is missing."""
-    info = ATHLETES[name]
+    info = athlete_info(name)
     path = os.path.join(CACHE, f"gamelog_{info['id']}.json")
     if os.path.exists(path):
         with open(path) as f:
@@ -1058,9 +1453,27 @@ def prop_band(name, stat_name, line, side, series=None):
                                    "(underdispersed log)")
     else:
         sd = math.sqrt(var)
-        fams["normal"] = norm_sf(line, mean, sd)
+        if sd == 0:
+            # Zero-variance log (every game identical \u2014 e.g.
+            # a 10-game run of zeros): the fitted distribution
+            # is a point mass at the mean and both families
+            # degenerate to its step. That IS the limit of the
+            # normal/lognormal as sd -> 0, not an invention;
+            # dividing by sd=0 here used to ZeroDivisionError
+            # the checker (found Round 3: Treadwell, Fields).
+            step = 1.0 if mean > line else \
+                (0.0 if mean < line else 0.5)
+            fams["normal"] = step
+            fams["lognormal"] = step
+            fams["lognormal_note"] = ("zero-variance log: both "
+                                      "families degenerate to "
+                                      "the point mass at the mean")
+        else:
+            fams["normal"] = norm_sf(line, mean, sd)
         pos = [x for x in series if x > 0]
-        if len(pos) == n and n > 1:
+        if sd == 0:
+            pass  # degenerate case handled above
+        elif len(pos) == n and n > 1:
             lm = sum(math.log(x) for x in pos) / n
             lv = sum((math.log(x) - lm) ** 2 for x in pos) / (n - 1)
             fams["lognormal"] = 1.0 - norm_cdf(
@@ -1351,6 +1764,18 @@ def nfl_games(week):
                     'final': ev['status']['type']['completed'], 'odds': odds,
                     'neutral': comp.get('neutralSite', False)})
     return out
+
+
+# NFL derived fair-spread map (R2, fix-guy): fair_spread_home =
+# NFL_FAIR_MAP_A + NFL_FAIR_MAP_B * (ratings diff incl. the
+# lane's 55-pt home-field Elo bump). Refit by least squares on
+# the saved slate's 13 (diff, fair) pairs in
+# nfl-week6-pricing.json: in-sample MAE 0.017 pts, max 0.04;
+# leave-one-out MAE 0.020. The map reproduces how the slate's
+# own fairs were built from these ratings — it is a derivation
+# from the lane's fitted ratings, validated, not an invention.
+NFL_FAIR_MAP_A = 4.3591
+NFL_FAIR_MAP_B = -0.087898
 
 
 def nfl_elo_run(glist, K=20, hfa=55):
@@ -2345,6 +2770,12 @@ def prop_from_scoring_plays(player, stat_name, line, side, price):
 
 # CACHE is defined in the header constants
 NBA_FIT_PATH = os.path.join(DATA, "v5-nba.json")
+MLB_FIT_PATH = os.path.join(DATA, "v5-mlb.json")
+TENNIS_FIT_PATH = os.path.join(DATA, "v5-tennis.json")
+MMA_FIT_PATH = os.path.join(DATA, "v5-mma.json")
+CRICKET_FIT_PATH = os.path.join(DATA, "v5-cricket.json")
+RUGBY_FIT_PATH = os.path.join(DATA, "v5-rugby.json")
+F1_FIT_PATH = os.path.join(DATA, "v5-f1.json")
 SOCCER_FIT_PATH = os.path.join(DATA, "v5-soccer.json")
 SOCCER_LEAGUES_PATH = os.path.join(DATA, "v5-soccer-leagues.json")
 STALE_AFTER_H = 6.0   # a menu pull older than this degrades the stamp
@@ -2495,10 +2926,379 @@ def load_nba():
     return _load_json_cached(NBA_FIT_PATH)
 
 
+def load_mlb():
+    return _load_json_cached(MLB_FIT_PATH)
+
+
+def mlb_probs(fit, home, away):
+    """P(home win) from the MLB fit's Elo (the same logistic
+    family as the other lanes, home field = the fit's fitted
+    hfa_elo). None when either team misses the fit."""
+    elo = (fit or {}).get("elo") or {}
+    ch = resolve_mlb_team(home, elo)
+    ca = resolve_mlb_team(away, elo)
+    if ch is None or ca is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 24.0)
+    d = elo[ch] + hfa - elo[ca]
+    return 1 / (1 + 10 ** (-d / 400))
+
+
+def load_tennis():
+    return _load_json_cached(TENNIS_FIT_PATH)
+
+
+def load_mma():
+    return _load_json_cached(MMA_FIT_PATH)
+
+
+def load_cricket():
+    return _load_json_cached(CRICKET_FIT_PATH)
+
+
+def load_rugby():
+    return _load_json_cached(RUGBY_FIT_PATH)
+
+
+def load_f1():
+    return _load_json_cached(F1_FIT_PATH)
+
+
+# --- R4 shared MLB gate (fix-guy): ONE membership decision for
+# the checker and for coverage. Glow's flag was coverage saying
+# "team not in the mlb fit: DET" while the checker priced DET —
+# two layers resolving differently. Both layers now call
+# mlb_lane_gate + mlb_membership and print their strings, so
+# agreement holds by construction, and a harness check proves
+# it on codes, full names and other-competition fixtures.
+def mlb_lane_gate(fit):
+    """None when the MLB lane may price, else the reason."""
+    if fit is None:
+        return "MLB fit not run (tools/fit_mlb.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return ("MLB lane FAILED-EXAM — walk-forward Brier "
+                f"{bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}; lane does "
+                "not price until a refit passes")
+    return None
+
+
+def mlb_membership(fit, home, away):
+    """(p_home, None) when both teams resolve in the MLB fit,
+    else (None, reason) — the reason names the real competition
+    for NPB/KBO/CPBL fixtures FanDuel files under baseball."""
+    elo = (fit or {}).get("elo") or {}
+    for t in (home, away):
+        if resolve_mlb_team(t, elo) is None:
+            comp = competition_missing("mlb", home, away)
+            if comp:
+                return None, comp
+            return None, f"team not in the MLB fit: {t}"
+    return mlb_probs(fit, home, away), None
+
+
+# --- R4 cricket (fix-guy): lanes keyed by FORMAT + competition
+# (v5-cricket.json, tools/fit_cricket.py — Cricsheet). The same
+# two nations play T20 / ODI / Test under DIFFERENT ratings, so
+# the lane is chosen by the FanDuel competition the pull names
+# (fd_parse carries it as mkt["competition"]); the team-only
+# fallback fires only when exactly one lane holds both teams.
+CRICKET_COMPETITION_LANES = {
+    "International Twenty20 Matches": "t20i_m",
+    "One Day Internationals": "odi_m",
+    "One Day Internationals - Women": "odi_f",
+    "Test Matches": "test_m",
+    "South Africa - T20 Challenge": "csa_t20",
+    "Australia - Twenty20 Big Bash": "bbl",
+    "Indian Premier League": "ipl",
+    "WBBL": "wbbl",
+    "ICC Cricket World Cup League 2": "odi_m",
+    "ICC Cricket World Cup Challenge League": "lista_m",
+    "ICC Men's T20 WC Africa Qualifiers": "t20i_m",
+    "ICC Men's T20 WC Asia Qualifiers": "t20i_m",
+}
+CRICKET_TEAM_ALIASES = {
+    "North West Dragons": "North West",
+    "Tuskers": "KwaZulu-Natal Inland",
+    "United States": "United States of America",
+    "USA": "United States of America",
+}
+
+
+def resolve_cricket_team(name, ratings):
+    if name is None:
+        return None
+    n = str(name).strip()
+    for suffix in (" W", " Women"):
+        if n.endswith(suffix):
+            n = n[: -len(suffix)]
+            break
+    if n in ratings:
+        return n
+    alias = CRICKET_TEAM_ALIASES.get(n)
+    if alias in ratings:
+        return alias
+    return _resolve_or_none(ratings, n)
+
+
+def cricket_lane_for(fit, competition, home, away):
+    """(lane_key, None) or (None, reason)."""
+    lanes = (fit or {}).get("lanes") or {}
+    if competition and competition in CRICKET_COMPETITION_LANES:
+        return CRICKET_COMPETITION_LANES[competition], None
+    holders = []
+    for key, blk in lanes.items():
+        ratings = blk.get("ratings") or {}
+        if resolve_cricket_team(home, ratings) is not None \
+                and resolve_cricket_team(away, ratings) is not None:
+            holders.append(key)
+    if len(holders) == 1:
+        return holders[0], None
+    if len(holders) > 1:
+        return None, ("cricket format not named by the pull and "
+                      f"the teams sit in {len(holders)} fitted "
+                      "formats (T20/ODI/Test ratings differ) — "
+                      "stamped rather than guessed")
+    return None, (f"team not in any cricket fit "
+                  f"({home}/{away})")
+
+
+def cricket_probs(fit, lane, home, away, side):
+    """(p, None) or (None, reason) for one side of a cricket
+    moneyline. Test lane is three-way: the Draw runner prices
+    from the lane's fitted draw rate."""
+    blk = ((fit or {}).get("lanes") or {}).get(lane) or {}
+    bt = blk.get("backtest") or {}
+    if not _exam_passed(bt):
+        return None, (f"cricket {lane} lane FAILED-EXAM — "
+                      f"walk-forward Brier {bt.get('brier')} did "
+                      f"not beat the naive baseline "
+                      f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                      "lane does not price until a refit passes")
+    ratings = blk.get("ratings") or {}
+    ch = resolve_cricket_team(home, ratings)
+    ca = resolve_cricket_team(away, ratings)
+    if ch is None or ca is None:
+        miss = home if ch is None else away
+        return None, (f"team not in the cricket {lane} fit: "
+                      f"{miss}")
+    p_home = 1 / (1 + 10 ** (-(ratings[ch] - ratings[ca]) / 400))
+    if lane.startswith("test"):
+        p_draw = blk.get("draw_rate")
+        if p_draw is None:
+            return None, "test lane carries no fitted draw rate"
+        if side == "draw":
+            return p_draw, None
+        p_home = (1 - p_draw) * p_home
+        return (p_home if side == "home"
+                else (1 - p_draw) - p_home), None
+    if side == "draw":
+        return None, ("no draw leg in limited-overs cricket "
+                      "moneylines (ties settle by Super Over / "
+                      "countback, not a priced draw outcome)")
+    return (p_home if side == "home" else 1 - p_home), None
+
+
+# --- R4 rugby (fix-guy): v5-rugby.json (tools/fit_rugby.py).
+# Rugby league lanes are INTERNATIONAL pools split by sex —
+# the FanDuel board's league fixtures are World Cup matches,
+# and the women's game is never pooled with the men's.
+def rugby_league_lane(competition, home, away):
+    blob = f"{competition or ''} {home or ''} {away or ''}"
+    if "Women" in blob or " W" in f" {home} " or \
+            " W" in f" {away} ":
+        return "intl_f"
+    return "intl_m"
+
+
+def rugby_probs(fit, code, lane, home, away):
+    """(p_home, None) or (None, reason). code: 'league'|'union'."""
+    blk = (((fit or {}).get(code) or {}).get(lane)) or {}
+    if not blk:
+        return None, (f"no rugby {code} fit for lane {lane} "
+                      "(tools/fit_rugby.py)")
+    bt = blk.get("backtest") or {}
+    if not _exam_passed(bt):
+        return None, (f"rugby {code} {lane} lane FAILED-EXAM — "
+                      f"walk-forward Brier {bt.get('brier')} did "
+                      f"not beat the naive baseline "
+                      f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                      "lane does not price until a refit passes")
+    ratings = blk.get("ratings") or {}
+
+    def clean(t):
+        # FanDuel suffixes women's national teams ("New
+        # Zealand W"); the RLP archive rates them unsuffixed.
+        n = str(t or "").strip()
+        for suffix in (" W", " Women"):
+            if n.endswith(suffix):
+                return n[: -len(suffix)]
+        return n
+
+    ch = _resolve_or_none(ratings, clean(home))
+    ca = _resolve_or_none(ratings, clean(away))
+    if ch is None or ca is None:
+        miss = home if ch is None else away
+        return None, f"team not in the rugby {lane} fit: {miss}"
+    d = ratings[ch] - ratings[ca]
+    return 1 / (1 + 10 ** (-d / 400)), None
+
+
+def _exam_passed(backtest):
+    """The house exam gate (shared by the MLB lane and the R3
+    head-to-head lanes): a lane prices only when its fitted
+    walk-forward Brier BEAT the naive baseline it prints next
+    to. A lane that failed ships FAILED-EXAM with its numbers
+    and does not price — no variant is fished for a pass."""
+    bt = backtest or {}
+    return (bt.get("brier") is not None
+            and bt.get("naive_brier") is not None
+            and bt["brier"] < bt["naive_brier"])
+
+
+def resolve_tennis_player(query, tour_blk, tour):
+    """FanDuel name -> the tour fit's player key, or None.
+
+    ATP keys are Sackmann's 'Surname... Firstname' (first
+    name is the key's LAST token): match by exact normalized
+    form, then by token multiset (FanDuel prints 'Firstname
+    Surname'), then by surname + first initial ('J. Sinner').
+    WTA keys are the tennis-data archive's 'Surname I.' form:
+    match by surname (any suffix of the FanDuel name's tokens)
+    + first initial. Every hit is a real key of the fit by
+    construction; ambiguous -> None, never a guess."""
+    if query is None or not tour_blk:
+        return None
+    elo = tour_blk.get("elo") or {}
+    q = _norm_name(query)
+    if not q:
+        return None
+    if tour == "atp":
+        for key in elo:
+            if _norm_name(key) == q:
+                return key
+        # token multiset, hyphens split ('Jan-Lennard' and
+        # 'Jan Lennard' are the same name tokens; key order
+        # varies between sources)
+        qtok = sorted(q.replace("-", " ").split())
+        hits = [k for k in elo
+                if sorted(_norm_name(k).replace("-", " ")
+                          .split()) == qtok]
+        if len(hits) == 1:
+            return hits[0]
+        if len(hits) > 1:
+            return None
+        parts = q.split()
+        if len(parts) >= 2:
+            surname, first = " ".join(parts[1:]), parts[0]
+            hits = []
+            for k in elo:
+                kt = _norm_name(k).split()
+                if len(kt) >= 2 and " ".join(kt[:-1]) == surname \
+                        and (kt[-1] == first
+                             or kt[-1].startswith(first[0])):
+                    hits.append(k)
+            if len(hits) == 1:
+                return hits[0]
+        return None
+    # wta: keys 'Surname I.'
+    parsed = {}
+    for k in elo:
+        toks = str(k).replace(".", " ").split()
+        if len(toks) >= 2 and len(toks[-1]) == 1:
+            parsed[k] = (" ".join(toks[:-1]).lower(),
+                         toks[-1].lower())
+    for k, (sn, ini) in parsed.items():
+        if f"{sn} {ini}" == q.replace(".", " ").strip():
+            return k
+    parts = q.split()
+    if len(parts) >= 2:
+        ini = parts[0][0]
+        # surname candidates: every suffix of the name's
+        # tokens (FanDuel prints multi-part given names —
+        # 'Carol Young Suh Lee' has surname 'Lee')
+        surnames = {" ".join(parts[k:]).lower()
+                    for k in range(1, len(parts))}
+        hits = [k for k, (sn, i2) in parsed.items()
+                if i2 == ini and sn in surnames]
+        if len(hits) == 1:
+            return hits[0]
+    return None
+
+
+def tennis_probs(fit, home, away):
+    """(tour, p_home) for a tennis fixture, or (None, reason).
+    The tour is decided by membership: both players must
+    resolve in ONE tour's fit. A player resolving in neither
+    names themselves; players resolving only in different
+    tours are a cross-tour fixture no fit holds."""
+    tours = (fit or {}).get("tours") or {}
+    rh, ra = {}, {}
+    for t, blk in tours.items():
+        kh = resolve_tennis_player(home, blk, t)
+        if kh:
+            rh[t] = kh
+        ka = resolve_tennis_player(away, blk, t)
+        if ka:
+            ra[t] = ka
+    common = sorted(set(rh) & set(ra))
+    if len(common) == 1:
+        t = common[0]
+        elo = tours[t]["elo"]
+        d = elo[rh[t]] - elo[ra[t]]
+        return t, 1 / (1 + 10 ** (-d / 400))
+    if len(common) > 1:
+        return None, (f"player names resolve in more than one "
+                      f"tour fit ({home}/{away}) — ambiguous, "
+                      f"not guessed")
+    if not rh:
+        return None, f"player not in the tennis fit: {home}"
+    if not ra:
+        return None, f"player not in the tennis fit: {away}"
+    return None, ("players resolve in different tour fits — "
+                  "no single tour fit holds both "
+                  f"({home}/{away})")
+
+
+def resolve_mma_fighter(query, elo):
+    """FanDuel name -> the MMA fit's fighter key (the source
+    CSV's 'Firstname Lastname' form), via the canonical
+    resolver (exact -> token forms -> unique substring)."""
+    if query is None or not elo:
+        return None
+    hit = _resolve_or_none(elo, query)
+    if hit:
+        return hit
+    q = sorted(_norm_name(query).split())
+    hits = [k for k in elo
+            if sorted(_norm_name(k).split()) == q]
+    return hits[0] if len(hits) == 1 else None
+
+
+def mma_probs(fit, home, away):
+    """P(first-named fighter wins) from the MMA fit's Elo
+    (neutral cage, no home edge). (p, None) or (None, reason)."""
+    elo = (fit or {}).get("elo") or {}
+    ch = resolve_mma_fighter(home, elo)
+    if ch is None:
+        return None, f"fighter not in the MMA fit: {home}"
+    ca = resolve_mma_fighter(away, elo)
+    if ca is None:
+        return None, f"fighter not in the MMA fit: {away}"
+    d = elo[ch] - elo[ca]
+    return 1 / (1 + 10 ** (-d / 400)), None
+
+
 def nba_probs(fit, home, away):
-    """(p_home, margin_mu, margin_sd) from the fitted NBA lane."""
+    """(p_home, margin_mu, margin_sd) from the fitted NBA lane.
+    Names resolve through the canonical NBA resolver (full
+    FanDuel names -> fit codes); an unresolvable name is not in
+    the fit and returns None."""
     R = fit["ratings"]
-    if home not in R or away not in R:
+    home = resolve_nba_team(home, R)
+    away = resolve_nba_team(away, R)
+    if home is None or away is None:
         return None
     d = R[home] + NBA_HFA - R[away]
     p = 1 / (1 + 10 ** (-d / 400))
@@ -2778,6 +3578,20 @@ SOCCER_NAME_ALIASES = {
     "karlsruher sc": "karlsruhe", "sc paderborn": "paderborn",
     "sc paderborn 07": "paderborn", "paderborn 07": "paderborn",
     "1 fc magdeburg": "magdeburg",
+    "dortmund": "borussia dortmund",
+    # European cup pool (ESPN uefa.* forms — the pool's keys;
+    # FanDuel lists the short forms)
+    "feyenoord": "feyenoord rotterdam",
+    "shakhtar": "shakhtar donetsk",
+    # USL (FanDuel forms -> ESPN usa.usl.1 fit names; FC Tulsa
+    # is the Tulsa Roughnecks franchise under its current name)
+    "tulsa roughnecks": "fc tulsa",
+    "tulsa roughnecks fc": "fc tulsa",
+    "colorado switchbacks": "colorado springs switchbacks",
+    "colorado switchbacks fc": "colorado springs switchbacks",
+    # Peru (FanDuel full names -> ESPN per.1 fit names)
+    "universitario de deportes": "universitario",
+    "juan pablo ii college": "juan pablo ii",
     # England (E1 short forms)
     "sheffield wednesday": "sheffield weds",
     "stoke city": "stoke", "swansea city": "swansea",
@@ -2858,6 +3672,29 @@ SOCCER_NAME_ALIASES = {
     "talleres cordoba": "talleres",
     "velez": "velez sarsfield",
     "colon": "colon santa fe",
+    # Round 2 leagues (FanDuel -> ESPN fit names, verified
+    # against each fit's own key list; one club each)
+    # Paraguay (par.1)
+    "club 2 de mayo": "2 de mayo",
+    "club 2 de mayo de pedro juan cab": "2 de mayo",
+    "club 2 de mayo de pedro juan caballero": "2 de mayo",
+    # Costa Rica (crc.1)
+    "puntarenas f c": "puntarenas fc",
+    "inter san carlos": "inter de san carlos",
+    # Bolivia (bol.1): ABB is the club's own short name in the
+    # source — Academia de Balompie Boliviano
+    "academia de balompie boliviano": "abb",
+    "club independiente petrolero": "independiente petrolero",
+    # USL Championship (usa.usl.1)
+    "sporting club jacksonville": "sporting jax",
+    "orange county blues": "orange county sc",
+    "louisville fc": "louisville city fc",
+    # Colombia (col.1)
+    "america de cali s a": "america de cali",
+    # Venezuela (ven.1)
+    "puerto cabello": "academia puerto cabello",
+    # Ecuador (ecu.1): LDU = Liga Deportiva Universitaria
+    "ldu": "liga de quito", "ldu quito": "liga de quito",
 }
 
 # The shipped EPL fit keys teams by CODE (v5-soccer.json). FanDuel
@@ -2886,7 +3723,7 @@ EPL_CODE_BY_NAME = {
 # exact normalized name is always tried first.
 SOCCER_STRIP_LEAD = {"fc", "afc", "sc", "ac", "ca", "cd", "rc",
                      "as", "ogc", "aj", "us", "ea"}
-SOCCER_STRIP_TAIL = {"fc", "sc", "cf", "ec"}
+SOCCER_STRIP_TAIL = {"fc", "sc", "cf", "ec", "fk"}
 
 
 def _soccer_name_forms(name):
@@ -2898,26 +3735,40 @@ def _soccer_name_forms(name):
     base = _soccer_norm(name)
     if not base:
         return set()
-    forms = {base}
-    toks = base.split()
-    if len(toks) > 1 and toks[0] in SOCCER_STRIP_LEAD:
-        forms.add(" ".join(toks[1:]))
-    if len(toks) > 1 and toks[-1] in SOCCER_STRIP_TAIL:
-        forms.add(" ".join(toks[:-1]))
-    if "utd" in toks:
-        forms.add(" ".join("united" if t == "utd" else t
-                           for t in toks))
-    if "saint" in toks:
-        forms.add(" ".join("st" if t == "saint" else t
-                           for t in toks))
+    # Seed forms: the name itself; the (W)-stripped form (FanDuel
+    # marks women's fixtures with a trailing (W), which
+    # _soccer_norm renders as a trailing " w" token — which fits
+    # a (W) name may resolve into is gated in soccer_fit_for /
+    # soccer_league_for via SOCCER_WOMENS_KEYS, so a stripped
+    # women's name can never land on the men's club of the same
+    # name, or the reverse); and the explicit alias target.
+    # EVERY seed then gets the affix/token variants — variants
+    # must apply to the stripped seed too ("Club Necaxa (W)"
+    # needs club-stripping AFTER the (W) comes off, or the
+    # women's fit's "Necaxa" is unreachable).
+    seeds = {base}
+    if base.endswith(" w") and len(base) > 2:
+        seeds.add(base[:-2])
     tgt = SOCCER_NAME_ALIASES.get(base)
     if tgt:
-        forms.add(tgt)
-        tt = tgt.split()
-        if len(tt) > 1 and tt[0] in SOCCER_STRIP_LEAD:
-            forms.add(" ".join(tt[1:]))
-        if len(tt) > 1 and tt[-1] in SOCCER_STRIP_TAIL:
-            forms.add(" ".join(tt[:-1]))
+        seeds.add(tgt)
+    for s in list(seeds):
+        t2 = SOCCER_NAME_ALIASES.get(s)
+        if t2:
+            seeds.add(t2)
+    forms = set(seeds)
+    for s in seeds:
+        toks = s.split()
+        if len(toks) > 1 and toks[0] in SOCCER_STRIP_LEAD:
+            forms.add(" ".join(toks[1:]))
+        if len(toks) > 1 and toks[-1] in SOCCER_STRIP_TAIL:
+            forms.add(" ".join(toks[:-1]))
+        if "utd" in toks:
+            forms.add(" ".join("united" if t == "utd" else t
+                               for t in toks))
+        if "saint" in toks:
+            forms.add(" ".join("st" if t == "saint" else t
+                               for t in toks))
     code = EPL_CODE_BY_NAME.get(base)
     if code:
         forms.add(_soccer_norm(code))
@@ -2962,31 +3813,154 @@ def load_soccer_leagues():
     return _load_json_cached(SOCCER_LEAGUES_PATH)
 
 
+# League keys in the leagues file that hold WOMEN'S competitions.
+# FanDuel marks their fixtures with a trailing (W); a (W) name may
+# only resolve into these fits, and a bare name never resolves
+# into them — "Pachuca (W)" is the women's club, "Pachuca" the
+# men's, and the two fits are different leagues with different
+# strengths. The gate is what makes the (W)-stripped name form
+# (added in _soccer_name_forms) safe to use.
+SOCCER_WOMENS_KEYS = {"nwsl", "liga-mx-femenil", "wsl",
+                      "a-league-women"}
+
+
+def _soccer_womens_hint(*names):
+    """True when any raw FanDuel name carries the (W) marker
+    (normalized: a trailing ' w' token)."""
+    for n in names:
+        if n and _soccer_norm(n).endswith(" w"):
+            return True
+    return False
+
+
 def soccer_league_for(home, away, blob=None):
     """The one league key whose strengths hold BOTH teams, or
     None (no league holds both, or more than one does). Team
     membership is tested through the alias resolver
     (soccer_fit_key), so FanDuel display names resolve into the
-    fit's own name forms."""
+    fit's own name forms. Women's fixtures ((W) marker) search
+    only the women's fits; all other fixtures search only the
+    rest — see SOCCER_WOMENS_KEYS."""
     blob = blob if blob is not None else load_soccer_leagues()
     if not blob:
         return None
+    womens = _soccer_womens_hint(home, away)
     hits = [k for k, lg in (blob.get("leagues") or {}).items()
-            if soccer_fit_key(lg, home) is not None
+            if (k in SOCCER_WOMENS_KEYS) == womens
+            and soccer_fit_key(lg, home) is not None
             and soccer_fit_key(lg, away) is not None]
     return hits[0] if len(hits) == 1 else None
 
 
+def soccer_system_for(home, away, blob=None):
+    """(fit_view, system_key) for a CROSS-TIER fixture: both
+    clubs held by one country system fit (both tiers of a
+    pyramid pooled on a shared strengths/Elo scale — see
+    tools/fit_soccer_leagues.py COUNTRY_SYSTEMS). The view
+    prices with the HOME club's tier rates: a cup tie is played
+    in the home club's scoring environment. Returns
+    (None, None) when no single system holds both, or more
+    than one does. Men's competitions only — the systems are
+    the men's pyramids."""
+    if _soccer_womens_hint(home, away):
+        return None, None
+    blob = blob if blob is not None else load_soccer_leagues()
+    if not blob:
+        return None, None
+    hits = []
+    for key, sysfit in (blob.get("systems") or {}).items():
+        hk = soccer_fit_key(sysfit, home)
+        ak = soccer_fit_key(sysfit, away)
+        if hk is not None and ak is not None:
+            hits.append((key, sysfit, hk))
+    if len(hits) != 1:
+        return None, None
+    key, sysfit, hk = hits[0]
+    tier = (sysfit.get("team_tier") or {}).get(hk, "tier1")
+    rates = (sysfit.get("tier_rates") or {}).get(tier) \
+        or sysfit.get("league") or {}
+    view = {"strengths": sysfit.get("strengths"),
+            "elo": sysfit.get("elo"),
+            "league": rates,
+            "params": sysfit.get("params"),
+            "source": sysfit.get("source"),
+            "fitted_at": sysfit.get("fitted_at"),
+            "backtest": sysfit.get("backtest"),
+            "season": sysfit.get("season"),
+            "league_name": sysfit.get("league_name"),
+            "system": key, "home_tier": tier}
+    return view, f"system-{key}"
+
+
+def soccer_cup_for(home, away, blob=None):
+    """(fit, cup_key) for a CROSS-COMPETITION fixture from a
+    pooled cup fit (blob['cups'] — one walk-forward pool per
+    cup family, strengths shared across the pool; see
+    tools/fit_soccer_leagues.py CUP_POOLS). A pool prices ONLY
+    when its gate shipped it (walk-forward brier3 at or under
+    the stated bar) AND both clubs are in the pool. Pools are
+    tried in a fixed order — europe, france, argentina — and
+    the first shipped pool holding both clubs prices the
+    fixture; the order is stated here because a pair of French
+    clubs can sit in both the European and the Coupe de
+    France pool, and the European pool is the deeper exam.
+    Men's competitions only — the pools are the men's cups."""
+    if _soccer_womens_hint(home, away):
+        return None, None
+    blob = blob if blob is not None else load_soccer_leagues()
+    if not blob:
+        return None, None
+    for key in ("europe", "france", "argentina"):
+        cup = (blob.get("cups") or {}).get(key)
+        if not cup or not (cup.get("gate") or {}).get("ships"):
+            continue
+        if soccer_fit_key(cup, home) is not None \
+                and soccer_fit_key(cup, away) is not None:
+            return cup, f"cup-{key}"
+    return None, None
+
+
 def soccer_missing_reason(home, away):
-    """Why a fixture has no fit, named exactly: if BOTH clubs
-    are held by some fit but never the same one, the fixture is
-    cross-competition (a cup / Champions-League pairing) and the
-    honest stamp is the split — not 'team not in the fit'."""
+    """Why a fixture has no fit, named exactly, most specific
+    truth first: (1) a pooled cup fit was attempted for this
+    pairing and HELD at its gate — the attempt and its numbers
+    are the stamp; (2) a club belongs to a competition proven
+    to have no match-level results source (blob['no_source'])
+    — the NO-SOURCE stamp, which fires only for a club held by
+    NO fit, so a fitted club of a similar name is never
+    stamped; (3) BOTH clubs are held by some priceable fit but
+    never the same one — the fixture is cross-competition (a
+    cup / Champions-League pairing) and the honest stamp is
+    the split, not 'team not in the fit'. Country system fits
+    and shipped cup pools count as holders."""
+    blob = load_soccer_leagues() or {}
+    cups = blob.get("cups") or {}
+    for key in ("europe", "france", "argentina"):
+        cup = cups.get(key)
+        if cup and not (cup.get("gate") or {}).get("ships") \
+                and soccer_fit_key(cup, home) is not None \
+                and soccer_fit_key(cup, away) is not None:
+            gate = cup.get("gate") or {}
+            bt = cup.get("backtest") or {}
+            return (f"pooled cup fit attempted and HELD — "
+                    f"{cup.get('league_name') or key}: "
+                    f"walk-forward brier3 {bt.get('brier3')} vs "
+                    f"bar {gate.get('bar')} (median league fit "
+                    f"+ {gate.get('tolerance')}); a pool that "
+                    f"fails its exam prices nothing")
     fits = [load_soccer()] + list(
-        (load_soccer_leagues() or {}).get("leagues", {}).values())
+        (blob.get("leagues") or {}).values()) + list(
+        (blob.get("systems") or {}).values()) + [
+        c for c in cups.values()
+        if (c.get("gate") or {}).get("ships")]
     known = [any(f and soccer_fit_key(f, t) is not None
                  for f in fits)
              for t in (home, away)]
+    for rec in (blob.get("no_source") or {}).values():
+        clubs = {_soccer_norm(c) for c in rec.get("clubs") or []}
+        for t, is_known in zip((home, away), known):
+            if not is_known and _soccer_norm(t) in clubs:
+                return rec.get("stamp")
     if all(known):
         return ("teams split across league fits — no single "
                 "league fit holds both")
@@ -2996,17 +3970,26 @@ def soccer_missing_reason(home, away):
 def soccer_fit_for(home, away):
     """(fit, league_key) for a fixture: the shipped EPL fit when
     it holds both teams (league_key 'epl'), else the unique
-    leagues-file fit, else (None, None). Membership goes through
-    soccer_fit_key, so exact fit names price byte-for-byte as
-    before and FanDuel display names resolve to the same clubs."""
-    fit = load_soccer()
-    if fit is not None and soccer_fit_key(fit, home) is not None \
-            and soccer_fit_key(fit, away) is not None:
-        return fit, "epl"
+    leagues-file fit, else a country system fit when the pair
+    is cross-tier within one pyramid (key 'system-<country>'),
+    else (None, None). Membership goes through soccer_fit_key,
+    so exact fit names price byte-for-byte as before and
+    FanDuel display names resolve to the same clubs."""
+    if not _soccer_womens_hint(home, away):
+        fit = load_soccer()
+        if fit is not None and soccer_fit_key(fit, home) is not None \
+                and soccer_fit_key(fit, away) is not None:
+            return fit, "epl"
     blob = load_soccer_leagues()
     key = soccer_league_for(home, away, blob)
     if key is not None:
         return blob["leagues"][key], key
+    view, syskey = soccer_system_for(home, away, blob)
+    if view is not None:
+        return view, syskey
+    cup, cupkey = soccer_cup_for(home, away, blob)
+    if cup is not None:
+        return cup, cupkey
     return None, None
 
 
@@ -3044,6 +4027,34 @@ def _load_json(path):
         return None
 
 
+
+def _teamtotals_bet_type(data_dir, sport):
+    """The registry/coverage line for a lane's TEAM-totals cell
+    (Round 2): the team's own scoring distribution, a different
+    model from the game total — its own fit file, its own exam."""
+    tf = _load_json(os.path.join(
+        data_dir, f"v5-teamtotals-{sport}.json"))
+    if tf is None:
+        return ("UNPRICED \u2014 no team-totals distribution for "
+                "this lane yet \u2014 close by: fit one "
+                "(tools/fit_totals.py team)")
+    bt, exam_label = _latest_exam(tf)
+    if tf.get("status") != "FITTED":
+        return (f"UNPRICED \u2014 team-totals fit FAILED-EXAM "
+                f"({exam_label} Brier {bt.get('brier_model')} vs "
+                f"naive {bt.get('brier_naive')}, MAE "
+                f"{bt.get('mae_model')} vs {bt.get('mae_naive')}, "
+                f"n={bt.get('n')}) \u2014 close by: a refit that "
+                f"beats the naive team-mean baseline")
+    dist = (tf.get("params") or {}).get("distribution", "normal")
+    return (f"PRICED-capable (team-totals distribution \u2014 "
+            f"{dist}, the team's own off/def rates + sigma_team; "
+            f"walk-forward MAE {bt.get('mae_model')} vs naive "
+            f"{bt.get('mae_naive')}, Brier {bt.get('brier_model')} "
+            f"vs {bt.get('brier_naive')}, n={bt.get('n')}; lane "
+            f"UNTESTED \u2014 no scored team-totals record yet)")
+
+
 def universal_registry(data_dir=None):
     """Every registered fit, organized per (sport, league,
     bet-type, team/player) — the Universal Model's index. Each
@@ -3060,6 +4071,140 @@ def universal_registry(data_dir=None):
 
     def P(name):
         return os.path.join(d, name)
+
+    # R5 lines (segments + outrights), read off their fit
+    # files like everything else in this registry.
+    _seg_doc = _load_json(P("v5-segments.json")) or {}
+    _seg_lanes = _seg_doc.get("lanes") or {}
+    _seg_soc = _seg_doc.get("soccer-1h") or {}
+    _out_doc = _load_json(P("v5-outrights.json")) or {}
+    _out_bt = _out_doc.get("backtest") or {}
+
+    def _seg_us_line(lane_key, form="1st-half"):
+        lane = _seg_lanes.get(lane_key) or {}
+        bt = lane.get("backtest") or {}
+        if lane.get("status") == "FITTED":
+            return (f"PRICED-capable ({form} distributions; "
+                    f"walk-forward totals MAE "
+                    f"{bt.get('mae_total')} vs naive "
+                    f"{bt.get('mae_total_naive')}, n={bt.get('n')})")
+        if lane:
+            return (f"UNPRICED — FAILED-EXAM: {form} totals MAE "
+                    f"{bt.get('mae_total')} vs naive "
+                    f"{bt.get('mae_total_naive')}, margin MAE "
+                    f"{bt.get('mae_margin')} vs "
+                    f"{bt.get('mae_margin_naive')}, "
+                    f"n={bt.get('n')}")
+        return "UNPRICED — no segment fit on file"
+
+    def _seg_nhl_line(lanes):
+        # R7: per-period, per-form — read off the same
+        # lanes the checker prices from.
+        parts = []
+        for pnum, plab in ((1, "1P"), (2, "2P"), (3, "3P")):
+            lane = lanes.get(f"nhl-{pnum}p") or {}
+            forms = lane.get("forms") or {}
+            if not lane:
+                parts.append(f"{plab}: no fit on file")
+                continue
+            if not forms:
+                bt = lane.get("backtest") or {}
+                parts.append(
+                    f"{plab} totals "
+                    f"{'PRICED-capable' if lane.get('status') == 'FITTED' else 'FAILED-EXAM'} "
+                    f"(MAE {bt.get('mae_model')} vs naive "
+                    f"{bt.get('mae_naive')})")
+                continue
+            seg = []
+            for form in ("total", "moneyline"):
+                f = forms.get(form) or {}
+                if f.get("status") == "FITTED":
+                    seg.append(f"{form} PRICED-capable")
+                elif form == "total":
+                    seg.append(
+                        f"total FAILED-EXAM (MAE "
+                        f"{f.get('mae_model')} vs "
+                        f"{f.get('mae_naive')}, Brier "
+                        f"{f.get('brier_model')} vs "
+                        f"{f.get('brier_naive')})")
+                else:
+                    seg.append(
+                        f"moneyline FAILED-EXAM (Brier3 "
+                        f"{f.get('brier3_model')} vs "
+                        f"{f.get('brier3_naive')})")
+            parts.append(f"{plab}: " + "; ".join(seg))
+        return " | ".join(parts)
+
+    def _seg_soc_line(key):
+        blk = _seg_soc.get(key)
+        if blk is None:
+            return ("UNPRICED — no half-share exam on file "
+                    "for this league (examined sets: "
+                    "football-data R6, ESPN period scores R7)")
+        if blk.get("status") == "NO-DATA":
+            cov = blk.get("coverage") or {}
+            return (f"UNPRICED — NO-DATA (ESPN period "
+                    f"scores): {cov.get('games_ht_covered')} "
+                    f"of {cov.get('games_completed')} games "
+                    "HT-covered, below the exam floor; "
+                    "evidence in v5-segments.json")
+        bt = blk.get("backtest") or {}
+        forms = blk.get("forms") or {}
+        res = (forms.get("result") or {}).get("status")
+        tot = (forms.get("total") or {}).get("status")
+        nums = (f"1H result Brier3 {bt.get('brier3_1h')} vs "
+                f"naive {bt.get('brier3_1h_naive')}, 1H total "
+                f"Brier {bt.get('brier_over15')} vs naive "
+                f"{bt.get('brier_over15_naive')}")
+        if res == "FITTED" and tot == "FITTED":
+            return (f"PRICED-capable (both 1H forms off the "
+                    f"half-share grid, shares {blk.get('share_h')}/"
+                    f"{blk.get('share_a')}; walk-forward {nums})")
+        if res == "FITTED":
+            return (f"PRICED-capable for the 1H RESULT form "
+                    f"(+ handicaps) off the half-share grid; "
+                    f"1H TOTAL UNPRICED — FAILED-EXAM (R6 "
+                    f"per-form bar); walk-forward {nums}")
+        if tot == "FITTED":
+            return (f"PRICED-capable for the 1H TOTAL form "
+                    f"off the half-share grid; 1H RESULT "
+                    f"UNPRICED — FAILED-EXAM (R6 per-form "
+                    f"bar); walk-forward {nums}")
+        if blk.get("status") == "FITTED":
+            return (f"PRICED-capable (1H off the half-share "
+                    f"grid, shares {blk.get('share_h')}/"
+                    f"{blk.get('share_a')}; walk-forward {nums})")
+        return (f"UNPRICED — FAILED-EXAM (R6 per-form bar, "
+                f"both forms): {nums}")
+
+    def _outright_line(key):
+        # R6: per-league exam + live artifact, read off the
+        # same file the checker prices from.
+        lg = (_out_doc.get("leagues") or {}).get(key)
+        exam = (lg or {}).get("exam")
+        if exam is None and key == "epl":
+            exam = _out_bt
+        if not exam:
+            return ("UNPRICED — no outright exam on file for "
+                    "this league")
+        if exam.get("verdict") != "PASS":
+            return (f"UNPRICED — FAILED-EXAM (league exam): "
+                    f"mean Brier {exam.get('mean_brier_model')} "
+                    f"vs naive {exam.get('mean_brier_naive')}, "
+                    f"mean log-loss "
+                    f"{exam.get('mean_logloss_model')} vs "
+                    f"{exam.get('mean_logloss_naive')} "
+                    f"({exam.get('seasons_won')}/"
+                    f"{len(exam.get('seasons') or []) or 3} "
+                    "seasons won)")
+        if lg and lg.get("shares"):
+            return (f"PRICED-capable (title outrights — Monte "
+                    f"Carlo season sim, {lg.get('sims')} sims; "
+                    f"league exam PASS: mean Brier "
+                    f"{exam.get('mean_brier_model')} vs naive "
+                    f"{exam.get('mean_brier_naive')})")
+        return ("UNPRICED — league exam PASSED but no live "
+                "shares on file for this league")
 
     def entry(sport, league, kind, path, **kw):
         e = _registry_entry(sport, league, kind, path, **kw)
@@ -3080,11 +4225,16 @@ def universal_registry(data_dir=None):
         e["bet_types"] = {
             "moneyline": "PRICED-capable (1X2 off the grid)",
             "spread": "PRICED-capable (.5 handicaps off the grid)",
+            "alt-spread": "PRICED-capable (.5 handicaps off the "
+                          "grid)",
             "totals": "PRICED-capable (grid totals)",
+            "alt-total": "PRICED-capable (grid totals)",
             "btts": "PRICED-capable", "draw-no-bet": "PRICED-capable",
             "double-chance": "PRICED-capable",
             "correct-score": "PRICED-capable",
-            "team-props": "PRICED-capable (team totals off the grid)"}
+            "team-props": "PRICED-capable (team totals off the grid)",
+            "segment": _seg_soc_line("epl"),
+            "futures": _outright_line("epl")}
     blob = _load_json(P("v5-soccer-leagues.json"))
     if blob is not None:
         for key, lg in sorted((blob.get("leagues") or {}).items()):
@@ -3103,12 +4253,84 @@ def universal_registry(data_dir=None):
             e["bet_types"] = {
                 "moneyline": "PRICED-capable (1X2 off the grid)",
                 "spread": "PRICED-capable (.5 handicaps)",
+                "alt-spread": "PRICED-capable (.5 handicaps)",
+                "totals": "PRICED-capable (grid totals)",
+                "alt-total": "PRICED-capable (grid totals)",
+                "btts": "PRICED-capable",
+                "draw-no-bet": "PRICED-capable",
+                "double-chance": "PRICED-capable",
+                "correct-score": "PRICED-capable",
+                "team-props": "PRICED-capable"}
+        for key, lg in sorted((blob.get("systems") or {}).items()):
+            st = lg.get("strengths") or {}
+            e = entry("soccer", f"system-{key}", "Poisson goals "
+                      "grid + Elo check, pooled country system "
+                      "(shared scale, per-tier rates) — "
+                      "cross-tier fixtures only",
+                      P("v5-soccer-leagues.json"),
+                      covered=len(st), teams=sorted(st),
+                      fitted_at=lg.get("fitted_at"),
+                      source=lg.get("source"),
+                      backtest=lg.get("backtest_by_tier"))
+            e["league_params"] = {
+                "tier_rates": lg.get("tier_rates"),
+                "params": lg.get("params"),
+                "season": lg.get("season"),
+                "validation": lg.get("validation")}
+            e["team_entries"] = st
+            e["bet_types"] = {
+                "moneyline": "PRICED-capable (1X2 off the grid, "
+                             "cross-tier pairs only)",
+                "spread": "PRICED-capable (.5 handicaps)",
                 "totals": "PRICED-capable (grid totals)",
                 "btts": "PRICED-capable",
                 "draw-no-bet": "PRICED-capable",
                 "double-chance": "PRICED-capable",
                 "correct-score": "PRICED-capable",
                 "team-props": "PRICED-capable"}
+        for key, cp in sorted((blob.get("cups") or {}).items()):
+            st = cp.get("strengths") or {}
+            gate = cp.get("gate") or {}
+            ships = bool(gate.get("ships"))
+            e = entry("soccer", f"cup-{key}", "Poisson goals "
+                      "grid + Elo check, pooled cup fit (one "
+                      "walk-forward pool across the cup family "
+                      "— cross-competition fixtures only)",
+                      P("v5-soccer-leagues.json"),
+                      covered=len(st), teams=sorted(st),
+                      fitted_at=cp.get("fitted_at"),
+                      source=cp.get("source"),
+                      backtest=cp.get("backtest"),
+                      note=None if ships else
+                      "HELD at its gate — the pool is on record "
+                      "with its walk-forward numbers and prices "
+                      "nothing")
+            e["league_params"] = {
+                "league_rates": cp.get("league"),
+                "params": cp.get("params"),
+                "season": cp.get("season"),
+                "competitions": cp.get("competitions"),
+                "gate": gate}
+            e["team_entries"] = st
+            if ships:
+                e["bet_types"] = {
+                    "moneyline": "PRICED-capable (1X2 off the "
+                                 "grid, both clubs in the pool)",
+                    "spread": "PRICED-capable (.5 handicaps)",
+                    "totals": "PRICED-capable (grid totals)",
+                    "btts": "PRICED-capable",
+                    "draw-no-bet": "PRICED-capable",
+                    "double-chance": "PRICED-capable",
+                    "correct-score": "PRICED-capable",
+                    "team-props": "PRICED-capable"}
+            else:
+                e["bet_types"] = {
+                    bt: "UNPRICED — pooled cup fit HELD at its "
+                        "gate (see league_params.gate)"
+                    for bt in ("moneyline", "spread", "totals",
+                               "btts", "draw-no-bet",
+                               "double-chance", "correct-score",
+                               "team-props")}
         for key, lg in sorted((blob.get("control") or {}).items()):
             st = lg.get("strengths") or {}
             e = entry("soccer", f"{key}-control",
@@ -3137,8 +4359,12 @@ def universal_registry(data_dir=None):
         e["bet_types"] = {
             "moneyline": "PRICED-capable (Elo)",
             "spread": "PRICED-capable (margin map — FRAGILE lineage)",
-            "totals": "UNPRICED — no totals distribution for this "
-                      "lane yet"}
+            "alt-spread": "PRICED-capable (margin map — FRAGILE "
+                          "lineage)",
+            "totals": _totals_bet_type("nba", d),
+            "alt-total": _totals_bet_type("nba", d),
+            "segment": _seg_us_line("nba-1h") + " | 1Q: "
+                       + _seg_us_line("nba-1q", "1st-quarter")}
     nflp = _load_json(P("nfl-week6-pricing.json"))
     if isinstance(nflp, dict) and isinstance(
             nflp.get("ratings"), dict):
@@ -3156,8 +4382,10 @@ def universal_registry(data_dir=None):
             "moneyline": "PRICED-capable (phi/Elo lane)",
             "spread": "PRICED-capable (margin distribution)",
             "alt-spread": "PRICED-capable (margin distribution)",
-            "totals": "UNPRICED — no totals distribution for this "
-                      "lane yet"}
+            "totals": _totals_bet_type("nfl", d),
+            "alt-total": _totals_bet_type("nfl", d),
+            "segment": _seg_us_line("nfl-1h") + " | 1Q: "
+                       + _seg_us_line("nfl-1q", "1st-quarter")}
     cfb = _load_json(P("ratings_cfb.json"))
     if isinstance(cfb, dict):
         e = entry("ncaaf", "cfb",
@@ -3176,8 +4404,12 @@ def universal_registry(data_dir=None):
             "moneyline": "PRICED-capable (margin distribution)",
             "spread": "PRICED-capable (margin lane)",
             "alt-spread": "PRICED-capable (margin lane)",
-            "totals": "UNPRICED — no totals distribution for this "
-                      "lane yet"}
+            "totals": _totals_bet_type("ncaaf", d),
+            "alt-total": _totals_bet_type("ncaaf", d),
+            "segment": _seg_us_line("ncaaf-1h") + " | 1Q: "
+                       + _seg_us_line("ncaaf-1q", "1st-quarter")
+                       + " | 2Q: "
+                       + _seg_us_line("ncaaf-2q", "2nd-quarter")}
     nhl = _load_json(P("ratings_nhl.json"))
     if isinstance(nhl, dict):
         e = entry("nhl", "nhl",
@@ -3190,8 +4422,202 @@ def universal_registry(data_dir=None):
             "moneyline": "PRICED-capable (Elo)",
             "spread": "UNPRICED — no NHL engine for spread/"
                       "puck-line (moneyline only)",
-            "totals": "UNPRICED — no totals distribution for this "
-                      "lane yet"}
+            "alt-spread": "UNPRICED — no NHL engine for spread/"
+                          "puck-line (moneyline only)",
+            "totals": _totals_bet_type("nhl", d),
+            "alt-total": _totals_bet_type("nhl", d),
+            "segment": _seg_nhl_line(_seg_lanes)}
+    mlb = _load_json(P("v5-mlb.json"))
+    if mlb is not None:
+        elo = mlb.get("elo") or {}
+        bt = mlb.get("backtest") or {}
+        passed = (bt.get("brier") is not None
+                  and bt.get("naive_brier") is not None
+                  and bt["brier"] < bt["naive_brier"])
+        e = entry("mlb", "mlb",
+                  "Elo (sequential, K=4) + runs model "
+                  "(off/def run rates)",
+                  P("v5-mlb.json"), covered=len(elo),
+                  teams=sorted(elo),
+                  fitted_at=mlb.get("fitted_at"),
+                  source=mlb.get("source"), backtest=bt or None)
+        e["league_params"] = {"params": mlb.get("params"),
+                              "league": mlb.get("league"),
+                              "totals_candidate":
+                                  mlb.get("totals_candidate")}
+        e["team_entries"] = mlb.get("runs") or {}
+        e["bet_types"] = {
+            "moneyline": ("PRICED-capable (Elo, walk-forward "
+                          "passed naive)" if passed else
+                          "UNPRICED — FAILED-EXAM: walk-forward "
+                          "Brier did not beat the naive baseline "
+                          "(numbers in the fit file)"),
+            "spread": "UNPRICED — no run-line distribution "
+                      "fitted for this lane",
+            "totals": _totals_bet_type("mlb", d),
+            "alt-total": _totals_bet_type("mlb", d)}
+    ten = _load_json(P("v5-tennis.json"))
+    if ten is not None:
+        for tour, blk in sorted((ten.get("tours") or {}).items()):
+            elo = blk.get("elo") or {}
+            bt = blk.get("backtest") or {}
+            e = entry("tennis", tour,
+                      "Elo (sequential, K=32) per tour — "
+                      "overall + per-surface ratings carried",
+                      P("v5-tennis.json"), covered=len(elo),
+                      teams=sorted(elo),
+                      fitted_at=ten.get("fitted_at"),
+                      source=ten.get("source"), backtest=bt)
+            e["league_params"] = {
+                "params": ten.get("params"),
+                "window": blk.get("window"),
+                "surfaces": sorted(
+                    (blk.get("surface_elo") or {}).keys()),
+                "surface_backtest": blk.get("surface_backtest")}
+            e["team_entries"] = elo
+            e["bet_types"] = {
+                "moneyline": ("PRICED-capable (Elo, "
+                              "walk-forward passed naive)"
+                              if _exam_passed(bt) else
+                              "UNPRICED — FAILED-EXAM: "
+                              "walk-forward Brier did not beat "
+                              "the naive baseline (numbers in "
+                              "the fit file)"),
+                "spread": "UNPRICED — no set/handicap "
+                          "distribution fitted for this lane",
+                "totals": "UNPRICED — no game-totals "
+                          "distribution fitted for this lane"}
+    cri = _load_json(P("v5-cricket.json"))
+    if cri is not None:
+        for lane, blk in sorted((cri.get("lanes") or {}).items()):
+            r = blk.get("ratings") or {}
+            bt = blk.get("backtest") or {}
+            e = entry("cricket", lane,
+                      "team Elo (sequential, K=20, no home "
+                      "edge) per format/competition"
+                      + (" + fitted draw rate (three-way)"
+                         if lane.startswith("test") else ""),
+                      P("v5-cricket.json"), covered=len(r),
+                      teams=sorted(r),
+                      fitted_at=cri.get("fitted_at"),
+                      source=cri.get("source"), backtest=bt)
+            e["league_params"] = {
+                "draw_rate": blk.get("draw_rate"),
+                "n_matches": blk.get("n_matches")}
+            e["team_entries"] = r
+            e["bet_types"] = {
+                "moneyline": ("PRICED-capable (Elo, "
+                              "walk-forward passed naive)"
+                              if _exam_passed(bt) else
+                              "UNPRICED — FAILED-EXAM: "
+                              "walk-forward Brier did not beat "
+                              "the naive baseline (numbers in "
+                              "the fit file)"),
+                "totals": "UNPRICED — no ball-by-ball totals "
+                          "distribution fitted for this lane"}
+    rug = _load_json(P("v5-rugby.json"))
+    if rug is not None:
+        for lane, blk in sorted((rug.get("league") or {}).items()):
+            r = blk.get("ratings") or {}
+            bt = blk.get("backtest") or {}
+            e = entry("rugby-league", lane,
+                      "national-team Elo (sequential, K=20) "
+                      "from international results",
+                      P("v5-rugby.json"), covered=len(r),
+                      teams=sorted(r),
+                      fitted_at=rug.get("fitted_at"),
+                      source=blk.get("source"), backtest=bt)
+            e["team_entries"] = r
+            e["bet_types"] = {
+                "moneyline": ("PRICED-capable (Elo)"
+                              if _exam_passed(bt) else
+                              "UNPRICED — FAILED-EXAM: "
+                              "walk-forward Brier did not beat "
+                              "the naive baseline (numbers in "
+                              "the fit file)"),
+                "futures": "UNPRICED — no outright model"}
+        for lane, blk in sorted((rug.get("union") or {}).items()):
+            r = blk.get("ratings") or {}
+            bt = blk.get("backtest") or {}
+            e = entry("rugby-union", lane,
+                      "team Elo (sequential, K=20) + expanding "
+                      "margin map (NPC)",
+                      P("v5-rugby.json"), covered=len(r),
+                      teams=sorted(r),
+                      fitted_at=rug.get("fitted_at"),
+                      source=blk.get("source"), backtest=bt)
+            e["league_params"] = {"margin_map":
+                                  blk.get("margin_map")}
+            e["team_entries"] = r
+            e["bet_types"] = {
+                "moneyline": ("PRICED-capable (Elo)"
+                              if _exam_passed(bt) else
+                              "UNPRICED — FAILED-EXAM: "
+                              "walk-forward Brier did not beat "
+                              "the naive baseline (numbers in "
+                              "the fit file)"),
+                "spread": ("PRICED-capable (margin map) only "
+                           "while the winner exam passes"
+                           if _exam_passed(bt) else
+                           "UNPRICED — lane FAILED-EXAM"),
+                "futures": "UNPRICED — no outright model"}
+    f1 = _load_json(P("v5-f1.json"))
+    if f1 is not None:
+        r = f1.get("ratings") or {}
+        bt = f1.get("backtest") or {}
+        a1 = f1.get("attempt_1") or {}
+        e = entry("motorsport", "f1",
+                  "driver Elo (teammate head-to-heads) + "
+                  "constructor effect; winner = softmax over "
+                  "the field (attempt 2; attempt 1 was a pure "
+                  "driver Elo)",
+                  P("v5-f1.json"), covered=len(r),
+                  teams=sorted(r),
+                  fitted_at=f1.get("fitted_at"),
+                  source=f1.get("source"), backtest=bt)
+        e["team_entries"] = r
+        e["bet_types"] = {
+            "futures": ("UNPRICED — FAILED-EXAM (TERMINAL): "
+                        f"attempt 1 driver Elo log-loss "
+                        f"{a1.get('log_loss')} vs naive "
+                        f"{a1.get('naive_log_loss')}; attempt 2 "
+                        f"driver+constructor log-loss "
+                        f"{bt.get('log_loss')} vs naive "
+                        f"{bt.get('naive_log_loss')}, Brier "
+                        f"{bt.get('brier')} vs "
+                        f"{bt.get('naive_brier')} — both attempts "
+                        "lost; race-winner form only — fastest "
+                        "lap / podium / manufacturer forms were "
+                        "never the fitted form")}
+    mma = _load_json(P("v5-mma.json"))
+    if mma is not None:
+        elo = mma.get("elo") or {}
+        bt = mma.get("backtest") or {}
+        e = entry("mma", "ufc",
+                  "fighter Elo (sequential, K=32, neutral cage)",
+                  P("v5-mma.json"), covered=len(elo),
+                  teams=sorted(elo),
+                  fitted_at=mma.get("fitted_at"),
+                  source=mma.get("source"), backtest=bt or None)
+        e["league_params"] = {"params": mma.get("params"),
+                              "weight_classes": sorted(set(
+                                  (mma.get("weight_class")
+                                   or {}).values()))}
+        e["team_entries"] = mma.get("record") or {}
+        e["bet_types"] = {
+            "moneyline": ("PRICED-capable (fighter Elo, "
+                          "walk-forward passed naive)"
+                          if _exam_passed(bt) else
+                          "UNPRICED — FAILED-EXAM: walk-forward "
+                          "Brier did not beat the naive baseline "
+                          "(numbers in the fit file)"),
+            "method-of-victory": "UNPRICED — no finish-method "
+                                 "distribution fitted (the "
+                                 "source carries win_by; a "
+                                 "method model is a separate "
+                                 "fit, not built)",
+            "round-markets": "UNPRICED — no round distribution "
+                             "fitted"}
     phi = _load_json(P("v5-phi.json"))
     if phi is not None:
         e = entry("multi", phi.get("lane") or "phi",
@@ -3263,6 +4689,39 @@ def universal_registry(data_dir=None):
                   "printed on the slip)",
         "same-game-parlay": "UNPRICED — no correlation engine "
                             "for same-game groupings"}
+
+    for lane in TOTALS_LANES:
+        tf = _load_json(P(f"v5-totals-{lane}.json"))
+        if tf is None:
+            continue
+        teams = tf.get("teams") or {}
+        dist = (tf.get("params") or {}).get("distribution",
+                                            "normal")
+        e = entry(lane, f"{lane}-totals",
+                  f"totals distribution ({dist}) \u2014 team "
+                  f"off/def scoring rates x the league's home/"
+                  f"away scoring environment",
+                  P(f"v5-totals-{lane}.json"),
+                  covered=len(teams), teams=sorted(teams),
+                  fitted_at=tf.get("fitted_at"),
+                  source=tf.get("source"),
+                  backtest=tf.get("backtest"),
+                  note=(None if tf.get("status") == "FITTED"
+                        else "FAILED-EXAM \u2014 this lane's "
+                             "totals fit did not beat the naive "
+                             "baseline walk-forward; totals stay "
+                             "UNPRICED with the exam numbers "
+                             "printed"))
+        e["league_params"] = {"league_rates": tf.get("league"),
+                              "sigma": tf.get("sigma"),
+                              "params": tf.get("params"),
+                              "status": tf.get("status"),
+                              "history_n": tf.get("history_n")}
+        e["team_entries"] = teams
+        e["bet_types"] = {"totals": _totals_bet_type(lane, d),
+                          "alt-total": _totals_bet_type(lane, d),
+                          "team-props": _teamtotals_bet_type(d,
+                                                             lane)}
     return out
 
 
@@ -3282,8 +4741,20 @@ def universal_coverage(markets, data_dir=None):
         if e.get("teams"):
             team_sets.setdefault(e["sport"], set()).update(
                 e["teams"])
+    reg_sports = {e["sport"] for e in reg}
 
     def league_of(mkt):
+        if mkt.get("sport") == "cricket":
+            lane, _r = cricket_lane_for(
+                load_cricket(), mkt.get("competition"),
+                mkt.get("home"), mkt.get("away"))
+            return lane or "cricket"
+        if mkt.get("sport") == "rugby-league":
+            return rugby_league_lane(mkt.get("competition"),
+                                     mkt.get("home"),
+                                     mkt.get("away"))
+        if mkt.get("sport") == "rugby-union":
+            return "npc"
         if mkt.get("sport") == "soccer":
             _fit, key = soccer_fit_for(mkt.get("home"),
                                        mkt.get("away"))
@@ -3292,17 +4763,14 @@ def universal_coverage(markets, data_dir=None):
             blob = load_soccer_leagues()
             hits = set()
             for k, lg in (blob or {}).get("leagues", {}).items():
-                if soccer_fit_key(lg, mkt.get("home")) is not None \
-                        or soccer_fit_key(lg, mkt.get("away")) \
-                        is not None:
+                st = lg.get("strengths") or {}
+                if mkt.get("home") in st or mkt.get("away") in st:
                     hits.add(k)
             if len(hits) == 1:
                 return hits.pop()
             soc = load_soccer()
-            if soc and (soccer_fit_key(soc, mkt.get("home"))
-                        is not None
-                        or soccer_fit_key(soc, mkt.get("away"))
-                        is not None):
+            if soc and (mkt.get("home") in soc["strengths"]
+                        or mkt.get("away") in soc["strengths"]):
                 return "epl"
             return "unresolved"
         return mkt.get("league") or mkt.get("sport") or "?"
@@ -3313,11 +4781,27 @@ def universal_coverage(markets, data_dir=None):
         if bt in ("parlay", "same-game-parlay"):
             return ("no correlation engine for same-game "
                     "groupings — legs price individually only")
+        if bt == "segment":
+            # R5: coverage reads the same segment_price the
+            # checker prices through — capable iff it returns
+            # a probability for this very market form.
+            p, info = segment_price(
+                sport, mkt.get("home"), mkt.get("away"),
+                mkt.get("segment"), mkt.get("side", "home"),
+                mkt.get("line"), mkt.get("competition"))
+            return None if p is not None else str(info)
+        if bt == "futures" and sport == "soccer":
+            p, info = outright_price(mkt)
+            return None if p is not None else str(info)
         if sport == "soccer":
             fit, _k = soccer_fit_for(mkt.get("home"),
                                      mkt.get("away"))
             if fit is not None:
                 return None
+            reason = soccer_missing_reason(mkt.get("home"),
+                                           mkt.get("away"))
+            if reason is not None:
+                return reason
             fits = [load_soccer()] + list(
                 (load_soccer_leagues() or {}).get(
                     "leagues", {}).values())
@@ -3327,8 +4811,88 @@ def universal_coverage(markets, data_dir=None):
                     return f"team not in the soccer fit: {team}"
             return ("teams split across league fits — no single "
                     "league fit holds both")
+        if sport in ("tennis", "mma"):
+            return h2h_lane_missing(mkt)
+        if sport in ("cricket", "rugby-league", "rugby-union",
+                     "boxing"):
+            return r4_lane_missing(mkt)
+        if sport in ("nba", "mlb") and bt in (
+                "totals", "alt-total", "player-props",
+                "team-props", "game-props"):
+            # R4 competition truth in coverage too: the cell
+            # names the real competition, not an NBA gap.
+            comp = competition_missing(sport, mkt.get("home"),
+                                       mkt.get("away"))
+            if comp:
+                return comp
         if bt in ("totals", "alt-total"):
-            return "no totals distribution for this lane yet"
+            # R5: read the lane's totals fit — the same file
+            # totals_price() prices from, so coverage and the
+            # checker cannot disagree about this cell.
+            if sport not in TOTALS_LANES:
+                return ("no totals distribution for this lane "
+                        "yet — close by: fit one "
+                        "(tools/fit_totals.py)")
+            tf = _load_json_cached(_totals_path(sport, d))
+            if tf is None:
+                return ("no totals distribution for this lane "
+                        "yet — close by: fit one "
+                        "(tools/fit_totals.py)")
+            if tf.get("status") != "FITTED":
+                bt_blk, exam_label = _latest_exam(tf)
+                return (f"totals fit FAILED-EXAM for this lane "
+                        f"({exam_label} Brier "
+                        f"{bt_blk.get('brier_model')} vs naive "
+                        f"{bt_blk.get('brier_naive')}, "
+                        f"n={bt_blk.get('n')}) — close by: a "
+                        f"refit that beats the naive baseline")
+            tteams = tf.get("teams") or {}
+            taliases = tf.get("aliases") or {}
+            for side_ in ("home", "away"):
+                t = mkt.get(side_)
+                if t is None or t in tteams:
+                    continue
+                if sport == "nfl" and resolve_nfl_team(
+                        t, tteams) is not None:
+                    continue  # engine_price pre-resolves it too
+                if sport == "ncaaf" and _resolve_or_none(
+                        tteams, t,
+                        FD_CFB_SCHOOL_ALIASES) is not None:
+                    continue  # engine_price pre-resolves it too
+                try:
+                    resolve_team(tteams, taliases.get(t, t))
+                except SystemExit:
+                    return (f"team not in the {sport} totals "
+                            f"fit: {t}")
+            return None
+        if bt == "team-props" and sport in TOTALS_LANES:
+            tf = _load_json(os.path.join(
+                d, f"v5-teamtotals-{sport}.json"))
+            if tf is None:
+                return ("no team-totals distribution for this "
+                        "lane yet \u2014 close by: fit one "
+                        "(tools/fit_totals.py team)")
+            if tf.get("status") != "FITTED":
+                bt_blk, exam_label = _latest_exam(tf)
+                return (f"team-totals fit FAILED-EXAM for this "
+                        f"lane ({exam_label} Brier "
+                        f"{bt_blk.get('brier_model')} vs naive "
+                        f"{bt_blk.get('brier_naive')}, "
+                        f"n={bt_blk.get('n')}) \u2014 close by: a "
+                        f"refit that beats the naive team-mean "
+                        f"baseline")
+            tteams = tf.get("teams") or {}
+            taliases = tf.get("aliases") or {}
+            for side in ("home", "away"):
+                t = mkt.get(side)
+                if t is None or t in tteams:
+                    continue
+                try:
+                    resolve_team(tteams, taliases.get(t, t))
+                except SystemExit:
+                    return (f"team not in the {sport} team-totals "
+                            f"fit: {t}")
+            return None
         if bt in ("player-props", "team-props", "game-props"):
             pid = mkt.get("player_id") or mkt.get("athlete_id")
             if pid and os.path.exists(os.path.join(
@@ -3340,6 +4904,41 @@ def universal_coverage(markets, data_dir=None):
         if sport == "nhl" and bt in ("spread", "alt-spread"):
             return ("no NHL engine for spread/puck-line "
                     "(moneyline only)")
+        if sport == "motorsport":
+            fit = load_f1()
+            bt1 = (fit or {}).get("backtest") or {}
+            if "Grand Prix" in str(mkt.get("home") or ""):
+                a1 = (fit or {}).get("attempt_1") or {}
+                return ("F1 lane FAILED-EXAM (TERMINAL) — "
+                        f"attempt 1 driver Elo log-loss "
+                        f"{a1.get('log_loss')} vs naive "
+                        f"{a1.get('naive_log_loss')}; attempt 2 "
+                        f"driver+constructor log-loss "
+                        f"{bt1.get('log_loss')} vs naive "
+                        f"{bt1.get('naive_log_loss')} — both "
+                        "attempts lost to the win-share "
+                        "baseline; lane closed")
+            return ("NASCAR source terminal — results publish "
+                    "as R data files only (nascaR.data .rda, no "
+                    "verified CSV route); closer: an R/pyreadr "
+                    "conversion or a verified CSV mirror")
+        if sport == "golf":
+            return ("golf source terminal — full-field results "
+                    "source key-gated (DataGolf HTTP 403); no "
+                    "honest group-form exam exists; closer: a "
+                    "DataGolf key or a verified full-field "
+                    "archive")
+        if sport == "lacrosse":
+            return ("lacrosse outright terminal — arriving "
+                    "markets are season outrights; a team Elo "
+                    "does not price a championship outright "
+                    "without a season simulator; closer: an "
+                    "NLL season-simulator outright model")
+        if sport in UNCHECKED_SPORTS:
+            return (f"no checker registered for {sport} yet "
+                    f"— see coverage queue")
+        if sport in ("ncaaf", "nfl", "nba", "nhl", "mlb"):
+            return us_lane_missing(mkt, league, reg_sports)
         entries = team_sets.get(sport)
         if not entries:
             return f"no fit registered for league {league}"
@@ -3347,6 +4946,202 @@ def universal_coverage(markets, data_dir=None):
             t = mkt.get(side)
             if t is not None and t not in entries:
                 return f"team not in the {league} fit: {t}"
+        return None
+
+    def h2h_lane_missing(mkt):
+        """Membership for the R3 head-to-head lanes (tennis,
+        mma), decided by the SAME resolvers + exam gate the
+        checkers use — coverage cannot disagree with a checker
+        about whether a player is in a fit or a lane passed."""
+        sport = mkt.get("sport")
+        bt = mkt.get("market")
+        if sport == "tennis":
+            fit = load_tennis()
+            if fit is None:
+                return "no fit registered for league tennis"
+            if bt == "futures":
+                return TENNIS_FUTURES_TERMINAL
+            if bt != "moneyline":
+                return ("no tennis engine for this market "
+                        "(moneyline only — set/handicap and game "
+                        "totals not fitted)")
+            tour, p_or_reason = tennis_probs(
+                fit, mkt.get("home"), mkt.get("away"))
+            if tour is None:
+                return p_or_reason
+            blk = (fit.get("tours") or {}).get(tour) or {}
+            if not _exam_passed(blk.get("backtest")):
+                return (f"tennis {tour.upper()} lane "
+                        "FAILED-EXAM — walk-forward Brier did "
+                        "not beat the naive baseline; lane does "
+                        "not price")
+            return None
+        fit = load_mma()
+        if fit is None:
+            return "no fit registered for league mma"
+        if not _exam_passed(fit.get("backtest")):
+            return ("MMA lane FAILED-EXAM — walk-forward Brier "
+                    "did not beat the naive baseline; lane does "
+                    "not price")
+        if bt != "moneyline":
+            return ("no MMA engine for this market (moneyline "
+                    "only — method-of-victory and round markets "
+                    "not fitted)")
+        _p, reason = mma_probs(fit, mkt.get("home"),
+                               mkt.get("away"))
+        return reason
+
+    def r4_lane_missing(mkt):
+        """Membership for the R4 lanes (cricket, both rugbys,
+        boxing), decided by the SAME helpers + exam gates the
+        checkers use — coverage cannot disagree with a checker
+        about a lane's verdict or a team's membership."""
+        sport = mkt.get("sport")
+        bt = mkt.get("market")
+        if sport == "boxing":
+            if bt != "moneyline":
+                return (f"no boxing engine for this market "
+                        f"({bt}) — and the moneyline lane itself "
+                        "is source-gated (BoxRec 403)")
+            _p, reason = engine_price(
+                "boxing", "moneyline", mkt.get("home"),
+                mkt.get("away"))
+            return reason
+        if sport == "cricket":
+            fit = load_cricket()
+            if fit is None:
+                return "no fit registered for league cricket"
+            if bt == "futures":
+                return ("no cricket engine for outright/futures "
+                        "markets (moneyline only)")
+            if bt != "moneyline":
+                return ("no cricket engine for this market "
+                        "(moneyline only — no ball-by-ball "
+                        "totals/scoring distribution fitted)")
+            lane, reason = cricket_lane_for(
+                fit, mkt.get("competition"), mkt.get("home"),
+                mkt.get("away"))
+            if lane is None:
+                return reason
+            _p, reason = cricket_probs(fit, lane, mkt.get("home"),
+                                       mkt.get("away"),
+                                       mkt.get("side", "home"))
+            return reason
+        if sport == "rugby-league":
+            fit = load_rugby()
+            if fit is None:
+                return "no fit registered for league rugby-league"
+            if bt == "futures":
+                return ("rugby league outright — the fitted "
+                        "lanes price fixtures, not World Cup "
+                        "outrights (no outright model)")
+            if bt != "moneyline":
+                return ("no rugby league engine for this "
+                        "market (moneyline only)")
+            lane = rugby_league_lane(mkt.get("competition"),
+                                     mkt.get("home"),
+                                     mkt.get("away"))
+            _p, reason = rugby_probs(fit, "league", lane,
+                                     mkt.get("home"),
+                                     mkt.get("away"))
+            return reason
+        # rugby-union
+        fit = load_rugby()
+        if fit is None:
+            return "no fit registered for league rugby-union"
+        if bt == "futures":
+            return ("rugby union outright — no outright model "
+                    "(the fitted NPC lane prices fixtures only, "
+                    "and it FAILED-EXAM)")
+        npc = ((fit.get("union") or {}).get("npc")) or {}
+        ratings = npc.get("ratings") or {}
+        for t in (mkt.get("home"), mkt.get("away")):
+            if t is not None and \
+                    _resolve_or_none(ratings, t) is None:
+                return ("no rugby union fit for this fixture's "
+                        "competition — the fitted union lane is "
+                        "the New Zealand NPC only")
+        _p, reason = rugby_probs(fit, "union", "npc",
+                                 mkt.get("home"), mkt.get("away"))
+        if reason:
+            return reason
+        if bt in ("moneyline", "spread", "alt-spread"):
+            return None
+        return "no rugby union engine for this market"
+
+    def us_lane_missing(mkt, league, reg_sports):
+        """Membership for the US team lanes, decided by the SAME
+        resolvers the checkers use (v5.4 fix-guy) — coverage can
+        no longer disagree with a checker about whether a team
+        is in a fit. A name that fails its lane's resolver AND
+        sits on the explicit other-competition list names that
+        competition instead of blaming this lane's fit."""
+        sport = mkt.get("sport")
+        if sport not in reg_sports:
+            return f"no fit registered for league {league}"
+        if sport == "ncaaf":
+            keys = fit_ratings("cfb")
+
+            def res(t):
+                return _resolve_or_none(keys, t,
+                                        FD_CFB_SCHOOL_ALIASES)
+        elif sport == "nhl":
+            keys = fit_ratings("nhl")
+
+            def res(t):
+                return _resolve_or_none(keys, t)
+        elif sport == "nba":
+            fit = load_nba()
+            if fit is None:
+                return f"no fit registered for league {league}"
+            keys = fit.get("ratings") or {}
+
+            def res(t):
+                return resolve_nba_team(t, keys)
+        elif sport == "mlb":
+            # R4: the SHARED gate + resolver (mlb_lane_gate /
+            # resolve_mlb_team via mlb_membership) — the same
+            # code the checker runs, so the layers agree by
+            # construction (harness-proved).
+            fit = load_mlb()
+            gate = mlb_lane_gate(fit)
+            if gate:
+                return gate
+            if mkt.get("market") in ("spread", "alt-spread"):
+                return ("no run-line distribution fitted for "
+                        "the MLB lane (moneyline only)")
+            keys = fit.get("elo") or {}
+
+            def res(t):
+                return resolve_mlb_team(t, keys)
+        else:  # nfl
+            pricing = _load_json_cached(NFL_PRICING_PATH) or {}
+            keys = pricing.get("ratings") or {}
+            if not keys:
+                return f"no fit registered for league {league}"
+
+            def res(t):
+                return resolve_nfl_team(t, keys)
+        for side in ("home", "away"):
+            t = mkt.get(side)
+            if t is None:
+                continue
+            if res(t) is not None:
+                continue
+            comp = OTHER_COMPETITION_TEAMS.get(t)
+            if comp:
+                return (f"competition not in this app: {comp} "
+                        f"({t}) — FanDuel files it under "
+                        f"{sport}, it is not a {league} team")
+            return f"team not in the {league} fit: {t}"
+        if sport == "nfl" and mkt.get("market") in (
+                "spread", "alt-spread"):
+            # R2: spreads price for ANY resolved fixture — the
+            # saved slate's fair where the fixture is on it, a
+            # ratings-derived fair (validated map, MAE 0.02 vs
+            # the slate's fairs) where it is not. Checker and
+            # coverage use the same rule, so they agree.
+            return None
         return None
 
     out = {}
@@ -3367,19 +5162,583 @@ def universal_coverage(markets, data_dir=None):
             slot["unpriced"] += 1
             if missing not in slot["missing"]:
                 slot["missing"].append(missing)
-    return [out[k] for k in sorted(out)]
+    rows = [out[k] for k in sorted(out)]
+    # NOT PULLED: sports FanDuel offers that pull_menu() never
+    # fetches are invisible in the app — not UNPRICED, absent.
+    # They ride the coverage output as their own rows so the
+    # gap is named wherever coverage is read.
+    for inv in sport_inventory():
+        if not inv["pulled"]:
+            rows.append({
+                "sport": inv["engine_key"], "league": inv["name"],
+                "bet_type": "not-pulled", "markets": 0,
+                "priced_capable": 0, "unpriced": 0,
+                "not_pulled": True,
+                "missing": [
+                    f"NOT PULLED — FanDuel offers {inv['name']} "
+                    f"(eventTypeId {inv['event_type_id']}) but "
+                    f"pull_menu() never fetches it; closer: "
+                    f"{inv['closer']}"]})
+    return rows
 
 
-def engine_price(sport, kind, home, away, side="home", line=None):
+# FanDuel's full sport menu, as named by the menu tree itself
+# (application-context EVENT_TYPES, fetched live from this
+# worktree 2026-10-24 — the tree decides this list, not memory).
+FD_EVENT_TYPE_NAMES = {
+    1: "Soccer", 2: "Tennis", 3: "Golf", 4: "Cricket",
+    5: "Rugby Union", 6: "Boxing", 8: "Motor Sport",
+    1477: "Rugby League", 3503: "Darts", 6422: "Snooker",
+    6423: "American Football", 7511: "Baseball",
+    7522: "Basketball", 7524: "Ice Hockey",
+    2593174: "Table Tennis", 26420387: "Mixed Martial Arts",
+    28608997: "Lacrosse",
+}
+# eventTypeId -> engine sport keys its page feeds when pulled.
+FD_TREE_ROUTES = {
+    6423: ["nfl", "ncaaf"], 7522: ["nba"], 7524: ["nhl"],
+    7511: ["mlb"], 1: ["soccer"],
+    # R2: every remaining tree sport routes to its own engine
+    # key and is pulled (see FANDUEL_EVENT_TYPES).
+    2: ["tennis"], 26420387: ["mma"], 3: ["golf"], 6: ["boxing"],
+    4: ["cricket"], 3503: ["darts"], 8: ["motorsport"],
+    5: ["rugby-union"], 1477: ["rugby-league"],
+    28608997: ["lacrosse"], 6422: ["snooker"],
+    2593174: ["table-tennis"],
+}
+# The named closer for every tree sport with no fit: the real
+# math that would have to exist, fitted and backtested, before
+# the app may price it. Naming the work is the deliverable for
+# these sports this round — no fit is built here.
+SPORT_CLOSERS = {
+    "mlb": "moneyline lane FITTED (v5-mlb.json, Elo + runs "
+           "model); game totals FITTED but FAILED-EXAM "
+           "(v5-totals-mlb.json: walk-forward Brier 0.2533 vs "
+           "naive 0.2511, MAE 3.641 vs 3.622, n=2233 — stamps, "
+           "does not price); remaining: a totals refit that "
+           "beats the naive baseline + starting-pitcher "
+           "adjustment",
+    "mma": "moneyline lane FITTED but FAILED-EXAM "
+           "(v5-mma.json, fighter Elo on 5,902 decided UFC "
+           "fights: walk-forward Brier 0.2454 vs naive 0.2451 "
+           "— did not beat the baseline, so the lane stamps "
+           "FAILED-EXAM and does not price); remaining: a "
+           "refit that passes (fresher source — the mirror "
+           "snapshot ends 2021 — and/or a richer fighter "
+           "model), plus method-of-victory + round "
+           "distributions",
+    "motorsport": "F1 FAILED-EXAM, TERMINAL after both "
+                  "attempts (v5-f1.json, Ergast/Jolpica "
+                  "2015-2025, walk-forward vs the win-share "
+                  "naive 2.0574): attempt 1 driver Elo log-loss "
+                  "2.5036; attempt 2 (R5) driver+constructor "
+                  "log-loss 2.2126, Brier 0.8182 vs naive "
+                  "0.8122 — the constructor effect closed most "
+                  "of the gap and still lost both metrics, so "
+                  "the lane is closed); NASCAR source terminal "
+                  "(results publish as R .rda only). Closer: an "
+                  "R/pyreadr conversion for NASCAR",
+    "rugby-union": "NPC lane FITTED and PRICED "
+                   "(v5-rugby.json, Elo on Wikipedia Bunnings "
+                   "NPC 2021-2026: Brier 0.2182 vs naive "
+                   "0.2188, margin MAE 13.945 vs 15.051, "
+                   "n=283 — a thin pass, labelled as such); "
+                   "other union competitions not "
+                   "fitted. Closer: per-competition fits as "
+                   "boards arrive",
+    "rugby-league": "international lanes FITTED but "
+                    "FAILED-EXAM (v5-rugby.json, Elo on Rugby "
+                    "League Project internationals 2016-2026: "
+                    "men 0.2392 vs naive 0.2308, women 0.2377 "
+                    "vs 0.2354). Closer: a passing refit with "
+                    "richer inputs (recency/squad weighting)",
+    "table-tennis": "per-player Elo from ITTF/WTT match "
+                    "results — ATTEMPTED R3 (2026-10-24): no "
+                    "public match-level results source found "
+                    "(GitHub repo/code search; the one ITTF "
+                    "scrape repo carries weekly rankings "
+                    "snapshots, not matches; WTT results sit "
+                    "behind paid data APIs). Closer: a public "
+                    "ITTF/WTT match-results archive",
+    "tennis": "moneyline lane FITTED (v5-tennis.json, ATP + "
+              "WTA Elo — both tours passed their walk-forward "
+              "vs the naive win-rate baseline); remaining: "
+              "set/handicap + game-totals distributions, and a "
+              "fresher ATP window (the Sackmann mirror's last "
+              "season is 2024)",
+    "golf": "SOURCE TERMINAL — group-winner/top-region forms "
+            "need full-field historical finishes for an honest "
+            "exam; DataGolf is key-gated (HTTP 403, verified "
+            "2026-10-24) and no verified public full-field "
+            "archive exists. Closer: a DataGolf API key or a "
+            "verified full-field results archive",
+    "mixed martial arts": "per-fighter history fit — record, "
+              "finish rates, weight class — from a public "
+              "stats source (e.g. UFCStats)",
+    "boxing": "SOURCE TERMINAL — BoxRec (the only complete "
+              "pro archive) is access-gated (HTTP 403 / bot "
+              "wall, verified 2026-10-24); the public GitHub "
+              "candidate is a 78-fight popular-match subset, "
+              "not an archive. Closer: a licensed BoxRec export "
+              "or a verified full pro results archive",
+    "cricket": "moneyline lanes FITTED per format from "
+               "Cricsheet (v5-cricket.json): t20i_m/f, odi_m/f, "
+               "test_m (three-way) and csa_t20 PASSED their "
+               "walk-forward exams and price; bbl / wbbl / "
+               "ipl / lista_m / test_f FAILED-EXAM and stamp "
+               "with numbers. Known source gap: the Cricsheet "
+               "snapshot carries no Afghanistan fixtures, so "
+               "their matches stamp team-not-in-fit until the "
+               "archive restores them. Remaining: totals/"
+               "scoring distributions",
+    "darts": "per-player 3-dart-average / checkout-percentage "
+             "distributions + match-winner Elo from PDC "
+             "results — ATTEMPTED R3 (2026-10-24): no public "
+             "PDC match-results archive found (the OpenDarts "
+             "repo is empty; only single-tournament Kaggle "
+             "exports exist). Closer: a maintained public PDC "
+             "results history",
+    "motor sport": "see the motorsport entry (F1 FAILED-"
+                   "EXAM; NASCAR source terminal)",
+    "rugby union": "see the rugby-union entry (NPC fitted, "
+                   "FAILED-EXAM)",
+    "rugby league": "see the rugby-league entry (international "
+                    "lanes fitted, FAILED-EXAM)",
+    "lacrosse": "OUTRIGHT TERMINAL — the arriving markets are "
+                "season outrights (NLL Cup / NCAA championship); "
+                "NLL results exist (ESPN route) but a team Elo "
+                "does not price a championship outright without "
+                "a season simulator. Closer: an NLL season-"
+                "simulator outright model",
+    "snooker": "per-player frame-level Elo from match "
+               "history — ATTEMPTED R3 (2026-10-24): the "
+               "snooker.org API requires an approved "
+               "X-Requested-By header value (registration-"
+               "gated, per its own API page; ungated calls "
+               "return 401) and no GitHub match-results CSV "
+               "exists. Closer: snooker.org API approval or a "
+               "public results archive",
+    "table tennis": "per-player Elo from ITTF/WTT match "
+                    "results — ATTEMPTED R3: no public "
+                    "match-level results source found (see "
+                    "the table-tennis entry)",
+}
+SPORT_FIT_NOTES = {
+    "nfl": "phi/Elo moneyline + margin distribution (rides "
+           "the American Football page)",
+    "ncaaf": "CFB distributional ratings + margin lane (rides "
+             "the American Football page)",
+    "nba": "NBA Elo + margin map (Basketball page; other "
+           "competitions on that page — WNBA/NBL — are not the "
+           "NBA fit)",
+    "nhl": "NHL Elo, moneyline (Ice Hockey page; AHL/NCAA "
+           "hockey on that page are not the NHL fit)",
+    "mlb": "MLB Elo + runs model, moneyline (v5-mlb.json; "
+           "totals not wired — runs model carried in the fit "
+           "file for the totals lane)",
+    "soccer": "per-league Poisson goals grid + Elo (EPL + the "
+              "leagues file)",
+    "tennis": "ATP + WTA player Elo (v5-tennis.json; both "
+              "tours walk-forward passed — moneyline PRICED "
+              "where both players are in a tour fit)",
+    "mma": "UFC fighter Elo fitted (v5-mma.json) but "
+           "FAILED-EXAM — walk-forward Brier 0.2454 vs naive "
+           "0.2451; every market stamps FAILED-EXAM until a "
+           "refit passes",
+    "golf": "no fit registered", "boxing": "no fit registered",
+    "cricket": "no fit registered", "darts": "no fit registered",
+    "motorsport": "no fit registered",
+    "rugby-union": "no fit registered",
+    "rugby-league": "no fit registered",
+    "lacrosse": "no fit registered",
+    "snooker": "no fit registered",
+    "table-tennis": "no fit registered",
+}
+
+
+def sport_inventory(event_types=None):
+    """FanDuel's FULL sport menu vs this app, one row per tree
+    sport: (a) does pull_menu() fetch its page today, (b) does
+    a checker/fit exist, (c) what would a market for it stamp.
+    `event_types` may carry a live tree ({id: name} as
+    build_menu_tree returns); the default is the tree captured
+    live 2026-10-24 in FD_EVENT_TYPE_NAMES. A sport the pull
+    never fetches is NOT PULLED — invisible, not UNPRICED —
+    and is named as such, with its closer."""
+    types = event_types or FD_EVENT_TYPE_NAMES
+    pulled_ids = {tid for tid, keys in FD_TREE_ROUTES.items()
+                  if any(k in FANDUEL_EVENT_TYPES for k in keys)}
+    rows = []
+    for tid, name in sorted(types.items(),
+                            key=lambda kv: str(kv[1])):
+        keys = FD_TREE_ROUTES.get(tid) or []
+        pulled = tid in pulled_ids and bool(keys)
+        slug = name.lower().replace(" ", "-")
+        fit = "; ".join(SPORT_FIT_NOTES.get(k, "no fit "
+                        "registered") for k in keys) if keys \
+            else "no fit registered"
+        has_fit = bool(keys) and any(
+            SPORT_FIT_NOTES.get(k) not in (None, "no fit "
+            "registered") for k in keys)
+        if not pulled:
+            stamp = ("NOT PULLED — pull_menu() never fetches "
+                     "this page; its markets never reach the "
+                     "app at all")
+        elif has_fit:
+            stamp = ("priced by its lane's checkers where the "
+                     "fit holds; UNPRICED with the missing piece "
+                     "named where it does not")
+        else:
+            stamp = ("pulled, but no fit/engine prices it — "
+                     "every market stamps UNPRICED (no engine "
+                     "for this sport)")
+        rows.append({
+            "event_type_id": tid, "name": name,
+            "engine_key": keys[0] if keys else slug,
+            "engine_sports": keys, "pulled": pulled,
+            "fit": fit, "stamp_today": stamp,
+            "closer": (SPORT_CLOSERS.get(slug)
+                       or SPORT_CLOSERS.get(name.lower())
+                       or SPORT_CLOSERS.get(keys[0] if keys
+                                            else "", "—"))})
+    return rows
+
+
+# ----------------------------------------------------------------
+# Game totals distribution lanes (fits by CODER GLOW,
+# tools/fit_totals.py; artifacts data/v5-totals-<lane>.json).
+# Ported into this tree in R5 (fix-guy) with the formulas and
+# fit-file format unchanged, so the ALT-TOTAL wire runs through
+# the SAME distribution function the straight totals checker
+# uses — one function prices both market forms, and parity at
+# the main line holds by construction (proved in the R5
+# battery). Model per lane: lam_home = LH*off[h]*def[a],
+# lam_away = LA*off[a]*def[h] from team scoring rates shrunk
+# to the league mean; the total follows the lane's fitted
+# distribution (Normal for NFL/NCAAF/NBA/MLB, Poisson for NHL)
+# at the lane's walk-forward sigma. A lane prices only when
+# its fit file's status is FITTED (walk-forward PASS vs the
+# naive baseline on MAE and Brier); FAILED-EXAM lanes (NHL and
+# MLB game totals) stamp the exam numbers and never price.
+
+TOTALS_LANES = ("nfl", "ncaaf", "nba", "nhl", "mlb")
+
+
+def _latest_exam(tf):
+    """The most recent walk-forward exam recorded in a fit
+    file: the highest refit_attempt_N block when refits exist,
+    else the original backtest block. Every stamp that quotes
+    exam numbers reads through here — never hardcoded, never
+    a stale attempt. Returns (exam_block, label)."""
+    best = (tf or {}).get("backtest") or {}
+    n_best, label = (1 if best else 0), "walk-forward"
+    for k, v in (tf or {}).items():
+        if not (isinstance(k, str)
+                and k.startswith("refit_attempt_")):
+            continue
+        tail = k[len("refit_attempt_"):]
+        if tail.isdigit() and isinstance(v, dict) \
+                and int(tail) > n_best:
+            best, n_best = v, int(tail)
+            label = f"refit attempt {n_best}"
+    return best, label
+
+
+def _totals_path(sport, data_dir=None):
+    return os.path.join(data_dir or DATA, f"v5-totals-{sport}.json")
+
+
+def load_totals_fit(sport):
+    if sport not in TOTALS_LANES:
+        return None
+    return _load_json_cached(_totals_path(sport))
+
+
+def _totals_bet_type(sport, data_dir=None):
+    """The registry/coverage line for a lane's totals cell,
+    read off its totals fit file: PRICED-capable with the
+    walk-forward receipt when the fit PASSED, FAILED-EXAM
+    with the numbers when it did not, and the named closer
+    when no fit exists."""
+    tf = _load_json_cached(_totals_path(sport, data_dir))
+    if tf is None:
+        return ("UNPRICED — no totals distribution for this "
+                "lane yet — close by: fit one "
+                "(tools/fit_totals.py)")
+    bt, exam_label = _latest_exam(tf)
+    if tf.get("status") != "FITTED":
+        return (f"UNPRICED — totals fit FAILED-EXAM "
+                f"({exam_label} Brier {bt.get('brier_model')} vs "
+                f"naive {bt.get('brier_naive')}, MAE "
+                f"{bt.get('mae_model')} vs {bt.get('mae_naive')}, "
+                f"n={bt.get('n')})")
+    return (f"PRICED-capable (totals distribution; "
+            f"walk-forward MAE {bt.get('mae_model')} vs naive "
+            f"{bt.get('mae_naive')}, Brier {bt.get('brier_model')} "
+            f"vs {bt.get('brier_naive')}, n={bt.get('n')})")
+
+
+def _pois_cdf(k, lam):
+    if k < 0:
+        return 0.0
+    return sum(_pois(i, lam) for i in range(int(k) + 1))
+
+
+def _totals_p_over(mu, sigma, dist, line):
+    """(P(over wins), push mass). Integer lines condition the
+    push mass out — a push refunds, it is not a loss dressed
+    as one — and report it so the card can print it."""
+    line = float(line)
+    if dist == "poisson":
+        if line == int(line):
+            L = int(line)
+            p_win = 1.0 - _pois_cdf(L, mu)
+            p_push = _pois_cdf(L, mu) - _pois_cdf(L - 1, mu)
+            p_lose = _pois_cdf(L - 1, mu)
+            denom = p_win + p_lose
+            return (p_win / denom if denom > 0 else 0.5), p_push
+        return 1.0 - _pois_cdf(math.floor(line), mu), 0.0
+    if line == int(line):
+        L = int(line)
+        p_win = 1.0 - norm_cdf((L + 0.5 - mu) / sigma)
+        p_lose = norm_cdf((L - 0.5 - mu) / sigma)
+        p_push = 1.0 - p_win - p_lose
+        denom = p_win + p_lose
+        return (p_win / denom if denom > 0 else 0.5), p_push
+    return 1.0 - norm_cdf((line - mu) / sigma), 0.0
+
+
+def totals_price(sport, home, away, side="over", line=None):
+    """(p, info) for a game total from the lane's fitted
+    distribution, or (None, named reason). Straight totals
+    and alt totals both price through here (R5)."""
+    fit = load_totals_fit(sport)
+    if fit is None:
+        return None, (f"no totals distribution fitted for the "
+                      f"{sport} lane yet — close by: fit one "
+                      f"(tools/fit_totals.py)")
+    bt, exam_label = _latest_exam(fit)
+    if fit.get("status") != "FITTED":
+        return None, (
+            f"{sport} totals fit FAILED-EXAM — {exam_label} "
+            f"Brier {bt.get('brier_model')} vs naive "
+            f"{bt.get('brier_naive')}, MAE {bt.get('mae_model')} "
+            f"vs {bt.get('mae_naive')} (n={bt.get('n')}); the lane "
+            f"does not price totals until a refit beats the naive "
+            f"baseline")
+    teams = fit.get("teams") or {}
+    aliases = fit.get("aliases") or {}
+    try:
+        h = resolve_team(teams, aliases.get(home, home))
+        a = resolve_team(teams, aliases.get(away, away))
+    except SystemExit as e:
+        return None, str(e)
+    if line is None:
+        return None, "no line supplied for this total"
+    lg = fit["league"]
+    th, ta = teams[h], teams[a]
+    lam_h = lg["LH"] * th["off"] * ta["def"]
+    lam_a = lg["LA"] * ta["off"] * th["def"]
+    mu = lam_h + lam_a
+    dist = (fit.get("params") or {}).get("distribution", "normal")
+    sigma = fit.get("sigma")
+    p_over, p_push = _totals_p_over(mu, sigma, dist, line)
+    p = p_over if side == "over" else 1.0 - p_over
+    detail = (f"{sport.upper()} totals distribution ({dist}; "
+              f"fit {fit.get('fitted_at')}; history "
+              f"n={fit.get('history_n')}): lambda "
+              f"{lam_h:.2f}/{lam_a:.2f} -> mu {mu:.1f}"
+              + (f", sigma {sigma}" if dist != "poisson" else "")
+              + f"; walk-forward MAE {bt.get('mae_model')} vs "
+                f"naive {bt.get('mae_naive')}, Brier "
+                f"{bt.get('brier_model')} vs "
+                f"{bt.get('brier_naive')} (n={bt.get('n')}) — "
+                f"lane UNTESTED (no scored totals record yet)")
+    if p_push:
+        detail += (f" | push mass {p_push * 100:.1f}% "
+                   f"conditioned out")
+    return p, {"detail": detail}
+
+
+# ------------------------------------------------------- team totals
+# Team totals (Xii Round 2, CODER GLOW). A team total is ONE
+# team's own scoring distribution — NOT the game total split or
+# stretched. Fit artifacts: data/v5-teamtotals-<lane>.json, built
+# by tools/fit_totals.py (`team` mode): lam_team from the lane's
+# off/def rates, sigma_team fitted from actual team-score
+# walk-forward residuals (per-team, shrunk toward the lane pool).
+# Same house contract as game totals: a lane prices only when
+# its fit file's status is FITTED (walk-forward PASS vs the
+# team's own expanding-mean naive baseline, MAE and Brier);
+# FAILED-EXAM lanes stamp the exam numbers. NHL team totals
+# PASSED their (genuinely different) team-level exam in Round 2
+# while NHL GAME totals are terminally FAILED-EXAM — the two
+# cells are different models and are never blended.
+
+TEAMTOTALS_LANES = TOTALS_LANES
+
+
+def load_teamtotals_fit(sport):
+    if sport not in TEAMTOTALS_LANES:
+        return None
+    return _load_json_cached(os.path.join(
+        DATA, f"v5-teamtotals-{sport}.json"))
+
+
+def team_totals_price(sport, home, away, team_side="home",
+                      line=None, side="over"):
+    """(p, info) for a team total from the team's own fitted
+    scoring distribution, or (None, named reason)."""
+    fit = load_teamtotals_fit(sport)
+    if fit is None:
+        return None, (f"no team-totals distribution fitted for "
+                      f"the {sport} lane yet — close by: fit one "
+                      f"(tools/fit_totals.py team)")
+    bt, exam_label = _latest_exam(fit)
+    if fit.get("status") != "FITTED":
+        return None, (
+            f"{sport} team-totals fit FAILED-EXAM — {exam_label} "
+            f"Brier {bt.get('brier_model')} vs naive "
+            f"{bt.get('brier_naive')}, MAE {bt.get('mae_model')} "
+            f"vs {bt.get('mae_naive')} (n={bt.get('n')}); the lane "
+            f"does not price team totals until a refit beats the "
+            f"naive team-mean baseline")
+    teams = fit.get("teams") or {}
+    aliases = fit.get("aliases") or {}
+    try:
+        h = resolve_team(teams, aliases.get(home, home))
+        a = resolve_team(teams, aliases.get(away, away))
+    except SystemExit as e:
+        return None, str(e)
+    if line is None:
+        return None, "no line supplied for this team total"
+    lg = fit["league"]
+    team_key, opp_key = (h, a) if team_side == "home" else (a, h)
+    is_home = team_side == "home"
+    th, to = teams[team_key], teams[opp_key]
+    rate = lg["LH"] if is_home else lg["LA"]
+    lam = rate * th["off"] * to["def"]
+    dist = (fit.get("params") or {}).get("distribution", "normal")
+    sigma = th.get("sigma_team") or lg.get("sigma_pool_team_score")
+    if dist == "poisson":
+        if float(line) == int(line):
+            L = int(line)
+            p_win = 1.0 - _pois_cdf(L, lam)
+            p_push = _pois_cdf(L, lam) - _pois_cdf(L - 1, lam)
+            p_lose = _pois_cdf(L - 1, lam)
+            den = p_win + p_lose
+            p_over = p_win / den if den > 0 else 0.5
+        else:
+            p_over = 1.0 - _pois_cdf(math.floor(line), lam)
+            p_push = 0.0
+    else:
+        if float(line) == int(line):
+            L = int(line)
+            p_win = 1.0 - norm_cdf((L + 0.5 - lam) / sigma)
+            p_lose = norm_cdf((L - 0.5 - lam) / sigma)
+            p_push = 1.0 - p_win - p_lose
+            den = p_win + p_lose
+            p_over = p_win / den if den > 0 else 0.5
+        else:
+            p_over = 1.0 - norm_cdf((line - lam) / sigma)
+            p_push = 0.0
+    p = p_over if side == "over" else 1.0 - p_over
+    detail = (f"{sport.upper()} team-totals distribution "
+              f"({dist}; fit {fit.get('fitted_at')}; history "
+              f"n={fit.get('history_n')}): {team_key} lambda "
+              f"{lam:.2f}"
+              + (f", sigma_team {sigma}" if dist != "poisson"
+                 else "")
+              + f"; walk-forward MAE {bt.get('mae_model')} vs "
+                f"naive {bt.get('mae_naive')}, Brier "
+                f"{bt.get('brier_model')} vs "
+                f"{bt.get('brier_naive')} (n={bt.get('n')}) — "
+                f"lane UNTESTED (no scored team-totals record "
+                f"yet)")
+    if p_push:
+        detail += (f" | push mass {p_push * 100:.1f}% "
+                   f"conditioned out")
+    return p, {"detail": detail}
+
+
+def engine_price(sport, kind, home, away, side="home", line=None,
+                 competition=None, segment=None):
+    if kind == "segment":
+        return segment_price(sport, home, away, segment, side,
+                             line, competition)
     if sport == "nfl":
+        if kind in ("totals", "alt-total"):
+            # the totals fit keys are codes; full FanDuel names
+            # resolve through the lane's own code map first —
+            # the same membership the moneyline branch uses.
+            tt = (load_totals_fit("nfl") or {}).get("teams") or {}
+            h = resolve_nfl_team(home, tt) or home
+            a = resolve_nfl_team(away, tt) or away
+            return totals_price("nfl", h, a, side, line)
+        # canonical membership: full FanDuel names resolve to the
+        # lane's codes through FD_NFL_TEAM_CODES, same as the
+        # menu router does when it builds the slate.
+        pricing = _load_json_cached(NFL_PRICING_PATH) or {}
+        ratings = pricing.get("ratings") or {}
+        ch = resolve_nfl_team(home, ratings)
+        ca = resolve_nfl_team(away, ratings)
+        if ch is None or ca is None:
+            return None, f"team not in the NFL fit ({home}/{away})"
         try:
-            p_home, g = nfl_price(home, away)
-        except SystemExit as e:
-            return None, str(e)
+            p_home, g = nfl_price(ch, ca)
+        except SystemExit:
+            # The fixture is not on the saved slate of record, but
+            # both teams ARE in the lane's fitted ratings — the
+            # moneyline prices from those ratings (the same Elo
+            # logistic nfl_price recomputes for slated games,
+            # home field 55, neutral=False).
+            d = ratings[ch] + 55 - ratings[ca]
+            p_home = 1 / (1 + 10 ** (-d / 400))
+            if kind == "moneyline":
+                return (p_home if side == "home" else 1 - p_home), \
+                    {"detail": "NFL lane Elo ratings (fixture not "
+                               "on the saved slate; priced from "
+                               "the lane's fitted ratings)"}
+            if kind in ("spread", "alt-spread"):
+                # R2 (fix-guy): spreads price off a fair spread
+                # DERIVED from the same ratings through the map
+                # validated against the saved slate's own fairs:
+                # the slate's fair_spread_home is an affine
+                # function of (ratings diff + 55 HFA) — refit on
+                # its 13 games: MAE 0.017 pts in-sample, 0.020
+                # leave-one-out (tools/validate_nfl_fair_map
+                # logic, numbers in the R2 report). The cover
+                # probability then uses the lane's existing
+                # margin distribution N(mu, NFL_MARGIN_SD),
+                # exactly as the saved-slate path does. Marked
+                # FRAGILE: the fair is a derivation validated on
+                # n=13, not the slate of record.
+                fair = NFL_FAIR_MAP_A + NFL_FAIR_MAP_B * d
+                mu = -fair
+                s = line if side == "home" else -line
+                p_cover_home = 1 - norm_cdf((-s - mu)
+                                            / NFL_MARGIN_SD)
+                return (p_cover_home if side == "home"
+                        else 1 - p_cover_home), \
+                    {"detail": f"margin N({mu:+.1f}, "
+                               f"{NFL_MARGIN_SD}) from a fair "
+                               f"spread derived from the lane's "
+                               f"ratings (fair {fair:+.1f}; map "
+                               f"validated vs the saved slate's "
+                               f"fairs: MAE 0.02 pts, n=13)",
+                     "fragile": True,
+                     "fragile_note": "fair spread derived from "
+                                     "ratings, not the saved "
+                                     "slate of record"}
+            return None, "no NFL engine for this market"
         if kind == "moneyline":
             return (p_home if side == "home" else 1 - p_home), \
                 {"detail": "NFL lane Elo (saved pricing file)"}
         if kind in ("spread", "alt-spread"):
+            if g.get("fair_spread_home") is None:
+                return None, ("fixture not in the saved NFL "
+                              "pricing file — no saved fair spread "
+                              "for this game; spread not priced")
             mu = -g["fair_spread_home"]
             s = line if side == "home" else -line
             p_cover_home = 1 - norm_cdf((-s - mu) / NFL_MARGIN_SD)
@@ -3389,30 +5748,70 @@ def engine_price(sport, kind, home, away, side="home", line=None):
                            f"from the lane's saved fair spread"}
         return None, "no NFL engine for this market"
     if sport == "ncaaf":
-        if kind == "moneyline":
-            w = cfb_win_prob(home, away)
-            return (w["p_home"] if side == "home" else 1 - w["p_home"]), \
-                {"detail": "v4 distributional ratings"}
-        if kind in ("spread", "alt-spread"):
-            cov = cfb_cover_prob(home, away, line if side == "home"
-                                    else -line)
-            return (cov["p_cover"] if side == "home"
-                    else 1 - cov["p_cover"]), \
-                {"detail": "v4 margin lane (like-for-like pool)"}
+        if kind in ("totals", "alt-total"):
+            # membership truth, shared with the moneyline
+            # lane: bare FanDuel school names resolve through
+            # FD_CFB_SCHOOL_ALIASES (the totals fit keys carry
+            # mascots, so 'Georgia' alone is ambiguous to a
+            # bare substring resolver), and a CFL fixture
+            # filed under the NCAAF page names the CFL.
+            tt = (load_totals_fit("ncaaf") or {}).get("teams") \
+                or {}
+            fixed = []
+            for name in (home, away):
+                comp = OTHER_COMPETITION_TEAMS.get(name)
+                if comp:
+                    return None, (f"competition not in this "
+                                  f"app: {comp} ({name}) — "
+                                  "FanDuel files it under "
+                                  "ncaaf, it is not a ncaaf team")
+                fixed.append(_resolve_or_none(
+                    tt, name, FD_CFB_SCHOOL_ALIASES) or name)
+            return totals_price("ncaaf", fixed[0], fixed[1],
+                                side, line)
+        try:
+            if kind == "moneyline":
+                w = cfb_win_prob(home, away)
+                return (w["p_home"] if side == "home" else 1 - w["p_home"]), \
+                    {"detail": "v4 distributional ratings"}
+            if kind in ("spread", "alt-spread"):
+                cov = cfb_cover_prob(home, away, line if side == "home"
+                                        else -line)
+                return (cov["p_cover"] if side == "home"
+                        else 1 - cov["p_cover"]), \
+                    {"detail": "v4 margin lane (like-for-like pool)"}
+        except SystemExit as e:
+            # membership failure names itself (not found /
+            # ambiguous after aliases) — a named UNPRICED, not a
+            # checker crash.
+            return None, str(e)
         return None, "no NCAAF engine for this market"
     if sport == "nhl":
+        if kind in ("totals", "alt-total"):
+            return totals_price("nhl", home, away, side, line)
         if kind == "moneyline":
-            w = nhl_win_prob(home, away)
+            try:
+                w = nhl_win_prob(home, away)
+            except SystemExit as e:
+                return None, str(e)
             return (w["p_home"] if side == "home" else 1 - w["p_home"]), \
                 {"detail": "v4 NHL Elo (sigma-integrated)"}
         return None, "no NHL engine for this market (spread/puck-line " \
                      "not built)"
     if sport == "nba":
+        if kind in ("totals", "alt-total"):
+            return totals_price("nba", home, away, side, line)
         fit = load_nba()
         if fit is None:
             return None, "NBA fit not run (betmodel5.py fit-nba)"
         pr = nba_probs(fit, home, away)
         if pr is None:
+            # R4: name the real competition when FanDuel filed
+            # a WNBA / NBL / CBA fixture under the NBA page —
+            # the same stamp coverage prints (one helper).
+            comp = competition_missing("nba", home, away)
+            if comp:
+                return None, comp
             return None, f"team not in the NBA fit ({home}/{away})"
         p_home, mu, sd = pr
         if kind == "moneyline":
@@ -3429,6 +5828,176 @@ def engine_price(sport, kind, home, away, side="home", line=None):
                            f"(in-sample map — FRAGILE lineage)",
                  "fragile": True}
         return None, "no NBA engine for this market"
+    if sport == "mlb":
+        if kind in ("totals", "alt-total"):
+            # the MLB game-totals fit has its own exam (it
+            # FAILED — totals_price stamps the numbers); it
+            # does not ride the moneyline lane's gate.
+            return totals_price("mlb", home, away, side, line)
+        # R4: gate + membership come from the SHARED helpers
+        # (mlb_lane_gate / mlb_membership) that coverage uses —
+        # checker and coverage agree by construction.
+        fit = load_mlb()
+        gate = mlb_lane_gate(fit)
+        if gate:
+            return None, gate
+        if kind == "moneyline":
+            p_home, reason = mlb_membership(fit, home, away)
+            if p_home is None:
+                return None, reason
+            bt = fit.get("backtest") or {}
+            return (p_home if side == "home" else 1 - p_home), \
+                {"detail": f"MLB Elo lane (fit "
+                           f"{fit['fitted_at']}; walk-forward "
+                           f"Brier {bt['brier']} vs naive "
+                           f"{bt['naive_brier']}, n={bt['n']})"}
+        return None, ("no MLB engine for this market "
+                      "(moneyline only — run-line/totals not "
+                      "fitted)")
+    if sport == "tennis":
+        fit = load_tennis()
+        if fit is None:
+            return None, "tennis fit not run (tools/fit_tennis.py)"
+        if kind != "moneyline":
+            return None, ("no tennis engine for this market "
+                          "(moneyline only — set/handicap and "
+                          "game totals need a set-level "
+                          "distribution, not fitted)")
+        tour, p_or_reason = tennis_probs(fit, home, away)
+        if tour is None:
+            return None, p_or_reason
+        blk = (fit.get("tours") or {}).get(tour) or {}
+        bt = blk.get("backtest") or {}
+        if not _exam_passed(bt):
+            return None, (f"tennis {tour.upper()} lane "
+                          f"FAILED-EXAM — walk-forward Brier "
+                          f"{bt.get('brier')} did not beat the "
+                          f"naive baseline {bt.get('naive_brier')}; "
+                          "lane does not price until a refit "
+                          "passes")
+        p_home = p_or_reason
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Tennis Elo lane ({tour.upper()}; fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt['brier']} vs naive "
+                       f"{bt['naive_brier']}, n={bt['n']})"}
+    if sport == "mma":
+        fit = load_mma()
+        if fit is None:
+            return None, "MMA fit not run (tools/fit_mma.py)"
+        bt = fit.get("backtest") or {}
+        if not _exam_passed(bt):
+            return None, (f"MMA lane FAILED-EXAM — walk-forward "
+                          f"Brier {bt.get('brier')} did not beat "
+                          f"the naive baseline "
+                          f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                          "lane does not price until a refit "
+                          "passes")
+        if kind != "moneyline":
+            return None, ("no MMA engine for this market "
+                          "(moneyline only — method-of-victory "
+                          "and round markets need finish/round "
+                          "distributions, not fitted)")
+        p_home, reason = mma_probs(fit, home, away)
+        if p_home is None:
+            return None, reason
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"MMA fighter Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt['brier']} vs naive "
+                       f"{bt['naive_brier']}, n={bt['n']})"}
+    if sport == "cricket":
+        fit = load_cricket()
+        if fit is None:
+            return None, "cricket fit not run (tools/fit_cricket.py)"
+        if kind != "moneyline":
+            return None, ("no cricket engine for this market "
+                          "(moneyline only — no ball-by-ball "
+                          "totals/scoring distribution fitted)")
+        lane, reason = cricket_lane_for(fit, competition,
+                                        home, away)
+        if lane is None:
+            return None, reason
+        p, reason = cricket_probs(fit, lane, home, away, side)
+        if p is None:
+            return None, reason
+        blk = (fit.get("lanes") or {}).get(lane) or {}
+        bt = blk.get("backtest") or {}
+        return p, {"detail": f"cricket {lane} Elo lane (fit "
+                             f"{fit['fitted_at']}; walk-forward "
+                             f"Brier {bt.get('brier')} vs naive "
+                             f"{bt.get('naive_brier')}, "
+                             f"n={bt.get('n')})"}
+    if sport == "rugby-league":
+        fit = load_rugby()
+        if fit is None:
+            return None, "rugby fit not run (tools/fit_rugby.py)"
+        if kind != "moneyline":
+            return None, ("no rugby league engine for this "
+                          "market (moneyline only)")
+        lane = rugby_league_lane(competition, home, away)
+        p, reason = rugby_probs(fit, "league", lane, home, away)
+        if p is None:
+            return None, reason
+        return (p if side == "home" else 1 - p), \
+            {"detail": f"rugby league {lane} Elo lane"}
+    if sport == "rugby-union":
+        fit = load_rugby()
+        if fit is None:
+            return None, "rugby fit not run (tools/fit_rugby.py)"
+        npc = ((fit.get("union") or {}).get("npc")) or {}
+        ratings = npc.get("ratings") or {}
+        if _resolve_or_none(ratings, home) is None \
+                or _resolve_or_none(ratings, away) is None:
+            return None, ("no rugby union fit for this fixture's "
+                          "competition — the fitted union lane is "
+                          "the New Zealand NPC only; internationals "
+                          "and other club competitions are not "
+                          "fitted (closer: a results archive + fit "
+                          "for the arriving competition)")
+        p, reason = rugby_probs(fit, "union", "npc", home, away)
+        if p is None:
+            return None, reason
+        if kind == "moneyline":
+            return (p if side == "home" else 1 - p), \
+                {"detail": "rugby union NPC Elo lane"}
+        if kind in ("spread", "alt-spread"):
+            mm = npc.get("margin_map") or {}
+            if not mm.get("sd"):
+                return None, "NPC margin map not fitted"
+            ch = _resolve_or_none(ratings, home)
+            ca = _resolve_or_none(ratings, away)
+            mu = mm["a"] + mm["b"] * (ratings[ch] - ratings[ca])
+            s = line if side == "home" else -line
+            p_cover = 1 - norm_cdf((-s - mu) / mm["sd"])
+            return (p_cover if side == "home" else 1 - p_cover), \
+                {"detail": f"NPC margin map N({mu:+.1f}, "
+                           f"{mm['sd']}) (walk-forward winner "
+                           "exam passed; margin map fit on prior "
+                           "matches only)",
+                 "fragile": True}
+        return None, "no rugby union engine for this market"
+    if sport == "boxing":
+        # R4 named terminal (evidence in XII-SPORT-INVENTORY):
+        # BoxRec — the only complete professional results
+        # archive — is access-gated (HTTP 403 / bot wall on
+        # every route probed 2026-10-24); the public GitHub
+        # candidate was verified as a 78-fight popular-match
+        # subset, not an archive. No Elo is fitted on toy data.
+        return None, ("boxing results source gated — BoxRec "
+                      "(the only complete pro archive) refuses "
+                      "automated access (HTTP 403, verified "
+                      "2026-10-24) and no verified public "
+                      "results archive exists; closer: a licensed "
+                      "BoxRec export or a verified full pro "
+                      "results archive, then a fighter Elo + "
+                      "walk-forward exam")
+    if sport in UNCHECKED_SPORTS:
+        # R2: pulled, inventoried, and stamped — the sport has
+        # no checker/fit yet, and the stamp names that at sport
+        # level instead of a bare "unknown sport".
+        return None, (f"no checker registered for {sport} yet "
+                      f"— see coverage queue")
     if sport == "soccer":
         fit, _league_key = soccer_fit_for(home, away)
         if fit is None:
@@ -3476,6 +6045,15 @@ def engine_price(sport, kind, home, away, side="home", line=None):
             return (p_over if side == "over" else 1 - p_over), \
                 {"detail": det + " | total off the grid"}
         return None, "soccer market not routed here"
+    if sport == "mlb":
+        # Totals only in this tree (Glow lane): Guy's moneyline
+        # fit (v5-mlb.json) wires at combine. The game-totals fit
+        # was examined walk-forward and FAILED (see
+        # data/v5-totals-mlb.json) — totals_price stamps the exam
+        # numbers. Team totals PASSED their own exam and price
+        # via the team-props checker.
+        if kind in ("totals", "alt-total"):
+            return totals_price("mlb", home, away, side, line)
     return None, f"unknown sport {sport!r}"
 
 
@@ -3602,6 +6180,560 @@ def pull_menu(sport):
 # PRICED / COHERENCE-FLAGGED / UNPRICED. Registration is enumerable
 # (TAXONOMY == MARKET_CHECKERS keys, asserted in R6).
 
+# ----------------------------------------------------------------
+# R5 lanes: segments (half/quarter/period) and soccer title
+# outrights. Fit artifacts: data/v5-segments.json (tools/
+# fit_segments.py + tools/fit_soccer_halves.py) and data/
+# v5-outrights.json (tools/fit_outrights.py). Same house
+# contract as every lane: a cell prices only when its exam
+# PASSED; FAILED-EXAM cells stamp their numbers.
+# R6: soccer 1H exams split PER FORM (result / total price
+# independently); NCAAF 1H + NBA/NFL 1Q segment lanes
+# examined; outright exams run per league.
+
+SEGMENTS_PATH = os.path.join(DATA, "v5-segments.json")
+OUTRIGHTS_PATH = os.path.join(DATA, "v5-outrights.json")
+
+# R6 determination: tennis tournament-winner futures are
+# FORM TERMINAL. A knockout tournament price is a function
+# of the DRAW — the bracket path (who a player can meet, in
+# what order), seeding, and the surface — none of which the
+# arriving entries carry (they arrive as a competition name
+# plus a runners list with prices: no draw, no bracket
+# slots, no surface split). Pricing them off raw Elo title
+# shares would be the banned shortcut: the fitted Elo prices
+# head-to-head moneylines, a different claim. One stamp,
+# shared by the checker and coverage so they cannot drift.
+TENNIS_FUTURES_TERMINAL = (
+    "tennis outright FORM TERMINAL — a tournament-winner "
+    "price is draw-dependent: it is a function of the "
+    "bracket path (who a player can meet, in what order), "
+    "seeding and the surface, and the arriving entries "
+    "carry runners + prices only — no draw structure, no "
+    "bracket slots, no surface split — so no honest number "
+    "exists to grade; raw Elo title shares are refused "
+    "(the Elo fit prices head-to-head moneylines, a "
+    "different claim). Closer: a draw-aware tournament "
+    "simulator (published draw + surface-specific Elo + "
+    "path simulation), examined against completed "
+    "tournament winners")
+
+
+def load_segments():
+    # resolved against the CURRENT DATA at call time (the
+    # shell repoints DATA into app storage on device)
+    return _load_json_cached(os.path.join(DATA, "v5-segments.json"))
+
+
+def load_outrights():
+    return _load_json_cached(os.path.join(DATA, "v5-outrights.json"))
+
+
+def _segment_kind(segment):
+    s = str(segment or "").strip().lower().replace("-", " ")
+    if s in ("1st half", "first half", "1h", "half 1"):
+        return "1h"
+    if s in ("1st period", "first period", "1p", "period 1"):
+        return "1p"
+    if s in ("2nd period", "second period", "2p", "period 2"):
+        return "2p"
+    if s in ("3rd period", "third period", "3p", "period 3"):
+        return "3p"
+    if s in ("1st quarter", "first quarter", "1q", "q1"):
+        return "1q"
+    if s in ("2nd quarter", "second quarter", "2q", "q2"):
+        return "2q"
+    return None
+
+
+def _seg_exam_stamp(lane_name, bt, form_note=""):
+    return (f"{lane_name} FAILED-EXAM — walk-forward totals "
+            f"MAE {bt.get('mae_total', bt.get('mae_model'))} vs "
+            f"naive {bt.get('mae_total_naive', bt.get('mae_naive'))}, "
+            f"Brier {bt.get('brier_total', bt.get('brier_model'))} "
+            f"vs {bt.get('brier_total_naive', bt.get('brier_naive'))} "
+            f"(n={bt.get('n')}); segment-specific team rates did "
+            f"not beat the scaled baseline, so the lane stamps "
+            f"and does not price{form_note}")
+
+
+def segment_price(sport, home, away, segment, side="home",
+                  line=None, competition=None):
+    """(p, info) for a segment (half/period) market, or
+    (None, named reason). Prices only from lanes whose
+    walk-forward exam passed."""
+    kind = _segment_kind(segment)
+    if kind is None:
+        return None, (f"unrecognized segment form {segment!r} — "
+                      "the fitted segment forms are 1st half "
+                      "(NBA/NFL/NCAAF/soccer), 1st + 2nd quarter "
+                      "(NCAAF; NBA/NFL 1st quarter), and NHL "
+                      "periods 1-3 (totals + moneyline forms)")
+    seg = load_segments()
+    if seg is None:
+        return None, ("segment fits not run "
+                      "(tools/fit_segments.py)")
+    if sport in ("nba", "nfl", "ncaaf"):
+        # R6: quarter lanes (nba-1q / nfl-1q) and the NCAAF
+        # 1H lane join the R5 half lanes — same machinery,
+        # same exam contract: a lane prices only when its
+        # own walk-forward exam passed.
+        if sport == "ncaaf":
+            # R7: the quarter lanes (ncaaf-1q / ncaaf-2q) are
+            # examined on the same linescores under the R6
+            # share-scaled naive — the R6 "not examined"
+            # stamp is retired.
+            if kind == "1h":
+                lane_key, flabel = "ncaaf-1h", "1H"
+            elif kind == "1q":
+                lane_key, flabel = "ncaaf-1q", "1Q"
+            elif kind == "2q":
+                lane_key, flabel = "ncaaf-2q", "2Q"
+            else:
+                return None, (f"NCAAF {segment} not fitted — "
+                              "the examined segment forms for "
+                              "this lane are the 1st half and "
+                              "the 1st + 2nd quarters (ESPN "
+                              "linescores)")
+        elif kind == "1h":
+            lane_key, flabel = f"{sport}-1h", "1H"
+        elif kind == "1q":
+            lane_key, flabel = f"{sport}-1q", "1Q"
+        else:
+            return None, (f"{sport.upper()} {segment} not fitted "
+                          "— the examined segment forms for this "
+                          "league are the 1st half and the 1st "
+                          "quarter (a rescaled half would be a "
+                          "guessed number)")
+        lane = (seg.get("lanes") or {}).get(lane_key)
+        if lane is None:
+            return None, f"no {sport} segment fit on file"
+        bt = lane.get("backtest") or {}
+        if lane.get("status") != "FITTED":
+            note = ""
+            cov = lane.get("coverage")
+            if cov:
+                note = (f"; linescore coverage: "
+                        f"{cov.get('games_with_linescores')} "
+                        f"usable games of {cov.get('events')} "
+                        f"events seen")
+            return None, _seg_exam_stamp(
+                f"{sport.upper()} {flabel} segments", bt,
+                form_note=note)
+        teams = lane.get("teams") or {}
+        if sport == "nfl":
+            h = resolve_nfl_team(home, teams)
+            a = resolve_nfl_team(away, teams)
+            if h is None or a is None:
+                return None, (f"team not in the NFL segment fit "
+                              f"({home}/{away})")
+        elif sport == "ncaaf":
+            # lane teams are ESPN abbreviations; the names map
+            # (abbrev -> ESPN displayName) plus the FanDuel
+            # school-alias table resolves the slate's names.
+            names = lane.get("team_names") or {}
+            lookup = {ab: ab for ab in teams}
+            for ab, dn in names.items():
+                if ab in teams:
+                    lookup[dn] = ab
+            hh = _resolve_or_none(lookup, home,
+                                  FD_CFB_SCHOOL_ALIASES)
+            aa = _resolve_or_none(lookup, away,
+                                  FD_CFB_SCHOOL_ALIASES)
+            h = lookup[hh] if hh is not None else None
+            a = lookup[aa] if aa is not None else None
+            if h is None or a is None:
+                return None, (f"team not in the NCAAF segment "
+                              f"fit ({home}/{away})")
+        else:
+            try:
+                h = resolve_team(teams, home)
+                a = resolve_team(teams, away)
+            except SystemExit as e:
+                return None, str(e)
+        lg = lane["league"]
+        lam_h = lg["LH1"] * teams[h]["off"] * teams[a]["def"]
+        lam_a = lg["LA1"] * teams[a]["off"] * teams[h]["def"]
+        det = (f"{sport.upper()} {flabel} segment distribution "
+               f"(fit {seg.get('fitted_at')}; walk-forward "
+               f"totals MAE {bt.get('mae_total')} vs naive "
+               f"{bt.get('mae_total_naive')}, margin MAE "
+               f"{bt.get('mae_margin')} vs "
+               f"{bt.get('mae_margin_naive')}, n={bt.get('n')})")
+        if side in ("over", "under"):
+            if line is None:
+                return None, "no line supplied for this segment total"
+            mu = lam_h + lam_a
+            p_over = 1 - norm_cdf((line - mu) / lane["sigma_total"])
+            return (p_over if side == "over" else 1 - p_over), \
+                {"detail": det + f" | {flabel} total mu {mu:.1f}"}
+        mu_m = lam_h - lam_a
+        sd_m = lane["sigma_margin"]
+        if line is None:
+            p_home = 1 - norm_cdf((0 - mu_m) / sd_m)
+            return (p_home if side == "home" else 1 - p_home), \
+                {"detail": det + f" | {flabel} moneyline off the "
+                                  "margin distribution"}
+        s = line if side == "home" else -line
+        p_cover = 1 - norm_cdf((-s - mu_m) / sd_m)
+        return (p_cover if side == "home" else 1 - p_cover), \
+            {"detail": det + f" | {flabel} margin N({mu_m:+.1f}, {sd_m})"}
+    if sport == "nhl":
+        # R7: every period (1P/2P/3P) examined on TWO forms
+        # (tools/fit_segments.py exam_nhl_periods) — totals
+        # (Poisson, the R5 protocol per period) and
+        # moneyline (period result off the same Poisson
+        # grid). Each form prices only on its own
+        # walk-forward pass; .5 period spreads read off the
+        # moneyline form's grid. The 1P totals form is the
+        # shipped R5 exam verbatim.
+        if kind not in ("1p", "2p", "3p"):
+            return None, ("NHL half/quarter forms do not "
+                          "exist — the examined segment forms "
+                          "for this league are periods 1-3 "
+                          "(totals + moneyline per period)")
+        lane = (seg.get("lanes") or {}).get(f"nhl-{kind}")
+        if lane is None:
+            return None, "no NHL segment fit on file"
+        forms = lane.get("forms") or {}
+        bt = lane.get("backtest") or {}
+        teams = lane.get("teams") or {}
+        try:
+            h = resolve_team(teams, home)
+            a = resolve_team(teams, away)
+        except SystemExit as e:
+            return None, str(e)
+        lg = lane["league"]
+        lh_rate = lg.get("LH1P", lg.get("LH"))
+        la_rate = lg.get("LA1P", lg.get("LA"))
+        lam_h = lh_rate * teams[h]["off"] * teams[a]["def"]
+        lam_a = la_rate * teams[a]["off"] * teams[h]["def"]
+        plabel = {"1p": "1st", "2p": "2nd", "3p": "3rd"}[kind]
+        if side in ("over", "under"):
+            ft = forms.get("total") or {}
+            if forms and ft.get("status") != "FITTED":
+                return None, (
+                    f"NHL {plabel}-period totals FAILED-EXAM "
+                    f"(R7 per-form bar) — walk-forward MAE "
+                    f"{ft.get('mae_model')} vs naive "
+                    f"{ft.get('mae_naive')}, Brier "
+                    f"{ft.get('brier_model')} vs "
+                    f"{ft.get('brier_naive')} (n={ft.get('n')}); "
+                    "the moneyline form's numbers ride its own "
+                    "stamp")
+            if not forms and lane.get("status") != "FITTED":
+                return None, _seg_exam_stamp(
+                    f"NHL {plabel}-period totals", bt)
+            if line is None:
+                return None, ("no line supplied for this "
+                              "segment total")
+            mu = lam_h + lam_a
+            p_over, _push = _totals_p_over(mu, None, "poisson",
+                                           line)
+            return (p_over if side == "over" else 1 - p_over), \
+                {"detail": f"NHL {plabel}P totals distribution "
+                           f"(Poisson mu {mu:.2f} from period "
+                           f"rates; walk-forward MAE "
+                           f"{ft.get('mae_model', bt.get('mae_model'))}"
+                           f" vs naive "
+                           f"{ft.get('mae_naive', bt.get('mae_naive'))}"
+                           f", n={ft.get('n', bt.get('n'))})"}
+        fm = forms.get("moneyline") or {}
+        if forms and fm.get("status") != "FITTED":
+            return None, (
+                f"NHL {plabel}-period moneyline FAILED-EXAM "
+                f"(R7 per-form bar) — walk-forward Brier3 "
+                f"{fm.get('brier3_model')} vs naive "
+                f"{fm.get('brier3_naive')}, margin MAE "
+                f"{fm.get('mae_margin_model')} vs "
+                f"{fm.get('mae_margin_naive')} "
+                f"(n={fm.get('n')}); period spreads read off "
+                "the same grid and stamp with it")
+        if not forms:
+            return None, ("the NHL segment lane on file "
+                          "predates the R7 period-forms exam — "
+                          "period moneylines not examined "
+                          "(tools/fit_segments.py --lane="
+                          "nhlperiods)")
+        grid = soccer_grid(lam_h, lam_a)
+        det = (f"NHL {plabel}P result off the Poisson period "
+               f"grid (rates {lam_h:.2f}/{lam_a:.2f}; "
+               f"walk-forward Brier3 {fm.get('brier3_model')} "
+               f"vs naive {fm.get('brier3_naive')}, "
+               f"n={fm.get('n')})")
+        if line is None:
+            p = {"home": grid["p_home"], "draw": grid["p_draw"],
+                 "away": grid["p_away"]}[side]
+            return p, {"detail": det + " | period moneyline"}
+        if abs(line % 1) != 0.5:
+            return None, ("NHL period spreads price on .5 "
+                          "lines only (integer lines carry "
+                          "push mass)")
+        p_cover = _grid_handicap(grid["matrix"], line)
+        return (p_cover if side == "home" else 1 - p_cover), \
+            {"detail": det + " | period spread off the grid"}
+    if sport == "soccer":
+        if kind != "1h":
+            return None, ("soccer segment form fitted is the "
+                          "1st half only")
+        fit, key = soccer_fit_for(home, away)
+        if fit is None:
+            return None, (f"team not in the soccer fit "
+                          f"({home}/{away})")
+        blk = (seg.get("soccer-1h") or {}).get(key)
+        if blk is None:
+            return None, (f"no half-share exam on file for "
+                          f"league {key} — the examined sets "
+                          "are the football-data.co.uk leagues "
+                          "(R6) and the ESPN-sourced leagues "
+                          "(R7, ESPN period scores); a league "
+                          "in neither set has no 1H exam "
+                          "(tools/fit_soccer_halves.py, "
+                          "tools/fit_soccer_halves_espn.py)")
+        if blk.get("status") == "NO-DATA":
+            cov = blk.get("coverage") or {}
+            return None, (
+                f"{key} 1st-half segments NO-DATA — "
+                f"{blk.get('evidence')} (coverage: "
+                f"{cov.get('games_ht_covered')} of "
+                f"{cov.get('games_completed')} completed "
+                "games HT-covered); no half-share exists "
+                "to price from, and none is guessed")
+        bt = blk.get("backtest") or {}
+        # R6 per-form bar (pre-stated in the R6 assignment):
+        # each form prices on its OWN walk-forward pass —
+        # result iff Brier3 beat the fixed-share naive, total
+        # iff its Brier beat the 0.44-share naive. A failing
+        # form stamps quoting BOTH forms' numbers.
+        forms = blk.get("forms") or {}
+        need = "total" if side in ("over", "under") else "result"
+        fneed = forms.get(need) or {}
+        if forms:
+            form_ok = fneed.get("status") == "FITTED"
+        else:  # pre-R6 artifact: the joint status governs
+            form_ok = blk.get("status") == "FITTED"
+        if not form_ok:
+            fres = forms.get("result") or {}
+            ftot = forms.get("total") or {}
+            return None, (
+                f"{key} 1st-half {need} FAILED-EXAM "
+                f"(per-form bar, R6 protocol) — 1H total "
+                f"over-1.5 Brier "
+                f"{ftot.get('brier_over15', bt.get('brier_over15'))} "
+                f"vs naive "
+                f"{ftot.get('brier_over15_naive', bt.get('brier_over15_naive'))} "
+                f"[{ftot.get('status', blk.get('status'))}], "
+                f"1H result Brier3 "
+                f"{fres.get('brier3_1h', bt.get('brier3_1h'))} vs "
+                f"naive "
+                f"{fres.get('brier3_1h_naive', bt.get('brier3_1h_naive'))} "
+                f"[{fres.get('status', blk.get('status'))}] "
+                f"(n={bt.get('n')}); each form prices only on "
+                "its own walk-forward pass")
+        grid = soccer_fixture_grid(fit, home, away)
+        if grid is None:
+            return None, (f"team not in the soccer fit "
+                          f"({home}/{away})")
+        g1 = soccer_grid(grid["lambda_home"] * blk["share_h"],
+                         grid["lambda_away"] * blk["share_a"])
+        M = g1["matrix"]
+        det = (f"{key} 1H grid (half-shares "
+               f"{blk['share_h']}/{blk['share_a']} fitted on "
+               f"{blk.get('ht_source', 'HTHG/HTAG')}; "
+               f"walk-forward over-1.5 Brier "
+               f"{bt.get('brier_over15')} vs naive "
+               f"{bt.get('brier_over15_naive')}, 1H Brier3 "
+               f"{bt.get('brier3_1h')} vs "
+               f"{bt.get('brier3_1h_naive')}, n={bt.get('n')})")
+        if side in ("over", "under"):
+            if line is None:
+                return None, "no line supplied for this segment total"
+            p_over = _grid_over(M, line)
+            return (p_over if side == "over" else 1 - p_over), \
+                {"detail": det + " | 1H total off the grid"}
+        if line is None:
+            p = {"home": g1["p_home"], "draw": g1["p_draw"],
+                 "away": g1["p_away"]}[side]
+            return p, {"detail": det + " | 1H result off the grid"}
+        if abs(line % 1) != 0.5:
+            return None, ("soccer handicaps price on .5 lines "
+                          "only (integer lines carry push mass)")
+        p_home_cover = _grid_handicap(M, line)
+        return (p_home_cover if side == "home"
+                else 1 - p_home_cover), \
+            {"detail": det + " | 1H handicap off the grid"}
+    return None, (f"no segment distributions fitted for "
+                  f"{sport} — the examined forms are NBA/NFL "
+                  "1st half + 1st quarter, NCAAF 1st half + "
+                  "1st/2nd quarters, NHL periods 1-3 (totals + "
+                  "moneyline), soccer 1st half")
+
+
+EPL_NAME_TO_CODE = {
+    "Arsenal": "ARS", "Aston Villa": "AVL", "Brighton": "BHA",
+    "Brighton & Hove Albion": "BHA", "Bournemouth": "BOU",
+    "Brentford": "BRE", "Burnley": "BUR", "Chelsea": "CHE",
+    "Crystal Palace": "CRY", "Everton": "EVE", "Fulham": "FUL",
+    "Leeds": "LEE", "Leeds United": "LEE", "Liverpool": "LIV",
+    "Manchester United": "MAN", "Man Utd": "MAN",
+    "Manchester City": "MNC", "Man City": "MNC",
+    "Newcastle": "NEW", "Newcastle United": "NEW",
+    "Nottingham Forest": "NFO", "Nottm Forest": "NFO",
+    "Sunderland": "SUN", "Tottenham": "TOT", "Spurs": "TOT",
+    "Tottenham Hotspur": "TOT", "West Ham": "WHU",
+    "West Ham United": "WHU", "Wolves": "WOL",
+    "Wolverhampton": "WOL", "Wolverhampton Wanderers": "WOL",
+    "Coventry": "COV", "Coventry City": "COV",
+    "Hull": "HUL", "Hull City": "HUL", "Ipswich": "IPS",
+    "Ipswich Town": "IPS"}
+
+
+def _outright_league_key(mkt):
+    blob = " ".join(str(mkt.get(k) or "") for k in
+                    ("competition", "home", "away")).lower()
+    # R7: second tiers are examined too — their checks run
+    # BEFORE the top-flight ones (a "La Liga 2" blob also
+    # contains "la liga"). USL Championship is a different
+    # competition family and stays uncovered (None).
+    if "usl" in blob:
+        return None
+    if "championship" in blob:
+        return "championship"
+    if "la liga 2" in blob or "segunda" in blob:
+        return "la-liga-2"
+    if "serie b" in blob and "brazil" not in blob \
+            and "brasil" not in blob:
+        return "serie-b"
+    if "ligue 2" in blob:
+        return "ligue-2"
+    if "bundesliga" in blob and ("2." in blob or " 2" in blob):
+        return "bundesliga-2"
+    if "premier league" in blob and "scottish" not in blob:
+        return "epl"
+    if "la liga" in blob:
+        return "la-liga"
+    if "serie a" in blob and "brazil" not in blob \
+            and "brasil" not in blob:
+        return "serie-a"
+    if "ligue 1" in blob:
+        return "ligue-1"
+    if "bundesliga" in blob and "2." not in blob:
+        return "bundesliga"
+    if "major league soccer" in blob or " mls" in blob \
+            or blob.startswith("mls"):
+        return "mls"
+    return None
+
+
+def outright_price(mkt):
+    """(p, info) for a soccer title outright, or (None, named
+    reason). R6: the Monte Carlo protocol runs PER LEAGUE
+    (EPL pilot R5; La Liga / Bundesliga / Serie A / Ligue 1
+    / MLS in R6) — a league's outrights price only when
+    THAT league's exam passed and its live shares are on
+    file in data/v5-outrights.json."""
+    doc = load_outrights()
+    if doc is None:
+        return None, ("soccer outright exams not run "
+                      "(tools/fit_outrights.py)")
+    key = _outright_league_key(mkt)
+    if key is None:
+        return None, ("this outright is not a league title "
+                      "the outright protocol covers — the "
+                      "examined forms are the league "
+                      "championships of the EPL, La Liga, "
+                      "Bundesliga, Serie A, Ligue 1 and MLS "
+                      "plus the second tiers (Championship, "
+                      "Serie B, La Liga 2, Bundesliga 2, "
+                      "Ligue 2) (per-league Monte Carlo exams "
+                      "in v5-outrights.json); cup outrights "
+                      "and other leagues have no simulation "
+                      "artifact, and other outright forms "
+                      "(relegation, top-4, golden boot) stay "
+                      "named, unexamined")
+    lg = (doc.get("leagues") or {}).get(key)
+    exam = (lg or {}).get("exam")
+    if exam is None and key == "epl":
+        exam = doc.get("backtest") or {}
+    if not exam:
+        return None, (f"no outright exam on file for {key} "
+                      "— closer: run the protocol for this "
+                      "league (tools/fit_outrights.py)")
+    n_seasons = len(exam.get("seasons") or []) or 3
+    if exam.get("verdict") != "PASS":
+        return None, (f"{key} title outright FAILED-EXAM — "
+                      f"this league's Monte Carlo exam lost "
+                      f"to the standings-share naive: mean "
+                      f"Brier {exam.get('mean_brier_model')} "
+                      f"vs naive {exam.get('mean_brier_naive')}, "
+                      f"mean log-loss "
+                      f"{exam.get('mean_logloss_model')} vs "
+                      f"{exam.get('mean_logloss_naive')} "
+                      f"({exam.get('seasons_won')}/{n_seasons} "
+                      "seasons won); the league stamps and "
+                      "does not price")
+    shares = (lg or {}).get("shares") or {}
+    if not shares:
+        err = (lg or {}).get("live_error")
+        return None, (f"outright exam PASSED for {key} "
+                      f"(mean Brier "
+                      f"{exam.get('mean_brier_model')} vs naive "
+                      f"{exam.get('mean_brier_naive')}, mean "
+                      f"log-loss {exam.get('mean_logloss_model')} "
+                      f"vs {exam.get('mean_logloss_naive')}) but "
+                      "no live shares are on file for it"
+                      + (f" — {err}" if err else
+                         " — closer: generate the league's "
+                         "live artifact (tools/fit_outrights.py)"))
+    sel = mkt.get("runner") or mkt.get("selection")
+    if not sel:
+        top = sorted(shares.items(), key=lambda kv: -kv[1])[:3]
+        tops = ", ".join(f"{t} {p * 100:.1f}%"
+                         for t, p in top if p > 0)
+        return None, (f"outright simulation is on file for "
+                      f"{key} ({lg.get('played')} played, "
+                      f"{lg.get('remaining')} remaining, "
+                      f"{lg.get('sims')} sims; leaders: "
+                      f"{tops}) but this entry arrives "
+                      "collapsed — no runner selection on it, "
+                      "so there is no single probability to "
+                      "grade; it prices per runner when a "
+                      "selection rides along")
+    cand = None
+    if key == "epl":
+        cand = EPL_NAME_TO_CODE.get(str(sel).strip())
+    if cand not in shares:
+        names = lg.get("names") or {}
+        lookup = {ab: ab for ab in shares}
+        for ab, nm in names.items():
+            if ab in shares:
+                lookup[nm] = ab
+        hit = _resolve_or_none(lookup, str(sel))
+        if hit is not None:
+            cand = lookup[hit]
+    if cand not in shares:
+        try:
+            cand = resolve_team({t: 1 for t in shares}, str(sel))
+        except SystemExit:
+            return None, (f"runner {sel!r} is not in the {key} "
+                          "outright simulation (a team outside "
+                          "the league, or a name the resolver "
+                          "cannot place)")
+    p = shares[cand]
+    return p, {"detail": f"{key} title outright — Monte Carlo "
+                         f"season simulation ({lg.get('sims')} "
+                         f"sims from the current table: "
+                         f"{lg.get('played')} played, "
+                         f"{lg.get('remaining')} remaining; "
+                         f"league exam PASS: mean Brier "
+                         f"{exam.get('mean_brier_model')} vs naive "
+                         f"{exam.get('mean_brier_naive')}, mean "
+                         f"log-loss {exam.get('mean_logloss_model')} "
+                         f"vs {exam.get('mean_logloss_naive')}, "
+                         f"{exam.get('seasons_won')}/{n_seasons} "
+                         "seasons)"}
+
+
 TAXONOMY = [
     "moneyline", "spread", "totals", "alt-spread", "alt-total",
     "player-props", "team-props", "game-props",
@@ -3723,7 +6855,9 @@ def _straight(mkt, ctx, kind):
     sport = mkt.get("sport")
     p, info = engine_price(sport, kind, mkt.get("home"),
                            mkt.get("away"),
-                           mkt.get("side", "home"), mkt.get("line"))
+                           mkt.get("side", "home"), mkt.get("line"),
+                           competition=mkt.get("competition"),
+                           segment=mkt.get("segment"))
     if p is None:
         return _verdict(mkt, "UNPRICED", note=info)
     if info.get("fragile"):
@@ -3776,7 +6910,21 @@ def _chk_alt_spread(mkt, ctx):
 
 @register("totals")
 def _chk_totals(mkt, ctx):
-    if mkt.get("sport") == "soccer":
+    if mkt.get("sport") == "soccer" \
+            or mkt.get("sport") in TOTALS_LANES:
+        return _straight(mkt, ctx, "totals")
+    if mkt.get("sport") in ("nba", "mlb"):
+        # R4 competition truth: a WNBA/NBL/NPB total filed
+        # under the NBA/MLB page names its real competition
+        # FIRST — it is not an NBA totals gap.
+        comp = competition_missing(mkt.get("sport"),
+                                   mkt.get("home"), mkt.get("away"))
+        if comp:
+            return _verdict(mkt, "UNPRICED", note=comp)
+    if mkt.get("sport") in TOTALS_LANES:
+        # R5: straight totals price through totals_price()
+        # (the lane's fitted distribution; FAILED-EXAM lanes
+        # stamp their exam numbers through the same call).
         return _straight(mkt, ctx, "totals")
     return _verdict(mkt, "UNPRICED",
                     note="totals engine not built — no pace/scoring "
@@ -3786,7 +6934,21 @@ def _chk_totals(mkt, ctx):
 
 @register("alt-total")
 def _chk_alt_total(mkt, ctx):
-    if mkt.get("sport") == "soccer":
+    if mkt.get("sport") == "soccer" \
+            or mkt.get("sport") in TOTALS_LANES:
+        return _straight(mkt, ctx, "alt-total")
+    if mkt.get("sport") in ("nba", "mlb"):
+        # R4 competition truth, same as straight totals.
+        comp = competition_missing(mkt.get("sport"),
+                                   mkt.get("home"), mkt.get("away"))
+        if comp:
+            return _verdict(mkt, "UNPRICED", note=comp)
+    if mkt.get("sport") in TOTALS_LANES:
+        # R5: an alt total is another point on the SAME
+        # distribution the straight checker prices — routed
+        # through totals_price() via engine_price, so at the
+        # main line the alt price equals the straight price
+        # exactly (parity battery in the R5 report).
         return _straight(mkt, ctx, "alt-total")
     return _verdict(mkt, "UNPRICED",
                     note="alt totals follow the totals engine, which "
@@ -3795,16 +6957,28 @@ def _chk_alt_total(mkt, ctx):
 
 @register("player-props")
 def _chk_player_props(mkt, ctx):
+    if mkt.get("sport") in ("nba", "mlb"):
+        # R4 competition truth: a WNBA player prop filed under
+        # the NBA page names the WNBA — it must never fall
+        # through to NBA gamelogs (Glow's flag).
+        comp = competition_missing(mkt.get("sport"),
+                                   mkt.get("home"), mkt.get("away"))
+        if comp:
+            return _verdict(mkt, "UNPRICED",
+                            note=comp + "; player props for this "
+                                        "competition are not "
+                                        "fitted in this round")
     try:
         band = prop_band(mkt["player"], mkt["stat"],
                             float(mkt["line"]), mkt.get("side", "over"))
     except (KeyError, SystemExit, TypeError, ValueError) as e:
         return _verdict(mkt, "UNPRICED",
                         note=f"no game-log band for this player/stat "
-                             f"({type(e).__name__}) — ESPN athlete "
-                             f"stats routes 404 in this environment; "
-                             f"scoring-play reconstruction scoped, "
-                             f"not built")
+                             f"({type(e).__name__}) — player not in "
+                             f"the fitted gamelog cache "
+                             f"(data/cache/athlete_index.json) or "
+                             f"stat not in their log; close by: "
+                             f"tools/fetch_gamelogs.py")
     mkt2 = {**mkt, "_fragile": band["disagree_pts"] > AGREE_PTS}
     grade, tags, verdict, verdict_reason, fails = _grade_and_gate(
         mkt2, band["price_p"], band["price_p"], band["band"][0], ctx)
@@ -3821,6 +6995,13 @@ def _chk_player_props(mkt, ctx):
 
 @register("team-props")
 def _chk_team_props(mkt, ctx):
+    if mkt.get("sport") in ("nba", "mlb"):
+        # R4 competition truth: an NBL team total filed under
+        # the NBA page names the NBL (Glow's flag).
+        comp = competition_missing(mkt.get("sport"),
+                                   mkt.get("home"), mkt.get("away"))
+        if comp:
+            return _verdict(mkt, "UNPRICED", note=comp)
     if mkt.get("sport") == "soccer":
         fit, _league_key = soccer_fit_for(mkt["home"], mkt["away"])
         if fit is None:
@@ -3836,6 +7017,22 @@ def _chk_team_props(mkt, ctx):
         return _verdict(mkt, "PRICED", p=p, grade=grade,
                         verdict=verdict, verdict_reason=verdict_reason,
                         note=f"{team} team goals off the Poisson grid")
+    if mkt.get("sport") in TEAMTOTALS_LANES:
+        p, info = team_totals_price(
+            mkt["sport"], mkt["home"], mkt["away"],
+            team_side=mkt.get("team", "home"),
+            line=float(mkt["line"]),
+            side=mkt.get("side", "over"))
+        if p is None:
+            return _verdict(mkt, "UNPRICED", note=info)
+        grade, _, verdict, verdict_reason, _ = _grade_and_gate(
+            mkt, p, p, p, ctx)
+        note = info["detail"]
+        if grade is not None:
+            note += f" | grade {grade}"
+        return _verdict(mkt, "PRICED", p=p, grade=grade,
+                        verdict=verdict,
+                        verdict_reason=verdict_reason, note=note)
     return _verdict(mkt, "UNPRICED",
                     note="team totals need the totals companion "
                          "distribution, which is not built")
@@ -3871,15 +7068,126 @@ def _chk_scoring_last(mkt, ctx):
 
 @register("segment")
 def _chk_segment(mkt, ctx):
-    return _verdict(mkt, "UNPRICED",
-                    note="no segment (half/quarter/period) "
-                         "distributions are built — a full-game "
-                         "distribution rescaled would be a guessed "
-                         "number, so it is stamped instead")
+    # R5: segment lanes are fitted and examined (NBA/NFL 1H,
+    # NHL 1P, soccer 1H per league). Every one of the US
+    # lanes FAILED its pre-stated exam in R5, so in practice
+    # this routes to a FAILED-EXAM stamp with the numbers;
+    # the soccer leagues that passed price off the half-share
+    # grid. Either way the answer comes from the exam, never
+    # from a rescaled full-game guess.
+    return _straight(mkt, ctx, "segment")
 
 
 @register("futures")
 def _chk_futures(mkt, ctx):
+    sport = mkt.get("sport")
+    form = str(mkt.get("away") or "")
+    if sport == "motorsport":
+        # R4: motorsport arrives ONLY in field forms (the
+        # parser collapses them to futures entries with the
+        # market name in the away slot). Each form names its
+        # own terminal — a race winner is not a fastest lap.
+        fit = load_f1()
+        bt = (fit or {}).get("backtest") or {}
+        if "Grand Prix" in str(mkt.get("home") or ""):
+            if form == "Race Winner":
+                a1 = (fit or {}).get("attempt_1") or {}
+                return _verdict(
+                    mkt, "UNPRICED",
+                    note="F1 lane FAILED-EXAM (TERMINAL — both "
+                         "attempts on file, Ergast/Jolpica "
+                         "2015-2025, walk-forward vs the "
+                         "win-share naive): attempt 1, driver "
+                         f"Elo — log-loss {a1.get('log_loss')} "
+                         f"vs naive {a1.get('naive_log_loss')}, "
+                         f"Brier {a1.get('brier')} vs "
+                         f"{a1.get('naive_brier')}; attempt 2 "
+                         "(R5, the named closer: driver Elo "
+                         "from teammate head-to-heads + shrunk "
+                         "constructor effect) — log-loss "
+                         f"{bt.get('log_loss')} vs naive "
+                         f"{bt.get('naive_log_loss')}, Brier "
+                         f"{bt.get('brier')} vs "
+                         f"{bt.get('naive_brier')}, "
+                         f"n={bt.get('n')}; the constructor "
+                         "effect closed most of the gap and "
+                         "still lost both metrics, so the lane "
+                         "is closed — nothing in this sport "
+                         "prices")
+            return _verdict(
+                mkt, "UNPRICED",
+                note=f"F1 {form} is a different form from race "
+                     "winner (pace/podium/manufacturer markets "
+                     "need their own distributions); the race-"
+                     "winner lane itself is FAILED-EXAM "
+                     "TERMINAL after two attempts (driver Elo "
+                     "log-loss 2.5036, driver+constructor "
+                     f"{bt.get('log_loss')}, naive "
+                     f"{bt.get('naive_log_loss')}) — nothing "
+                     "in this sport prices")
+        return _verdict(
+            mkt, "UNPRICED",
+            note="NASCAR source terminal — real Cup results "
+                 "exist only as R data files (nascaR.data "
+                 "publishes .rda, no CSV route verified "
+                 "2026-10-24) and this form "
+                 f"({form}) needs a field model, not a fixture "
+                 "model; closer: an R/pyreadr conversion of "
+                 "nascaR.data or a verified CSV results mirror, "
+                 "then driver ratings + a favorite-baseline exam")
+    if sport == "golf":
+        return _verdict(
+            mkt, "UNPRICED",
+            note="golf source terminal — group-winner and "
+                 "top-region forms need full-field historical "
+                 "finishes to examine honestly; the complete "
+                 "results source (DataGolf) is key-gated (HTTP "
+                 "403 'invalid api key', verified 2026-10-24) "
+                 "and no verified public full-field archive was "
+                 "found, so no exam exists for the group form "
+                 "and nothing prices; closer: a DataGolf API key "
+                 "or a verified full-field results archive, "
+                 "then player ratings + a walk-forward group "
+                 "exam vs equal share")
+    if sport == "lacrosse":
+        return _verdict(
+            mkt, "UNPRICED",
+            note="lacrosse outright terminal — the arriving "
+                 "markets are season outrights (NLL Cup, NCAA "
+                 "championship, 12-77 runners); NLL results "
+                 "exist (ESPN league route verified) but a team "
+                 "Elo does not price a championship outright "
+                 "without a season simulator, and the NCAA "
+                 "field has no fitted source; closer: an NLL "
+                 "season-simulator outright model, examined "
+                 "against historical Cup outcomes")
+    if sport == "tennis":
+        # R6: FORM TERMINAL (see TENNIS_FUTURES_TERMINAL) —
+        # draw-dependent knockout prices, no draw structure
+        # on the arriving entries.
+        return _verdict(mkt, "UNPRICED",
+                        note=TENNIS_FUTURES_TERMINAL)
+    if sport == "soccer":
+        # Title outrights by Monte Carlo season simulation
+        # — R5 EPL pilot, R6 per-league exams (La Liga /
+        # Bundesliga / Serie A / Ligue 1 / MLS): a runner
+        # selection prices at its simulated title share only
+        # when THAT league's exam passed; collapsed entries,
+        # failed leagues and uncovered competitions stamp
+        # with the reason.
+        p, info = outright_price(mkt)
+        if p is None:
+            return _verdict(mkt, "UNPRICED", note=str(info))
+        detail = info.get("detail", "") if isinstance(info, dict) \
+            else ""
+        grade = verdict = verdict_reason = None
+        if mkt.get("price") is not None:
+            grade, _tags, verdict, verdict_reason, _fails = \
+                _grade_and_gate(mkt, p, p, p, ctx)
+        return _verdict(mkt, "PRICED", p=p, grade=grade,
+                        verdict=verdict,
+                        verdict_reason=verdict_reason,
+                        note=detail, detail=detail)
     return _verdict(mkt, "UNPRICED",
                     note="no futures engine (season-long markets "
                          "have no fitted model in the lab)")
@@ -4077,10 +7385,17 @@ def _chk_double_chance(mkt, ctx):
     grid, err = _soccer_grid_or_none(mkt)
     if grid is None:
         return _verdict(mkt, "UNPRICED", note=err)
-    combo = mkt.get("side", "1X")
-    p = {"1X": grid["p_home"] + grid["p_draw"],
-         "12": grid["p_home"] + grid["p_away"],
-         "X2": grid["p_draw"] + grid["p_away"]}[combo]
+    combo = str(mkt.get("side", "1X")).strip().upper().replace(" ", "")
+    combos = {"1X": grid["p_home"] + grid["p_draw"],
+              "12": grid["p_home"] + grid["p_away"],
+              "X2": grid["p_draw"] + grid["p_away"]}
+    if combo not in combos:
+        return _verdict(mkt, "UNPRICED",
+                        note=f"double-chance side {mkt.get('side')!r} "
+                             f"is not a 1X / 12 / X2 token — the "
+                             f"board's spelling is unparsed, named "
+                             f"rather than guessed")
+    p = combos[combo]
     grade, _, verdict, verdict_reason, _ = _grade_and_gate(mkt, p, p, p, ctx)
     return _verdict(mkt, "PRICED", p=p, grade=grade, verdict=verdict, verdict_reason=verdict_reason,
                     note="double chance = the grid's 1X2 sums, exact")
@@ -4573,6 +7888,46 @@ def fd_refresh_prices(market_ids):
     return out
 
 
+def fd_event_menu(event_id):
+    """One game's FULL menu across its tabs (the event-page
+    route cmd_menu --event proved): base event page -> layout
+    tabs -> one event-page fetch per tab, collecting every
+    market name on every tab. Returns a compact inventory —
+    {event_id, name, tabs: {tab: [distinct market names]},
+    n_market_instances, n_distinct} — not market bodies: the
+    pull keeps the menu CURRENT and inventoried; pricing stays
+    with the sport-page slate and its checkers. Raises on
+    failure; the caller stamps that event UNVERIFIED."""
+    page = fd_get(FANDUEL_EVENT_ENDPOINT, {
+        "eventId": event_id,
+        "useCombinedTouchdownsVirtualMarket": "true",
+        "useQuickBets": "true"})
+    tabs = (page.get("layout") or {}).get("tabs") or {}
+    ev_name = next(iter(((page.get("attachments") or {})
+                         .get("events") or {}).values()),
+                   {}).get("name", str(event_id))
+    out_tabs = {}
+    total = 0
+    distinct = set()
+    for tab_id in tabs:
+        tp = fd_get(FANDUEL_EVENT_ENDPOINT, {
+            "eventId": event_id,
+            "useCombinedTouchdownsVirtualMarket": "true",
+            "useQuickBets": "true", "tab": tab_id})
+        names = sorted({mk.get("marketName") for mk in
+                        ((tp.get("attachments") or {})
+                         .get("markets") or {}).values()
+                        if mk.get("marketName")})
+        out_tabs[str(tab_id)] = names
+        total += sum(1 for _ in ((tp.get("attachments") or {})
+                                 .get("markets") or {}).values())
+        distinct.update(names)
+    return {"event_id": event_id, "name": ev_name,
+            "tabs": out_tabs, "tab_count": len(out_tabs),
+            "n_market_instances": total,
+            "n_distinct": len(distinct)}
+
+
 def build_menu_tree(app_ctx):
     """The menu tree from application-context: EVENT_TYPES (id ->
     {eventTypeName, eventTypeId}) + AZ_BETTING (the ordered sport
@@ -4636,6 +7991,7 @@ def fd_parse_sport_page(page, sport):
     att = page.get("attachments") or {}
     events = att.get("events") or {}
     markets = att.get("markets") or {}
+    competitions = att.get("competitions") or {}
     inventory = {}
     slate = []
     games = {}
@@ -4645,10 +8001,16 @@ def fd_parse_sport_page(page, sport):
         if " @ " in name:
             away, home = (s.strip() for s in name.split(" @ ", 1))
             games[ev["eventId"]] = (away, home, ev)
-        elif sport == "soccer" and " v " in name:
-            # the soccer page names matches home-first, world
-            # style ("Inter v Fiorentina") — no " @ " separator;
-            # games[] stores (away, home) like every other sport
+        elif " v " in name:
+            # " v " fixtures: soccer names matches home-first,
+            # world style ("Inter v Fiorentina"); the R2 sports
+            # (tennis, MMA, boxing, cricket, both rugbys,
+            # snooker, table tennis) name head-to-heads the
+            # same way ("Kayla Harrison v Amanda Nunes"). The
+            # first-named side takes the home slot; runner
+            # prices attach by name, so the convention cannot
+            # misprice a side. games[] stores (away, home) like
+            # every other sport.
             home, away = (s.strip() for s in name.split(" v ", 1))
             games[ev["eventId"]] = (away, home, ev)
     for mk in markets.values():
@@ -4656,7 +8018,45 @@ def fd_parse_sport_page(page, sport):
             inventory.get(mk.get("marketName"), 0) + 1
         ev = events.get(str(mk.get("eventId"))) or \
             events.get(mk.get("eventId"))
-        if ev is None or ev["eventId"] not in games:
+        if ev is None:
+            continue
+        if ev["eventId"] not in games:
+            if sport in UNCHECKED_SPORTS or sport in (
+                    "cricket", "rugby-union", "rugby-league",
+                    "motorsport"):
+                # R2: an outright/futures market on a pulled but
+                # unchecked sport (a golf tournament's Group A /
+                # Winner markets, a darts World Championship
+                # outright, a lacrosse championship winner) —
+                # it ARRIVES as a futures slate entry and stamps
+                # UNPRICED with the futures reason, instead of
+                # being silently dropped at the parser.
+                # R4: the same arrival for the newly fitted
+                # sports' outrights (Six Nations, World Cups),
+                # and the entry now carries the competition
+                # FanDuel names + the runner list (names and
+                # prices) — a field market's runners ARE its
+                # content, and field-form checkers read them.
+                comp = competitions.get(
+                    str(ev.get("competitionId"))) or {}
+                slate.append({
+                    "sport": sport,
+                    "home": (ev.get("name") or "").strip(),
+                    "away": mk.get("marketName") or "Outright",
+                    "fd_event_id": ev["eventId"],
+                    "fd_market_id": mk.get("marketId"),
+                    "market_time": mk.get("marketTime"),
+                    "competition": comp.get("name"),
+                    "fd_competition_id": ev.get("competitionId"),
+                    "market": "futures", "side": "home",
+                    "price": None,
+                    "runners_n": len(mk.get("runners") or []),
+                    "runners": [
+                        {"name": r.get("runnerName"),
+                         "price": _fd_runner_price(r)}
+                        for r in (mk.get("runners") or [])
+                        if r.get("runnerName")]})
+                routed[sport] = routed.get(sport, 0) + 1
             continue
         if mk.get("marketStatus") not in ("OPEN", "SUSPENDED", None):
             continue
@@ -4675,10 +8075,18 @@ def fd_parse_sport_page(page, sport):
         routed[routed_sport] = routed.get(routed_sport, 0) + 1
         runners = mk.get("runners") or []
         by_name = {r.get("runnerName"): r for r in runners}
+        comp = competitions.get(str(ev.get("competitionId"))) or {}
         base = {"sport": routed_sport, "home": home, "away": away,
                 "fd_event_id": ev["eventId"],
                 "fd_market_id": mk.get("marketId"),
-                "market_time": mk.get("marketTime")}
+                "market_time": mk.get("marketTime"),
+                # R4: the competition FanDuel itself names for
+                # this event (its attachments carry it) — lanes
+                # whose ratings differ per competition/format
+                # (cricket above all) select by it, and stamps
+                # quote it, instead of inferring from team names.
+                "competition": comp.get("name"),
+                "fd_competition_id": ev.get("competitionId")}
         mname = mk.get("marketName")
         if sport == "soccer" and mname == "Moneyline (3-way)":
             # FanDuel's soccer 1X2 market name; the engine's
@@ -4698,6 +8106,15 @@ def fd_parse_sport_page(page, sport):
                 # prices side="draw" off the Poisson grid; leaving
                 # the leg out misdescribed a three-way market as a
                 # two-way one.
+                r = by_name.get("Draw")
+                price = _fd_runner_price(r) if r else None
+                if price is not None:
+                    slate.append({**base, "market": "moneyline",
+                                  "side": "draw", "price": price})
+            if sport in ("cricket", "rugby-union"):
+                # R4: the same third leg where the sport has one
+                # (Test cricket posts a Draw runner; the test
+                # lane prices it from its fitted draw rate).
                 r = by_name.get("Draw")
                 price = _fd_runner_price(r) if r else None
                 if price is not None:

@@ -1,0 +1,256 @@
+{
+ "sport": "nhl",
+ "lane": "nhl-team-totals",
+ "fitted_at": "2026-10-24T22:08:10+00:00",
+ "source": "ESPN NHL scoreboard day pulls 2025-26 (cached by this builder)",
+ "history_n": 1312,
+ "params": {
+  "prior_games": 10,
+  "distribution": "poisson",
+  "burn_in": 60,
+  "model": "lam_team = (LH|LA)*off[team]*def[opp]; team score ~ distribution(lam_team, sigma_team); sigma_team = per-team walk-forward residual SD shrunk toward the lane pool (prior 30 team-games)"
+ },
+ "distribution_why": "A team total is ONE team's scoring distribution, fitted as such: Poisson on team goals: goals are low-count events (~6/game); the sum of two Poisson scoring rates is Poisson \u2014 the soccer-grid treatment, not a normal approximation.",
+ "league": {
+  "LH": 3.192,
+  "LA": 3.062,
+  "mean_team_score": 3.127,
+  "sigma_pool_team_score": 1.722
+ },
+ "teams": {
+  "Anaheim Ducks": {
+   "off": 1.0577,
+   "def": 1.1098,
+   "gp": 82,
+   "sigma_team": 1.761,
+   "score_mean": 3.329
+  },
+  "Boston Bruins": {
+   "off": 1.0542,
+   "def": 0.9777,
+   "gp": 82,
+   "sigma_team": 1.707,
+   "score_mean": 3.317
+  },
+  "Buffalo Sabres": {
+   "off": 1.1098,
+   "def": 0.9464,
+   "gp": 82,
+   "sigma_team": 1.71,
+   "score_mean": 3.512
+  },
+  "Calgary Flames": {
+   "off": 0.8456,
+   "def": 1.009,
+   "gp": 82,
+   "sigma_team": 1.683,
+   "score_mean": 2.585
+  },
+  "Carolina Hurricanes": {
+   "off": 1.1376,
+   "def": 0.943,
+   "gp": 82,
+   "sigma_team": 1.757,
+   "score_mean": 3.61
+  },
+  "Chicago Blackhawks": {
+   "off": 0.8491,
+   "def": 1.0646,
+   "gp": 82,
+   "sigma_team": 1.582,
+   "score_mean": 2.598
+  },
+  "Colorado Avalanche": {
+   "off": 1.1585,
+   "def": 0.8144,
+   "gp": 82,
+   "sigma_team": 1.874,
+   "score_mean": 3.683
+  },
+  "Columbus Blue Jackets": {
+   "off": 0.9882,
+   "def": 0.9882,
+   "gp": 82,
+   "sigma_team": 1.717,
+   "score_mean": 3.085
+  },
+  "Dallas Stars": {
+   "off": 1.0785,
+   "def": 0.8943,
+   "gp": 82,
+   "sigma_team": 1.762,
+   "score_mean": 3.402
+  },
+  "Detroit Red Wings": {
+   "off": 0.9464,
+   "def": 1.0055,
+   "gp": 82,
+   "sigma_team": 1.568,
+   "score_mean": 2.939
+  },
+  "Edmonton Oilers": {
+   "off": 1.089,
+   "def": 1.0438,
+   "gp": 82,
+   "sigma_team": 1.86,
+   "score_mean": 3.439
+  },
+  "Florida Panthers": {
+   "off": 0.9812,
+   "def": 1.0681,
+   "gp": 82,
+   "sigma_team": 1.839,
+   "score_mean": 3.061
+  },
+  "Los Angeles Kings": {
+   "off": 0.8908,
+   "def": 0.9673,
+   "gp": 82,
+   "sigma_team": 1.537,
+   "score_mean": 2.744
+  },
+  "Minnesota Wild": {
+   "off": 1.0542,
+   "def": 0.943,
+   "gp": 82,
+   "sigma_team": 1.602,
+   "score_mean": 3.317
+  },
+  "Montreal Canadiens": {
+   "off": 1.0924,
+   "def": 0.9986,
+   "gp": 82,
+   "sigma_team": 1.679,
+   "score_mean": 3.451
+  },
+  "Nashville Predators": {
+   "off": 0.9673,
+   "def": 1.0438,
+   "gp": 82,
+   "sigma_team": 1.66,
+   "score_mean": 3.012
+  },
+  "New Jersey Devils": {
+   "off": 0.9082,
+   "def": 0.9916,
+   "gp": 82,
+   "sigma_team": 1.779,
+   "score_mean": 2.805
+  },
+  "New York Islanders": {
+   "off": 0.9186,
+   "def": 0.9464,
+   "gp": 82,
+   "sigma_team": 1.697,
+   "score_mean": 2.841
+  },
+  "New York Rangers": {
+   "off": 0.936,
+   "def": 0.9777,
+   "gp": 82,
+   "sigma_team": 1.884,
+   "score_mean": 2.902
+  },
+  "Ottawa Senators": {
+   "off": 1.0751,
+   "def": 0.9638,
+   "gp": 82,
+   "sigma_team": 1.786,
+   "score_mean": 3.39
+  },
+  "Philadelphia Flyers": {
+   "off": 0.9777,
+   "def": 0.9534,
+   "gp": 82,
+   "sigma_team": 1.683,
+   "score_mean": 3.049
+  },
+  "Pittsburgh Penguins": {
+   "off": 1.1272,
+   "def": 1.0403,
+   "gp": 82,
+   "sigma_team": 1.89,
+   "score_mean": 3.573
+  },
+  "San Jose Sharks": {
+   "off": 0.9812,
+   "def": 1.1237,
+   "gp": 82,
+   "sigma_team": 1.691,
+   "score_mean": 3.061
+  },
+  "Seattle Kraken": {
+   "off": 0.8943,
+   "def": 1.0229,
+   "gp": 82,
+   "sigma_team": 1.534,
+   "score_mean": 2.756
+  },
+  "St. Louis Blues": {
+   "off": 0.9117,
+   "def": 1.0055,
+   "gp": 82,
+   "sigma_team": 1.533,
+   "score_mean": 2.817
+  },
+  "Tampa Bay Lightning": {
+   "off": 1.1168,
+   "def": 0.9117,
+   "gp": 82,
+   "sigma_team": 1.821,
+   "score_mean": 3.537
+  },
+  "Toronto Maple Leafs": {
+   "off": 0.9882,
+   "def": 1.1481,
+   "gp": 82,
+   "sigma_team": 1.642,
+   "score_mean": 3.085
+  },
+  "Utah Mammoth": {
+   "off": 1.0403,
+   "def": 0.943,
+   "gp": 82,
+   "sigma_team": 1.863,
+   "score_mean": 3.268
+  },
+  "Vancouver Canucks": {
+   "off": 0.8595,
+   "def": 1.2072,
+   "gp": 82,
+   "sigma_team": 1.677,
+   "score_mean": 2.634
+  },
+  "Vegas Golden Knights": {
+   "off": 1.0299,
+   "def": 0.9777,
+   "gp": 82,
+   "sigma_team": 1.781,
+   "score_mean": 3.232
+  },
+  "Washington Capitals": {
+   "off": 1.0229,
+   "def": 0.9569,
+   "gp": 82,
+   "sigma_team": 1.823,
+   "score_mean": 3.207
+  },
+  "Winnipeg Jets": {
+   "off": 0.9117,
+   "def": 1.0125,
+   "gp": 82,
+   "sigma_team": 1.691,
+   "score_mean": 2.817
+  }
+ },
+ "backtest": {
+  "n": 2504,
+  "mae_model": 1.386,
+  "mae_naive": 1.395,
+  "brier_model": 0.2449,
+  "brier_naive": 0.2463,
+  "verdict": "PASS",
+  "protocol": "walk-forward per team-game (rates from prior games only); naive = the team's own expanding mean score; Brier on P(over L*), L* = .5 line at the naive team mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED"
+}

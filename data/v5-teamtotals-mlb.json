@@ -1,0 +1,256 @@
+{
+ "sport": "mlb",
+ "lane": "mlb-team-totals",
+ "fitted_at": "2026-10-24T22:26:26+00:00",
+ "source": "ESPN MLB scoreboard day pulls 2025 (cached by this builder)",
+ "history_n": 2433,
+ "params": {
+  "prior_games": 10,
+  "distribution": "normal",
+  "burn_in": 200,
+  "model": "lam_team = (LH|LA)*off[team]*def[opp]; team score ~ distribution(lam_team, sigma_team); sigma_team = per-team walk-forward residual SD shrunk toward the lane pool (prior 30 team-games)"
+ },
+ "distribution_why": "A team total is ONE team's scoring distribution, fitted as such: Normal on total runs: a baseball total is the sum of ~76 plate appearances of run events; the empirical distribution is overdispersed vs Poisson (full-season SD 4.59 on a mean of 8.89 in Guy's candidate block) and near-normal in shape.",
+ "league": {
+  "LH": 4.492,
+  "LA": 4.404,
+  "mean_team_score": 4.448,
+  "sigma_pool_team_score": 3.234
+ },
+ "teams": {
+  "American All-Stars": {
+   "off": 1.0317,
+   "def": 1.0522,
+   "gp": 1,
+   "sigma_team": 3.234,
+   "score_mean": 6.0
+  },
+  "Arizona Diamondbacks": {
+   "off": 1.0896,
+   "def": 1.0831,
+   "gp": 163,
+   "sigma_team": 2.93,
+   "score_mean": 4.871
+  },
+  "Athletics": {
+   "off": 1.0162,
+   "def": 1.126,
+   "gp": 162,
+   "sigma_team": 3.236,
+   "score_mean": 4.525
+  },
+  "Atlanta Braves": {
+   "off": 1.0038,
+   "def": 1.0142,
+   "gp": 163,
+   "sigma_team": 3.073,
+   "score_mean": 4.466
+  },
+  "Baltimore Orioles": {
+   "off": 0.943,
+   "def": 1.0881,
+   "gp": 162,
+   "sigma_team": 3.332,
+   "score_mean": 4.179
+  },
+  "Boston Red Sox": {
+   "off": 1.0857,
+   "def": 0.9401,
+   "gp": 163,
+   "sigma_team": 3.457,
+   "score_mean": 4.853
+  },
+  "Chicago Cubs": {
+   "off": 1.1022,
+   "def": 0.9038,
+   "gp": 160,
+   "sigma_team": 3.474,
+   "score_mean": 4.931
+  },
+  "Chicago White Sox": {
+   "off": 0.9038,
+   "def": 1.028,
+   "gp": 162,
+   "sigma_team": 3.076,
+   "score_mean": 3.994
+  },
+  "Cincinnati Reds": {
+   "off": 0.9885,
+   "def": 0.9474,
+   "gp": 165,
+   "sigma_team": 3.41,
+   "score_mean": 4.394
+  },
+  "Cleveland Guardians": {
+   "off": 0.8999,
+   "def": 0.909,
+   "gp": 163,
+   "sigma_team": 2.716,
+   "score_mean": 3.975
+  },
+  "Colorado Rockies": {
+   "off": 0.8384,
+   "def": 1.3926,
+   "gp": 162,
+   "sigma_team": 3.039,
+   "score_mean": 3.685
+  },
+  "Detroit Tigers": {
+   "off": 1.0489,
+   "def": 0.9613,
+   "gp": 162,
+   "sigma_team": 3.241,
+   "score_mean": 4.679
+  },
+  "Houston Astros": {
+   "off": 0.9548,
+   "def": 0.9273,
+   "gp": 162,
+   "sigma_team": 3.242,
+   "score_mean": 4.235
+  },
+  "Kansas City Royals": {
+   "off": 0.909,
+   "def": 0.8907,
+   "gp": 162,
+   "sigma_team": 3.185,
+   "score_mean": 4.019
+  },
+  "Los Angeles Angels": {
+   "off": 0.9378,
+   "def": 1.1521,
+   "gp": 162,
+   "sigma_team": 2.77,
+   "score_mean": 4.154
+  },
+  "Los Angeles Dodgers": {
+   "off": 1.1366,
+   "def": 0.9567,
+   "gp": 160,
+   "sigma_team": 3.445,
+   "score_mean": 5.094
+  },
+  "Miami Marlins": {
+   "off": 0.9848,
+   "def": 1.1012,
+   "gp": 162,
+   "sigma_team": 3.134,
+   "score_mean": 4.377
+  },
+  "Milwaukee Brewers": {
+   "off": 1.1116,
+   "def": 0.8868,
+   "gp": 162,
+   "sigma_team": 3.455,
+   "score_mean": 4.975
+  },
+  "Minnesota Twins": {
+   "off": 0.9466,
+   "def": 1.0688,
+   "gp": 163,
+   "sigma_team": 2.99,
+   "score_mean": 4.196
+  },
+  "National All-Stars": {
+   "off": 1.0522,
+   "def": 1.0317,
+   "gp": 1,
+   "sigma_team": 3.234,
+   "score_mean": 7.0
+  },
+  "New York Mets": {
+   "off": 1.0593,
+   "def": 0.9927,
+   "gp": 162,
+   "sigma_team": 3.377,
+   "score_mean": 4.728
+  },
+  "New York Yankees": {
+   "off": 1.1678,
+   "def": 0.9535,
+   "gp": 162,
+   "sigma_team": 3.419,
+   "score_mean": 5.241
+  },
+  "Philadelphia Phillies": {
+   "off": 1.075,
+   "def": 0.9051,
+   "gp": 162,
+   "sigma_team": 3.469,
+   "score_mean": 4.802
+  },
+  "Pittsburgh Pirates": {
+   "off": 0.8201,
+   "def": 0.9012,
+   "gp": 162,
+   "sigma_team": 2.956,
+   "score_mean": 3.599
+  },
+  "San Diego Padres": {
+   "off": 0.9757,
+   "def": 0.8698,
+   "gp": 162,
+   "sigma_team": 3.159,
+   "score_mean": 4.333
+  },
+  "San Francisco Giants": {
+   "off": 0.9796,
+   "def": 0.9521,
+   "gp": 162,
+   "sigma_team": 3.112,
+   "score_mean": 4.352
+  },
+  "Seattle Mariners": {
+   "off": 1.0593,
+   "def": 0.9652,
+   "gp": 162,
+   "sigma_team": 3.443,
+   "score_mean": 4.728
+  },
+  "St. Louis Cardinals": {
+   "off": 0.9587,
+   "def": 1.0436,
+   "gp": 162,
+   "sigma_team": 3.058,
+   "score_mean": 4.253
+  },
+  "Tampa Bay Rays": {
+   "off": 0.9914,
+   "def": 0.9508,
+   "gp": 162,
+   "sigma_team": 3.47,
+   "score_mean": 4.407
+  },
+  "Texas Rangers": {
+   "off": 0.9521,
+   "def": 0.8489,
+   "gp": 162,
+   "sigma_team": 3.456,
+   "score_mean": 4.222
+  },
+  "Toronto Blue Jays": {
+   "off": 1.1012,
+   "def": 1.0005,
+   "gp": 162,
+   "sigma_team": 3.405,
+   "score_mean": 4.926
+  },
+  "Washington Nationals": {
+   "off": 0.9561,
+   "def": 1.2332,
+   "gp": 162,
+   "sigma_team": 3.3,
+   "score_mean": 4.241
+  }
+ },
+ "backtest": {
+  "n": 4466,
+  "mae_model": 2.503,
+  "mae_naive": 2.526,
+  "brier_model": 0.2453,
+  "brier_naive": 0.2478,
+  "verdict": "PASS",
+  "protocol": "walk-forward per team-game (rates from prior games only); naive = the team's own expanding mean score; Brier on P(over L*), L* = .5 line at the naive team mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED"
+}
