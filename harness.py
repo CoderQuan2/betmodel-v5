@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.0.0", app.APP_VERSION == "12.0.0")
-    check("BUILD_NUMBER is 16", app.BUILD_NUMBER == 16)
+    check("APP_VERSION is 12.1.0", app.APP_VERSION == "12.1.0")
+    check("BUILD_NUMBER is 17", app.BUILD_NUMBER == 17)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -245,7 +245,7 @@ def main():
     switcher = page.controls[1]
     check("top-level view host is an AnimatedSwitcher (F3)",
           type(switcher).__name__ == "AnimatedSwitcher"
-          and switcher.duration == 220)
+          and switcher.duration == 260)
     board = switcher.content
     board_sw = [c for c in walk(board)
                 if type(c).__name__ == "AnimatedSwitcher"]
@@ -1264,6 +1264,138 @@ def main():
     check("panel cross-nav: a card's Chart affordance opens the "
           "Charts segment",
           any("Xii Charts" in t for t in texts(switcher.content)))
+
+    # ---------- v12.1 feel / QoL ----------
+    import inspect as _inspect
+    import wave as _wave
+    _src = open(os.path.join(HERE, "main.py")).read()
+    _readme = open(os.path.join(HERE, "README.md")).read()
+    _wf = open(os.path.join(
+        HERE, ".github", "workflows", "build-apk.yml")).read()
+    _req = open(os.path.join(HERE, "requirements.txt")).read()
+    check("v12.1 version unified: README release line",
+          "12.1.0 (build 17)" in _readme)
+    check("v12.1 version unified: workflow build args",
+          '--build-version "12.1.0"' in _wf
+          and '--build-number "17"' in _wf)
+    check("v12.1: requirements pin the flet-audio extension",
+          "flet-audio==1.0.5" in _req)
+    for _nm, _lo, _hi in (("tick", 0.03, 0.08),
+                          ("confirm", 0.09, 0.16),
+                          ("golden", 0.20, 0.32)):
+        _p = os.path.join(HERE, "assets", "sounds", f"{_nm}.wav")
+        _ok = os.path.exists(_p) and os.path.getsize(_p) < 25000
+        if _ok:
+            try:
+                with _wave.open(_p) as _w:
+                    _dur = _w.getnframes() / _w.getframerate()
+                _ok = _lo <= _dur <= _hi
+            except Exception:
+                _ok = False
+        check(f"v12.1 sound asset: {_nm}.wav exists, <25KB, "
+              f"valid WAV of the right length", _ok)
+    check("v12.1: play_sound + tap_haptic never raise (wrapped)",
+          "except" in _inspect.getsource(app.play_sound)
+          and "except" in _inspect.getsource(app.tap_haptic))
+    check("v12.1: sound volume is capped at 0.35",
+          app.SOUND_VOLUME <= 0.35)
+    _audios = [s for s in page.services
+               if type(s).__name__ == "Audio"]
+    check("v12.1: three Audio services registered, capped + "
+          "autoplay off",
+          len(_audios) == 3
+          and all(a.volume <= 0.35 and a.autoplay is False
+                  for a in _audios))
+    check("v12.1: a HapticFeedback service is registered",
+          any(type(s).__name__ == "HapticFeedback"
+              for s in page.services))
+    check("v12.1: sound play points wired (tick/confirm/golden)",
+          'play_sound("tick")' in _src
+          and 'play_sound("confirm")' in _src
+          and 'play_sound("golden")' in _src)
+    check("v12.1: no new standing loops (pulse keys <= 6)",
+          len(app.PULSE_PERIODS) <= 6)
+    _pb = app.primary_button("Probe", lambda e: None)
+    check("v12.1: primary buttons are pressified (110 ms scale "
+          "animation)",
+          _pb.animate_scale is not None
+          and _pb.animate_scale.duration == 110)
+    check("v12.1: protected slip carries the pinned summary "
+          "line (source)",
+          "combined odds" in _src and "max loss" in _src)
+
+    # a fresh boot for the board-level QoL probes
+    page3 = FakePage()
+    app.main(page3)
+    sw3 = page3.controls[1]
+    board3 = sw3.content
+    bsw3 = [c for c in walk(board3)
+            if type(c).__name__ == "AnimatedSwitcher"]
+    cards3 = bsw3[0].content
+    check("v12.1: pull-age line renders on the board",
+          any("pulled" in t and "ago" in t
+              for t in texts(cards3)))
+    _lists = [c for c in walk(cards3)
+              if type(c).__name__ == "Column"]
+    cards_list3 = max(_lists, key=lambda c: sum(
+        1 for x in getattr(c, "controls", [])
+        if type(x).__name__ == "Container"))
+    _cards3 = [x for x in cards_list3.controls
+               if type(x).__name__ == "Container"]
+    check("v12.1: entrance animation gates at the first 8 "
+          "cards (180 ms), the rest static",
+          len(_cards3) > 8
+          and all(c.animate_opacity is not None
+                  and c.animate_opacity.duration == 180
+                  for c in _cards3[:8])
+          and all(c.animate_opacity is None
+                  for c in _cards3[8:]))
+    _golden_exp = len(app.distill_finds(
+        _rec["markets"],
+        b5.run_slate(_rec, print_out=False))[0])
+    _badge = page3.navigation_bar.destinations[1].badge
+    check("v12.1: Slip badge shows the GOLDEN count (hidden "
+          "at zero)",
+          (_badge is not None) == (_golden_exp > 0)
+          and (_golden_exp == 0
+               or _badge.label == str(_golden_exp)),
+          f"golden={_golden_exp} badge={_badge}")
+    _sf = next(c for c in walk(cards3)
+               if type(c).__name__ == "TextField")
+    _sf.on_change(SimpleNamespace(
+        control=SimpleNamespace(value="Lions")))
+    _chip = [c for c in walk(cards3)
+             if type(c).__name__ == "TextButton"
+             and getattr(c, "content", "") == "Clear filters"]
+    check("v12.1: Clear filters chip appears when a filter is "
+          "non-default", len(_chip) == 1)
+    if _chip:
+        _chip[0].on_click(SimpleNamespace())
+    check("v12.1: one tap on Clear filters resets the search",
+          _sf.value == ""
+          and not any(
+              getattr(c, "content", "") == "Clear filters"
+              for c in walk(cards3)
+              if type(c).__name__ == "TextButton"))
+    # the sound toggle in More: default ON, flips + persists
+    page3.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=4)))
+    _snd = [c for c in walk(sw3.content)
+            if type(c).__name__ == "Switch"
+            and "Sound" in (getattr(c, "label", "") or "")]
+    check("v12.1: More carries the Sound toggle, default ON",
+          len(_snd) == 1 and _snd[0].value is True
+          and app._SOUND["enabled"] is True)
+    if _snd:
+        _snd[0].on_change(SimpleNamespace(
+            control=SimpleNamespace(value=False)))
+    _setfile = os.path.join(STORAGE, "Bet_Finder-sound.json")
+    check("v12.1: muting persists on-device and play_sound "
+          "no-ops",
+          app._SOUND["enabled"] is False
+          and os.path.exists(_setfile)
+          and app.play_sound("tick") is None)
+    app.set_sound_enabled(True)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

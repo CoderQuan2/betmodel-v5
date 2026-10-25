@@ -129,6 +129,144 @@ import betmodel5 as b5  # the engine — one script, imported, never copied
 import flet as ft
 
 # ------------------------------------------------------------------
+# Light sound + haptics (v12.1) — the app's first sense beyond the
+# screen, kept LIGHT by law: three tiny stdlib-generated WAVs
+# (tools/make_sounds.py), one volume cap for every playback, and
+# silence as the only failure mode — every call in this layer is
+# wrapped so a missing extension, a dead service or a headless
+# harness degrades to nothing happening, never to an error.
+#
+# Sound route: Flet 1.0.4 core has NO Audio control; the official
+# flet-audio extension (pinned in requirements.txt) provides it as
+# a Service. The import is defensive — on a build without the
+# extension the whole layer disables itself silently.
+try:
+    import flet_audio as _flet_audio
+except Exception:  # extension absent -> sound layer off, silently
+    _flet_audio = None
+
+SOUND_VOLUME = 0.30   # hard cap: no Audio control ever sits above
+SOUND_FILES = {"tick": "assets/sounds/tick.wav",
+               "confirm": "assets/sounds/confirm.wav",
+               "golden": "assets/sounds/golden.wav"}
+_SOUND = {"enabled": True, "controls": {}}
+_HAPTIC = {"ctrl": None}
+
+
+def _sound_settings_path() -> str:
+    return os.path.join(storage_dir(), f"{INTERNAL_ID}-sound.json")
+
+
+def load_sound_enabled() -> bool:
+    """The persisted sound toggle; default ON (a missing or
+    unreadable settings file is the default, never an error)."""
+    try:
+        with open(_sound_settings_path()) as f:
+            return bool(json.load(f).get("enabled", True))
+    except Exception:
+        return True
+
+
+def set_sound_enabled(on: bool) -> None:
+    """Flip the toggle in memory and persist it (same on-device
+    JSON pattern as the marked slips). Failures stay silent."""
+    _SOUND["enabled"] = bool(on)
+    try:
+        with open(_sound_settings_path(), "w") as f:
+            json.dump({"enabled": bool(on)}, f)
+    except Exception:
+        pass
+
+
+def register_sounds(page) -> None:
+    """Register the three Audio services + the haptic service on
+    the page (same page.services pattern as UrlLauncher/Clipboard
+    below). Called once from main(); any failure leaves the layer
+    dark and the app untouched."""
+    _SOUND["enabled"] = load_sound_enabled()
+    if _flet_audio is not None:
+        for name, src in SOUND_FILES.items():
+            try:
+                ctrl = _flet_audio.Audio(
+                    src=src, autoplay=False, volume=SOUND_VOLUME)
+                page.services.append(ctrl)
+                _SOUND["controls"][name] = ctrl
+            except Exception:
+                pass
+    try:
+        _HAPTIC["ctrl"] = ft.HapticFeedback()
+        page.services.append(_HAPTIC["ctrl"])
+    except Exception:
+        _HAPTIC["ctrl"] = None
+
+
+def play_sound(name: str) -> None:
+    """Play one named sound ('tick' / 'confirm' / 'golden').
+    No-ops when the toggle is off, the extension is absent, or
+    anything at all goes wrong — silence, never a crash."""
+    try:
+        if not _SOUND.get("enabled"):
+            return
+        ctrl = _SOUND["controls"].get(name)
+        if ctrl is None:
+            return
+        ctrl.play()
+    except Exception:
+        pass
+
+
+def tap_haptic() -> None:
+    """One light haptic tick (Flet 1.0.4's HapticFeedback service,
+    light_impact). Guarded like everything in this layer."""
+    try:
+        ctrl = _HAPTIC.get("ctrl")
+        if ctrl is not None:
+            ctrl.light_impact()
+    except Exception:
+        pass
+
+
+def pressify(btn, sound=None, haptic=True):
+    """Weighted press for a button (v12.1): Flet 1.0.4 buttons
+    expose no press-down/up events, so the weight is a click pulse
+    — scale to 0.97 over 110 ms on an ease-out-back settle, then
+    restore — plus the layer's tick + haptic. The wrapped handler
+    keeps the button's original on_click semantics exactly."""
+    inner = btn.on_click
+
+    def _click(e):
+        if sound:
+            play_sound(sound)
+        if haptic:
+            tap_haptic()
+        try:
+            btn.scale = 0.97
+            btn.update()
+        except Exception:
+            pass
+
+        def _restore():
+            try:
+                btn.scale = 1.0
+                btn.update()
+            except Exception:
+                pass
+        try:
+            threading.Timer(0.11, _restore).start()
+        except Exception:
+            _restore()
+        if inner is not None:
+            inner(e)
+
+    btn.on_click = _click
+    try:
+        btn.animate_scale = ft.Animation(
+            110, ft.AnimationCurve.EASE_OUT_BACK)
+    except Exception:
+        pass
+    return btn
+
+# ------------------------------------------------------------------
 # Bet_Finder identity + storage
 
 PUBLIC_NAME = "BetFi_Xii"
@@ -136,8 +274,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.0.0"
-BUILD_NUMBER = 16
+APP_VERSION = "12.1.0"
+BUILD_NUMBER = 17
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): on start and every 4 minutes while the app
 # is open. The loop only starts inside the real ft.run entry
@@ -209,6 +347,23 @@ FROST_GRADIENT = ft.LinearGradient(
 GOLD_GRADIENT = ft.LinearGradient(
     begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
     colors=["#3A2A08", GOLD_DEEP])
+# v12.1 header texture: the standing palette as a two-stop wash
+# (deep field -> panel), for section headers, view titles and
+# the 3D panel's segment bar — one family treatment.
+HEADER_GRADIENT = ft.LinearGradient(
+    begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+    colors=["#060B1A", "#0B1329"])
+# The board header band is the one header allowed a breath of
+# accent: the cyan at ~12% alpha washing into the panel stop.
+BOARD_HEADER_GRADIENT = ft.LinearGradient(
+    begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+    colors=["#1F38BDF8", "#0B1329"])
+# Market-card shadow (v12.1): one soft layer per card — y2,
+# blur 12, black at 25%. GOLDEN cards keep GOLD_GLOW instead;
+# the two never stack.
+CARD_SHADOW = ft.BoxShadow(blur_radius=12, spread_radius=0,
+                           color="#00000040",
+                           offset=ft.Offset(0, 2))
 
 # ------------------------------------------------------------------
 # Button weights (9c) — a real weight system, named once:
@@ -228,7 +383,9 @@ def primary_button(text, on_click, icon=None):
     # cyan glow rides the shadow_color and the black layer rides
     # the material elevation — the closest honest expression in
     # Flet 1.0.4 (no per-button shadow lists exist).
-    return ft.Button(
+    # v12.1: pressified — every primary action carries the
+    # weighted press (scale pulse + tick + light haptic).
+    return pressify(ft.Button(
         text, icon=icon, on_click=on_click, height=BTN_PRIMARY_HEIGHT,
         style=ft.ButtonStyle(
             bgcolor=ICE, color="#060B1A", elevation=4,
@@ -237,7 +394,8 @@ def primary_button(text, on_click, icon=None):
                                     size=15),
             shape=ft.RoundedRectangleBorder(radius=14),
             padding=ft.Padding(left=24, right=24, top=14,
-                               bottom=14)))
+                               bottom=14))),
+        sound="tick")
 
 
 def secondary_button(text, on_click, icon=None):
@@ -1494,17 +1652,33 @@ def empty_inline(icon, headline: str, body: str = "") -> ft.Row:
                                       controls=texts)])
 
 
-def screen_title(title: str, subtitle: str = "") -> ft.Column:
+def screen_title(title: str, subtitle: str = "") -> ft.Container:
+    # v12.1 texture: the title sits in a thin gradient band
+    # (HEADER_GRADIENT + a hairline base) — same family as the
+    # section headers and the panel segment bar.
     controls = [ft.Text(title, size=18, color=INK,
                         weight=ft.FontWeight.BOLD)]
     if subtitle:
         controls.append(ft.Text(subtitle, size=11, color=FAINT))
-    return ft.Column(spacing=2, tight=True, controls=controls)
+    return ft.Container(
+        gradient=HEADER_GRADIENT, border_radius=10,
+        border=ft.Border(bottom=ft.BorderSide(1, HAIRLINE)),
+        padding=ft.Padding(left=10, right=10, top=8, bottom=8),
+        content=ft.Column(spacing=2, tight=True,
+                          controls=controls))
 
 
-def section_header(text: str, color: str = INK) -> ft.Text:
-    return ft.Text(text, size=14, color=color,
-                   weight=ft.FontWeight.BOLD)
+def section_header(text: str, color: str = INK) -> ft.Container:
+    # v12.1 texture: a banded header — gradient wash, a 3dp
+    # accent rule on the left, the label riding on top.
+    return ft.Container(
+        gradient=HEADER_GRADIENT, border_radius=8,
+        padding=ft.Padding(left=8, right=8, top=5, bottom=5),
+        content=ft.Row(spacing=8, tight=True, controls=[
+            ft.Container(width=3, height=14, bgcolor=color,
+                         border_radius=2),
+            ft.Text(text, size=14, color=color,
+                    weight=ft.FontWeight.BOLD)]))
 
 
 def sport_header(sport: str, count: int) -> ft.Column:
@@ -1860,7 +2034,7 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
     return ft.Container(
         bgcolor=CARD_BG, gradient=gradient, border_radius=14,
         padding=12,
-        shadow=GOLD_GLOW if term == "GOLDEN BET" else ELEV_L1,
+        shadow=GOLD_GLOW if term == "GOLDEN BET" else CARD_SHADOW,
         border=ft.Border(
             left=ft.BorderSide(3, stripe_color),
             top=ft.BorderSide(1, BORDER),
@@ -3074,6 +3248,9 @@ def main(page: ft.Page):
     page.padding = 16   # artist spacing grid: screen padding 16dp
     page.spacing = 8
     page.scroll = ft.ScrollMode.AUTO
+    # v12.1 feel layer: sound + haptic services register first,
+    # so every handler below can fire them from the first tap.
+    register_sounds(page)
 
     state = {"slate": load_snapshot(), "verdicts": None,
              "sort": "verdict", "card_limit": CARD_PAGE, "search": "",
@@ -3086,6 +3263,7 @@ def main(page: ft.Page):
              "toggles_for": None, "bankroll": "",
              "chart_zoom": 1.0, "chart_detail": "",
              "pull_busy": False, "last_pull_at": 0.0,
+             "golden_count": 0,
              "protected_confirm": False,
              # Xii panel state (v12 panel update): the active
              # segment, the highlighted market, the pending
@@ -3139,11 +3317,13 @@ def main(page: ft.Page):
     TOP_VIEWS = ["board", "slip", "lab", "stage", "more"]
 
     def _switcher(content):
+        # v12.1 weighted switch: 260 ms ease-in-out-cubic both
+        # ways — a view change you can feel arrive, not a cut.
         return ft.AnimatedSwitcher(
-            content=content, duration=220,
+            content=content, duration=260,
             transition=ft.AnimatedSwitcherTransition.FADE,
-            switch_in_curve=ft.AnimationCurve.DECELERATE,
-            switch_out_curve=ft.AnimationCurve.EASE_IN)
+            switch_in_curve=ft.AnimationCurve.EASE_IN_OUT_CUBIC,
+            switch_out_curve=ft.AnimationCurve.EASE_IN_OUT_CUBIC)
 
     board_switcher = _switcher(cards_view)
     slip_switcher = _switcher(parse_view)
@@ -3229,6 +3409,7 @@ def main(page: ft.Page):
             except ValueError:
                 fresh = False
         _DOT_FRESH["fresh"] = fresh
+        pull_age_ctrl.value = _pull_age_text()
         if fresh:
             stale_ctrl.value = ""
             pull_dot.shadow = ICE_GLOW
@@ -3253,6 +3434,86 @@ def main(page: ft.Page):
     cards_toggles = ft.Column(spacing=2, tight=True)
     cards_count = ft.Text("", size=11, color=FAINT)
     cards_list = ft.Column(spacing=8)
+    # v12.1 QoL: the board header band's pull-age line and the
+    # clear-filters chip row — both live in the band (assembly
+    # below) and are refreshed by render_cards / refresh_stamp.
+    pull_age_ctrl = ft.Text("", size=11, color=DIM,
+                            font_family=NUM_FONT)
+    filter_chip_row = ft.Row(spacing=8, wrap=True, controls=[])
+
+    def _pull_age_text():
+        """'pulled 2m ago — next auto-pull in ~2m' from the
+        slate's own stamp + the auto-pull clock (last_pull_at /
+        AUTO_PULL_INTERVAL_S). Refreshed on renders and pulls —
+        the app runs no extra clock loop for a label (loop cap)."""
+        rec = state["slate"]
+        if not rec:
+            return ""
+        age_txt = None
+        raw = rec.get("pulled_at")
+        if raw:
+            try:
+                dt = datetime.fromisoformat(
+                    str(raw).replace("Z", "+00:00"))
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=timezone.utc)
+                secs = (datetime.now().astimezone()
+                        - dt).total_seconds()
+                mins = int(secs // 60)
+                if secs < 60:
+                    age_txt = "just now"
+                elif mins < 60:
+                    age_txt = f"{mins}m ago"
+                elif mins < 1440:
+                    age_txt = f"{mins // 60}h ago"
+                else:
+                    age_txt = f"{mins // 1440}d ago"
+            except ValueError:
+                age_txt = None
+        if age_txt is None:
+            return ""
+        if AUTO_PULL_ENABLED and state.get("last_pull_at"):
+            rem = AUTO_PULL_INTERVAL_S - (
+                time.monotonic() - state["last_pull_at"])
+            if rem > 0:
+                return (f"pulled {age_txt} — next auto-pull "
+                        f"in ~{max(1, round(rem / 60))}m")
+            return f"pulled {age_txt} — auto-pull due"
+        return f"pulled {age_txt}"
+
+    def _filters_nondefault():
+        t = state["toggles"]
+        if state.get("search"):
+            return True
+        if state.get("league_filter"):
+            return True
+        if (t.get("priced_only") or t.get("golden_only")
+                or t.get("hide_dnb") or t.get("quick_only")):
+            return True
+        return any(v is False
+                   for v in t.get("sports", {}).values())
+
+    def clear_all_filters():
+        """One tap back to the whole board: search emptied, every
+        toggle at its default, the panel league filter cleared."""
+        state["search"] = ""
+        try:
+            search_field.value = ""
+        except Exception:
+            pass
+        t = state["toggles"]
+        t["priced_only"] = False
+        t["golden_only"] = False
+        t["hide_dnb"] = False
+        t["quick_only"] = False
+        for k in list(t.get("sports", {})):
+            t["sports"][k] = True
+        state["card_limit"] = CARD_PAGE
+        state["toggles_for"] = None   # rebuild the switch row
+        if state.get("league_filter"):
+            clear_league_filter()      # clears + re-renders
+        else:
+            render_cards()
 
     def sorted_entries():
         """(market, verdict, edge) triples in the Card screen's
@@ -3358,27 +3619,32 @@ def main(page: ft.Page):
                                                        color=DIM))
 
     def _animate_cards(cards):
-        # F3: cards fade/rise in once per fresh slate (boot,
-        # pull, price pass) — toggles, sorts and search never
-        # re-run this; render_cards consumes the flag.
+        # F3, re-weighted in v12.1: the FIRST EIGHT cards of a
+        # fresh slate fade/rise in (180 ms ease-out-cubic, 30 ms
+        # stagger, small vertical offset) — every card past the
+        # eighth renders static, carrying no entrance animation
+        # at all. Toggles, sorts and search never re-run this:
+        # render_cards consumes the animate_next flag, which only
+        # a fresh slate (boot, pull, price pass) sets — so cards
+        # already shown never replay their entrance.
         cards = [c for c in cards
-                 if isinstance(c, ft.Container)]
+                 if isinstance(c, ft.Container)][:8]
         if not cards:
             return
         for c in cards:
             c.opacity = 0
-            c.offset = ft.Offset(0, 0.04)
+            c.offset = ft.Offset(0, 0.03)
             c.animate_opacity = ft.Animation(
-                300, ft.AnimationCurve.DECELERATE)
+                180, ft.AnimationCurve.EASE_OUT_CUBIC)
             c.animate_offset = ft.Animation(
-                300, ft.AnimationCurve.DECELERATE)
+                180, ft.AnimationCurve.EASE_OUT_CUBIC)
         page.update()
 
         def _flip():
             import time as _time
             for k, c in enumerate(cards):
-                if 0 < k <= 10:
-                    _time.sleep(0.03)   # stagger, capped (F3)
+                if 0 < k:
+                    _time.sleep(0.03)   # 30 ms stagger, first 8
                 c.opacity = 1
                 c.offset = ft.Offset(0, 0)
                 try:
@@ -3392,6 +3658,8 @@ def main(page: ft.Page):
         rec = state["slate"]
         if not rec:
             cards_toggles.controls = []
+            pull_age_ctrl.value = ""
+            filter_chip_row.controls = []
             state["toggles_for"] = None
             cards_count.value = ""
             cards_list.controls = [empty_full(
@@ -3401,6 +3669,15 @@ def main(page: ft.Page):
             page.update()
             return
         entries = sorted_entries()
+        # v12.1 QoL header state: pull age + the clear-filters
+        # chip (present only while something is non-default).
+        pull_age_ctrl.value = _pull_age_text()
+        filter_chip_row.controls = (
+            [ft.TextButton(
+                "Clear filters", icon=ft.Icons.FILTER_ALT_OFF,
+                style=ft.ButtonStyle(color=ACCENT),
+                on_click=lambda _e: clear_all_filters())]
+            if _filters_nondefault() else [])
         # F4: the toggle row is rebuilt only when
         # the slate itself changes — sort, search and
         # toggle events update the cards in place.
@@ -3584,6 +3861,15 @@ def main(page: ft.Page):
                 render_stage()
             if state["view"] == "slip":
                 render_protected()
+            # v12.1 feel: the badge follows the new slate, and
+            # a pull that lands the slate's FIRST golden bet
+            # chimes — once per pull event, only on the 0 -> n
+            # crossing (a pull that merely keeps gold is silent).
+            _prev_golden = state.get("golden_count", 0)
+            state["golden_count"] = _golden_count()
+            refresh_slip_badge()
+            if _prev_golden == 0 and state["golden_count"] > 0:
+                play_sound("golden")
             if state.get("dismiss_splash"):
                 state["dismiss_splash"]()
             page.update()
@@ -3617,6 +3903,8 @@ def main(page: ft.Page):
         # The first pricing pass, off the paint path (F4).
         try:
             ensure_verdicts()
+            state["golden_count"] = _golden_count()
+            refresh_slip_badge()
             state["animate_next"] = True
             if status.value == "Pricing the last pull…":
                 status.value = ""
@@ -3655,6 +3943,8 @@ def main(page: ft.Page):
             status.value = (f"Priced slate: {len(verdicts)} markets "
                             f"checked · {priced} PRICED · the rest "
                             f"stamped, never guessed.")
+            state["golden_count"] = _golden_count()
+            refresh_slip_badge()
             state["animate_next"] = True
             render_cards()
             page.update()
@@ -3795,6 +4085,33 @@ def main(page: ft.Page):
     # FanDuel themselves, then marks it here; only the mark is
     # written, to the Pilot Book view, as PLACED (user-marked).
 
+    # v12.1: the Slip destination's GOLDEN badge + the golden
+    # chime share one count — GOLDEN BET verdicts on the priced
+    # slate, read off the cached verdicts (never a re-price).
+    _SLIP_DEST = {"dest": None,
+                  "badge": ft.Badge(label="", bgcolor=GOLD,
+                                    text_color="#060B1A")}
+
+    def _golden_count():
+        try:
+            return sum(1 for v in (state.get("verdicts") or [])
+                       if card_verdict(v)[0] == "GOLDEN BET")
+        except Exception:
+            return 0
+
+    def refresh_slip_badge():
+        try:
+            n = _golden_count()
+            dest = _SLIP_DEST.get("dest")
+            if dest is not None:
+                if n > 0:
+                    _SLIP_DEST["badge"].label = str(n)
+                    dest.badge = _SLIP_DEST["badge"]
+                else:
+                    dest.badge = None
+        except Exception:
+            pass
+
     def protected_candidates():
         rec = state["slate"]
         if not rec:
@@ -3897,6 +4214,38 @@ def main(page: ft.Page):
         total_txt = f"Total stake {total_units:.1f}u"
         if total_dollars is not None:
             total_txt += f" (${total_dollars:,.0f})"
+        # v12.1 QoL: the pinned summary line, directly under the
+        # panel header — legs, combined odds + combined model
+        # probability (the legs' own prices and probabilities,
+        # combined with the app's standing independence product,
+        # the same formula the Parlay tool prints), and max loss
+        # = the total stake computed above. Nothing recomputed
+        # on a second basis.
+        if legs:
+            _dec = 1.0
+            _mp = 1.0
+            for (_m, _v), _leg in zip(cands, legs):
+                _pr = int(_leg["price"])
+                _dec *= 1.0 + (_pr / 100.0 if _pr > 0
+                               else 100.0 / abs(_pr))
+                _mp *= float(_v.get("p") or 0.0)
+            _amer = (int(round((_dec - 1) * 100)) if _dec >= 2
+                     else int(round(-100.0 / (_dec - 1))))
+            _loss = f"{total_units:.1f}u"
+            if total_dollars is not None:
+                _loss += f" / ${total_dollars:,.0f}"
+            rows.insert(2, ft.Container(
+                gradient=PANEL_GRADIENT,
+                border=_border_all(1, HAIRLINE), border_radius=10,
+                padding=ft.Padding(left=10, right=10, top=7,
+                                   bottom=7),
+                content=ft.Text(
+                    f"{len(legs)} legs · combined odds "
+                    f"{_dec:.2f} ({_amer:+d}) · model {_mp:.1%} "
+                    f"· max loss {_loss}",
+                    size=12, color=INK,
+                    weight=ft.FontWeight.BOLD,
+                    font_family=NUM_FONT)))
         rows.append(ft.Text(total_txt, size=15, color=INK,
                             weight=ft.FontWeight.BOLD,
                             font_family=NUM_FONT))
@@ -3983,6 +4332,7 @@ def main(page: ft.Page):
                 "total_dollars": total_dollars,
                 "pull": (state["slate"] or {}).get("pulled_at")}
         append_marked_slip(slip)
+        play_sound("confirm")   # v12.1: the slip is built + marked
         state["protected_confirm"] = False
         status.value = ("Marked as placed — written to the "
                         "Pilot Book view as PLACED (user-marked). "
@@ -4461,6 +4811,17 @@ def main(page: ft.Page):
             (ft.Icons.CODE, "Dev",
              "Version, fingerprint, credit", "dev")]
         controls = [screen_title("More", "Everything else in BetFi.")]
+        # v12.1: the sound toggle — persisted on-device, default
+        # ON. Off means play_sound no-ops everywhere at once.
+        controls.append(_switch(
+            "Sound — tap ticks, slip confirm, golden chime",
+            bool(_SOUND.get("enabled", True)),
+            lambda e: set_sound_enabled(bool(e.control.value))))
+        controls.append(ft.Text(
+            "Three quiet sounds, volume-capped, off means off — "
+            "the setting is saved on this device.",
+            size=10, color=FAINT, height=1.3))
+        controls.append(ft.Divider(color=BORDER))
         for icon, title, sub, target in tiles:
             controls.append(ft.ListTile(
                 leading=ft.Icon(icon, color=ACCENT),
@@ -5717,7 +6078,14 @@ def main(page: ft.Page):
             "One panel, four views of the same pull and the "
             "same fits: live charts, priced coverage, the "
             "snapshot instruments and the registry map."),
-            panel_seg_ctrl, panel_switcher]
+            # v12.1 texture: the segment bar wears the header
+            # band, same family as the view titles.
+            ft.Container(gradient=HEADER_GRADIENT,
+                         border_radius=10,
+                         padding=ft.Padding(
+                             left=6, right=6, top=6, bottom=6),
+                         content=panel_seg_ctrl),
+            panel_switcher]
         panel_switcher.content = _PANEL_COLS[seg]
         {"charts": render_panel_charts,
          "coverage": render_panel_coverage,
@@ -5731,6 +6099,15 @@ def main(page: ft.Page):
     def show(name: str):
         state["view"] = name
         view_switcher.content = views[name]
+        # v12.1: the back-to-top button belongs to the Board
+        # only (see the assembly note — Flet 1.0.4's page-level
+        # scroll exposes no position event to gate it on).
+        try:
+            if page.floating_action_button is not None:
+                page.floating_action_button.visible = (
+                    name == "board")
+        except Exception:
+            pass
         if page.navigation_bar is not None:
             page.navigation_bar.selected_index = \
                 TOP_VIEWS.index(name) if name in TOP_VIEWS else 4
@@ -5753,6 +6130,9 @@ def main(page: ft.Page):
         page.update()
 
     def on_nav(e):
+        # v12.1 feel: a destination switch ticks + taps back.
+        play_sound("tick")
+        tap_haptic()
         show(TOP_VIEWS[e.control.selected_index])
 
     # ---------------- assembly ----------------
@@ -5795,20 +6175,31 @@ def main(page: ft.Page):
         hint_text="Search teams, markets, leagues\u2026",
         prefix_icon=ft.Icons.SEARCH, text_size=13,
         on_change=on_search)
+    # v12.1 texture: the board's working header rides in one
+    # band (BOARD_HEADER_GRADIENT — the one header with accent
+    # in the wash): actions, pull age, status, sort, search and
+    # the clear-filters chip row.
     cards_view.controls = [
-        ft.Row(spacing=8, controls=[
-            primary_button("Pull Menu", on_pull),
-            secondary_button("Price Slate", on_price)]),
-        status,
-        ft.Row(spacing=8, controls=[
-            ft.Icon(ft.Icons.SORT, size=18, color=ACCENT),
-            ft.Dropdown(
-                value=state["sort"], width=230,
-                options=[ft.DropdownOption(key=k, text=t)
-                         for k, t in SORT_MODES],
-                on_select=on_sort),
-            cards_count]),
-        search_field,
+        ft.Container(
+            gradient=BOARD_HEADER_GRADIENT, border_radius=12,
+            border=ft.Border(bottom=ft.BorderSide(1, HAIRLINE)),
+            padding=10,
+            content=ft.Column(spacing=8, tight=True, controls=[
+                ft.Row(spacing=8, controls=[
+                    primary_button("Pull Menu", on_pull),
+                    secondary_button("Price Slate", on_price)]),
+                pull_age_ctrl,
+                status,
+                ft.Row(spacing=8, controls=[
+                    ft.Icon(ft.Icons.SORT, size=18, color=ACCENT),
+                    ft.Dropdown(
+                        value=state["sort"], width=230,
+                        options=[ft.DropdownOption(key=k, text=t)
+                                 for k, t in SORT_MODES],
+                        on_select=on_sort),
+                    cards_count]),
+                search_field,
+                filter_chip_row])),
         cards_toggles,
         cards_list]
     board_view.controls = [
@@ -5828,32 +6219,62 @@ def main(page: ft.Page):
     nav_dest_cls = (getattr(ft, "NavigationDestination", None)
                     or getattr(ft, "NavigationBarDestination", None))
     if nav_bar_cls is not None and nav_dest_cls is not None:
+        _dests = [
+            nav_dest_cls(icon=ft.Icons.VIEW_AGENDA,
+                         label="Board"),
+            nav_dest_cls(icon=ft.Icons.RECEIPT_LONG,
+                         label="Slip"),
+            nav_dest_cls(icon=ft.Icons.LIST, label="Lab"),
+            nav_dest_cls(icon=ft.Icons.VIEW_IN_AR,
+                         label="3D"),
+            nav_dest_cls(icon=ft.Icons.MORE_HORIZ,
+                         label="More"),
+        ]
         page.navigation_bar = nav_bar_cls(
             selected_index=0, on_change=on_nav,
-            destinations=[
-                nav_dest_cls(icon=ft.Icons.VIEW_AGENDA,
-                             label="Board"),
-                nav_dest_cls(icon=ft.Icons.RECEIPT_LONG,
-                             label="Slip"),
-                nav_dest_cls(icon=ft.Icons.LIST, label="Lab"),
-                nav_dest_cls(icon=ft.Icons.VIEW_IN_AR,
-                             label="3D"),
-                nav_dest_cls(icon=ft.Icons.MORE_HORIZ,
-                             label="More"),
-            ])
+            destinations=_dests)
+        # v12.1: the Slip destination carries the GOLDEN badge.
+        _SLIP_DEST["dest"] = _dests[1]
+        refresh_slip_badge()
     else:  # equivalent switch: a labelled button row
         page.add(ft.Row(spacing=8, wrap=True, controls=[
-            ft.OutlinedButton("Board",
-                              on_click=lambda _e: show("board")),
-            ft.OutlinedButton("Slip",
-                              on_click=lambda _e: show("slip")),
-            ft.OutlinedButton("Lab",
-                              on_click=lambda _e: show("lab")),
-            ft.OutlinedButton("3D",
-                              on_click=lambda _e: show("stage")),
-            ft.OutlinedButton("More",
-                              on_click=lambda _e: show("more")),
+            pressify(ft.OutlinedButton(
+                "Board",
+                on_click=lambda _e: show("board")), sound="tick"),
+            pressify(ft.OutlinedButton(
+                "Slip",
+                on_click=lambda _e: show("slip")), sound="tick"),
+            pressify(ft.OutlinedButton(
+                "Lab",
+                on_click=lambda _e: show("lab")), sound="tick"),
+            pressify(ft.OutlinedButton(
+                "3D",
+                on_click=lambda _e: show("stage")), sound="tick"),
+            pressify(ft.OutlinedButton(
+                "More",
+                on_click=lambda _e: show("more")), sound="tick"),
         ]))
+
+    # v12.1 QoL: back-to-top on the Board. Flet 1.0.4's board is
+    # a page-level scroll (no ListView, and Page exposes no
+    # scroll-position event), so the button cannot honestly be
+    # scroll-triggered: it lives on the Board view only, shown
+    # by show(), and rides page.scroll_to home.
+    try:
+        page.floating_action_button = ft.FloatingActionButton(
+            icon=ft.Icons.ARROW_UPWARD, mini=True,
+            bgcolor=PANEL_RAISED_C, foreground_color=BONE,
+            tooltip="Back to top",
+            on_click=lambda _e: _scroll_top())
+    except Exception:
+        pass
+
+    def _scroll_top():
+        try:
+            page.scroll_to(offset=0, duration=400,
+                           curve=ft.AnimationCurve.EASE_OUT_CUBIC)
+        except Exception:
+            pass
 
     # offline behaviour: open on the Board on the last pull,
     # stamped with its original pull time (the engine's stamp
