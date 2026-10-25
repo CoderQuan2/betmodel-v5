@@ -131,7 +131,7 @@ import flet as ft
 
 # ------------------------------------------------------------------
 # Light sound + haptics (v12.1) — the app's first sense beyond the
-# screen, kept LIGHT by law: three tiny stdlib-generated WAVs
+# screen, kept LIGHT by law: four tiny stdlib-generated WAVs
 # (tools/make_sounds.py), one volume cap for every playback, and
 # silence as the only failure mode — every call in this layer is
 # wrapped so a missing extension, a dead service or a headless
@@ -149,9 +149,10 @@ except Exception:  # extension absent -> sound layer off, silently
 SOUND_VOLUME = 0.30   # hard cap: no Audio control ever sits above
 SOUND_FILES = {"tick": "assets/sounds/tick.wav",
                "confirm": "assets/sounds/confirm.wav",
-               "golden": "assets/sounds/golden.wav"}
-_SOUND = {"enabled": True, "controls": {}}
-_HAPTIC = {"ctrl": None}
+               "golden": "assets/sounds/golden.wav",
+               "startup": "assets/sounds/startup.wav"}
+_SOUND = {"enabled": True, "controls": {}, "page": None}
+_HAPTIC = {"ctrl": None, "page": None}
 
 
 def _sound_settings_path() -> str:
@@ -185,10 +186,12 @@ def _chosen_sport_path() -> str:
 
 
 def load_chosen_sport() -> str:
-    """The persisted scoped-pull sport (v12.3); default NFL.
-    A missing, unreadable or unknown value is the default,
-    never an error — the chooser's options are exactly the
-    engine's static event types."""
+    """The persisted scoped-pull sport (v12.3); default SOCCER
+    since v12.4 (the Pilot's first-pull default). A missing,
+    unreadable or unknown value is the default, never an
+    error — the chooser's options are exactly the engine's
+    static event types. A sport the user actually picked and
+    persisted still wins over the default."""
     try:
         with open(_chosen_sport_path()) as f:
             sport = json.load(f).get("sport")
@@ -196,15 +199,15 @@ def load_chosen_sport() -> str:
             return sport
     except Exception:
         pass
-    return "nfl"
+    return "soccer"
 
 
 def set_chosen_sport(sport: str) -> str:
     """Persist the chooser's sport (same on-device JSON pattern
-    as the sound toggle). Unknown sports normalize to NFL.
-    Returns the sport actually stored."""
+    as the sound toggle). Unknown sports normalize to soccer
+    (the v12.4 default). Returns the sport actually stored."""
     if sport not in b5.FANDUEL_EVENT_TYPES:
-        sport = "nfl"
+        sport = "soccer"
     try:
         with open(_chosen_sport_path(), "w") as f:
             json.dump({"sport": sport}, f)
@@ -214,11 +217,13 @@ def set_chosen_sport(sport: str) -> str:
 
 
 def register_sounds(page) -> None:
-    """Register the three Audio services + the haptic service on
+    """Register the four Audio services + the haptic service on
     the page (same page.services pattern as UrlLauncher/Clipboard
     below). Called once from main(); any failure leaves the layer
     dark and the app untouched."""
     _SOUND["enabled"] = load_sound_enabled()
+    _SOUND["page"] = page
+    _HAPTIC["page"] = page
     if _flet_audio is not None:
         for name, src in SOUND_FILES.items():
             try:
@@ -235,8 +240,31 @@ def register_sounds(page) -> None:
         _HAPTIC["ctrl"] = None
 
 
+def _fire(page, method) -> None:
+    """Schedule a Flet service call on the page's task loop.
+
+    Audio.play() and HapticFeedback.light_impact() are COROUTINES
+    in Flet 1.0.4: calling them bare builds a coroutine that is
+    never awaited, _invoke_method never runs, and the command
+    never reaches the device — the layer looks wired and stays
+    silent (found 2026-10-25; the 12.1 sound/haptic calls all
+    fired this way). page.run_task is the codebase's established
+    route for service coroutines (cf. UrlLauncher). With no page
+    (headless probes), the coroutine is closed, not leaked."""
+    try:
+        if page is not None:
+            page.run_task(method)
+            return
+        out = method()
+        if asyncio.iscoroutine(out):
+            out.close()
+    except Exception:
+        pass
+
+
 def play_sound(name: str) -> None:
-    """Play one named sound ('tick' / 'confirm' / 'golden').
+    """Play one named sound ('tick' / 'confirm' / 'golden' /
+    'startup').
     No-ops when the toggle is off, the extension is absent, or
     anything at all goes wrong — silence, never a crash."""
     try:
@@ -245,7 +273,7 @@ def play_sound(name: str) -> None:
         ctrl = _SOUND["controls"].get(name)
         if ctrl is None:
             return
-        ctrl.play()
+        _fire(_SOUND.get("page"), ctrl.play)
     except Exception:
         pass
 
@@ -256,7 +284,7 @@ def tap_haptic() -> None:
     try:
         ctrl = _HAPTIC.get("ctrl")
         if ctrl is not None:
-            ctrl.light_impact()
+            _fire(_HAPTIC.get("page"), ctrl.light_impact)
     except Exception:
         pass
 
@@ -309,16 +337,31 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.3.0"
-BUILD_NUMBER = 19
+APP_VERSION = "12.4.0"
+BUILD_NUMBER = 20
 DISPLAY_NAME = "BetFi Xii"
-# Auto-pull (v12): on start and every 4 minutes while the app
-# is open. The loop only starts inside the real ft.run entry
-# path (AUTO_PULL_ENABLED is set by the __main__ block), so
+# Auto-pull (v12): every 4 minutes while the app is open —
+# but ONLY once armed (v12.4): the Pilot's rule is that the
+# user starts the first pull, so the loop idles until the
+# session's first user-initiated pull action (scoped Pull,
+# Pull all, or Price Slate) arms it; see auto_pull_should_tick.
+# The loop only starts inside the real ft.run entry path
+# (AUTO_PULL_ENABLED is set by the __main__ block), so
 # headless harnesses that build the control tree never fire a
 # network pull.
 AUTO_PULL_INTERVAL_S = 4 * 60
 AUTO_PULL_ENABLED = False
+
+
+def auto_pull_should_tick(armed, busy, last_pull_at, now,
+                          interval=AUTO_PULL_INTERVAL_S):
+    """The auto-pull gate (v12.4), pure so the harness can pin
+    it: a tick is due only when the session has been armed by
+    a user-initiated pull, no pull is running, and a full
+    interval has passed since the last pull landed."""
+    if not armed or busy:
+        return False
+    return (now - (last_pull_at or 0.0)) >= interval
 
 # ------------------------------------------------------------------
 # BetFi Xii ICE design system (v12, from the artist's
@@ -561,32 +604,66 @@ _SPLASH_PARTS = {}
 
 
 def build_splash():
-    """The startup ICE splash (9a; artist MOTION §1.1): the XII
-    badge on the deep field over a PRE-RENDERED glow layer (a
-    shadow-carrying container whose OPACITY the pulse loop
-    breathes — Flet cannot animate shadow blur), the lockup
-    wordmark, and the standing truth (pull running, analysis
-    only). Pure builder — main() wires it into page.overlay in
-    the real entry path only, resolves it in 240 ms when the
-    first pull lands (or on tap), and the pulse stops with it."""
+    """The startup splash (9a; artist MOTION §1.1, staged up in
+    v12.4 — "more pop"): the app emblem (assets/icon.png) at a
+    generous size over a PRE-RENDERED glow layer (a
+    shadow-carrying container whose OPACITY the standing splash
+    pulse breathes — Flet cannot animate shadow blur), the
+    "BetFi Xii" wordmark fading/scaling in under it, and one
+    soft gold sweep line. The wordmark and sweep entrances are
+    ONE-SHOT animations staged by main()'s splash block — no
+    new loops join the pulse budget. Pure builder — main()
+    wires it into page.overlay in the real entry path only;
+    the splash OVERLAYS the already-painted board (it never
+    gates first paint), self-resolves within ~1.4 s, resolves
+    early when the first pull lands (or on tap), and the pulse
+    stops with it."""
     glow = ft.Container(
-        width=120, height=120, border_radius=60,
+        width=170, height=170, border_radius=85,
         shadow=ICE_GLOW, opacity=0.0,
         animate_opacity=ft.Animation(
             120, ft.AnimationCurve.EASE_IN_OUT))
-    ring = ft.Container(
-        width=120, height=120, border_radius=60,
-        border=_border_all(2, ICE),
-        scale=ft.Scale(scale=0.94),
-        animate_scale=ft.Animation(600,
+    emblem = ft.Container(
+        width=150, height=150, left=10, top=10,
+        border_radius=34,
+        clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+        scale=ft.Scale(scale=0.90),
+        animate_scale=ft.Animation(500,
                                    ft.AnimationCurve.EASE_OUT),
         alignment=ft.Alignment(0, 0),
-        content=ft.Text("XII", size=30, color=BONE,
-                        weight=ft.FontWeight.BOLD,
-                        font_family="Georgia"))
+        content=ft.Image(src="assets/icon.png",
+                         width=150, height=150,
+                         fit=ft.BoxFit.COVER))
+    ring = ft.Container(
+        width=150, height=150, left=10, top=10,
+        border_radius=34,
+        border=_border_all(1, CYAN_DEEP))
+    wordmark = ft.Row(
+        spacing=0, tight=True, opacity=0.0,
+        scale=ft.Scale(scale=0.92),
+        animate_opacity=ft.Animation(
+            300, ft.AnimationCurve.EASE_OUT),
+        animate_scale=ft.Animation(
+            300, ft.AnimationCurve.EASE_OUT),
+        controls=[
+            ft.Text("BetFi ", size=30, color=BONE,
+                    weight=ft.FontWeight.W_700),
+            ft.Text("Xii", size=30, color=ICE,
+                    weight=ft.FontWeight.W_700)])
+    sweep = ft.Container(
+        width=120, height=3, border_radius=2,
+        gradient=GOLD_GRADIENT, opacity=0.0,
+        scale=ft.Scale(scale=0.60),
+        animate_opacity=ft.Animation(
+            300, ft.AnimationCurve.EASE_OUT),
+        animate_scale=ft.Animation(
+            300, ft.AnimationCurve.EASE_OUT))
     _PULSE_TARGETS["splash"] = [glow]
     _SPLASH_PARTS["glow"] = glow
     _SPLASH_PARTS["ring"] = ring
+    _SPLASH_PARTS["emblem"] = emblem
+    _SPLASH_PARTS["wordmark"] = wordmark
+    _SPLASH_PARTS["sweep"] = sweep
     return ft.Container(
         bgcolor="#F2060B1A", alignment=ft.Alignment(0, 0),
         animate_opacity=ft.Animation(
@@ -595,15 +672,12 @@ def build_splash():
             spacing=14, tight=True,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
-                ft.Stack(width=120, height=120,
-                         controls=[glow, ring]),
-                ft.Row(spacing=0, tight=True, controls=[
-                    ft.Text("BetFi ", size=30, color=BONE,
-                            weight=ft.FontWeight.W_700),
-                    ft.Text("Xii", size=30, color=ICE,
-                            weight=ft.FontWeight.W_700)]),
-                ft.Text("Pulling the live menu…", size=13,
-                        color=INK_DIM),
+                ft.Stack(width=170, height=170,
+                         controls=[glow, emblem, ring]),
+                wordmark,
+                sweep,
+                ft.Text("Pick a sport — your first pull is "
+                        "one tap.", size=13, color=INK_DIM),
                 ft.Text("Analysis only — never places a bet.",
                         size=11, color=FAINT)]))
 ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
@@ -690,6 +764,22 @@ SORT_MODES = [("verdict", "Bets first — verdict ladder"),
               ("time", "Kickoff time"),
               ("resolve", "Resolve date"),
               ("pull", "Pull order")]
+
+# Board view filters (v12.4): the old switch wall is gone — the
+# board filters through two dropdowns. "Show" is single-select;
+# each value maps to exactly the predicate the matching v12
+# switch implemented (priced_only / golden_only / quick_only /
+# hide_dnb) — combos went away by the Pilot's design call.
+SHOW_MODES = [("all", "All markets"),
+              ("priced", "Priced only"),
+              ("golden", "Golden bets"),
+              ("quick", "Quick bets (≤2h)"),
+              ("nodnb", "No do-not-bets")]
+# The startup defaults (v12.4): nothing toggled on, ever — the
+# board opens on All sports with Show = Golden bets, and the
+# scoped-pull chooser opens on soccer.
+DEFAULT_SHOW = "golden"
+DEFAULT_SPORT_VIEW = "all"
 
 GRADE_COLORS = {
     "A+": "#10B981", "A": "#10B981", "A-": "#34D399",
@@ -3646,13 +3736,17 @@ def main(page: ft.Page):
     state = {"slate": load_snapshot(), "verdicts": None,
              "verdict_cache": {},
              "sort": "verdict", "card_limit": CARD_PAGE, "search": "",
-             "toggles": {"priced_only": False, "golden_only": False,
-                         "hide_dnb": False, "quick_only": False,
-                         "sports": {}},
+             # v12.4 board filters: two dropdown values, no
+             # switches. Startup is the clean state — sport
+             # view on All sports, Show on Golden bets (the
+             # Pilot's first-pull default view).
+             "sport_view": DEFAULT_SPORT_VIEW,
+             "show": DEFAULT_SHOW,
+             "pull_armed": False,
              "parlay_legs": [], "view": "board",
              "board_seg": "all", "slip_seg": "parse",
              "instrument_url": None, "animate_next": False,
-             "toggles_for": None, "bankroll": "",
+             "bankroll": "",
              "chart_zoom": 1.0, "chart_detail": "",
              "pull_busy": False, "last_pull_at": 0.0,
              "chosen_sport": load_chosen_sport(),
@@ -3828,7 +3922,6 @@ def main(page: ft.Page):
 
     # ---------------- Cards ----------------
 
-    cards_toggles = ft.Column(spacing=2, tight=True)
     cards_count = ft.Text("", size=11, color=FAINT)
     cards_list = ft.Column(spacing=8)
     # v12.1 QoL: the board header band's pull-age line and the
@@ -3837,6 +3930,62 @@ def main(page: ft.Page):
     pull_age_ctrl = ft.Text("", size=11, color=DIM,
                             font_family=NUM_FONT)
     filter_chip_row = ft.Row(spacing=8, wrap=True, controls=[])
+
+    # v12.4: the board's two filter dropdowns — the switch
+    # wall's replacements. Built once here and seated in the
+    # board band at assembly (same styling family as the sort
+    # and sport-chooser dropdowns); render_cards keeps the
+    # sport dropdown's options synced to the slate's sports.
+    def on_sport_view(e):
+        state["sport_view"] = e.control.value or "all"
+        state["card_limit"] = CARD_PAGE
+        render_cards()
+
+    def on_show(e):
+        state["show"] = e.control.value or state["show"]
+        state["card_limit"] = CARD_PAGE
+        render_cards()
+
+    sport_view_dd = ft.Dropdown(
+        value=state["sport_view"], width=190,
+        options=[ft.DropdownOption(key="all",
+                                   text="All sports")],
+        on_select=on_sport_view)
+    show_dd = ft.Dropdown(
+        value=state["show"], width=200,
+        options=[ft.DropdownOption(key=k, text=t)
+                 for k, t in SHOW_MODES],
+        on_select=on_show)
+
+    def _slate_sports():
+        """Sports present on the accumulated slate, in the
+        board's standing display order (the old switch row's
+        order), then any others in pull order."""
+        present = []
+        for m in (state["slate"] or {}).get("markets", []):
+            s = m.get("sport")
+            if s is not None and s not in present:
+                present.append(s)
+        order = ["nfl", "ncaaf", "nba", "nhl", "mlb", "soccer"]
+        present.sort(key=lambda s: order.index(s)
+                     if s in order else 99)
+        return present
+
+    def _sync_sport_view_dd():
+        """Keep the 'Board shows' dropdown honest: options are
+        All sports + the slate's sports, and a selection whose
+        sport has left the slate falls back to All sports."""
+        present = _slate_sports()
+        sport_view_dd.options = (
+            [ft.DropdownOption(key="all", text="All sports")]
+            + [ft.DropdownOption(
+                key=s, text=SPORT_LABELS.get(s, (s or "?").upper()))
+               for s in present])
+        if state["sport_view"] != "all" \
+                and state["sport_view"] not in present:
+            state["sport_view"] = "all"
+        sport_view_dd.value = state["sport_view"]
+        show_dd.value = state["show"]
 
     def _pull_age_text():
         """Per-sport pull age (v12.3): the CHOSEN sport's own
@@ -3890,34 +4039,30 @@ def main(page: ft.Page):
         return base
 
     def _filters_nondefault():
-        t = state["toggles"]
+        """Non-default is measured against the v12.4 startup
+        state: sport view off All sports, Show off the Golden
+        bets default, a search typed, or a panel league filter
+        riding."""
         if state.get("search"):
             return True
         if state.get("league_filter"):
             return True
-        if (t.get("priced_only") or t.get("golden_only")
-                or t.get("hide_dnb") or t.get("quick_only")):
+        if state.get("sport_view") not in (None, "all"):
             return True
-        return any(v is False
-                   for v in t.get("sports", {}).values())
+        return state.get("show") != DEFAULT_SHOW
 
     def clear_all_filters():
-        """One tap back to the whole board: search emptied, every
-        toggle at its default, the panel league filter cleared."""
+        """One tap back to the startup view: search emptied,
+        both filter dropdowns at their startup defaults, the
+        panel league filter cleared."""
         state["search"] = ""
         try:
             search_field.value = ""
         except Exception:
             pass
-        t = state["toggles"]
-        t["priced_only"] = False
-        t["golden_only"] = False
-        t["hide_dnb"] = False
-        t["quick_only"] = False
-        for k in list(t.get("sports", {})):
-            t["sports"][k] = True
+        state["sport_view"] = DEFAULT_SPORT_VIEW
+        state["show"] = DEFAULT_SHOW
         state["card_limit"] = CARD_PAGE
-        state["toggles_for"] = None   # rebuild the switch row
         if state.get("league_filter"):
             clear_league_filter()      # clears + re-renders
         else:
@@ -3980,26 +4125,31 @@ def main(page: ft.Page):
         return datetime.now().astimezone()
 
     def apply_toggles(entries):
-        """The Cards toggles, over the cached verdicts — display
-        only, never a re-price."""
-        t = state["toggles"]
+        """The board's view filters (v12.4: the two dropdowns —
+        'Board shows' sport + 'Show'), over the cached verdicts
+        — display only, never a re-price. Each Show value is
+        exactly the predicate the v12 switch of the same name
+        implemented; the sport dropdown is the old per-sport
+        switches as a single choice (All sports = no filter)."""
+        sv = state.get("sport_view") or "all"
+        show = state.get("show") or "all"
         out = []
         for m, v, e in entries:
-            if t["priced_only"] and v.get("state") != "PRICED":
+            if show == "priced" and v.get("state") != "PRICED":
                 continue
-            if t["golden_only"] and \
+            if show == "golden" and \
                     card_verdict(v)[0] != "GOLDEN BET":
                 continue
-            if t["hide_dnb"] and \
+            if show == "nodnb" and \
                     card_verdict(v)[0] == "DO NOT BET":
                 continue
-            if not t["sports"].get(m.get("sport"), True):
+            if sv != "all" and m.get("sport") != sv:
                 continue
             lf = state.get("league_filter")
             if lf and not market_in_league(
                     m, lf.get("sport"), lf.get("league")):
                 continue
-            if t.get("quick_only") and not is_quick(m, _anchor()):
+            if show == "quick" and not is_quick(m, _anchor()):
                 continue
             if not search_hit(m, state.get("search") or ""):
                 continue
@@ -4021,6 +4171,9 @@ def main(page: ft.Page):
         render_cards()
 
     def _switch(label, value, handler):
+        # Settings switches only (v12.4): the Board's switch
+        # wall is gone — this helper survives solely for the
+        # More view's settings (the Sound toggle).
         return ft.Switch(label=label, value=value,
                          active_color=ACCENT, on_change=handler,
                          label_text_style=ft.TextStyle(size=11,
@@ -4064,11 +4217,10 @@ def main(page: ft.Page):
     def render_cards():
         cards_list.controls = []
         rec = state["slate"]
+        _sync_sport_view_dd()
         if not rec:
-            cards_toggles.controls = []
             pull_age_ctrl.value = ""
             filter_chip_row.controls = []
-            state["toggles_for"] = None
             cards_count.value = ""
             cards_list.controls = [empty_full(
                 ft.Icons.CLOUD_OFF, "No pull yet",
@@ -4086,39 +4238,11 @@ def main(page: ft.Page):
                 style=ft.ButtonStyle(color=ACCENT),
                 on_click=lambda _e: clear_all_filters())]
             if _filters_nondefault() else [])
-        # F4: the toggle row is rebuilt only when
-        # the slate itself changes — sort, search and
-        # toggle events update the cards in place.
-        if state.get("toggles_for") != id(rec):
-            # toggle rows: the three view toggles + one switch per
-            # sport actually present in this pull
-            t = state["toggles"]
-            present = []
-            for m, _v, _e in entries:
-                s = m.get("sport")
-                if s not in present:
-                    present.append(s)
-                t["sports"].setdefault(s, True)
-            order = ["nfl", "ncaaf", "nba", "nhl", "mlb", "soccer"]
-            present.sort(key=lambda s: order.index(s)
-                         if s in order else 99)
-            rows = [
-                _switch("Priced only", t["priced_only"],
-                        lambda e: _toggle("priced_only", e)),
-                _switch("Golden only", t["golden_only"],
-                        lambda e: _toggle("golden_only", e)),
-                _switch("Hide DO NOT BET", t["hide_dnb"],
-                        lambda e: _toggle("hide_dnb", e)),
-                _switch("Quick bets (\u22642h)", t["quick_only"],
-                        lambda e: _toggle("quick_only", e))]
-            for s in present:
-                rows.append(_switch(
-                    SPORT_LABELS.get(s, (s or "?").upper()),
-                    t["sports"].get(s, True),
-                    lambda e, s=s: _toggle_sport(s, e)))
-            cards_toggles.controls = [ft.Row(spacing=12, wrap=True,
-                                             controls=rows)]
-            state["toggles_for"] = id(rec)
+        # v12.4 render diet: the filter dropdowns are static
+        # controls built once in the band — a render only syncs
+        # the sport dropdown's options to the slate (above) and
+        # rebuilds the card list. There is no per-slate switch
+        # row to rebuild at all anymore.
         shown = apply_toggles(entries)
         if len(shown) != len(entries):
             cards_count.value = f"{len(shown)} of {len(entries)} markets"
@@ -4173,8 +4297,9 @@ def main(page: ft.Page):
                 lane_ctx=ctx, on_chart=_card_chart))
         if not shown:
             cards_list.controls.append(empty_inline(
-                ft.Icons.SEARCH_OFF, "No markets pass the toggles",
-                "Loosen a toggle — the pull itself is unchanged."))
+                ft.Icons.SEARCH_OFF, "No markets in this view",
+                "Widen the Show or Board shows dropdown — the "
+                "pull itself is unchanged."))
         elif len(shown) > limit:
             cards_list.controls.append(ft.Button(
                 f"Show more ({len(shown) - limit} more)",
@@ -4188,20 +4313,13 @@ def main(page: ft.Page):
         # §3.4: shimmer stops the moment content lands)
         page.update()
 
-    def _toggle(key, e):
-        state["toggles"][key] = bool(e.control.value)
-        state["card_limit"] = CARD_PAGE
-        render_cards()
-
-    def _toggle_sport(sport, e):
-        state["toggles"]["sports"][sport] = bool(e.control.value)
-        state["card_limit"] = CARD_PAGE
-        render_cards()
-
     # ---------------- pull / price workers ----------------
 
     def on_pull(_e):
-        # A manual tap resets the auto-pull clock (v12).
+        # A manual tap resets the auto-pull clock (v12) and —
+        # v12.4 — ARMS the auto-pull loop: the user starts the
+        # first pull, and only then may the loop tick.
+        state["pull_armed"] = True
         state["last_pull_at"] = time.monotonic()
         status.value = "Pulling the live FanDuel menu…"
         cards_list.controls = skeleton_cards()
@@ -4292,22 +4410,14 @@ def main(page: ft.Page):
             state["pull_busy"] = False
 
     def _show_only_sport(sport, partial):
-        """After a manual scoped pull, the board's sport filter
-        shows what was just pulled: the pulled sport plus the
-        sports its page routed to (the partial's own market
-        stamps), every other switch off. The clear-filters chip
-        this summons (the toggles are now non-default) restores
-        the whole board in one tap."""
-        show = {sport}
-        show.update(m.get("sport")
-                    for m in partial.get("markets") or [])
-        show.discard(None)
-        t = state["toggles"]
-        for m in (state["slate"] or {}).get("markets", []):
-            s = m.get("sport")
-            if s is not None:
-                t["sports"][s] = s in show
-        state["toggles_for"] = None   # rebuild the switch row
+        """After a manual scoped pull, the board's 'Board
+        shows' dropdown points at what was just pulled (v12.4:
+        the dropdown is single-select, so the pulled sport
+        itself is the view; its routed sports stay one dropdown
+        change away under their own names). The clear-filters
+        chip this summons restores the startup view in one
+        tap."""
+        state["sport_view"] = sport
 
     def on_sport_select(e):
         sport = e.control.value
@@ -4319,7 +4429,9 @@ def main(page: ft.Page):
 
     def on_pull_sport(_e):
         # A manual tap resets the auto-pull clock (v12), same
-        # as Pull all.
+        # as Pull all — and (v12.4) ARMS the auto-pull loop:
+        # the user starts the first pull.
+        state["pull_armed"] = True
         state["last_pull_at"] = time.monotonic()
         label = SPORT_LABELS.get(state["chosen_sport"],
                                   state["chosen_sport"])
@@ -4355,12 +4467,13 @@ def main(page: ft.Page):
                 return  # superseded by a fresher pull
             state["slate"] = merged
             save_snapshot(state["slate"])
-            render_cards()
-            if state["view"] == "stage":
-                render_stage()
-            if state["view"] == "slip":
-                render_protected()
-            page.update()
+            # v12.4 render diet: NO surface in the app displays
+            # event_menus content (cards, stage and slip all
+            # render off markets + verdicts — verified by grep:
+            # event_menus is read only by the pull/merge code),
+            # so a landed harvest re-renders NOTHING. It saves
+            # the snapshot and stands down; the menus are on
+            # disk for whatever reads the record next.
         except Exception:
             pass
 
@@ -4450,22 +4563,31 @@ def main(page: ft.Page):
 
     def _auto_pull_loop():
         # v12 auto-pull: a daemon loop while the app is open.
-        # First tick pulls immediately (the on-start auto-pull);
-        # then every AUTO_PULL_INTERVAL_S. v12.3 re-scope: a
-        # tick refreshes ONLY the chosen sport (the scoped
-        # worker + merge) — the full pull is manual, via Pull
-        # all. Never overlaps a
-        # running pull (the worker itself refuses, and the loop
-        # also skips a tick while one is busy). Started ONLY from
-        # the real entry path — see the __main__ block and
-        # AUTO_PULL_ENABLED; the harness never starts it.
+        # v12.4 arming law (the Pilot's rule): the user starts
+        # the first pull — the loop NEVER ticks until the
+        # session's first user-initiated pull action (scoped
+        # Pull, Pull all, or Price Slate) sets pull_armed; from
+        # then on a tick is due every AUTO_PULL_INTERVAL_S since
+        # the last pull (the gate is auto_pull_should_tick, pure
+        # and harness-pinned). v12.3 re-scope stands: a tick
+        # refreshes ONLY the chosen sport (the scoped worker +
+        # merge) — the full pull is manual, via Pull all. Never
+        # overlaps a running pull (the gate and the worker both
+        # refuse). Started ONLY from the real entry path — see
+        # the __main__ block and AUTO_PULL_ENABLED; the harness
+        # never starts it. The 1 s poll is a flag check only —
+        # no renders, no fetches while idle.
         while True:
             try:
-                if not state["pull_busy"]:
+                if auto_pull_should_tick(
+                        state.get("pull_armed"),
+                        state["pull_busy"],
+                        state.get("last_pull_at"),
+                        time.monotonic()):
                     page.run_thread(_sport_pull_worker, True)
             except Exception:
                 pass
-            time.sleep(AUTO_PULL_INTERVAL_S)
+            time.sleep(1)
 
     def _boot_worker():
         # The first pricing pass, off the paint path (F4).
@@ -4491,6 +4613,10 @@ def main(page: ft.Page):
                 pass
 
     def on_price(_e):
+        # Price Slate is a user-initiated pull action — it arms
+        # the auto-pull loop too (v12.4), even on the empty
+        # path: the user has started the session's pulling.
+        state["pull_armed"] = True
         if not state["slate"]:
             status.value = "Nothing to price yet — Pull first."
             page.update()
@@ -6014,7 +6140,8 @@ def main(page: ft.Page):
              "The Resolve date sort orders the board by that date, "
              "earliest first, grouped under date headers."),
             ("Quick bet", "a market resolving within 0–2 hours of "
-             "the pull — the Quick bets toggle on the Board. The "
+             "the pull — the Quick bets view in the Board's Show "
+             "dropdown. The "
              "clock is the pull's own timestamp, so a stale pull "
              "shows its quick window as it stood when pulled, "
              "stamped STALE like everything else on it."),
@@ -6393,15 +6520,11 @@ def main(page: ft.Page):
         state["league_filter"] = {
             "sport": sport, "league": eff,
             "label": league_label(sport, league)}
-        t = state["toggles"]
-        present = {m.get("sport") for m in mkts}
-        if sport in present:
-            for s in list(t["sports"]):
-                t["sports"][s] = (s == sport)
-            t["sports"][sport] = True
+        # v12.4: the league's sport is also the board's sport
+        # view (the dropdown replaced the per-sport switches).
+        state["sport_view"] = sport
         state["search"] = ""
         search_field.value = ""
-        state["toggles_for"] = None
         state["card_limit"] = CARD_PAGE
         state["board_seg"] = "all"
         board_seg_ctrl.selected = ["all"]
@@ -6415,13 +6538,10 @@ def main(page: ft.Page):
                                  point.get("away")) if x)
         state["search"] = q
         search_field.value = q
-        t = state["toggles"]
-        mkts = (state["slate"] or {}).get("markets", [])
-        present = {m.get("sport") for m in mkts}
-        if point.get("sport") in present:
-            for s in list(t["sports"]):
-                t["sports"][s] = (s == point.get("sport"))
-        state["toggles_for"] = None
+        # v12.4: point the board's sport view at the market's
+        # sport (the dropdown replaced the per-sport switches).
+        if point.get("sport"):
+            state["sport_view"] = point.get("sport")
         state["card_limit"] = CARD_PAGE
         state["board_seg"] = "all"
         board_seg_ctrl.selected = ["all"]
@@ -6433,9 +6553,7 @@ def main(page: ft.Page):
         state["league_filter"] = None
         state["search"] = ""
         search_field.value = ""
-        for s in list(state["toggles"]["sports"]):
-            state["toggles"]["sports"][s] = True
-        state["toggles_for"] = None
+        state["sport_view"] = DEFAULT_SPORT_VIEW
         if ret.get("view") == "stage":
             state["panel_segment"] = ret.get("segment") \
                 or "charts"
@@ -6446,9 +6564,7 @@ def main(page: ft.Page):
     def clear_league_filter():
         state["league_filter"] = None
         state["nav_return"] = None
-        for s in list(state["toggles"]["sports"]):
-            state["toggles"]["sports"][s] = True
-        state["toggles_for"] = None
+        state["sport_view"] = DEFAULT_SPORT_VIEW
         render_cards()
 
     # ---- full-screen graph viewer ----
@@ -6776,9 +6892,16 @@ def main(page: ft.Page):
                                  for k, t in SORT_MODES],
                         on_select=on_sort),
                     cards_count]),
+                # v12.4: the filter dropdowns — "Board shows"
+                # (which sport of the accumulated board is on
+                # screen) and "Show" (which markets pass),
+                # where the switch wall used to live.
+                ft.Row(spacing=8, controls=[
+                    ft.Icon(ft.Icons.TUNE, size=18, color=ACCENT),
+                    sport_view_dd,
+                    show_dd]),
                 search_field,
                 filter_chip_row])),
-        cards_toggles,
         cards_list]
     board_view.controls = [
         screen_title("Board",
@@ -6914,15 +7037,42 @@ def main(page: ft.Page):
             splash["ctrl"].on_click = lambda _e: dismiss_splash()
             page.overlay.append(splash["ctrl"])
             page.update()
-            ring = _SPLASH_PARTS.get("ring")
-            if ring is not None:
-                ring.scale = ft.Scale(scale=1.0)
+            # v12.4 staging ("more pop"): the emblem settles
+            # in first, the wordmark fades/scales in under it,
+            # then the gold sweep line — all ONE-SHOT property
+            # animations (no new loops), and the whole sequence
+            # self-resolves at ~1.4 s even if no pull lands
+            # (a landed pull or a tap still resolves it early).
+            def _stage(part, **props):
+                ctrl = _SPLASH_PARTS.get(part)
+                if ctrl is None:
+                    return
+                for k, v in props.items():
+                    setattr(ctrl, k, v)
+                try:
+                    ctrl.update()
+                except Exception:
+                    pass
+            _stage("emblem", scale=ft.Scale(scale=1.0))
+            threading.Timer(
+                0.25, lambda: _stage(
+                    "wordmark", opacity=1.0,
+                    scale=ft.Scale(scale=1.0))).start()
+            threading.Timer(
+                0.50, lambda: _stage(
+                    "sweep", opacity=1.0,
+                    scale=ft.Scale(scale=1.0))).start()
+            threading.Timer(1.4, dismiss_splash).start()
             start_pulse("splash")
             start_pulse("shimmer")
             start_pulse("golden")
         except Exception:
             splash["ctrl"] = None
         threading.Thread(target=_auto_pull_loop, daemon=True).start()
+    # v12.4: the startup sound — once per cold start, through
+    # the same mute-respected, failure-silent play_sound as
+    # every other sound in the app.
+    play_sound("startup")
     refresh_stamp()
 
 

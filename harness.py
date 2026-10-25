@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.3.0", app.APP_VERSION == "12.3.0")
-    check("BUILD_NUMBER is 19", app.BUILD_NUMBER == 19)
+    check("APP_VERSION is 12.4.0", app.APP_VERSION == "12.4.0")
+    check("BUILD_NUMBER is 20", app.BUILD_NUMBER == 20)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -252,6 +252,33 @@ def main():
     check("board segment host is an AnimatedSwitcher (F3)",
           len(board_sw) == 1)
     cards_view = board_sw[0].content
+    # v12.4 startup state, asserted BEFORE anything drives it:
+    # Show opens on Golden bets, the sport view on All sports,
+    # the pull chooser on the persisted sport — and the board
+    # carries NO switches at all (the switch wall is gone).
+    _dds0 = [c for c in walk(cards_view)
+             if type(c).__name__ == "Dropdown"]
+    _show_dd0 = next(
+        d for d in _dds0
+        if [o.key for o in d.options]
+        == [k for k, _t in app.SHOW_MODES])
+    _sv_dd0 = next(
+        d for d in _dds0
+        if [o.key for o in d.options]
+        == ["all", "nfl", "ncaaf"])
+    check("v12.4: startup state — Show = Golden bets, Board "
+          "shows = All sports, nothing toggled on",
+          _show_dd0.value == "golden"
+          and _sv_dd0.value == "all")
+    check("v12.4: the board renders zero switches (the switch "
+          "wall is gone)",
+          not any(type(c).__name__ == "Switch"
+                  for c in walk(board)))
+    # The card assertions below predate the golden startup
+    # view (re-pinned in v12.4): drive Show to All markets
+    # through the dropdown — the dropdown IS the filter now.
+    _show_dd0.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="all")))
     all_texts = texts(cards_view)
     check("board renders market cards",
           any("Find it:" in t for t in all_texts))
@@ -268,9 +295,12 @@ def main():
           any(t.startswith("FanDuel → ") for t in ct))
     check("F3: cards cast the depth shadow",
           getattr(card, "shadow", None) is not None)
-    check("F3: first render animated in (opacity restored)",
+    check("v12.4 re-pin (was F3 first-render animation): a "
+          "filter re-render does not replay entrances — cards "
+          "arrive static; the animated first render is pinned "
+          "on the fresh-boot Price Slate path in v12.1 below",
           getattr(card, "opacity", 1) == 1
-          and getattr(card, "animate_opacity", None) is not None)
+          and getattr(card, "animate_opacity", None) is None)
 
     # finds segment: the golden panel is honest on this slate
     seg = next(c for c in walk(board)
@@ -285,21 +315,30 @@ def main():
     seg.on_change(SimpleNamespace(
         control=SimpleNamespace(selected={"all"})))
 
-    # toggles are NOT rebuilt across re-renders (F4 in-place)
-    tog_row = next(c for c in walk(cards_view)
-                   if type(c).__name__ == "Row"
-                   and any(type(x).__name__ == "Switch"
-                           for x in getattr(c, "controls", [])))
+    # v12.4 re-pin (was F4: the toggle row survives
+    # re-renders): there is no toggle row anymore — the two
+    # filter dropdowns are static band controls that survive
+    # re-renders as the same objects, and still no switch
+    # appears anywhere on the board.
     page.navigation_bar.on_change(SimpleNamespace(
         control=SimpleNamespace(selected_index=2)))   # Lab
     page.navigation_bar.on_change(SimpleNamespace(
         control=SimpleNamespace(selected_index=0)))   # Board
-    tog_row2 = next(c for c in walk(cards_view)
-                    if type(c).__name__ == "Row"
-                    and any(type(x).__name__ == "Switch"
-                            for x in getattr(c, "controls", [])))
-    check("F4: toggle row survives re-renders (same object)",
-          tog_row is tog_row2)
+    _dds0b = [c for c in walk(cards_view)
+              if type(c).__name__ == "Dropdown"]
+    _show_dd0b = next(
+        d for d in _dds0b
+        if [o.key for o in d.options]
+        == [k for k, _t in app.SHOW_MODES])
+    _sv_dd0b = next(
+        d for d in _dds0b
+        if [o.key for o in d.options]
+        == ["all", "nfl", "ncaaf"])
+    check("v12.4: filter dropdowns survive re-renders (same "
+          "objects), board still switch-free",
+          _show_dd0b is _show_dd0 and _sv_dd0b is _sv_dd0
+          and not any(type(c).__name__ == "Switch"
+                      for c in walk(board)))
 
     # ---------- Lab: ledger structure on the shipped pack ----
     page.navigation_bar.on_change(SimpleNamespace(
@@ -1273,11 +1312,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.3 version unified: README release line",
-          "12.3.0 (build 19)" in _readme)
-    check("v12.3 version unified: workflow build args",
-          '--build-version "12.3.0"' in _wf
-          and '--build-number "19"' in _wf)
+    check("v12.4 version unified: README release line",
+          "12.4.0 (build 20)" in _readme)
+    check("v12.4 version unified: workflow build args",
+          '--build-version "12.4.0"' in _wf
+          and '--build-number "20"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1301,9 +1340,9 @@ def main():
           app.SOUND_VOLUME <= 0.35)
     _audios = [s for s in page.services
                if type(s).__name__ == "Audio"]
-    check("v12.1: three Audio services registered, capped + "
-          "autoplay off",
-          len(_audios) == 3
+    check("v12.4 re-pin (was v12.1 three services): four "
+          "Audio services registered, capped + autoplay off",
+          len(_audios) == 4
           and all(a.volume <= 0.35 and a.autoplay is False
                   for a in _audios))
     check("v12.1: a HapticFeedback service is registered",
@@ -1313,6 +1352,8 @@ def main():
           'play_sound("tick")' in _src
           and 'play_sound("confirm")' in _src
           and 'play_sound("golden")' in _src)
+    check("v12.4: the startup sound's play point is wired",
+          'play_sound("startup")' in _src)
     check("v12.1: no new standing loops (pulse keys <= 6)",
           len(app.PULSE_PERIODS) <= 6)
     _pb = app.primary_button("Probe", lambda e: None)
@@ -1332,9 +1373,35 @@ def main():
     bsw3 = [c for c in walk(board3)
             if type(c).__name__ == "AnimatedSwitcher"]
     cards3 = bsw3[0].content
-    check("v12.1: pull-age line renders on the board",
-          any("pulled" in t and "ago" in t
+    check("v12.4 re-pin (was v12.1 pull-age): the pull-age "
+          "line renders — under the soccer first-pull default "
+          "the fixture slate has no soccer entry, so the "
+          "truthful line is 'not pulled yet'",
+          any(("pulled" in t and "ago" in t)
+              or "not pulled yet" in t
               for t in texts(cards3)))
+    # v12.4: this fresh boot opened on the Golden bets startup
+    # view (no golden bets on the fixture pull = no cards).
+    # Drive Show to All markets, then land a fresh pricing
+    # pass through the band's own Price Slate action — the
+    # path that sets the entrance flag — before measuring
+    # the entrance gates.
+    _show3 = next(c for c in walk(cards3)
+                  if type(c).__name__ == "Dropdown"
+                  and [o.key for o in c.options]
+                  == [k for k, _t in app.SHOW_MODES])
+    _show3.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="all")))
+
+    def _btn_label3(c):
+        ct = getattr(c, "content", None)
+        if isinstance(ct, str):
+            return ct
+        return getattr(ct, "value", None)
+    _price_btn = next(c for c in walk(cards3)
+                      if type(c).__name__ == "Button"
+                      and _btn_label3(c) == "Price Slate")
+    _price_btn.on_click(SimpleNamespace())
     _lists = [c for c in walk(cards3)
               if type(c).__name__ == "Column"]
     cards_list3 = max(_lists, key=lambda c: sum(
@@ -1360,6 +1427,10 @@ def main():
           and (_golden_exp == 0
                or _badge.label == str(_golden_exp)),
           f"golden={_golden_exp} badge={_badge}")
+    # back to the startup defaults before the chip flow, so
+    # the chip's appearance is the search's doing alone
+    _show3.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="golden")))
     _sf = next(c for c in walk(cards3)
                if type(c).__name__ == "TextField")
     _sf.on_change(SimpleNamespace(
@@ -1801,6 +1872,220 @@ def main():
         b5.fd_parse_sport_page = _orig_parse
         b5.fd_event_menu = _orig_event_menu
         app.set_chosen_sport("nfl")
+
+    # ---------- v12.4 startup / dropdowns / diet ----------
+    # startup.wav: exists, <25KB, valid WAV, ~700 ms
+    _sp = os.path.join(HERE, "assets", "sounds", "startup.wav")
+    _sok = os.path.exists(_sp) and os.path.getsize(_sp) < 25000
+    if _sok:
+        try:
+            with _wave.open(_sp) as _w:
+                _sdur = _w.getnframes() / _w.getframerate()
+            _sok = 0.6 <= _sdur <= 0.8
+        except Exception:
+            _sok = False
+    check("v12.4: startup.wav exists, <25KB, valid WAV of "
+          "~700 ms", _sok)
+    check("v12.4: the sound registry carries exactly the "
+          "four sounds",
+          set(app.SOUND_FILES)
+          == {"tick", "confirm", "golden", "startup"})
+
+    # the auto-pull gate: never before the first user pull,
+    # never while busy, only on a full interval
+    _now = 10000.0
+    check("v12.4: auto-pull gate — unarmed never ticks, "
+          "armed ticks only on a full quiet interval",
+          app.auto_pull_should_tick(False, False, 0.0, _now)
+          is False
+          and app.auto_pull_should_tick(True, True, 0.0, _now)
+          is False
+          and app.auto_pull_should_tick(
+              True, False, _now - 60, _now) is False
+          and app.auto_pull_should_tick(
+              True, False, _now - app.AUTO_PULL_INTERVAL_S,
+              _now) is True
+          and app.auto_pull_should_tick(
+              True, False, _now - 10, _now, interval=5) is True)
+    check("v12.4: the loop consults the gate, and exactly the "
+          "three user pull actions arm it",
+          "auto_pull_should_tick(" in _src
+          and _src.count('state["pull_armed"] = True') == 3)
+
+    # the chooser's cold default is soccer; a persisted pick
+    # still wins; unknown values normalize to soccer
+    _sport_file = os.path.join(STORAGE,
+                               "Bet_Finder-sport.json")
+    _prev_sport = app.load_chosen_sport()
+    try:
+        if os.path.exists(_sport_file):
+            os.remove(_sport_file)
+        _cold = app.load_chosen_sport()
+        _norm = app.set_chosen_sport("not-a-sport")
+    finally:
+        app.set_chosen_sport(_prev_sport)
+    check("v12.4: first-pull chooser default is soccer "
+          "(persisted picks still win)",
+          _cold == "soccer" and _norm == "soccer"
+          and app.load_chosen_sport() == _prev_sport)
+
+    # the startup sound fires exactly once per cold boot
+    _played = []
+    _orig_play = app.play_sound
+    app.play_sound = lambda name: _played.append(name)
+    try:
+        page5 = FakePage()
+        app.main(page5)
+    finally:
+        app.play_sound = _orig_play
+    check("v12.4: play_sound('startup') is invoked exactly "
+          "once on a cold boot",
+          _played == ["startup"], f"played={_played}")
+    # ...and it no-ops when muted (a fake control counts plays)
+    _plays = {"n": 0}
+    _real_ctrl = app._SOUND["controls"].get("startup")
+    app._SOUND["controls"]["startup"] = SimpleNamespace(
+        play=lambda: _plays.__setitem__("n", _plays["n"] + 1))
+    try:
+        app.set_sound_enabled(False)
+        app.play_sound("startup")
+        _muted_plays = _plays["n"]
+        app.set_sound_enabled(True)
+        app.play_sound("startup")
+    finally:
+        if _real_ctrl is not None:
+            app._SOUND["controls"]["startup"] = _real_ctrl
+        app.set_sound_enabled(True)
+    check("v12.4: the startup sound no-ops when muted, "
+          "plays when on",
+          _muted_plays == 0 and _plays["n"] == 1)
+
+    # the two board dropdowns on a fresh boot: exact option
+    # sets, startup values, zero board switches; driving the
+    # sport view filters the cards to that sport alone
+    sw5 = page5.controls[1]
+    board5 = sw5.content
+    bsw5 = [c for c in walk(board5)
+            if type(c).__name__ == "AnimatedSwitcher"]
+    cards5 = bsw5[0].content
+    # page5 restores the accumulated snapshot the v12.3 drive
+    # left on disk (fixture sports + the stub NBA slice) — the
+    # sport-view options must mirror THAT slate's sports.
+    _snap5 = json.load(open(os.path.join(
+        STORAGE, "Bet_Finder-last-pull.json")))
+    _pres5 = []
+    for _m5 in _snap5["markets"]:
+        _s5 = _m5.get("sport")
+        if _s5 is not None and _s5 not in _pres5:
+            _pres5.append(_s5)
+    _ord5 = ["nfl", "ncaaf", "nba", "nhl", "mlb", "soccer"]
+    _pres5.sort(key=lambda s: _ord5.index(s)
+                if s in _ord5 else 99)
+    _exp5 = ["all"] + _pres5
+    _dds5 = [c for c in walk(cards5)
+             if type(c).__name__ == "Dropdown"]
+    _show5 = next(d for d in _dds5
+                  if [o.key for o in d.options]
+                  == [k for k, _t in app.SHOW_MODES])
+    _sv5 = next(d for d in _dds5
+                if [o.key for o in d.options] == _exp5)
+    check("v12.4: the board's Show dropdown carries exactly "
+          "the five views, in order, with their labels",
+          [o.key for o in _show5.options]
+          == ["all", "priced", "golden", "quick", "nodnb"]
+          and [o.text for o in _show5.options]
+          == [t for _k, t in app.SHOW_MODES])
+    check("v12.4: the Board shows dropdown is All sports + "
+          "the slate's sports, at its startup values",
+          [o.key for o in _sv5.options] == _exp5
+          and _sv5.value == "all" and _show5.value == "golden"
+          and not any(type(c).__name__ == "Switch"
+                      for c in walk(board5)))
+    _show5.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="all")))
+    _sv5.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="nfl")))
+    _n_nfl = sum(1 for m in _snap5["markets"]
+                 if m.get("sport") == "nfl")
+    _find_ct = sum(1 for c in walk(cards5)
+                   if any("Find it:" in t for t in texts(c))
+                   and type(c).__name__ == "Container")
+    check("v12.4: sport-view drive shows only NFL cards",
+          _find_ct == min(_n_nfl, app.CARD_PAGE),
+          f"cards={_find_ct} nfl={_n_nfl}")
+
+    # the serialization smoke gate's coverage, kept: the
+    # golden startup view shrinks the boot tree (0 cards on
+    # this fixture), so scan THIS fully-driven board tree for
+    # set-valued control fields — the 11.0.1 crash class.
+    import dataclasses as _dc
+
+    def _set_hits(_v, _depth=0):
+        if _depth > 12:
+            return 0
+        if isinstance(_v, (set, frozenset)):
+            return 1
+        if isinstance(_v, dict):
+            return sum(_set_hits(x, _depth + 1)
+                       for x in _v.values())
+        if isinstance(_v, (list, tuple)):
+            return sum(_set_hits(x, _depth + 1) for x in _v)
+        if _dc.is_dataclass(_v) and not isinstance(_v, type):
+            _n = 0
+            for _f in _dc.fields(_v):
+                try:
+                    _n += _set_hits(getattr(_v, _f.name),
+                                    _depth + 1)
+                except Exception:
+                    pass
+            return _n
+        return 0
+    _hits5 = 0
+    _seen5 = 0
+    _roots5 = list(page5.controls)
+    if page5.navigation_bar is not None:
+        _roots5.append(page5.navigation_bar)
+    for _r5 in _roots5:
+        for _c5 in walk(_r5):
+            _seen5 += 1
+            if _dc.is_dataclass(_c5) \
+                    and not isinstance(_c5, type):
+                for _f5 in _dc.fields(_c5):
+                    try:
+                        _hits5 += _set_hits(getattr(_c5, _f5.name))
+                    except Exception:
+                        pass
+    check("v12.4: the full board tree carries no set-valued "
+          "control fields (smoke-gate coverage, kept)",
+          _seen5 > 500 and _hits5 == 0,
+          f"seen={_seen5} hits={_hits5}")
+
+    # the splash builder: emblem + wordmark + gold sweep, and
+    # the loop budget stands (splash pulse is the same key)
+    _splash = app.build_splash()
+    _imgs = [c for c in walk(_splash)
+             if type(c).__name__ == "Image"]
+    check("v12.4: the splash centers the new emblem, the "
+          "BetFi Xii wordmark and one gold sweep line",
+          len(_imgs) == 1
+          and _imgs[0].src == "assets/icon.png"
+          and any(t == "BetFi " for t in texts(_splash))
+          and any(t == "Xii" for t in texts(_splash))
+          and any(getattr(c, "gradient", None)
+                  is app.GOLD_GRADIENT
+                  for c in walk(_splash))
+          and len(app._PULSE_TARGETS.get("splash") or []) == 1
+          and len(app.PULSE_PERIODS) <= 6)
+
+    # render diet: the harvest worker saves and renders
+    # nothing (source-pinned — the worker is a closure, so
+    # its body is sliced from the shell source)
+    _hw = _src[_src.index("def _menu_harvest_worker"):
+               _src.index("def _sport_pull_worker")]
+    check("v12.4: harvest completion renders nothing — it "
+          "merges menus and saves the snapshot only",
+          "save_snapshot" in _hw and "render_" not in _hw
+          and "page.update" not in _hw)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

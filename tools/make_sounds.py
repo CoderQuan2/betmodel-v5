@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Generate BetFi Xii's three UI sounds (v12.1) — pure stdlib.
+"""Generate BetFi Xii's four UI sounds (v12.1; startup added
+v12.4) — pure stdlib.
 
-The app has exactly three sounds, all quiet by design (the shell
+The app has exactly four sounds, all quiet by design (the shell
 caps playback volume at SOUND_VOLUME = 0.30 on top of these
 already-low gains):
 
@@ -9,9 +10,15 @@ already-low gains):
   confirm.wav  ~120 ms, two gentle rising tones — Protected Slip
   golden.wav   ~250 ms soft four-note chime arpeggio, the quietest
                of the three — a pull lands its first GOLDEN bet
+  startup.wav  ~700 ms soft rising two-note sweep with a quiet
+               chime tail — once per cold start (v12.4). Written
+               at 11025 Hz so the longer sweep still lands under
+               the 25 KB asset cap; its gains sit at or below the
+               golden chime's.
 
-22050 Hz mono 16-bit WAV; exponential decay envelopes with short
-attack ramps so nothing clicks. Each file lands well under 25 KB.
+22050 Hz mono 16-bit WAV (11025 Hz for startup.wav); exponential
+decay envelopes with short attack ramps so nothing clicks. Each
+file lands well under 25 KB.
 
 Run:  python tools/make_sounds.py
 Writes into ../assets/sounds/ (relative to this file).
@@ -26,13 +33,13 @@ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "..", "assets", "sounds")
 
 
-def _tone(freq, dur_s, gain, decay=6.0):
+def _tone(freq, dur_s, gain, decay=6.0, sr=SR):
     """One enveloped sine note: 5 ms attack ramp, exp decay."""
-    n = int(SR * dur_s)
-    attack = max(1, int(SR * 0.005))
+    n = int(sr * dur_s)
+    attack = max(1, int(sr * 0.005))
     out = []
     for i in range(n):
-        t = i / SR
+        t = i / sr
         env = math.exp(-decay * t)
         if i < attack:
             env *= i / attack
@@ -40,7 +47,7 @@ def _tone(freq, dur_s, gain, decay=6.0):
     return out
 
 
-def _write(name, samples):
+def _write(name, samples, sr=SR):
     path = os.path.join(OUT_DIR, name)
     os.makedirs(OUT_DIR, exist_ok=True)
     frames = b"".join(
@@ -49,10 +56,10 @@ def _write(name, samples):
     with wave.open(path, "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
-        w.setframerate(SR)
+        w.setframerate(sr)
         w.writeframes(frames)
     print(f"{name}: {len(frames) + 44} bytes, "
-          f"{len(samples) / SR * 1000:.0f} ms")
+          f"{len(samples) / sr * 1000:.0f} ms")
 
 
 def main():
@@ -66,6 +73,15 @@ def main():
     for f in (523.25, 659.25, 783.99, 1046.50):
         golden += _tone(f, 0.0625, 0.15, decay=5.0)
     _write("golden.wav", golden)
+    # startup (v12.4): a soft rising two-note sweep (C5 -> G5,
+    # slow decays so the notes bloom rather than blip) with a
+    # quiet C6 chime tail — ~700 ms total, gains at or below
+    # the golden chime's 0.15 peak, at half sample rate to
+    # stay under the 25 KB cap.
+    startup = (_tone(523.25, 0.22, 0.13, decay=2.5, sr=11025)
+               + _tone(783.99, 0.22, 0.12, decay=2.5, sr=11025)
+               + _tone(1046.50, 0.26, 0.09, decay=6.0, sr=11025))
+    _write("startup.wav", startup, sr=11025)
 
 
 if __name__ == "__main__":
