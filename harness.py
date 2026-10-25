@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.2.0", app.APP_VERSION == "12.2.0")
-    check("BUILD_NUMBER is 18", app.BUILD_NUMBER == 18)
+    check("APP_VERSION is 12.3.0", app.APP_VERSION == "12.3.0")
+    check("BUILD_NUMBER is 19", app.BUILD_NUMBER == 19)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1273,11 +1273,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.2 version unified: README release line",
-          "12.2.0 (build 18)" in _readme)
-    check("v12.2 version unified: workflow build args",
-          '--build-version "12.2.0"' in _wf
-          and '--build-number "18"' in _wf)
+    check("v12.3 version unified: README release line",
+          "12.3.0 (build 19)" in _readme)
+    check("v12.3 version unified: workflow build args",
+          '--build-version "12.3.0"' in _wf
+          and '--build-number "19"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1479,6 +1479,328 @@ def main():
           len(_price_idx) == 2
           and _changed_calls == 2
           and _third_v == _fresh_changed)
+
+    # ---------- v12.3 scoped pull ----------
+    # Stub the engine's fetch/parse seams and record every
+    # call: the scoped pull must touch ONLY its own sport.
+    _fetch_calls = []
+    _menu_calls = []
+    _orig_fd_get = b5.fd_get
+    _orig_parse = b5.fd_parse_sport_page
+    _orig_event_menu = b5.fd_event_menu
+    _orig_tree = b5.build_menu_tree
+
+    def _stub_get(endpoint, params):
+        _fetch_calls.append((endpoint, dict(params or {})))
+        return {"attachments": {}}
+
+    def _stub_parse(page, sport):
+        mkts = [
+            {"sport": sport, "market": "moneyline",
+             "side": "home", "home": "AAA", "away": "BBB",
+             "price": -150, "fd_event_id": f"stub-{sport}-1",
+             "market_time": "2026-10-26T17:00:00"},
+            {"sport": sport, "market": "totals",
+             "side": "over", "home": "AAA", "away": "BBB",
+             "line": 44.5, "price": -110,
+             "fd_event_id": f"stub-{sport}-1",
+             "market_time": "2026-10-26T17:00:00"},
+            {"sport": sport, "market": "moneyline",
+             "side": "away", "home": "CCC", "away": "DDD",
+             "price": 130, "fd_event_id": f"stub-{sport}-2",
+             "market_time": "2026-10-26T20:00:00"}]
+        return mkts, {"moneyline": 2, "totals": 1}, 2, {sport: 2}
+
+    def _stub_event_menu(eid):
+        _menu_calls.append(eid)
+        return {"event_id": eid, "markets": []}
+
+    b5.fd_get = _stub_get
+    b5.fd_parse_sport_page = _stub_parse
+    b5.fd_event_menu = _stub_event_menu
+    b5.build_menu_tree = lambda ctx: {"event_types": {},
+                                      "az_order": []}
+    try:
+        _partial = app.pull_menu_sport("nba")
+        _sport_params = [p for _e, p in _fetch_calls]
+        check("v12.3: scoped pull fetches only its sport's "
+              "page (+ its custom page), never the tree",
+              _partial["sport"] == "nba"
+              and _partial["verified"] is True
+              and len(_sport_params) == 2
+              and all(p.get("eventTypeId")
+                      == b5.FANDUEL_EVENT_TYPES["nba"]
+                      or p.get("customPageId") == "nba"
+                      for p in _sport_params)
+              and not any("dataEntries" in p
+                          for p in _sport_params)
+              and all(m["sport"] == "nba"
+                      for m in _partial["markets"])
+              and list(_partial["sports"]) == ["nba"]
+              and _partial["sports"]["nba"].get("pulled_at")
+              == _partial["pulled_at"])
+        check("v12.3: scoped pull makes NO menu fetches — "
+              "its partial carries empty menus + a pending "
+              "marker naming its own soonest games",
+              _menu_calls == []
+              and _partial["event_menus"] == {}
+              and _partial["menus_pending"]
+              == ["stub-nba-1", "stub-nba-2"]
+              and _partial["sports"]["nba"].get(
+                  "menus_pending")
+              == ["stub-nba-1", "stub-nba-2"])
+        _fetch_calls.clear()
+        _menu_calls.clear()
+        _golf = app.pull_menu_sport("golf")
+        check("v12.3: a sport with no custom page makes "
+              "exactly one fetch",
+              len(_fetch_calls) == 1
+              and _golf["verified"] is True)
+
+        def _boom(endpoint, params):
+            raise RuntimeError("stub offline")
+        b5.fd_get = _boom
+        _bad = app.pull_menu_sport("nba")
+        check("v12.3: a failed scoped pull stamps its error "
+              "and prices nothing",
+              _bad["verified"] is False
+              and "error" in _bad["sports"]["nba"]
+              and _bad["markets"] == [])
+        b5.fd_get = _stub_get
+        _fetch_calls.clear()
+        _full = app.pull_menu()
+        check("v12.3: full pull unchanged in shape — tree, "
+              "all 17 sports, per-sport pulled_at",
+              "tree" in _full
+              and set(_full["sports"])
+              == set(b5.FANDUEL_EVENT_TYPES)
+              and all(e.get("pulled_at") == _full["pulled_at"]
+                      for e in _full["sports"].values())
+              and len(_full["markets"])
+              == 3 * len(b5.FANDUEL_EVENT_TYPES))
+    finally:
+        b5.fd_get = _orig_fd_get
+        b5.fd_parse_sport_page = _orig_parse
+        b5.fd_event_menu = _orig_event_menu
+        b5.build_menu_tree = _orig_tree
+
+    # merge semantics, on synthetic slates
+    _t0 = "2026-10-25T10:00:00-04:00"
+    _t1 = "2026-10-25T12:00:00-04:00"
+    _nfl_m = {"sport": "nfl", "id": "nfl1",
+              "fd_event_id": "ev-nfl"}
+    _nba_o1 = {"sport": "nba", "id": "nba-old1",
+               "fd_event_id": "ev-nba-old"}
+    _nba_o2 = {"sport": "nba", "id": "nba-old2",
+               "fd_event_id": "ev-nba-old"}
+    _soc_m = {"sport": "soccer", "id": "soc1",
+              "fd_event_id": "ev-soc"}
+    _base_slate = {
+        "pulled_at": _t0, "source": app.MENU_SOURCE,
+        "verified": True,
+        "markets": [_nfl_m, _nba_o1, _nba_o2, _soc_m],
+        "sports": {"nfl": {"games": 5, "pulled_at": _t0},
+                   "nba": {"games": 4, "pulled_at": _t0}},
+        "event_menus": {"ev-nfl": {"event_id": "ev-nfl"},
+                        "ev-nba-old": {"event_id": "ev-nba-old"}}}
+    _nba_new = {"sport": "nba", "id": "nba-new1",
+                "fd_event_id": "ev-nba-new"}
+    _partial_nba = {
+        "pulled_at": _t1, "source": app.MENU_SOURCE,
+        "verified": True, "sport": "nba", "markets": [_nba_new],
+        "sports": {"nba": {"games": 3, "pulled_at": _t1}},
+        "event_menus": {"ev-nba-new": {"event_id": "ev-nba-new"}}}
+    _merged = app.merge_sport_pull(_base_slate, _partial_nba)
+    check("v12.3: merge replaces only the pulled sport's "
+          "slice (identity + order of the rest untouched)",
+          [m["id"] for m in _merged["markets"]]
+          == ["nfl1", "nba-new1", "soc1"]
+          and _merged["markets"][0] is _nfl_m
+          and _merged["markets"][2] is _soc_m)
+    check("v12.3: merge keeps each sport's own stamp — the "
+          "unpulled sport is not freshened",
+          _merged["sports"]["nfl"]["pulled_at"] == _t0
+          and _merged["sports"]["nba"]["pulled_at"] == _t1
+          and _merged["pulled_at"] == _t1
+          and _merged["verified"] is True)
+    check("v12.3: merge swaps event menus for the pulled "
+          "sport's games only",
+          set(_merged["event_menus"])
+          == {"ev-nfl", "ev-nba-new"})
+    _bad_partial = {
+        "pulled_at": _t1, "source": app.MENU_SOURCE,
+        "verified": False, "sport": "nba", "markets": [],
+        "sports": {"nba": {"error": "RuntimeError: stub offline",
+                           "attempted_at": _t1}},
+        "event_menus": {}}
+    _kept = app.merge_sport_pull(_base_slate, _bad_partial)
+    check("v12.3: a failed scoped pull keeps the last-good "
+          "slice, stamps untouched, error recorded",
+          [m["id"] for m in _kept["markets"]]
+          == ["nfl1", "nba-old1", "nba-old2", "soc1"]
+          and _kept["sports"]["nba"].get("last_error")
+          == "RuntimeError: stub offline"
+          and _kept["sports"]["nba"]["pulled_at"] == _t0
+          and _kept["pulled_at"] == _t0)
+    _empty_partial = {
+        "pulled_at": _t1, "source": app.MENU_SOURCE,
+        "verified": True, "sport": "nba", "markets": [],
+        "sports": {"nba": {"games": 0, "pulled_at": _t1}},
+        "event_menus": {}}
+    _emptied = app.merge_sport_pull(_base_slate, _empty_partial)
+    check("v12.3: a landed pull with zero games truthfully "
+          "empties the sport's slice",
+          [m["id"] for m in _emptied["markets"]]
+          == ["nfl1", "soc1"]
+          and _emptied["sports"]["nba"]["games"] == 0)
+
+    # the background menu harvest: menus only, token-guarded
+    _pend_partial = {
+        "pulled_at": _t1, "source": app.MENU_SOURCE,
+        "verified": True, "sport": "nba", "markets": [_nba_new],
+        "sports": {"nba": {"games": 3, "pulled_at": _t1,
+                           "menus_pending": ["ev-nba-new"]}},
+        "event_menus": {}}
+    _pend = app.merge_sport_pull(_base_slate, _pend_partial)
+    _harv = app.merge_menu_harvest(
+        _pend, "nba",
+        {"ev-nba-new": {"event_id": "ev-nba-new",
+                         "markets": []},
+         "ev-not-on-slate": {"event_id": "ev-not-on-slate"}},
+        _t1)
+    check("v12.3: background harvest merges only the pulled "
+          "sport's on-slate menus, clears its pending marker, "
+          "and freshens no stamp",
+          _harv is not None
+          and set(_harv["event_menus"])
+          == {"ev-nfl", "ev-nba-new"}
+          and "menus_pending" not in _harv["sports"]["nba"]
+          and _harv["sports"]["nba"]["pulled_at"] == _t1
+          and _harv["pulled_at"] == _t1
+          and [m["id"] for m in _harv["markets"]]
+          == ["nfl1", "nba-new1", "soc1"])
+    _stale = app.merge_menu_harvest(
+        _pend, "nba",
+        {"ev-nba-new": {"event_id": "ev-nba-new"}}, _t0)
+    check("v12.3: a stale-token harvest is dropped whole — "
+          "it cannot overwrite a fresher pull's menus or "
+          "clear its pending marker",
+          _stale is None
+          and _pend["sports"]["nba"].get("menus_pending")
+          == ["ev-nba-new"]
+          and set(_pend["event_menus"]) == {"ev-nfl"})
+
+    # verdicts on an accumulated slate == fresh per-sport
+    _nf = [dict(m) for m in _rec["markets"]
+           if m.get("sport") == "nfl"][:3]
+    _nb = [dict(m) for m in _rec["markets"]
+           if m.get("sport") == "ncaaf"][:3]
+
+    def _part(sport, mkts):
+        return {"pulled_at": _rec["pulled_at"],
+                "source": app.MENU_SOURCE, "verified": True,
+                "sport": sport, "markets": mkts,
+                "sports": {sport: {"games": 1,
+                                   "pulled_at":
+                                   _rec["pulled_at"]}},
+                "event_menus": {}}
+    _acc = app.merge_sport_pull(
+        app.merge_sport_pull(None, _part("nfl", _nf)),
+        _part("ncaaf", _nb))
+    _acc_v, _acc_c = app._price_markets_cached(
+        _acc["markets"], _acc, {})
+    _fresh_v = []
+    for _mm in (_nf, _nb):
+        _v, _c = app._price_markets_cached(
+            _mm, {**_acc, "markets": _mm}, {})
+        _fresh_v += _v
+    check("v12.3: verdicts on an accumulated slate equal "
+          "fresh per-sport pricing",
+          len(_nf) == 3 and len(_nb) == 3
+          and _acc["markets"] == _nf + _nb
+          and _acc_v == _fresh_v)
+
+    # the chooser on a fresh boot + the auto-pull's target
+    page4 = FakePage()
+    app.main(page4)
+    sw4 = page4.controls[1]
+    board4 = sw4.content
+    _dds = [c for c in walk(board4)
+            if type(c).__name__ == "Dropdown"]
+    _chooser = [d for d in _dds
+                if len(getattr(d, "options", None) or []) == 17]
+    check("v12.3: the board band carries a sport chooser "
+          "listing all 17 event types, defaulting to the "
+          "persisted sport",
+          len(_chooser) == 1
+          and [o.key for o in _chooser[0].options]
+          == list(b5.FANDUEL_EVENT_TYPES)
+          and _chooser[0].value == app.load_chosen_sport())
+    check("v12.3: the auto-pull loop ticks the scoped "
+          "worker, not the full pull",
+          "run_thread(_sport_pull_worker, True)" in _src
+          and "run_thread(_pull_worker, True)" not in _src)
+
+    # drive the chooser + Pull end to end on stubs: the
+    # saved snapshot must show ONLY nba refreshed.
+    _fetch_calls.clear()
+    _menu_calls.clear()
+    b5.fd_get = _stub_get
+    b5.fd_parse_sport_page = _stub_parse
+    b5.fd_event_menu = _stub_event_menu
+    try:
+        _chooser[0].on_select(SimpleNamespace(
+            control=SimpleNamespace(value="nba")))
+
+        def _btn_label(c):
+            t = getattr(c, "text", None)
+            if t:
+                return t
+            ct = getattr(c, "content", None)
+            if isinstance(ct, str):
+                return ct
+            return getattr(ct, "value", None)
+        _pull_btns = [c for c in walk(board4)
+                      if type(c).__name__ == "Button"
+                      and _btn_label(c) == "Pull"]
+        check("v12.3: the band's Pull action is present",
+              len(_pull_btns) == 1)
+        if _pull_btns:
+            _pull_btns[0].on_click(SimpleNamespace())
+        _snap = json.load(open(os.path.join(
+            STORAGE, "Bet_Finder-last-pull.json")))
+        _snap_nba = [m for m in _snap["markets"]
+                     if m.get("sport") == "nba"]
+        check("v12.3: choosing + pulling a sport refreshes "
+              "only that sport in the saved slate",
+              len(_pull_btns) == 1
+              and len(_snap_nba) == 3
+              and all(m.get("home") in ("AAA", "CCC")
+                      for m in _snap_nba)
+              and any(m.get("sport") == "nfl"
+                      for m in _snap["markets"])
+              and _snap["sports"]["nba"].get("slate_markets")
+              == 3
+              and "pulled_at" in _snap["sports"]["nba"]
+              and "pulled_at" not in _snap["sports"]["nfl"]
+              and len(_fetch_calls) == 2
+              and not any("dataEntries" in (p or {})
+                          for _e, p in _fetch_calls)
+              and app.load_chosen_sport() == "nba"
+              and any("Pulled NBA" in t
+                      for t in texts(board4)))
+        check("v12.3: the background harvest follows the "
+              "scoped pull — the saved slate carries the "
+              "sport's menus, its pending marker cleared",
+              {"stub-nba-1", "stub-nba-2"}
+              <= set(_snap["event_menus"])
+              and "menus_pending" not in
+              _snap["sports"]["nba"])
+    finally:
+        b5.fd_get = _orig_fd_get
+        b5.fd_parse_sport_page = _orig_parse
+        b5.fd_event_menu = _orig_event_menu
+        app.set_chosen_sport("nfl")
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

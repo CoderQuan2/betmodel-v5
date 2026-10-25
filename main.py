@@ -179,6 +179,40 @@ def set_sound_enabled(on: bool) -> None:
         pass
 
 
+def _chosen_sport_path() -> str:
+    return os.path.join(storage_dir(),
+                        f"{INTERNAL_ID}-sport.json")
+
+
+def load_chosen_sport() -> str:
+    """The persisted scoped-pull sport (v12.3); default NFL.
+    A missing, unreadable or unknown value is the default,
+    never an error — the chooser's options are exactly the
+    engine's static event types."""
+    try:
+        with open(_chosen_sport_path()) as f:
+            sport = json.load(f).get("sport")
+        if sport in b5.FANDUEL_EVENT_TYPES:
+            return sport
+    except Exception:
+        pass
+    return "nfl"
+
+
+def set_chosen_sport(sport: str) -> str:
+    """Persist the chooser's sport (same on-device JSON pattern
+    as the sound toggle). Unknown sports normalize to NFL.
+    Returns the sport actually stored."""
+    if sport not in b5.FANDUEL_EVENT_TYPES:
+        sport = "nfl"
+    try:
+        with open(_chosen_sport_path(), "w") as f:
+            json.dump({"sport": sport}, f)
+    except Exception:
+        pass
+    return sport
+
+
 def register_sounds(page) -> None:
     """Register the three Audio services + the haptic service on
     the page (same page.services pattern as UrlLauncher/Clipboard
@@ -275,8 +309,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.2.0"
-BUILD_NUMBER = 18
+APP_VERSION = "12.3.0"
+BUILD_NUMBER = 19
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): on start and every 4 minutes while the app
 # is open. The loop only starts inside the real ft.run entry
@@ -576,8 +610,11 @@ ENGINE_VERSION = f"betmodel v{b5.ENGINE_VERSION}"
 MENU_SOURCE = "FanDuel sbapi (Michigan) live pull"
 # Per pull cycle, the soonest this many slate games also get
 # their full per-game menu (all tabs) refreshed from the event
-# page into rec["event_menus"] — capped so the 4-minute cycle
-# stays a pull, not a crawl (Pilot addition, R2).
+# page into rec["event_menus"] — capped so a cycle stays a
+# pull, not a crawl (Pilot addition, R2). The full pull
+# harvests synchronously; a scoped (one-sport) pull defers its
+# harvest to a background follow-up so the pull itself lands
+# on the sport page alone (v12.3 amendment).
 EVENT_MENU_CAP = 8
 # lanes shown on the Record screen (engine lane_record is safe for
 # any lane name: an unknown lane reports 0-0, "no scored record")
@@ -1036,6 +1073,99 @@ def instruments_bundled() -> tuple[int, int]:
 # returned record; nothing is ever replaced with an assumed menu.
 
 
+def _fetch_sport_page(sport):
+    """Fetch (only) one sport page, with its custom-page merge.
+
+    Network work belongs here so the pages can be fetched in
+    parallel; parsing and slate assembly stay in canonical
+    order, making the merged market order identical to the
+    historical sequential pull. Shared by the full pull and
+    the scoped (one-sport) pull — one fetch block, two callers.
+    Returns (sport, page, error): page XOR error."""
+    try:
+        page = b5.fd_get(b5.FANDUEL_PAGE_ENDPOINT, {
+            "page": "SPORT",
+            "eventTypeId": b5.FANDUEL_EVENT_TYPES[sport],
+            "timezone": b5.FANDUEL_TIMEZONE})
+        if sport in ("nfl", "nba", "nhl"):
+            try:
+                cpage = b5.fd_get(b5.FANDUEL_PAGE_ENDPOINT, {
+                    "page": "CUSTOM", "customPageId": sport,
+                    "timezone": b5.FANDUEL_TIMEZONE})
+                att = page.setdefault("attachments", {})
+                catt = cpage.get("attachments") or {}
+                for key in ("events", "markets", "competitions"):
+                    merged = dict(att.get(key) or {})
+                    merged.update(catt.get(key) or {})
+                    att[key] = merged
+            except Exception:
+                pass  # SPORT page only — degraded, not failed
+        return sport, page, None
+    except Exception as e:
+        return sport, None, f"{type(e).__name__}: {e}"
+
+
+def _sport_entry(sport, page, pulled_at):
+    """Parse one fetched sport page into (stats entry, slate).
+    The entry carries the pull's own stamp — v12.3 per-sport
+    pulled_at, so an accumulated slate can say when EACH sport
+    was last pulled. Raises whatever the parser raises; the
+    callers stamp the error exactly as the full pull has."""
+    slate, inventory, n_games, routed = \
+        b5.fd_parse_sport_page(page, sport)
+    entry = {"games": n_games, "markets_on_page":
+             sum(inventory.values()), "slate_markets": len(slate),
+             "routed": routed, "pulled_at": pulled_at}
+    return entry, slate
+
+
+def _soonest_events(markets):
+    """The soonest EVENT_MENU_CAP distinct events on a market
+    list, as (event_id, market_time) pairs, soonest first —
+    the harvest's target selection, shared by the synchronous
+    full-pull harvest, the background scoped-pull harvest, and
+    the scoped pull's menus_pending marker, so all three name
+    exactly the same games."""
+    seen = {}
+    for m in markets:
+        eid = m.get("fd_event_id")
+        if eid is not None and eid not in seen:
+            seen[eid] = m.get("market_time") or "9999"
+    return sorted(seen.items(),
+                  key=lambda kv: kv[1])[:EVENT_MENU_CAP]
+
+
+def _fetch_event_menus(markets, pulled_at):
+    """The per-game full-menu harvest over one market list:
+    the soonest EVENT_MENU_CAP games, fetched in parallel,
+    each stamped with the pull's time; a failed event stamps
+    itself, never the pull. Shared by the full pull (over the
+    whole slate, synchronously) and the scoped pull's
+    BACKGROUND harvest (over one sport's games, after the pull
+    itself has landed). The harvest is an inventory (every
+    market name on every tab) — Pricing still rides the slate
+    + checkers."""
+    soonest = _soonest_events(markets)
+
+    def _fetch_one(item):
+        eid, _t = item
+        try:
+            menu = b5.fd_event_menu(eid)
+            menu["fetched_at"] = pulled_at
+            return eid, menu
+        except Exception as e:
+            return eid, {"event_id": eid,
+                         "error": f"{type(e).__name__}: {e}",
+                         "fetched_at": pulled_at}
+
+    menus = {}
+    if soonest:
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            for eid, menu in pool.map(_fetch_one, soonest):
+                menus[str(eid)] = menu
+    return menus
+
+
 def pull_menu() -> dict:
     ts = datetime.now().astimezone()
     rec = {"pulled_at": ts.isoformat(timespec="seconds"),
@@ -1053,54 +1183,24 @@ def pull_menu() -> dict:
         return rec
     markets = []
     sports_in_order = list(b5.FANDUEL_EVENT_TYPES)
-
-    def _fetch_sport_page(sport):
-        """Fetch (only) one sport page, with its custom-page merge.
-
-        Network work belongs here so the pages can be fetched in
-        parallel; parsing and slate assembly stay in the canonical
-        order below, making the merged market order identical to
-        the historical sequential pull."""
-        try:
-            page = b5.fd_get(b5.FANDUEL_PAGE_ENDPOINT, {
-                "page": "SPORT",
-                "eventTypeId": b5.FANDUEL_EVENT_TYPES[sport],
-                "timezone": b5.FANDUEL_TIMEZONE})
-            if sport in ("nfl", "nba", "nhl"):
-                try:
-                    cpage = b5.fd_get(b5.FANDUEL_PAGE_ENDPOINT, {
-                        "page": "CUSTOM", "customPageId": sport,
-                        "timezone": b5.FANDUEL_TIMEZONE})
-                    att = page.setdefault("attachments", {})
-                    catt = cpage.get("attachments") or {}
-                    for key in ("events", "markets", "competitions"):
-                        merged = dict(att.get(key) or {})
-                        merged.update(catt.get(key) or {})
-                        att[key] = merged
-                except Exception:
-                    pass  # SPORT page only — degraded, not failed
-            return sport, page, None
-        except Exception as e:
-            return sport, None, f"{type(e).__name__}: {e}"
-
     with ThreadPoolExecutor(max_workers=8) as pool:
         fetched_pages = list(pool.map(_fetch_sport_page,
                                       sports_in_order))
     for sport, page, fetch_error in fetched_pages:
         if fetch_error is not None:
-            rec["sports"][sport] = {"error": fetch_error}
+            rec["sports"][sport] = {
+                "error": fetch_error,
+                "attempted_at": rec["pulled_at"]}
             continue
         try:
-            slate, inventory, n_games, routed = \
-                b5.fd_parse_sport_page(page, sport)
-            rec["sports"][sport] = {
-                "games": n_games, "markets_on_page":
-                sum(inventory.values()), "slate_markets": len(slate),
-                "routed": routed}
+            entry, slate = _sport_entry(sport, page,
+                                        rec["pulled_at"])
+            rec["sports"][sport] = entry
             markets += slate
         except Exception as e:
-            rec["sports"][sport] = {"error":
-                                    f"{type(e).__name__}: {e}"}
+            rec["sports"][sport] = {
+                "error": f"{type(e).__name__}: {e}",
+                "attempted_at": rec["pulled_at"]}
     rec["markets"] = markets
     rec["verified"] = bool(markets)
     # ---- per-game full menus (Pilot addition, R2): the sport
@@ -1108,42 +1208,194 @@ def pull_menu() -> dict:
     # per-game menu (all tabs) lives on the event page. Refresh
     # it here for the soonest games on this slate — capped, so
     # a pull stays a pull: EVENT_MENU_CAP games, soonest first,
-    # each stamped with this pull's time; a failed event stamps
-    # itself, never the pull. The harvest is an inventory
-    # (every market name on every tab) — it keeps the app's
-    # picture of each game's full menu current on every cycle
-    # instead of letting it silently go stale behind the sport
-    # pages. Pricing still rides the slate + checkers.
+    # each stamped with this pull's time.
     rec["event_menus"] = {}
     try:
-        seen = {}
-        for m in markets:
-            eid = m.get("fd_event_id")
-            if eid is not None and eid not in seen:
-                seen[eid] = m.get("market_time") or "9999"
-        soonest = sorted(seen.items(),
-                         key=lambda kv: kv[1])[:EVENT_MENU_CAP]
-
-        def _fetch_event_menu(item):
-            eid, _t = item
-            try:
-                menu = b5.fd_event_menu(eid)
-                menu["fetched_at"] = rec["pulled_at"]
-                return eid, menu
-            except Exception as e:
-                return eid, {
-                    "event_id": eid,
-                    "error": f"{type(e).__name__}: {e}",
-                    "fetched_at": rec["pulled_at"]}
-
-        with ThreadPoolExecutor(max_workers=8) as pool:
-            fetched_menus = list(pool.map(_fetch_event_menu,
-                                          soonest))
-        for eid, menu in fetched_menus:
-            rec["event_menus"][str(eid)] = menu
+        rec["event_menus"] = _fetch_event_menus(
+            markets, rec["pulled_at"])
     except Exception as e:
         rec["event_menus_error"] = f"{type(e).__name__}: {e}"
     return rec
+
+
+def pull_menu_sport(sport: str) -> dict:
+    """The scoped pull (v12.3, the Pilot's design): fetch ONLY
+    one sport's page (+ its custom page where the full pull
+    fetches one) and parse it. No app-context tree (the event
+    types are static in b5.FANDUEL_EVENT_TYPES), no other
+    sport's page — and NO event-menu harvest: the menu fetch
+    was ~90% of a scoped pull's wall time, so it runs as a
+    background follow-up after the pull lands (see
+    merge_menu_harvest and the sport pull worker). The partial
+    carries an empty event_menus plus a menus_pending marker
+    naming the soonest games whose menus are still to come —
+    on the record and on the sport's own stats entry, so a
+    snapshot can say the menus are pending, never pretend
+    they are here. Returns a partial record for
+    merge_sport_pull(); the record's own pulled_at stamps
+    this sport alone (and is the token a later harvest must
+    match). verified means the page landed and parsed — a
+    sport with zero games on the page is a truthful empty,
+    verified all the same; a failed fetch stamps
+    sports[sport] with the error and verified stays False."""
+    if sport not in b5.FANDUEL_EVENT_TYPES:
+        raise ValueError(f"unknown sport: {sport!r}")
+    ts = datetime.now().astimezone()
+    stamp = ts.isoformat(timespec="seconds")
+    partial = {"pulled_at": stamp, "source": MENU_SOURCE,
+               "verified": False, "sport": sport, "markets": [],
+               "sports": {}, "event_menus": {},
+               "menus_pending": []}
+    _sport, page, fetch_error = _fetch_sport_page(sport)
+    if fetch_error is not None:
+        partial["sports"][sport] = {"error": fetch_error,
+                                    "attempted_at": stamp}
+        return partial
+    try:
+        entry, slate = _sport_entry(sport, page, stamp)
+    except Exception as e:
+        partial["sports"][sport] = {
+            "error": f"{type(e).__name__}: {e}",
+            "attempted_at": stamp}
+        return partial
+    pending = [str(eid) for eid, _t in _soonest_events(slate)]
+    entry["menus_pending"] = pending
+    partial["sports"][sport] = entry
+    partial["markets"] = slate
+    partial["verified"] = True
+    partial["menus_pending"] = pending
+    return partial
+
+
+def merge_menu_harvest(slate: dict | None, sport: str,
+                       menus: dict, token: str) -> dict | None:
+    """Merge a BACKGROUND menu harvest into the standing slate
+    (v12.3 amendment): the scoped pull lands fast on the sport
+    page alone; this follow-up folds in ONLY the per-game
+    menus, once they arrive.
+
+    The guard is the token: the harvest was scheduled by the
+    pull whose pulled_at is `token`, and it may merge only
+    while the sport's slate entry still carries that stamp.
+    A newer pull of the same sport supersedes it — the stale
+    harvest is dropped whole (returns None) and can never
+    overwrite the fresher pull's menus or clear its pending
+    marker. Menus for events no longer on the slate are
+    dropped too; every other sport's menus and markets are
+    untouched, and the sport's pulled_at is NOT freshened —
+    each menu carries its own fetched_at."""
+    if not slate:
+        return None
+    sports = slate.get("sports") or {}
+    entry = sports.get(sport) or {}
+    if entry.get("pulled_at") != token:
+        return None
+    on_slate = {str(m.get("fd_event_id"))
+                for m in slate.get("markets") or []
+                if m.get("fd_event_id") is not None}
+    fresh = {k: v for k, v in (menus or {}).items()
+             if k in on_slate}
+    merged = dict(slate)
+    all_menus = dict(slate.get("event_menus") or {})
+    all_menus.update(fresh)
+    merged["event_menus"] = all_menus
+    new_entry = dict(entry)
+    remaining = [eid for eid in new_entry.get("menus_pending")
+                 or [] if eid not in fresh]
+    if remaining:
+        new_entry["menus_pending"] = remaining
+    else:
+        new_entry.pop("menus_pending", None)
+    new_sports = dict(sports)
+    new_sports[sport] = new_entry
+    merged["sports"] = new_sports
+    return merged
+
+
+def merge_sport_pull(slate: dict | None, partial: dict) -> dict:
+    """Accumulate one sport's partial pull into the standing
+    slate (v12.3): the pulled sport's slice is REPLACED, every
+    other sport's markets keep their objects and their order,
+    and each sport's stats entry keeps its own pulled_at — the
+    board never loses a sport it already had, and no sport's
+    stamp is ever freshened by another sport's pull.
+
+    The dropped slice is the pulled sport plus whatever the
+    page routes to (the parser's own sport stamps: the NFL
+    page's markets arrive stamped nfl AND ncaaf) — taken from
+    the old entry's routing, the new entry's routing, and the
+    partial's market stamps, so a re-pull can never strand a
+    stale cross-filed market next to its fresh copy. The new
+    markets take the dropped slice's place in the list (the
+    board re-sorts for display anyway; Pull order stays
+    canonical). A FAILED scoped pull (error entry) destroys
+    nothing: the last-good slice and stats stand, with the
+    error recorded on the entry as last_error."""
+    sport = partial["sport"]
+    entry = (partial.get("sports") or {}).get(sport) or {}
+    old = slate or {}
+    old_sports = old.get("sports") or {}
+    if "error" in entry:
+        if not old.get("markets") and not old_sports:
+            return {"pulled_at": partial["pulled_at"],
+                    "source": old.get("source") or MENU_SOURCE,
+                    "verified": False, "markets": [],
+                    "sports": {sport: dict(entry)},
+                    "event_menus": {}}
+        sports = dict(old_sports)
+        prev = dict(sports.get(sport) or {})
+        prev["last_error"] = entry["error"]
+        prev["last_attempt_at"] = partial["pulled_at"]
+        sports[sport] = prev
+        merged = dict(old)
+        merged["sports"] = sports
+        return merged
+    drop = {sport}
+    for src_entry in (old_sports.get(sport) or {}, entry):
+        routed = src_entry.get("routed") or {}
+        if isinstance(routed, dict):
+            drop.update(routed.keys())
+    drop.update(m.get("sport")
+                for m in partial.get("markets") or [])
+    drop.discard(None)
+    old_markets = old.get("markets") or []
+    kept = []
+    insert_at = None
+    dropped_ids = set()
+    for m in old_markets:
+        if m.get("sport") in drop:
+            if insert_at is None:
+                insert_at = len(kept)
+            eid = m.get("fd_event_id")
+            if eid is not None:
+                dropped_ids.add(str(eid))
+        else:
+            kept.append(m)
+    if insert_at is None:
+        insert_at = len(kept)
+    new_markets = (kept[:insert_at]
+                   + list(partial.get("markets") or [])
+                   + kept[insert_at:])
+    new_ids = {str(m.get("fd_event_id"))
+               for m in partial.get("markets") or []
+               if m.get("fd_event_id") is not None}
+    menus = {k: v for k, v in (old.get("event_menus") or {}).items()
+             if k not in dropped_ids | new_ids}
+    menus.update(partial.get("event_menus") or {})
+    sports = dict(old_sports)
+    sports[sport] = entry
+    merged = dict(old)
+    merged.update({
+        "pulled_at": partial["pulled_at"],
+        "source": old.get("source") or MENU_SOURCE,
+        "verified": bool(new_markets),
+        "markets": new_markets,
+        "sports": sports,
+        "event_menus": menus})
+    merged.pop("event_menus_error", None)
+    if partial.get("event_menus_error"):
+        merged["event_menus_error"] = partial["event_menus_error"]
+    return merged
 
 
 def save_snapshot(rec: dict) -> None:
@@ -3403,6 +3655,7 @@ def main(page: ft.Page):
              "toggles_for": None, "bankroll": "",
              "chart_zoom": 1.0, "chart_detail": "",
              "pull_busy": False, "last_pull_at": 0.0,
+             "chosen_sport": load_chosen_sport(),
              "golden_count": 0,
              "protected_confirm": False,
              # Xii panel state (v12 panel update): the active
@@ -3586,15 +3839,24 @@ def main(page: ft.Page):
     filter_chip_row = ft.Row(spacing=8, wrap=True, controls=[])
 
     def _pull_age_text():
-        """'pulled 2m ago — next auto-pull in ~2m' from the
-        slate's own stamp + the auto-pull clock (last_pull_at /
-        AUTO_PULL_INTERVAL_S). Refreshed on renders and pulls —
-        the app runs no extra clock loop for a label (loop cap)."""
+        """Per-sport pull age (v12.3): the CHOSEN sport's own
+        stamp from the accumulated slate ('NFL pulled 2m ago'),
+        'not pulled yet' when that sport has no entry in the
+        record at all — a sport is never shown with another
+        sport's freshness. Legacy entries without their own
+        pulled_at fall back to the slate's stamp. Refreshed on
+        renders and pulls — no extra clock loop for a label."""
         rec = state["slate"]
         if not rec:
             return ""
+        sport = state.get("chosen_sport")
+        label = SPORT_LABELS.get(sport, (sport or "").upper())
+        sports = rec.get("sports") or {}
+        if sport and sport not in sports:
+            return f"{label} not pulled yet"
+        entry = sports.get(sport) or {}
+        raw = entry.get("pulled_at") or rec.get("pulled_at")
         age_txt = None
-        raw = rec.get("pulled_at")
         if raw:
             try:
                 dt = datetime.fromisoformat(
@@ -3616,14 +3878,16 @@ def main(page: ft.Page):
                 age_txt = None
         if age_txt is None:
             return ""
+        base = f"{label} pulled {age_txt}" if sport \
+            else f"pulled {age_txt}"
         if AUTO_PULL_ENABLED and state.get("last_pull_at"):
             rem = AUTO_PULL_INTERVAL_S - (
                 time.monotonic() - state["last_pull_at"])
             if rem > 0:
-                return (f"pulled {age_txt} — next auto-pull "
+                return (f"{base} — next auto-pull "
                         f"in ~{max(1, round(rem / 60))}m")
-            return f"pulled {age_txt} — auto-pull due"
-        return f"pulled {age_txt}"
+            return f"{base} — auto-pull due"
+        return base
 
     def _filters_nondefault():
         t = state["toggles"]
@@ -3808,7 +4072,7 @@ def main(page: ft.Page):
             cards_count.value = ""
             cards_list.controls = [empty_full(
                 ft.Icons.CLOUD_OFF, "No pull yet",
-                "Tap Pull Menu — until a live pull lands, every "
+                "Tap Pull — until a live pull lands, every "
                 "market is UNVERIFIED, never assumed.")]
             page.update()
             return
@@ -4027,10 +4291,170 @@ def main(page: ft.Page):
         finally:
             state["pull_busy"] = False
 
+    def _show_only_sport(sport, partial):
+        """After a manual scoped pull, the board's sport filter
+        shows what was just pulled: the pulled sport plus the
+        sports its page routed to (the partial's own market
+        stamps), every other switch off. The clear-filters chip
+        this summons (the toggles are now non-default) restores
+        the whole board in one tap."""
+        show = {sport}
+        show.update(m.get("sport")
+                    for m in partial.get("markets") or [])
+        show.discard(None)
+        t = state["toggles"]
+        for m in (state["slate"] or {}).get("markets", []):
+            s = m.get("sport")
+            if s is not None:
+                t["sports"][s] = s in show
+        state["toggles_for"] = None   # rebuild the switch row
+
+    def on_sport_select(e):
+        sport = e.control.value
+        if sport not in b5.FANDUEL_EVENT_TYPES:
+            return
+        state["chosen_sport"] = set_chosen_sport(sport)
+        refresh_stamp()
+        page.update()
+
+    def on_pull_sport(_e):
+        # A manual tap resets the auto-pull clock (v12), same
+        # as Pull all.
+        state["last_pull_at"] = time.monotonic()
+        label = SPORT_LABELS.get(state["chosen_sport"],
+                                  state["chosen_sport"])
+        status.value = f"Pulling {label}\u2026"
+        cards_list.controls = skeleton_cards()
+        if AUTO_PULL_ENABLED:
+            start_pulse("shimmer")
+        page.update()
+        page.run_thread(_sport_pull_worker)
+
+    def _menu_harvest_worker(sport, markets, token):
+        # The scoped pull's background follow-up (v12.3
+        # amendment): the pull itself lands on the sport page
+        # alone — the per-game menu harvest was ~90% of its
+        # wall time — so the menus arrive here, off the pull's
+        # critical path, and merge as menus only. Guarded by
+        # the scheduling pull's pulled_at token: if a newer
+        # pull of the same sport has landed since, this
+        # harvest is stale and drops itself whole. A failure
+        # here never surfaces as a pull failure — each failed
+        # menu stamps itself inside the harvest, and the
+        # sport's menus_pending marker simply stands until a
+        # later pull's harvest clears it.
+        try:
+            stamp = datetime.now().astimezone().isoformat(
+                timespec="seconds")
+            menus = _fetch_event_menus(markets, stamp)
+            if not menus:
+                return
+            merged = merge_menu_harvest(state["slate"], sport,
+                                        menus, token)
+            if merged is None:
+                return  # superseded by a fresher pull
+            state["slate"] = merged
+            save_snapshot(state["slate"])
+            render_cards()
+            if state["view"] == "stage":
+                render_stage()
+            if state["view"] == "slip":
+                render_protected()
+            page.update()
+        except Exception:
+            pass
+
+    def _sport_pull_worker(auto=False):
+        # The scoped pull's worker (v12.3): fetches ONLY the
+        # chosen sport and MERGES it into the standing slate —
+        # the rest of the board keeps its markets and its own
+        # stamp. Same off-thread rule and failure honesty as
+        # _pull_worker: a failed scoped pull (auto or manual)
+        # keeps the last good slice, its error recorded on the
+        # sport's entry; prices are never invented to fill it.
+        # On success it schedules the background menu harvest
+        # (_menu_harvest_worker) as its last act — the pull is
+        # complete before the first menu fetch starts.
+        if state["pull_busy"]:
+            return
+        state["pull_busy"] = True
+        sport = state.get("chosen_sport") or "nfl"
+        label = SPORT_LABELS.get(sport, sport.upper())
+        try:
+            partial = pull_menu_sport(sport)
+            state["last_pull_at"] = time.monotonic()
+            entry = (partial.get("sports") or {}).get(sport) or {}
+            if "error" in entry:
+                if state["slate"] is not None:
+                    state["slate"] = merge_sport_pull(
+                        state["slate"], partial)
+                    save_snapshot(state["slate"])
+                status.value = (
+                    f"{label} pull didn't land — "
+                    f"{entry['error']}. Keeping the last good "
+                    f"{label} markets; nothing was assumed in "
+                    f"their place.")
+                refresh_stamp()
+                page.update()
+                return
+            state["slate"] = merge_sport_pull(state["slate"],
+                                               partial)
+            state["verdicts"] = None
+            state["card_limit"] = CARD_PAGE
+            state["parlay_legs"] = []
+            state["protected_confirm"] = False
+            if not auto:
+                _show_only_sport(sport, partial)
+            save_snapshot(state["slate"])
+            refresh_stamp()
+            status.value = (
+                f"Pulled {label}: {entry.get('games', 0)} games "
+                f"\u00b7 {len(partial.get('markets') or [])} "
+                f"markets — the rest of the board kept its own "
+                f"pull.")
+            state["animate_next"] = True
+            render_cards()
+            if state["view"] == "stage":
+                render_stage()
+            if state["view"] == "slip":
+                render_protected()
+            _prev_golden = state.get("golden_count", 0)
+            state["golden_count"] = _golden_count()
+            refresh_slip_badge()
+            if _prev_golden == 0 and state["golden_count"] > 0:
+                play_sound("golden")
+            if state.get("dismiss_splash"):
+                state["dismiss_splash"]()
+            page.update()
+            # The per-game menus follow in the background
+            # (v12.3 amendment) — scheduled LAST, after the
+            # pull's own merge, save, pricing and render are
+            # all done, so the harvest can never delay or gate
+            # any of them. The pull's pulled_at rides along as
+            # the token: a newer pull of this sport makes this
+            # harvest drop itself.
+            if partial.get("menus_pending"):
+                page.run_thread(
+                    _menu_harvest_worker, sport,
+                    list(partial.get("markets") or []),
+                    partial["pulled_at"])
+        except Exception as e:
+            status.value = (f"{label} pull failed on this "
+                            f"device: {type(e).__name__}: {e}")
+            try:
+                page.update()
+            except Exception:
+                pass
+        finally:
+            state["pull_busy"] = False
+
     def _auto_pull_loop():
         # v12 auto-pull: a daemon loop while the app is open.
         # First tick pulls immediately (the on-start auto-pull);
-        # then every AUTO_PULL_INTERVAL_S. Never overlaps a
+        # then every AUTO_PULL_INTERVAL_S. v12.3 re-scope: a
+        # tick refreshes ONLY the chosen sport (the scoped
+        # worker + merge) — the full pull is manual, via Pull
+        # all. Never overlaps a
         # running pull (the worker itself refuses, and the loop
         # also skips a tick while one is busy). Started ONLY from
         # the real entry path — see the __main__ block and
@@ -4038,7 +4462,7 @@ def main(page: ft.Page):
         while True:
             try:
                 if not state["pull_busy"]:
-                    page.run_thread(_pull_worker, True)
+                    page.run_thread(_sport_pull_worker, True)
             except Exception:
                 pass
             time.sleep(AUTO_PULL_INTERVAL_S)
@@ -4068,7 +4492,7 @@ def main(page: ft.Page):
 
     def on_price(_e):
         if not state["slate"]:
-            status.value = "Nothing to price yet — Pull Menu first."
+            status.value = "Nothing to price yet — Pull first."
             page.update()
             return
         status.value = "Pricing the slate…"
@@ -4122,7 +4546,7 @@ def main(page: ft.Page):
         if not rec:
             parse_view.controls.append(empty_full(
                 ft.Icons.CLOUD_OFF, "No pull yet",
-                "Tap Pull Menu — until a live pull lands, every "
+                "Tap Pull — until a live pull lands, every "
                 "market is UNVERIFIED, never assumed."))
             page.update()
             return
@@ -4574,7 +4998,7 @@ def main(page: ft.Page):
         if not rec:
             parlay_view.controls.append(empty_full(
                 ft.Icons.CLOUD_OFF, "No pull yet",
-                "Tap Pull Menu — until a live pull lands, every "
+                "Tap Pull — until a live pull lands, every "
                 "market is UNVERIFIED, never assumed."))
             page.update()
             return
@@ -6321,7 +6745,8 @@ def main(page: ft.Page):
         on_change=on_search)
     # v12.1 texture: the board's working header rides in one
     # band (BOARD_HEADER_GRADIENT — the one header with accent
-    # in the wash): actions, pull age, status, sort, search and
+    # in the wash): the v12.3 sport chooser + scoped Pull /
+    # Pull all actions, pull age, status, sort, search and
     # the clear-filters chip row.
     cards_view.controls = [
         ft.Container(
@@ -6330,7 +6755,16 @@ def main(page: ft.Page):
             padding=10,
             content=ft.Column(spacing=8, tight=True, controls=[
                 ft.Row(spacing=8, controls=[
-                    primary_button("Pull Menu", on_pull),
+                    ft.Dropdown(
+                        value=state["chosen_sport"], width=210,
+                        options=[ft.DropdownOption(
+                            key=k,
+                            text=SPORT_LABELS.get(k, k.upper()))
+                            for k in b5.FANDUEL_EVENT_TYPES],
+                        on_select=on_sport_select),
+                    primary_button("Pull", on_pull_sport)]),
+                ft.Row(spacing=8, controls=[
+                    secondary_button("Pull all", on_pull),
                     secondary_button("Price Slate", on_price)]),
                 pull_age_ctrl,
                 status,
