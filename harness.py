@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.4.2", app.APP_VERSION == "12.4.2")
-    check("BUILD_NUMBER is 22", app.BUILD_NUMBER == 22)
+    check("APP_VERSION is 12.4.3", app.APP_VERSION == "12.4.3")
+    check("BUILD_NUMBER is 23", app.BUILD_NUMBER == 23)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1313,10 +1313,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.4 version unified: README release line",
-          "12.4.2 (build 22)" in _readme)
+          "12.4.3 (build 23)" in _readme)
     check("v12.4 version unified: workflow build args",
-          '--build-version "12.4.2"' in _wf
-          and '--build-number "22"' in _wf)
+          '--build-version "12.4.3"' in _wf
+          and '--build-number "23"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2023,6 +2023,30 @@ def main():
     check("v12.4: sport-view drive shows only NFL cards",
           _find_ct == min(_n_nfl, app.CARD_PAGE),
           f"cards={_find_ct} nfl={_n_nfl}")
+    # v12.4.3 armor: poison ONE sport's builds — the board
+    # must keep the other sport's real cards AND show the
+    # fallback card carrying the error on its face (the
+    # device blank-board failure mode, made impossible and
+    # self-reporting).
+    _orig_bmc = app.build_market_card
+
+    def _poison(mkt, verdict, rec, quotes, **kw):
+        if mkt.get("sport") == "ncaaf":
+            raise RuntimeError("probe-boom")
+        return _orig_bmc(mkt, verdict, rec, quotes, **kw)
+    app.build_market_card = _poison
+    try:
+        _sv5.on_select(SimpleNamespace(
+            control=SimpleNamespace(value="all")))
+    finally:
+        app.build_market_card = _orig_bmc
+    _txt5b = texts(cards5)
+    check("v12.4.3 armor: a raising card build cannot empty "
+          "the board — fallback card prints the error, real "
+          "cards survive",
+          any("card failed to build" in t
+              and "probe-boom" in t for t in _txt5b)
+          and any("Find it:" in t for t in _txt5b))
 
     # the serialization smoke gate's coverage, kept: the
     # golden startup view shrinks the boot tree (0 cards on

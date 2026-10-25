@@ -118,6 +118,7 @@ import os
 import re
 import sys
 import threading
+import traceback
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -337,8 +338,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.4.2"
-BUILD_NUMBER = 22
+APP_VERSION = "12.4.3"
+BUILD_NUMBER = 23
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -2519,6 +2520,69 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         content=ft.Column(spacing=6, controls=face + depth))
 
 
+def _fallback_card(mkt: dict, verdict: dict, err: Exception):
+    """The armored stand-in (v12.4.3): when build_market_card
+    raises on a real market, the board shows THIS instead of
+    nothing — the bet's identity in plain text (every field
+    guarded on its own) and the failure itself printed on the
+    card, so a device screenshot is a complete bug report.
+    No gradient, no shadow play, no Stack, no icons: if this
+    card cannot render, nothing can."""
+    try:
+        nm = bet_name(mkt, verdict)
+        head, sel = nm["headline"], nm["selection"]
+    except Exception:
+        head = (f"{mkt.get('away') or '?'} @ "
+                f"{mkt.get('home') or '?'}")
+        sel = str(mkt.get("name") or mkt.get("market")
+                  or "market")
+    lines = [
+        ft.Text(head, size=16, color=INK,
+                weight=ft.FontWeight.BOLD),
+        ft.Text(sel, size=14, color=INK)]
+    try:
+        if mkt.get("price") is not None:
+            lines.append(ft.Text(
+                f"odds {int(mkt['price']):+d}", size=12,
+                color=DIM))
+    except Exception:
+        pass
+    try:
+        term, _r = card_verdict(verdict)
+        if term:
+            lines.append(ft.Text(term, size=13, color=GOLD,
+                                 weight=ft.FontWeight.BOLD))
+    except Exception:
+        pass
+    tb = traceback.extract_tb(err.__traceback__)
+    where = tb[-1].name if tb else "?"
+    lines.append(ft.Text(
+        f"card failed to build — {type(err).__name__}: {err} "
+        f"(in {where})", size=11, color=WARN))
+    return ft.Container(
+        bgcolor=CARD_BG, border=_border_all(1, WARN),
+        border_radius=14, padding=12,
+        content=ft.Column(spacing=6, controls=lines))
+
+
+def build_card_safe(mkt: dict, verdict: dict, rec: dict,
+                    quotes_by_game: dict, **kw):
+    """build_market_card with armor (v12.4.3): one market's
+    build failure can never empty the board again — the render
+    loops call THIS, never the raw builder. On device
+    (2026-10-25, builds 20–22) the board counted markets
+    correctly while their cards never appeared; the render
+    loop set the count BEFORE building and had no per-card
+    guard, so a single raising market killed the whole list
+    silently. The fallback card carries the error on its
+    face; the board survives regardless."""
+    try:
+        return build_market_card(mkt, verdict, rec,
+                                 quotes_by_game, **kw)
+    except Exception as err:
+        return _fallback_card(mkt, verdict, err)
+
+
 # ------------------------------------------------------------------
 # Bet_Finder — the finds feed distillation
 
@@ -4281,7 +4345,7 @@ def main(page: ft.Page):
                               if e[0].get("sport") == last_sport)
                 cards_list.controls.append(
                     sport_header(last_sport, n_sport))
-            cards_list.controls.append(build_market_card(
+            cards_list.controls.append(build_card_safe(
                 mkt, verdict, rec, quotes, edge_pts=edge,
                 lane_ctx=ctx, on_chart=_card_chart))
         if not shown:
@@ -4745,7 +4809,7 @@ def main(page: ft.Page):
             mkt, verdict = found
             parse_result.controls.append(section_header(
                 "MATCH IN THE LAST PULL", ACCENT))
-            parse_result.controls.append(build_market_card(
+            parse_result.controls.append(build_card_safe(
                 mkt, verdict, rec, game_quotes(markets),
                 edge_pts=market_edge_pts(mkt, verdict),
                 lane_ctx=lane_contexts(markets),
@@ -5560,7 +5624,7 @@ def main(page: ft.Page):
                 "drop just 'cause the panel empty.",
                 size=11, color=DIM))
         for mkt, verdict, edge in golden:
-            betfi_view.controls.append(build_market_card(
+            betfi_view.controls.append(build_card_safe(
                 mkt, verdict, rec, quotes, edge_pts=edge,
                 lane_ctx=ctx, on_chart=_card_chart))
         betfi_view.controls.append(section_header(
@@ -5574,7 +5638,7 @@ def main(page: ft.Page):
                 size=12, color=DIM, height=1.35))
         for i, (mkt, verdict, edge) in enumerate(
                 finds[:CARD_PAGE], start=1):
-            betfi_view.controls.append(build_market_card(
+            betfi_view.controls.append(build_card_safe(
                 mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
                 lane_ctx=ctx, on_chart=_card_chart))
         if len(finds) > CARD_PAGE:
@@ -5588,7 +5652,7 @@ def main(page: ft.Page):
                 f"disagree inside this pull ({len(flagged)})",
                 WARN))
             for mkt, verdict, edge in flagged:
-                betfi_view.controls.append(build_market_card(
+                betfi_view.controls.append(build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, on_chart=_card_chart))
         counter_lines = []
