@@ -1279,7 +1279,7 @@ def main():
           '--build-version "12.1.0"' in _wf
           and '--build-number "17"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
-          "flet-audio==1.0.5" in _req)
+          "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
                           ("confirm", 0.09, 0.16),
                           ("golden", 0.20, 0.32)):
