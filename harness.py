@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.5.0", app.APP_VERSION == "12.5.0")
-    check("BUILD_NUMBER is 24", app.BUILD_NUMBER == 24)
+    check("APP_VERSION is 12.6.0", app.APP_VERSION == "12.6.0")
+    check("BUILD_NUMBER is 25", app.BUILD_NUMBER == 25)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1358,11 +1358,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.5 version unified: README release line",
-          "12.5.0 (build 24)" in _readme)
-    check("v12.5 version unified: workflow build args",
-          '--build-version "12.5.0"' in _wf
-          and '--build-number "24"' in _wf)
+    check("v12.6 version unified: README release line",
+          "12.6.0 (build 25)" in _readme)
+    check("v12.6 version unified: workflow build args",
+          '--build-version "12.6.0"' in _wf
+          and '--build-number "25"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2183,6 +2183,197 @@ def main():
           "merges menus and saves the snapshot only",
           "save_snapshot" in _hw and "render_" not in _hw
           and "page.update" not in _hw)
+
+    # ---------- v12.6 motion ----------
+    # Fabricate GOLDEN BET cards on page5's board: the first
+    # two markets the patched builder sees get an injected
+    # GOLDEN BET verdict (the fixture pull has none). The
+    # board is at Show=all / sport=all from the v12.4 drives.
+    _orig_bmc6 = app.build_market_card
+    _orig_distill6 = app.distill_finds
+    _gold_keys6 = []
+    _gold_set6 = set()
+
+    def _mkey6(mkt):
+        return mkt.get("fd_market_id") or (
+            mkt.get("sport"), mkt.get("away"),
+            mkt.get("home"), mkt.get("name"))
+
+    def _gold_bmc(mkt, verdict, rec, quotes, **kw):
+        _k6 = _mkey6(mkt)
+        if _k6 not in _gold_set6 and len(_gold_keys6) < 2:
+            _gold_keys6.append(_k6)
+            _gold_set6.add(_k6)
+        if _k6 in _gold_set6:
+            verdict = dict(verdict)
+            verdict["verdict"] = "GOLDEN BET"
+        return _orig_bmc6(mkt, verdict, rec, quotes, **kw)
+
+    def _gold_distill(markets, verdicts):
+        _g, _f, _fl, _c = _orig_distill6(markets, verdicts)
+        _moved = [t for t in _f if _mkey6(t[0]) in _gold_set6]
+        _rest = [t for t in _f if _mkey6(t[0]) not in _gold_set6]
+        return _moved + _g, _rest, _fl, _c
+
+    app.build_market_card = _gold_bmc
+    try:
+        # pull-order sort for this drive: the accumulated
+        # slate prices to many real goldens and the verdict
+        # sort would fill the whole first page with them —
+        # pull order mixes the two injected goldens (the
+        # first two built) with plain cards in the animated
+        # first eight.
+        _sort6 = next(c for c in walk(cards5)
+                      if type(c).__name__ == "Dropdown"
+                      and [o.key for o in c.options]
+                      == [k for k, _t in app.SORT_MODES])
+        _sort6.on_select(SimpleNamespace(
+            control=SimpleNamespace(value="pull")))
+        _price6 = next(c for c in walk(cards5)
+                       if type(c).__name__ == "Button"
+                       and getattr(c, "content", None)
+                       == "Price Slate")
+        _price6.on_click(SimpleNamespace())
+    finally:
+        app.build_market_card = _orig_bmc6
+    _lists6 = [c for c in walk(cards5)
+               if type(c).__name__ == "Column"]
+    _clist6 = max(_lists6, key=lambda c: sum(
+        1 for x in getattr(c, "controls", [])
+        if type(x).__name__ == "Container"))
+    _cards6 = [x for x in _clist6.controls
+               if type(x).__name__ == "Container"]
+    _gcard6 = _cards6[0] if _cards6 else None
+    _gcol6 = getattr(_gcard6, "content", None)
+    _bar6 = (_gcol6.controls[0]
+             if _gcol6 is not None
+             and getattr(_gcol6, "controls", None) else None)
+    check("v12.6: a golden card's Column opens with the flat "
+          "gold bar and the root is tagged data='golden'",
+          _gcard6 is not None
+          and getattr(_gcard6, "data", None) == "golden"
+          and _bar6 is not None
+          and type(_bar6).__name__ == "Container"
+          and _bar6.height == 3 and _bar6.border_radius == 2
+          and _bar6.bgcolor == app.GOLD
+          and getattr(_bar6, "gradient", None) is None
+          and getattr(_bar6, "shadow", None) is None)
+    check("v12.6: golden entrance — scale settle rides the "
+          "two-update path (220 ms), ends at identity, "
+          "opacity never staged",
+          _gcard6 is not None
+          and _gcard6.animate_scale is not None
+          and _gcard6.animate_scale.duration == 220
+          and _gcard6.scale is not None
+          and _gcard6.scale.scale == 1.0
+          and _gcard6.animate_offset is not None
+          and _gcard6.animate_offset.duration == 180
+          and _gcard6.animate_opacity is None
+          and getattr(_gcard6, "opacity", 1) == 1)
+    _plain6 = next((c for c in _cards6
+                    if getattr(c, "data", None) is None), None)
+    check("v12.6: non-golden cards keep the offset-only "
+          "entrance (no scale settle)",
+          _plain6 is not None
+          and _plain6.animate_scale is None
+          and _plain6.animate_offset is not None)
+    _tg6 = app._PULSE_TARGETS.get("golden") or []
+    check("v12.6: the board render hands its gold bars to "
+          "the standing golden pulse (<= 3 targets)",
+          1 <= len(_tg6) <= 3
+          and all(type(t).__name__ == "Container"
+                  and t.bgcolor == app.GOLD and t.height == 3
+                  for t in _tg6),
+          f"targets={len(_tg6)}")
+
+    # Finds: route the same two markets into the golden
+    # loop — the pulse set must lead with the glow bar.
+    app.build_market_card = _gold_bmc
+    app.distill_finds = _gold_distill
+    try:
+        _seg6 = next(c for c in walk(board5)
+                     if type(c).__name__ == "SegmentedButton")
+        _seg6.on_change(SimpleNamespace(
+            control=SimpleNamespace(selected={"finds"})))
+    finally:
+        app.build_market_card = _orig_bmc6
+        app.distill_finds = _orig_distill6
+    _betfi6 = bsw5[0].content
+    _tg6f = app._PULSE_TARGETS.get("golden") or []
+    check("v12.6: the Finds render's golden pulse set leads "
+          "with the glow bar, card bars behind, <= 3 total",
+          2 <= len(_tg6f) <= 3
+          and _tg6f[0].height == 6
+          and all(t.bgcolor == app.GOLD for t in _tg6f),
+          f"targets={len(_tg6f)}")
+    _fcards6 = [c for c in walk(_betfi6)
+                if type(c).__name__ == "Container"
+                and getattr(c, "data", None) == "golden"]
+    _fbar6 = (_fcards6[0].content.controls[0]
+              if _fcards6 else None)
+    check("v12.6: a Finds golden card carries the bar too",
+          len(_fcards6) >= 1 and _fbar6 is not None
+          and _fbar6.height == 3
+          and _fbar6.bgcolor == app.GOLD)
+    check("v12.6: the board segment switch settles the "
+          "incoming segment view (scale + offset animations "
+          "armed, two-update)",
+          _betfi6.animate_scale is not None
+          and _betfi6.animate_offset is not None
+          and _betfi6.scale is not None
+          and _betfi6.scale.scale == 1.0)
+    _seg6.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"all"})))
+
+    # page transition: nav to Lab settles the incoming view
+    page5.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=2)))
+    _lab6 = sw5.content
+    check("v12.6: show() settles the incoming view on a "
+          "page transition",
+          _lab6.animate_scale is not None
+          and _lab6.animate_offset is not None
+          and _lab6.scale is not None
+          and _lab6.scale.scale == 1.0)
+    page5.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=3)))
+    _stage6 = sw5.content
+    _pseg6 = next(c for c in walk(_stage6)
+                  if type(c).__name__ == "SegmentedButton")
+    _pseg6.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"coverage"})))
+    _psw6 = next(c for c in walk(_stage6)
+                 if type(c).__name__ == "AnimatedSwitcher")
+    check("v12.6: the panel segment switch settles the "
+          "incoming segment container",
+          _psw6.content.animate_scale is not None
+          and _psw6.content.animate_offset is not None
+          and _psw6.content.scale is not None
+          and _psw6.content.scale.scale == 1.0)
+    _pseg6.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"charts"})))
+    _vbtn6 = next(c for c in walk(_stage6)
+                  if type(c).__name__ == "Button"
+                  and getattr(c, "content", None)
+                  == "Full screen — charts")
+    _vbtn6.on_click(SimpleNamespace())
+    _sheet6 = page5.overlay[-1] if page5.overlay else None
+    check("v12.6: the full-screen viewer opens with a "
+          "0.96 -> 1.0 settle (240 ms), ending at identity",
+          _sheet6 is not None
+          and _sheet6.animate_scale is not None
+          and _sheet6.animate_scale.duration == 240
+          and _sheet6.scale is not None
+          and _sheet6.scale.scale == 1.0)
+
+    # the settle helper obeys the same visibility law as
+    # the card entrance: no opacity assignment anywhere in
+    # its body (source pin)
+    _si = _src[_src.index("def _settle_in"):
+               _src.index("def build_market_card")]
+    check("v12.6: _settle_in never touches opacity "
+          "(source pin — the load-bearing-visibility rule)",
+          ".opacity" not in _si)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

@@ -338,8 +338,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.5.0"
-BUILD_NUMBER = 24
+APP_VERSION = "12.6.0"
+BUILD_NUMBER = 25
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -2245,6 +2245,46 @@ def lane_contexts(markets: list) -> dict:
 # the (rebuilt) controls.
 _CARD_DETAILS_OPEN = set()
 
+# Motion build (v12.6): the breathing bars of the golden
+# cards built by the CURRENT render. build_market_card
+# appends one flat gold bar per GOLDEN BET card here; the
+# render loops (render_cards / render_betfi) clear the list
+# before building and then hand the collected bars to the
+# standing "golden" pulse key (capped at 3 targets — the
+# artist's top-3 rule). The bars are decorative layers; no
+# content ever depends on them.
+_LAST_GOLD_BARS = []
+
+
+def _settle_in(page, ctrl, scale_from=0.99, dur=220,
+               dy=0.01):
+    """The two-update settle (v12.6): the ONLY sanctioned
+    entrance motion besides the card rise — set the
+    from-state (scale / offset), ship it, set the identity
+    state, ship that, both updates synchronous inside the
+    calling render/navigation function. The client animates
+    between the two shipped states via the animate_scale /
+    animate_offset properties; if it doesn't, the control is
+    simply AT its identity state. This helper never touches
+    a control's opacity and never starts a thread or timer:
+    content visibility never depends on it."""
+    try:
+        ctrl.animate_scale = ft.Animation(
+            dur, ft.AnimationCurve.EASE_OUT_CUBIC)
+        ctrl.animate_offset = ft.Animation(
+            dur, ft.AnimationCurve.EASE_OUT_CUBIC)
+        ctrl.scale = ft.Scale(scale_from)
+        ctrl.offset = ft.Offset(0, dy)
+    except Exception:
+        return
+    page.update()
+    try:
+        ctrl.scale = ft.Scale(1.0)
+        ctrl.offset = ft.Offset(0, 0)
+    except Exception:
+        pass
+    page.update()
+
 
 def build_market_card(mkt: dict, verdict: dict, rec: dict,
                       quotes_by_game: dict, rank: int | None = None,
@@ -2513,11 +2553,25 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
                 on_click=lambda e, m=mkt: on_chart(m))]))
     # Card v2 root (v12.5): FLAT. No gradient, no shadow —
     # GOLDEN BET reads as a flat gold tint + a heavier gold
-    # left rule instead of the old wash/glow.
+    # left rule instead of the old wash/glow. Motion build
+    # (v12.6): a GOLDEN BET card also carries ONE flat gold
+    # bar as its Column's first child — the breathing layer
+    # the standing golden pulse animates (the same flat
+    # Container shape as the Finds glow bar). The bar is
+    # collected for the render loop's pulse registration,
+    # and the card root is tagged data="golden" so the
+    # entrance can give golden cards their scale settle.
     _is_golden = term == "GOLDEN BET"
+    _col_controls = face + depth
+    if _is_golden:
+        _gold_bar = ft.Container(height=3, border_radius=2,
+                                 bgcolor=GOLD)
+        _LAST_GOLD_BARS.append(_gold_bar)
+        _col_controls = [_gold_bar] + _col_controls
     return ft.Container(
         bgcolor="#1A1405" if _is_golden else CARD_BG,
         border_radius=14, padding=12,
+        data="golden" if _is_golden else None,
         border=ft.Border(
             left=ft.BorderSide(5 if _is_golden else 3,
                                GOLD if _is_golden
@@ -2525,7 +2579,7 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
             top=ft.BorderSide(1, BORDER),
             right=ft.BorderSide(1, BORDER),
             bottom=ft.BorderSide(1, BORDER)),
-        content=ft.Column(spacing=6, controls=face + depth))
+        content=ft.Column(spacing=6, controls=_col_controls))
 
 
 def _fallback_card(mkt: dict, verdict: dict, err: Exception):
@@ -3905,6 +3959,9 @@ def main(page: ft.Page):
             render_betfi()
         else:
             render_cards()
+        # v12.6 segment transition: the incoming segment
+        # settles in (two-update, scale/offset only).
+        _settle_in(page, board_switcher.content)
         page.update()
 
     def on_board_seg(e):
@@ -4270,12 +4327,24 @@ def main(page: ft.Page):
             c.offset = ft.Offset(0, 0.03)
             c.animate_offset = ft.Animation(
                 180, ft.AnimationCurve.EASE_OUT_CUBIC)
+            if getattr(c, "data", None) == "golden":
+                # v12.6 golden entrance: golden cards also
+                # settle in scale (0.97 -> 1.0, 220 ms)
+                # through the same two shipped states —
+                # scale and offset only, like everything
+                # in this entrance.
+                c.scale = ft.Scale(0.97)
+                c.animate_scale = ft.Animation(
+                    220, ft.AnimationCurve.EASE_OUT_CUBIC)
         page.update()
         for c in cards:
             c.offset = ft.Offset(0, 0)
+            if getattr(c, "data", None) == "golden":
+                c.scale = ft.Scale(1.0)
         page.update()
 
     def render_cards():
+        _LAST_GOLD_BARS.clear()
         cards_list.controls = []
         rec = state["slate"]
         _sync_sport_view_dd()
@@ -4357,6 +4426,10 @@ def main(page: ft.Page):
                 mkt, verdict, rec, quotes, edge_pts=edge,
                 lane_ctx=ctx, on_chart=_card_chart,
                 on_toggle=render_cards))
+        # v12.6: this render's golden bars join the standing
+        # golden pulse (top 3 — the artist's cap). Decorative
+        # layers only; the pulse loop tolerates stale targets.
+        _PULSE_TARGETS["golden"] = list(_LAST_GOLD_BARS)[:3]
         if not shown:
             cards_list.controls.append(empty_inline(
                 ft.Icons.SEARCH_OFF, "No markets in this view",
@@ -5594,6 +5667,7 @@ def main(page: ft.Page):
     # ---------------- BetFi finds ----------------
 
     def render_betfi():
+        _LAST_GOLD_BARS.clear()
         betfi_view.controls = [ft.Text(
             "Finds — golden bets first, then the ranked finds. "
             "Same pull, same prices as All cards; the feed only "
@@ -5624,7 +5698,6 @@ def main(page: ft.Page):
                 shadow=GOLD_GLOW, opacity=0.425,
                 animate_opacity=ft.Animation(
                     120, ft.AnimationCurve.EASE_IN_OUT))
-            _PULSE_TARGETS["golden"] = [_glow]
             betfi_view.controls.append(_glow)
         if not golden:
             betfi_view.controls.append(empty_inline(
@@ -5683,6 +5756,13 @@ def main(page: ft.Page):
             controls=[ft.Container(padding=8, content=ft.Column(
                 spacing=2, controls=[_line(t, 10, FAINT)
                                      for t in counter_lines]))]))
+        # v12.6: this render's golden pulse set — the Finds
+        # glow bar first (when built), then the golden card
+        # bars collected while building, capped at 3 targets
+        # total (the artist's top-3 rule).
+        _targets = (([_glow] if golden else [])
+                    + list(_LAST_GOLD_BARS))
+        _PULSE_TARGETS["golden"] = _targets[:3]
         page.update()
 
     # ---------------- Lab (the record wing) ----------------
@@ -6512,6 +6592,9 @@ def main(page: ft.Page):
         state["panel_segment"] = seg
         panel_seg_ctrl.selected = [seg]
         render_stage()
+        # v12.6 graph navigation: the incoming panel segment
+        # settles in (two-update, scale/offset only).
+        _settle_in(page, panel_switcher.content)
 
     def on_panel_seg(e):
         sel = e.control.selected or []
@@ -6697,6 +6780,12 @@ def main(page: ft.Page):
         state["viewer_zoom"] = 1.0
         state["viewer_detail"] = ""
         _refresh_viewer()
+        # v12.6: the viewer sheet settles open (scale
+        # 0.96 -> 1.0, two-update) — zoom/tap refreshes
+        # through _refresh_viewer never re-settle.
+        if _viewer["ctrl"] is not None:
+            _settle_in(page, _viewer["ctrl"],
+                       scale_from=0.96, dur=240, dy=0.0)
 
     def close_viewer():
         state["viewer_kind"] = None
@@ -6877,6 +6966,11 @@ def main(page: ft.Page):
             render_equations()
         elif name == "dev":
             render_dev()
+        # v12.6 page transition: on top of the switcher's
+        # fade, the incoming view settles in (two-update,
+        # scale/offset only) — a view change you can feel
+        # land, and the view is fully present either way.
+        _settle_in(page, views[name])
         page.update()
 
     def on_nav(e):
