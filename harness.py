@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.4.1", app.APP_VERSION == "12.4.1")
-    check("BUILD_NUMBER is 21", app.BUILD_NUMBER == 21)
+    check("APP_VERSION is 12.4.2", app.APP_VERSION == "12.4.2")
+    check("BUILD_NUMBER is 22", app.BUILD_NUMBER == 22)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1313,10 +1313,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.4 version unified: README release line",
-          "12.4.1 (build 21)" in _readme)
+          "12.4.2 (build 22)" in _readme)
     check("v12.4 version unified: workflow build args",
-          '--build-version "12.4.1"' in _wf
-          and '--build-number "21"' in _wf)
+          '--build-version "12.4.2"' in _wf
+          and '--build-number "22"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2092,6 +2092,17 @@ def main():
           "(only the breathing glow layer starts dark)",
           all(getattr(c, "opacity", 1) in (None, 1, 1.0)
               for c in walk(_splash) if c is not _glow1))
+    _stamp5 = next(
+        (c for c in walk(page5)
+         if type(c).__name__ == "Text"
+         and str(getattr(c, "value", "")).startswith("Menu:")),
+        None)
+    check("v12.4.2: the header menu stamp ellipsizes inside "
+          "its row — no Flutter overflow at phone width (the "
+          "error stripe on the Pilot's 17:43 screenshot)",
+          _stamp5 is not None
+          and _stamp5.expand
+          and str(_stamp5.overflow) == "TextOverflow.ELLIPSIS")
 
     # render diet: the harvest worker saves and renders
     # nothing (source-pinned — the worker is a closure, so

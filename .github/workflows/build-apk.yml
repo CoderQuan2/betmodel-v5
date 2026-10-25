@@ -7,8 +7,8 @@ name: Build BetFi Xii APK
 # to main.
 #
 # App release v12 (2026-10-24) — BetFi Xii:
-# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.4.1,
-#   build 21; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
+# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.4.2,
+#   build 22; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
 #   artifact betfi-xii-apk.
 # - Snapdragon 8 Gen 3 target (Galaxy S24 generation, Adreno
 #   750, arm64-v8a): the release build uses --split-per-abi
@@ -101,7 +101,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --split-per-abi --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.4.1" --build-number "21"
+        run: flet build apk --yes --skip-flutter-doctor --split-per-abi --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.4.2" --build-number "22"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
