@@ -337,8 +337,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.4.0"
-BUILD_NUMBER = 20
+APP_VERSION = "12.4.1"
+BUILD_NUMBER = 21
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -609,15 +609,18 @@ def build_splash():
     generous size over a PRE-RENDERED glow layer (a
     shadow-carrying container whose OPACITY the standing splash
     pulse breathes — Flet cannot animate shadow blur), the
-    "BetFi Xii" wordmark fading/scaling in under it, and one
-    soft gold sweep line. The wordmark and sweep entrances are
-    ONE-SHOT animations staged by main()'s splash block — no
-    new loops join the pulse budget. Pure builder — main()
-    wires it into page.overlay in the real entry path only;
-    the splash OVERLAYS the already-painted board (it never
-    gates first paint), self-resolves within ~1.4 s, resolves
-    early when the first pull lands (or on tap), and the pulse
-    stops with it."""
+    "BetFi Xii" wordmark and one soft gold sweep line under it.
+    VIEWABILITY CONTRACT (v12.4.1, Pilot order): every element
+    is built at its final visible state — the splash is properly
+    rendered and viewable from its first painted frame, and no
+    element's visibility waits on a staging thread (the pattern
+    that hid board cards on device). The only staged motion is
+    the emblem's synchronous settle and the breathing glow.
+    Pure builder — main() wires it into page.overlay in the
+    real entry path only; the splash OVERLAYS the
+    already-painted board (it never gates first paint),
+    self-resolves within ~1.4 s, resolves early when the first
+    pull lands (or on tap), and the pulse stops with it."""
     glow = ft.Container(
         width=170, height=170, border_radius=85,
         shadow=ICE_GLOW, opacity=0.0,
@@ -639,12 +642,8 @@ def build_splash():
         border_radius=34,
         border=_border_all(1, CYAN_DEEP))
     wordmark = ft.Row(
-        spacing=0, tight=True, opacity=0.0,
-        scale=ft.Scale(scale=0.92),
-        animate_opacity=ft.Animation(
-            300, ft.AnimationCurve.EASE_OUT),
-        animate_scale=ft.Animation(
-            300, ft.AnimationCurve.EASE_OUT),
+        spacing=0, tight=True, opacity=1.0,
+        scale=ft.Scale(scale=1.0),
         controls=[
             ft.Text("BetFi ", size=30, color=BONE,
                     weight=ft.FontWeight.W_700),
@@ -652,12 +651,8 @@ def build_splash():
                     weight=ft.FontWeight.W_700)])
     sweep = ft.Container(
         width=120, height=3, border_radius=2,
-        gradient=GOLD_GRADIENT, opacity=0.0,
-        scale=ft.Scale(scale=0.60),
-        animate_opacity=ft.Animation(
-            300, ft.AnimationCurve.EASE_OUT),
-        animate_scale=ft.Animation(
-            300, ft.AnimationCurve.EASE_OUT))
+        gradient=GOLD_GRADIENT, opacity=1.0,
+        scale=ft.Scale(scale=1.0))
     _PULSE_TARGETS["splash"] = [glow]
     _SPLASH_PARTS["glow"] = glow
     _SPLASH_PARTS["ring"] = ring
@@ -4180,39 +4175,31 @@ def main(page: ft.Page):
                                                        color=DIM))
 
     def _animate_cards(cards):
-        # F3, re-weighted in v12.1: the FIRST EIGHT cards of a
-        # fresh slate fade/rise in (180 ms ease-out-cubic, 30 ms
-        # stagger, small vertical offset) — every card past the
-        # eighth renders static, carrying no entrance animation
-        # at all. Toggles, sorts and search never re-run this:
-        # render_cards consumes the animate_next flag, which only
-        # a fresh slate (boot, pull, price pass) sets — so cards
-        # already shown never replay their entrance.
+        # F3 entrance, MADE LOAD-BEARING-SAFE in v12.4.1: the
+        # first eight cards of a fresh slate rise in (offset
+        # only, 180 ms ease-out-cubic) — and a card's OPACITY IS
+        # NEVER TOUCHED. The v12.1 pattern set opacity=0, shipped
+        # that state, and relied on a worker thread (_flip) to
+        # restore visibility; on device the flip's updates never
+        # landed and the board rendered its count ("4 of 705")
+        # over an invisible list (Pilot screenshot, 2026-10-25).
+        # Content visibility must never depend on a follow-up
+        # async step: here both offset states ship synchronously
+        # inside render_cards (two page.update() calls back to
+        # back) — if the client animates between them, the rise
+        # plays; if it doesn't, the cards are simply THERE.
         cards = [c for c in cards
                  if isinstance(c, ft.Container)][:8]
         if not cards:
             return
         for c in cards:
-            c.opacity = 0
             c.offset = ft.Offset(0, 0.03)
-            c.animate_opacity = ft.Animation(
-                180, ft.AnimationCurve.EASE_OUT_CUBIC)
             c.animate_offset = ft.Animation(
                 180, ft.AnimationCurve.EASE_OUT_CUBIC)
         page.update()
-
-        def _flip():
-            import time as _time
-            for k, c in enumerate(cards):
-                if 0 < k:
-                    _time.sleep(0.03)   # 30 ms stagger, first 8
-                c.opacity = 1
-                c.offset = ft.Offset(0, 0)
-                try:
-                    c.update()
-                except Exception:
-                    pass
-        page.run_thread(_flip)
+        for c in cards:
+            c.offset = ft.Offset(0, 0)
+        page.update()
 
     def render_cards():
         cards_list.controls = []
@@ -7011,24 +6998,28 @@ def main(page: ft.Page):
         splash["ctrl"] = None
         stop_pulse("splash")
 
+        def _remove():
+            try:
+                page.overlay.remove(ctrl)
+            except Exception:
+                pass
+            try:
+                page.update()
+            except Exception:
+                pass
+
         def _fade_out():
             try:
                 ctrl.opacity = 0
                 ctrl.update()
             except Exception:
                 pass
-
-            def _remove():
-                try:
-                    page.overlay.remove(ctrl)
-                except Exception:
-                    pass
-                try:
-                    page.update()
-                except Exception:
-                    pass
-            threading.Timer(0.26, _remove).start()
         page.run_thread(_fade_out)
+        # v12.4.1 hardening: removal is scheduled on a plain
+        # Timer, NOT nested inside the fade — if the fade's
+        # run_thread ever fails to land on device, the splash
+        # still leaves the board. It can never sit on the app.
+        threading.Timer(0.35, _remove).start()
 
     state["dismiss_splash"] = dismiss_splash
     if AUTO_PULL_ENABLED:
@@ -7037,12 +7028,16 @@ def main(page: ft.Page):
             splash["ctrl"].on_click = lambda _e: dismiss_splash()
             page.overlay.append(splash["ctrl"])
             page.update()
-            # v12.4 staging ("more pop"): the emblem settles
-            # in first, the wordmark fades/scales in under it,
-            # then the gold sweep line — all ONE-SHOT property
-            # animations (no new loops), and the whole sequence
-            # self-resolves at ~1.4 s even if no pull lands
-            # (a landed pull or a tap still resolves it early).
+            # v12.4 staging, hardened in v12.4.1: the emblem
+            # settles in synchronously; the wordmark and the
+            # gold sweep are BORN VISIBLE (final opacity/scale
+            # at build) — an earlier design staged them from
+            # opacity 0 via Timer threads, the same
+            # invisible-until-async-restored pattern that hid
+            # the board's cards on device. The splash reads
+            # complete from its first painted frame; the whole
+            # sequence self-resolves at ~1.4 s even if no pull
+            # lands (a landed pull or a tap resolves it early).
             def _stage(part, **props):
                 ctrl = _SPLASH_PARTS.get(part)
                 if ctrl is None:
@@ -7054,14 +7049,6 @@ def main(page: ft.Page):
                 except Exception:
                     pass
             _stage("emblem", scale=ft.Scale(scale=1.0))
-            threading.Timer(
-                0.25, lambda: _stage(
-                    "wordmark", opacity=1.0,
-                    scale=ft.Scale(scale=1.0))).start()
-            threading.Timer(
-                0.50, lambda: _stage(
-                    "sweep", opacity=1.0,
-                    scale=ft.Scale(scale=1.0))).start()
             threading.Timer(1.4, dismiss_splash).start()
             start_pulse("splash")
             start_pulse("shimmer")

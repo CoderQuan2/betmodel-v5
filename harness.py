@@ -112,8 +112,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.4.0", app.APP_VERSION == "12.4.0")
-    check("BUILD_NUMBER is 20", app.BUILD_NUMBER == 20)
+    check("APP_VERSION is 12.4.1", app.APP_VERSION == "12.4.1")
+    check("BUILD_NUMBER is 21", app.BUILD_NUMBER == 21)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1313,10 +1313,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.4 version unified: README release line",
-          "12.4.0 (build 20)" in _readme)
+          "12.4.1 (build 21)" in _readme)
     check("v12.4 version unified: workflow build args",
-          '--build-version "12.4.0"' in _wf
-          and '--build-number "20"' in _wf)
+          '--build-version "12.4.1"' in _wf
+          and '--build-number "21"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1409,14 +1409,24 @@ def main():
         if type(x).__name__ == "Container"))
     _cards3 = [x for x in cards_list3.controls
                if type(x).__name__ == "Container"]
-    check("v12.1: entrance animation gates at the first 8 "
-          "cards (180 ms), the rest static",
+    check("v12.4.1 re-pin (was v12.1 entrance gates): the "
+          "first-8 entrance is OFFSET-ONLY (180 ms rise), no "
+          "card's opacity is ever staged — visibility never "
+          "waits on an async flip (the device blank-board bug)",
           len(_cards3) > 8
-          and all(c.animate_opacity is not None
-                  and c.animate_opacity.duration == 180
+          and all(c.animate_offset is not None
+                  and c.animate_offset.duration == 180
                   for c in _cards3[:8])
-          and all(c.animate_opacity is None
-                  for c in _cards3[8:]))
+          and all(c.animate_offset is None
+                  for c in _cards3[8:])
+          and all(c.animate_opacity is None for c in _cards3)
+          and all(getattr(c, "opacity", 1) == 1
+                  for c in _cards3))
+    _ac = _src[_src.index("def _animate_cards"):
+               _src.index("def render_cards")]
+    check("v12.4.1: _animate_cards never touches opacity "
+          "(source pin — the load-bearing-visibility rule)",
+          ".opacity" not in _ac)
     _golden_exp = len(app.distill_finds(
         _rec["markets"],
         b5.run_slate(_rec, print_out=False))[0])
@@ -2076,6 +2086,12 @@ def main():
                   for c in walk(_splash))
           and len(app._PULSE_TARGETS.get("splash") or []) == 1
           and len(app.PULSE_PERIODS) <= 6)
+    _glow1 = (app._PULSE_TARGETS.get("splash") or [None])[0]
+    check("v12.4.1: the splash is BORN VIEWABLE — every "
+          "element at its final opacity from the first frame "
+          "(only the breathing glow layer starts dark)",
+          all(getattr(c, "opacity", 1) in (None, 1, 1.0)
+              for c in walk(_splash) if c is not _glow1))
 
     # render diet: the harvest worker saves and renders
     # nothing (source-pinned — the worker is a closure, so
