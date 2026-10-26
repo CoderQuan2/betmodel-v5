@@ -103,12 +103,12 @@ def _span_text(span):
 
 
 def texts(ctrl):
-    """Visible text of a subtree. v12.7: for an ft.Text, ONE
-    string is yielded — its value plus the concatenation of
-    all its span texts in order (the typographic card face
-    is a single span-built Text; a span-style check reads
-    the face as one printed slip). Purely additive for
-    value-only Texts, which yield exactly their value."""
+    """Visible text of a subtree. For an ft.Text, ONE string
+    is yielded — its value plus the concatenation of all its
+    span texts in order (span-awareness added in v12.7 for
+    the typographic card, kept in v12.8: it is purely
+    additive — value-only Texts, including every row of
+    BetFi 11's card, yield exactly their value)."""
     out = []
     for c in walk(ctrl):
         if type(c).__name__ == "Text":
@@ -130,8 +130,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.7.1", app.APP_VERSION == "12.7.1")
-    check("BUILD_NUMBER is 27", app.BUILD_NUMBER == 27)
+    check("APP_VERSION is 12.8.0", app.APP_VERSION == "12.8.0")
+    check("BUILD_NUMBER is 28", app.BUILD_NUMBER == 28)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -304,93 +304,50 @@ def main():
                 if any("Find it:" in t for t in texts(c))
                 and type(c).__name__ == "Container")
     ct = texts(card)
-    # v12.7 adaptation: the face is ONE span-built Text, so
-    # order is measured by character position inside the
-    # face string (was: entry index in the row list)
-    _face1 = next(t for t in ct if "Find it:" in t)
-    _i_path = _face1.index("Find it:")
+    # v12.8: the card is BetFi 11's — every face row is its
+    # own Text again, so F1 order is measured by entry index
+    # in the card's text list (the v12.5-v12.7 span/face-string
+    # adaptations are retired with the cards they described).
+    _i_path = next(i for i, t in enumerate(ct)
+                   if t.startswith("Find it:"))
     check("F1 order: market/selection print above the FD path",
           _i_path > 0 and any(
-              h in _face1[:_i_path]
+              h in ct[i]
+              for i in range(_i_path)
               for h in ("Moneyline", "Point Spread",
                         "Total Points")))
     check("F1: card carries a FanDuel navigation path",
-          "Find it: FanDuel → " in _face1)
-    check("v12.5 re-pin (was F3: cards cast the depth shadow): "
-          "Card v2 is FLAT — the card root carries no shadow "
-          "and no gradient (primitives only on device)",
-          getattr(card, "shadow", None) is None
-          and getattr(card, "gradient", None) is None)
+          any(t.startswith("FanDuel \u2192 ") for t in ct))
     check("v12.4 re-pin (was F3 first-render animation): a "
-          "filter re-render does not replay entrances — cards "
+          "filter re-render does not replay entrances \u2014 cards "
           "arrive static; the animated first render is pinned "
           "on the fresh-boot Price Slate path in v12.1 below",
           getattr(card, "opacity", 1) == 1
           and getattr(card, "animate_opacity", None) is None)
 
-    # v12.5 Card v2: the card subtree is flat primitives only
-    # (no Stack, no ExpansionTile), the top line is plain text
-    # carrying league + pull time (+ the PRICED marker in
-    # text), and the Details toggle opens the depth inline.
-    _card_types = {type(c).__name__ for c in walk(card)}
-    check("v12.5 Card v2: no Stack and no ExpansionTile "
-          "inside a card",
-          "Stack" not in _card_types
-          and "ExpansionTile" not in _card_types)
-    # v12.7 Card v3 structural pins: the typographic card —
-    # the whole subtree is a handful of controls, the face
-    # is exactly ONE span-bearing Text, and the ONLY Row in
-    # the card is the action row (copy / details / chart)
-    _sub7 = list(walk(card))
-    _face7 = [c for c in _sub7
-              if type(c).__name__ == "Text"
-              and getattr(c, "spans", None)]
-    _rows7 = [c for c in _sub7 if type(c).__name__ == "Row"]
-    check("v12.7 Card v3 (typographic): a card subtree is "
-          "<= 10 controls, its face is exactly ONE Text with "
-          "non-empty spans, and its only Row is the action "
-          "row",
-          len(_sub7) <= 10 and len(_face7) == 1
-          and len(_rows7) == 1,
-          f"controls={len(_sub7)} face_texts={len(_face7)} "
-          f"rows={len(_rows7)}")
-    _roots = [c for c in walk(cards_view)
-              if type(c).__name__ == "Container"
-              and any("Find it:" in t for t in texts(c))]
-    # v12.7 adaptation: the top line is the FIRST LINE of the
-    # card's single face Text (was: texts(root)[0], back when
-    # every row was its own Text)
-    _tops = [next(t for t in texts(r) if "Find it:" in t)
-             .split("\n")[0] for r in _roots if texts(r)]
-    import re as _re
-    check("v12.5 Card v2: top line is league · HH:MM as text, "
-          "with the PRICED marker in text on priced cards",
-          any(_re.match(r"^(NFL|NCAAF) · \d{2}:\d{2}"
-                        r"( · PRICED)?$", t)
-              for t in _tops)
-          and any(t.endswith(" · PRICED") for t in _tops),
-          f"tops={_tops[:4]}")
-    check("v12.5 Card v2: depth stays closed until toggled",
-          not any("PRICE ANATOMY" in t
-                  for t in texts(cards_view)))
-    _det = next(c for c in walk(cards_view)
-                if type(c).__name__ == "TextButton"
-                and getattr(c, "content", "")
-                == "Details — anatomy, scale, coherence, "
-                   "provenance")
-    _det.on_click(SimpleNamespace())
-    _open_txts = texts(cards_view)
-    check("v12.5 Card v2: the Details toggle opens the depth "
-          "inline (anatomy + provenance as plain text)",
-          any("PRICE ANATOMY" in t for t in _open_txts)
-          and any("PROVENANCE" in t for t in _open_txts))
-    _hide = next(c for c in walk(cards_view)
-                 if type(c).__name__ == "TextButton"
-                 and getattr(c, "content", "") == "Hide details")
-    _hide.on_click(SimpleNamespace())
-    check("v12.5 Card v2: toggling again hides the depth",
-          not any("PRICE ANATOMY" in t
-                  for t in texts(cards_view)))
+    # v12.8: 11's construction, asserted as coded \u2014 the root
+    # carries 11's depth shadow (the v12.5 FLAT pin and the
+    # v12.7 typographic pins are RETIRED: they described cards
+    # the Pilot has replaced; the fixture pin below is now the
+    # card's structural guard), no gradient off GOLDEN, and
+    # the depth is 11's four ExpansionTiles in 11's order.
+    check("v12.8: card root is 11's construction \u2014 depth "
+          "shadow present, gradient only on GOLDEN BET",
+          getattr(card, "shadow", None) is not None
+          and getattr(card, "gradient", None) is None)
+    _tiles8 = [c for c in walk(card)
+               if type(c).__name__ == "ExpansionTile"]
+    check("v12.8: card depth is 11's four ExpansionTiles "
+          "(PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE)",
+          [getattr(t.title, "value", None) for t in _tiles8]
+          == ["PRICE ANATOMY", "SCALE", "COHERENCE",
+              "PROVENANCE"],
+          f"tiles={[getattr(t.title, 'value', None) for t in _tiles8]}")
+    check("v12.8: 11's anatomy leads with the verdict line "
+          "and carries state + calibration tag",
+          any("state:" in t for t in texts(_tiles8[0]))
+          and any("calibration tag:" in t
+                  for t in texts(_tiles8[0])))
 
     # finds segment: the golden panel is honest on this slate
     seg = next(c for c in walk(board)
@@ -1384,15 +1341,18 @@ def main():
           any("Coverage" in t for t in texts(switcher.content)))
     page.navigation_bar.on_change(SimpleNamespace(
         control=SimpleNamespace(selected_index=0)))
-    chart_btn = next(
-        c for c in walk(switcher.content)
-        if type(c).__name__ == "TextButton"
-        and getattr(c, "content", "")
-        == "Chart — see this market in the 3D panel")
-    chart_btn.on_click(SimpleNamespace())
-    check("panel cross-nav: a card's Chart affordance opens the "
-          "Charts segment",
-          any("Xii Charts" in t for t in texts(switcher.content)))
+    # v12.8 RETIRED: "panel cross-nav: a card's Chart
+    # affordance opens the Charts segment" — the Chart button
+    # was a v12-only card affordance (on_chart); BetFi 11's
+    # cards have none, and the build_card_safe adapter drops
+    # on_chart by design. The replacement assertion: 11's
+    # cards on the board carry NO Chart TextButton.
+    check("v12.8: cards carry no Chart affordance (11 had "
+          "none — on_chart is dropped at the adapter)",
+          not any(type(c).__name__ == "TextButton"
+                  and getattr(c, "content", "")
+                  == "Chart — see this market in the 3D panel"
+                  for c in walk(switcher.content)))
 
     # ---------- v12.1 feel / QoL ----------
     import inspect as _inspect
@@ -1402,11 +1362,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.7.1 version unified: README release line",
-          "12.7.1 (build 27)" in _readme)
-    check("v12.7.1 version unified: workflow build args",
-          '--build-version "12.7.1"' in _wf
-          and '--build-number "27"' in _wf)
+    check("v12.8 version unified: README release line",
+          "12.8.0 (build 28)" in _readme)
+    check("v12.8 version unified: workflow build args",
+          '--build-version "12.8.0"' in _wf
+          and '--build-number "28"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1474,8 +1434,9 @@ def main():
     # view (no golden bets on the fixture pull = no cards).
     # Drive Show to All markets, then land a fresh pricing
     # pass through the band's own Price Slate action — the
-    # path that sets the entrance flag — before measuring
-    # the entrance gates.
+    # path that used to set the entrance flag — before
+    # measuring the board (v12.8: cards get NO entrance;
+    # they are placed exactly as 11 built them).
     _show3 = next(c for c in walk(cards3)
                   if type(c).__name__ == "Dropdown"
                   and [o.key for o in c.options]
@@ -1499,18 +1460,22 @@ def main():
         if type(x).__name__ == "Container"))
     _cards3 = [x for x in cards_list3.controls
                if type(x).__name__ == "Container"]
-    check("v12.4.1 re-pin (was v12.1 entrance gates): the "
-          "first-8 entrance is OFFSET-ONLY (180 ms rise), no "
-          "card's opacity is ever staged — visibility never "
-          "waits on an async flip (the device blank-board bug)",
+    # v12.8 RETIRED: "v12.4.1 re-pin (was v12.1 entrance
+    # gates): the first-8 entrance is OFFSET-ONLY..." — 11's
+    # cards had no entrance at all, and the port gates
+    # _animate_cards OFF for card children. The replacement
+    # assertion is stronger: after the full Price Slate path,
+    # NO card carries any entrance state at all.
+    check("v12.8: cards are placed exactly as 11 built them "
+          "— no entrance (no offset/scale animation, no "
+          "staged opacity) on any card after a fresh render",
           len(_cards3) > 8
-          and all(c.animate_offset is not None
-                  and c.animate_offset.duration == 180
-                  for c in _cards3[:8])
-          and all(c.animate_offset is None
-                  for c in _cards3[8:])
+          and all(c.animate_offset is None for c in _cards3)
+          and all(c.animate_scale is None for c in _cards3)
           and all(c.animate_opacity is None for c in _cards3)
           and all(getattr(c, "opacity", 1) == 1
+                  for c in _cards3)
+          and all(getattr(c, "offset", None) is None
                   for c in _cards3))
     # v12.7.1: the render receipt seated beside cards_count is
     # written by that very render — it must name exactly the
@@ -2196,13 +2161,13 @@ def main():
                         _hits5 += _set_hits(getattr(_c5, _f5.name))
                     except Exception:
                         pass
-    check("v12.7 re-pin (was v12.4): the full board tree "
-          "carries no set-valued control fields (smoke-gate "
-          "coverage, kept) — the seen floor drops 500 -> 300 "
-          "because the typographic card cut the per-card "
-          "control count ~6x, so the same fully-driven tree "
-          "is legitimately smaller; the gate's substance "
-          "(zero set-valued fields) is unchanged",
+    check("v12.8 re-pin (was v12.4, floor re-pinned in "
+          "v12.7): the full board tree carries no set-valued "
+          "control fields (smoke-gate coverage, kept) — the "
+          "seen floor stands at 300 (set in v12.7 when the "
+          "typographic card shrank the tree; 11's larger card "
+          "clears it with room); the gate's substance (zero "
+          "set-valued fields) is unchanged",
           _seen5 > 300 and _hits5 == 0,
           f"seen={_seen5} hits={_hits5}")
 
@@ -2251,8 +2216,9 @@ def main():
           and "page.update" not in _hw)
 
     # ---------- v12.6 motion (gold checks re-pinned in
-    # v12.7: cards carry no bars — the gold lives in spans;
-    # the pulse key is glow-owned again) ----------
+    # v12.8: cards are BetFi 11's — the gold lives in 11's
+    # gradient wash + verdict pill; view-level settles and
+    # the glow-owned pulse key stand) ----------
     # Fabricate GOLDEN BET cards on page5's board: the first
     # two markets the patched builder sees get an injected
     # GOLDEN BET verdict (the fixture pull has none). The
@@ -2312,53 +2278,43 @@ def main():
     _cards6 = [x for x in _clist6.controls
                if type(x).__name__ == "Container"]
     _gcard6 = _cards6[0] if _cards6 else None
-    _gcol6 = getattr(_gcard6, "content", None)
-    _gface6 = (next((c for c in walk(_gcard6)
-                     if type(c).__name__ == "Text"
-                     and getattr(c, "spans", None)), None)
-               if _gcard6 is not None else None)
-    _gspans6 = getattr(_gface6, "spans", None) or []
-    _gpill6 = next((s for s in _gspans6
-                    if (getattr(s, "text", "") or "").strip()
-                    == "GOLDEN BET"), None)
-    check("v12.7 re-pin (was v12.6 gold bar): a golden card "
-          "carries NO bar container — its Column opens with "
-          "the face Text, whose spans hold a gold star and a "
-          "GOLDEN BET pill span on the verdict tint; the "
-          "root is tagged data='golden'",
+    # v12.8 RETIRED: the v12.7 gold-span check, the v12.6
+    # golden-entrance (scale settle) check and the v12.6
+    # non-golden offset-entrance check — all described v12
+    # card constructions the Pilot has replaced. 11's golden
+    # construction is asserted instead, as coded in 68854ee.
+    _gpill6 = next(
+        (c for c in walk(_gcard6)
+         if type(c).__name__ == "Container"
+         and getattr(c, "bgcolor", None)
+         == app.VERDICT_BG["GOLDEN BET"]
+         and any(getattr(t, "value", None) == "GOLDEN BET"
+                 and getattr(t, "color", None) == "#FFD700"
+                 for t in walk(c)
+                 if type(t).__name__ == "Text")),
+        None) if _gcard6 is not None else None
+    check("v12.8: a golden card is 11's construction \u2014 the "
+          "gold gradient wash (#191405 -> CARD_BG), 11's depth "
+          "shadow, and the GOLDEN BET pill on its verdict tint "
+          "with gold text; no data tag, no entrance/bloom state",
           _gcard6 is not None
-          and getattr(_gcard6, "data", None) == "golden"
-          and _gcol6 is not None
-          and getattr(_gcol6, "controls", None)
-          and type(_gcol6.controls[0]).__name__ == "Text"
-          and any((getattr(s, "text", "") or "") == "★ "
-                  and s.style is not None
-                  and s.style.color == app.GOLD
-                  for s in _gspans6)
+          and getattr(_gcard6, "gradient", None) is not None
+          and list(_gcard6.gradient.colors)
+              == ["#191405", app.CARD_BG]
+          and getattr(_gcard6, "shadow", None) is not None
           and _gpill6 is not None
-          and _gpill6.style is not None
-          and _gpill6.style.bgcolor
-              == app.VERDICT_BG["GOLDEN BET"]
-          and _gpill6.style.color == "#FFD700")
-    check("v12.6: golden entrance — scale settle rides the "
-          "two-update path (220 ms), ends at identity, "
-          "opacity never staged",
-          _gcard6 is not None
-          and _gcard6.animate_scale is not None
-          and _gcard6.animate_scale.duration == 220
-          and _gcard6.scale is not None
-          and _gcard6.scale.scale == 1.0
-          and _gcard6.animate_offset is not None
-          and _gcard6.animate_offset.duration == 180
-          and _gcard6.animate_opacity is None
+          and getattr(_gcard6, "data", None) is None
+          and _gcard6.animate_scale is None
+          and _gcard6.animate_offset is None
           and getattr(_gcard6, "opacity", 1) == 1)
     _plain6 = next((c for c in _cards6
-                    if getattr(c, "data", None) is None), None)
-    check("v12.6: non-golden cards keep the offset-only "
-          "entrance (no scale settle)",
+                    if getattr(c, "gradient", None) is None),
+                   None)
+    check("v12.8: non-golden cards carry no entrance state "
+          "either (no scale, no offset animation)",
           _plain6 is not None
           and _plain6.animate_scale is None
-          and _plain6.animate_offset is not None)
+          and _plain6.animate_offset is None)
     _tg6 = app._PULSE_TARGETS.get("golden") or []
     check("v12.7 re-pin (was v12.6 board gold bars): the "
           "board render publishes NO card bars to the golden "
@@ -2390,15 +2346,15 @@ def main():
           f"targets={len(_tg6f)}")
     _fcards6 = [c for c in walk(_betfi6)
                 if type(c).__name__ == "Container"
-                and getattr(c, "data", None) == "golden"]
-    _fcol6 = (_fcards6[0].content if _fcards6 else None)
-    check("v12.7 re-pin (was v12.6 Finds card bar): a Finds "
-          "golden card opens with its face Text — no bar "
-          "child — and its face opens on the gold star",
-          len(_fcards6) >= 1 and _fcol6 is not None
-          and getattr(_fcol6, "controls", None)
-          and type(_fcol6.controls[0]).__name__ == "Text"
-          and any(t.startswith("★ ")
+                and getattr(c, "gradient", None) is not None
+                and list(c.gradient.colors)
+                == ["#191405", app.CARD_BG]]
+    check("v12.8: a Finds golden card is 11's construction "
+          "\u2014 gold gradient wash + the GOLDEN BET pill",
+          len(_fcards6) >= 1
+          and list(_fcards6[0].gradient.colors)
+              == ["#191405", app.CARD_BG]
+          and any(t == "GOLDEN BET"
                   for t in texts(_fcards6[0])))
     check("v12.6: the board segment switch settles the "
           "incoming segment view (scale + offset animations "
@@ -2459,6 +2415,51 @@ def main():
     check("v12.6: _settle_in never touches opacity "
           "(source pin — the load-bearing-visibility rule)",
           ".opacity" not in _si)
+
+    # ---------- v12.8: the card is BetFi 11's ----------
+    # Permanent guard: the shipped build_market_card + _tile
+    # + the card's private labels must AST-match the verbatim
+    # 68854ee extraction in harness_fixtures/ forever (the
+    # shipped card's one adapted token, _v11_SPORT_LABELS, is
+    # normalized back to SPORT_LABELS for the comparison, and
+    # the private labels' VALUE must equal 11's dict exactly).
+    import ast as _ast8
+
+    def _fn_dump8(_path, _name, _norm=None):
+        _tree = _ast8.parse(open(_path).read())
+        for _n in _tree.body:
+            if isinstance(_n, _ast8.FunctionDef) \
+                    and _n.name == _name:
+                if _norm:
+                    for _x in _ast8.walk(_n):
+                        if isinstance(_x, _ast8.Name) \
+                                and _x.id == _norm[0]:
+                            _x.id = _norm[1]
+                return _ast8.dump(_n)
+        return None
+
+    def _assign_dump8(_path, _name):
+        _tree = _ast8.parse(open(_path).read())
+        for _n in _tree.body:
+            if isinstance(_n, _ast8.Assign):
+                for _t in _n.targets:
+                    if isinstance(_t, _ast8.Name) \
+                            and _t.id == _name:
+                        return _ast8.dump(_n.value)
+        return None
+
+    _fix8 = os.path.join(HERE, "harness_fixtures",
+                         "v11_card_reference.py")
+    _main8 = os.path.join(HERE, "main.py")
+    check("v12.8: card code is BetFi 11's, byte-for-byte "
+          "(fixture)",
+          _fn_dump8(_main8, "build_market_card",
+                    _norm=("_v11_SPORT_LABELS", "SPORT_LABELS"))
+          == _fn_dump8(_fix8, "build_market_card")
+          and _fn_dump8(_main8, "_tile")
+          == _fn_dump8(_fix8, "_tile")
+          and _assign_dump8(_main8, "_v11_SPORT_LABELS")
+          == _assign_dump8(_fix8, "SPORT_LABELS"))
 
     # ---------- v12.7.1 one lock ----------
     # Every screen update is serialized through ONE module

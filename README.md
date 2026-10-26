@@ -2,7 +2,7 @@
 
 **Public name: BetFi_Xii (display: BetFi Xii). Internal id:
 Bet_Finder — unchanged in the Xii rename, so on-device data
-carries over. App release: 12.7.1 (build 27)** with the
+carries over. App release: 12.8.0 (build 28)** with the
 betmodel **v5.4** engine. BetFi Xii (2026-10-24) is the
 Universal Model release: the engine's Organ 8 registry indexes
 every fit on the device, soccer prices across five leagues

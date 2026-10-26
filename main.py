@@ -338,8 +338,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.7.1"
-BUILD_NUMBER = 27
+APP_VERSION = "12.8.0"
+BUILD_NUMBER = 28
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -750,6 +750,14 @@ SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
                 "rugby-league": "Rugby League",
                 "lacrosse": "Lacrosse", "snooker": "Snooker",
                 "table-tennis": "Table Tennis"}
+
+# v12.8: BetFi 11's SPORT_LABELS, private to the ported v11
+# card. The standing SPORT_LABELS above grew extra sports in
+# v12 (R2 labels for the wider menu tree) and other surfaces
+# read it; the v11 card must keep 11's exact lookup, so its
+# one labels read goes through this private copy instead.
+_v11_SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
+                "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer"}
 SPORT_ICONS = {"nfl": ft.Icons.SPORTS_FOOTBALL,
                "ncaaf": ft.Icons.SPORTS_FOOTBALL,
                "nba": ft.Icons.SPORTS_BASKETBALL,
@@ -2050,6 +2058,20 @@ def _border_all(width: float, color: str) -> ft.Border:
     return ft.Border(top=side, right=side, bottom=side, left=side)
 
 
+def _tile(title: str, gloss: str, body_lines: list) -> ft.ExpansionTile:
+    """A depth tile: the engine's section name, a one-line plain
+    gloss under it (language report S4 — gloss, don't rename), then
+    the engine's lines."""
+    controls = [_line(gloss, 11, DIM)]
+    controls += [_line(t) for t in body_lines]
+    return ft.ExpansionTile(
+        title=ft.Text(title, size=12, color=ACCENT,
+                      weight=ft.FontWeight.BOLD),
+        controls=[ft.Container(
+            padding=8,
+            content=ft.Column(spacing=2, controls=controls))])
+
+
 def verdict_pill(term: str, unpriced: bool = False) -> ft.Container:
     """The verdict pill. GOLDEN BET is the only gold text; every
     other verdict is white on its warm tint — except UNPRICED,
@@ -2249,16 +2271,21 @@ def lane_contexts(markets: list) -> dict:
 # ------------------------------------------------------------------
 # Card rendering — one builder shared by the Cards screen, the
 # BetFi finds feed and the Parse match block (a find IS a card,
-# face + inline depth). Anatomy order is fixed (design
+# face + collapsible depth). Anatomy order is fixed (design
 # report §2): matchup → meta → record → odds → hero probability
 # row → grade row + calibration chip → verdict + stance pills →
-# stamp / note → verdict lead → details (inline, v12.5).
+# stamp / note → depth tiles. (v12.8: this is BetFi 11's own
+# header, restored with its card — see the v12.8 note at
+# build_market_card below.)
 
 # Card v2 (v12.5): which cards currently show their depth
 # sections inline. Keyed by FanDuel market id when the menu
 # carried one, else (sport, away, home, name) — the toggle
 # state survives re-renders because it lives here, not on
 # the (rebuilt) controls.
+# v12.8: the ported v11 card has no details toggle, so this
+# machinery is unused by cards now; it is left in place (the
+# build_card_safe adapter accepts and ignores on_toggle).
 _CARD_DETAILS_OPEN = set()
 
 
@@ -2293,11 +2320,19 @@ def _settle_in(page, ctrl, scale_from=0.99, dur=220,
         page.update()
 
 
+# v12.8: THE CARD IS BETFI 11'S, VERBATIM — build_market_card
+# below is 68854ee's function byte-for-byte (Pilot's order:
+# "Coded as it is in 11"), with exactly one token adapted:
+# its SPORT_LABELS read goes through _v11_SPORT_LABELS (see
+# there). Its depth is 11's four ExpansionTiles via _tile
+# (restored verbatim above); it takes no on_chart/on_toggle
+# — build_card_safe below is the adapter at that seam. The
+# harness fixture pin (harness_fixtures/v11_card_reference.py)
+# fails forever if this function's logic drifts from 11's.
 def build_market_card(mkt: dict, verdict: dict, rec: dict,
                       quotes_by_game: dict, rank: int | None = None,
                       edge_pts: float | None = None,
-                      lane_ctx: dict | None = None,
-                      on_chart=None, on_toggle=None) -> ft.Container:
+                      lane_ctx: dict | None = None) -> ft.Container:
     lane = market_lane(mkt)
     if lane_ctx is not None and lane in lane_ctx:
         (w, l, rec_src, phi, phi_state, uncal, cal_tag) = \
@@ -2324,11 +2359,101 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
     else:
         coh_lines = ["insufficient quotes in this pull to audit"]
 
+    face = []
+    if rank is not None:
+        face.append(_line(
+            f"FIND #{rank}"
+            + (f" · edge {edge_pts:+.1f} pts"
+               if edge_pts is not None else ""),
+            12, ACCENT, True))
+    # F1 identity block — the bet leads, the game follows:
+    # line 1 the FanDuel market name (the player on props),
+    # line 2 the selection in plain words with its price,
+    # line 3 the matchup + start time + league, then the
+    # FanDuel navigation path and the slip-label copy button.
     name = bet_name(mkt, verdict)
+    face.append(ft.Text(name["headline"], size=17, color=INK,
+                        weight=ft.FontWeight.BOLD))
+    sel_row = [ft.Text(name["selection"], size=15, color=INK,
+                       weight=ft.FontWeight.BOLD)]
+    if mkt.get("price") is not None:
+        price = int(mkt["price"])
+        if mkt.get("sport") == "soccer":
+            # world readers price in decimal: decimal first,
+            # American in parentheses (language report W4)
+            price_txt = (f"odds "
+                         f"{b5.american_to_decimal(price):.2f} "
+                         f"({price:+d})")
+        else:
+            price_txt = f"odds {price:+d}"
+        sel_row.append(ft.Text(price_txt, size=12, color=DIM))
+    face.append(ft.Row(spacing=8, controls=sel_row))
+    meta_bits = [name["matchup"]]
+    _dt = _market_dt(mkt)
+    if _dt is not None:
+        meta_bits.append(_dt.strftime("%a %b %d · %I:%M %p")
+                         .replace(" 0", " "))
+    meta_bits.append(_v11_SPORT_LABELS.get(
+        mkt.get("sport"), (mkt.get("sport") or "?").upper()))
+    face.append(_line(" · ".join(meta_bits), 11, DIM))
+    face.append(ft.Row(
+        spacing=4, vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        controls=[
+            ft.Text("Find it: ", size=11, color=FAINT,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text(name["fd_path"], size=11, color=DIM),
+            ft.IconButton(
+                icon=ft.Icons.CONTENT_COPY, icon_size=15,
+                icon_color=ACCENT, width=34, height=34,
+                tooltip="Copy the exact slip label",
+                on_click=lambda e, lbl=name["slip_label"]:
+                _copy_label(e, lbl))]))
+    face.append(_line(f"Win {w} · Lose {l}   ({lane} lane record)",
+                      11, DIM))
+    # hero row: probability left (promoted), edge right, colored
+    hero = [ft.Text(
+        "Probability UNPRICED" if p is None else
+        f"Probability {p * 100:.1f}%",
+        size=20, color=WARN if p is None else INK,
+        weight=ft.FontWeight.BOLD)]
+    if p is not None and edge_pts is not None:
+        hero.append(ft.Text(
+            f"{edge_pts:+.1f} pts", size=14,
+            color=EDGE_POS if edge_pts > 0 else
+            EDGE_NEG if edge_pts < 0 else DIM,
+            weight=ft.FontWeight.BOLD))
+    face.append(ft.Row(spacing=8,
+                       alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                       controls=hero))
+    # grade row: grade stays colored TEXT (never a pill), the
+    # state beside it, the calibration chip right-aligned
+    grade_row = [
+        ft.Text(f"Grade {grade}" if grade else "Grade —",
+                size=16, color=GRADE_COLORS.get(grade or "", FAINT),
+                weight=ft.FontWeight.BOLD),
+        ft.Text(state, size=12,
+                color=DIM if state == "PRICED" else WARN,
+                weight=ft.FontWeight.BOLD)]
+    chip = cal_chip(cal_tag)
+    if chip is not None:
+        grade_row.append(ft.Container(expand=True))
+        grade_row.append(chip)
+    face.append(ft.Row(spacing=8, controls=grade_row))
+    # pill row: verdict first, stance beside it — never a stance
+    # without a verdict
+    pills = [verdict_pill(term, unpriced=(state == "UNPRICED"))]
+    sp = stance_pill(stance)
+    if sp is not None:
+        pills.append(sp)
+    face.append(ft.Row(spacing=8, controls=pills))
+    if uncal:
+        # the engine's stamp, verbatim on the face
+        face.append(_line(uncal, 11, WARN, True))
+    if verdict.get("note"):
+        face.append(_line(verdict["note"], 10, FAINT))
 
-    # the engine's verdict + its named reason lead the depth —
-    # first line, verbatim (v12.7: it also prints on the face
-    # as the L14 lead line, always visible)
+    # the engine's verdict + its named reason lead the collapsible
+    # depth — first line, verbatim
     anatomy = []
     if vreason:
         anatomy.append(f"{term} — {vreason}")
@@ -2355,9 +2480,9 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         anatomy.append(f"line: {mkt['line']} · side: "
                        f"{side_label(mkt)}")
     if verdict.get("detail"):
-        anatomy.append(f"detail: {plain_note(verdict['detail'])}")
+        anatomy.append(f"checker detail: {verdict['detail']}")
     if verdict.get("note"):
-        anatomy.append(f"reason: {plain_note(verdict['note'])}")
+        anatomy.append(f"checker note: {verdict['note']}")
 
     phi_params = ({k: v for k, v in phi.items() if k != "kind"}
                   if isinstance(phi, dict) else {})
@@ -2385,219 +2510,40 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
 
     stripe_color = UNPRICED_BORDER if state == "UNPRICED" else \
         VERDICT_BG.get(term, BORDER)
-    # Card depth sections: no ExpansionTile, no gradient, no
-    # shadow — the four sections print as further spans of
-    # the card's one Text when its details are open (v12.7;
-    # inline text behind the toggle since v12.5). Same
-    # titles, glosses and body lines the tiles carried; the
-    # anatomy body is unchanged.
-    _sections = [
-        ("PRICE ANATOMY", "where the probability came from",
-         anatomy),
-        ("SCALE",
-         "phi — the fitted map that adjusts this lane's "
-         "raw probabilities toward what its record has "
-         "earned", scale),
-        ("COHERENCE",
-         "do this game's prices agree with each other?"
-         if mkt.get("sport") != "soccer" else
-         "do this match's prices agree with each other?",
-         coh_lines),
-        ("PROVENANCE",
-         "where every number came from, and when",
-         provenance),
-    ]
-    # ---- Card v3 (v12.7): the printed slip. The face is
-    # ONE ft.Text of styled spans — the whole card is ~7
-    # controls (root, column, text, action row, copy button,
-    # details button, chart button) where v2 built ~42 and
-    # v1 ~93: a different league of tree for the client to
-    # apply, with the same F1 order and content the rows
-    # carried. Verdict / stance / calibration print as
-    # styled spans (the pill tint rides the span's bgcolor),
-    # never as nested pill/chip controls. ----
-    _is_golden = term == "GOLDEN BET"
-
-    def _span(text, size, color, bold=False, bg=None):
-        return ft.TextSpan(text, style=ft.TextStyle(
-            size=size, color=color, bgcolor=bg,
-            weight=ft.FontWeight.BOLD if bold else None))
-
-    _spans = []
-    # L1: league · pull time (+ the PRICED marker in text);
-    # GOLDEN BET cards carry a gold star prefix
-    _top_line = (
-        f"{SPORT_LABELS.get(mkt.get('sport'), (mkt.get('sport') or '?').upper())}"
-        f" · {str((rec or {}).get('pulled_at') or '')[11:16]}")
-    if state == "PRICED":
-        _top_line += " · PRICED"
-    if _is_golden:
-        _spans.append(_span("\u2605 ", 10, GOLD, bold=True))
-    _spans.append(_span(_top_line, 10, BONE_DIM))
-    # L2: the finds rank line
-    if rank is not None:
-        _spans.append(_span(
-            "\n" + f"FIND #{rank}"
-            + (f" · edge {edge_pts:+.1f} pts"
-               if edge_pts is not None else ""),
-            12, ACCENT, bold=True))
-    # L3–L5: F1 identity — the bet leads, the game follows:
-    # the FanDuel market name (the player on props), the
-    # selection in plain words with its price, then the
-    # matchup + start time + league
-    _spans.append(_span("\n" + name["headline"], 17, INK,
-                        bold=True))
-    _spans.append(_span("\n" + name["selection"], 15, INK,
-                        bold=True))
-    if mkt.get("price") is not None:
-        price = int(mkt["price"])
-        if mkt.get("sport") == "soccer":
-            # world readers price in decimal: decimal first,
-            # American in parentheses (language report W4)
-            price_txt = (f"odds "
-                         f"{b5.american_to_decimal(price):.2f} "
-                         f"({price:+d})")
-        else:
-            price_txt = f"odds {price:+d}"
-        _spans.append(_span(f"  {price_txt}", 12, DIM))
-    meta_bits = [name["matchup"]]
-    _dt = _market_dt(mkt)
-    if _dt is not None:
-        meta_bits.append(_dt.strftime("%a %b %d · %I:%M %p")
-                         .replace(" 0", " "))
-    meta_bits.append(SPORT_LABELS.get(
-        mkt.get("sport"), (mkt.get("sport") or "?").upper()))
-    _spans.append(_span("\n" + " · ".join(meta_bits), 11, DIM))
-    # L6: the FanDuel navigation path
-    _spans.append(_span("\nFind it: ", 11, FAINT, bold=True))
-    _spans.append(_span(name["fd_path"], 11, ACCENT))
-    # L7: the copyable names, as text — the per-name copy
-    # chips are gone by design; the slip-label copy button
-    # in the action row below is the copy mechanic now
-    _names = market_names(mkt)
-    if _names:
-        _spans.append(_span(
-            "\nNames: " + " · ".join(_names), 11, DIM))
-    # L8: the lane record
-    _spans.append(_span(
-        f"\nWin {w} · Lose {l}   ({lane} lane record)",
-        11, DIM))
-    # L9: hero — probability, the edge beside it
-    _spans.append(_span(
-        "\n" + ("Probability UNPRICED" if p is None else
-                f"Probability {p * 100:.1f}%"),
-        20, WARN if p is None else INK, bold=True))
-    if p is not None and edge_pts is not None:
-        _spans.append(_span(
-            f"   {edge_pts:+.1f} pts", 14,
-            EDGE_POS if edge_pts > 0 else
-            EDGE_NEG if edge_pts < 0 else DIM, bold=True))
-    # L10: grade (colored text, never a pill), the state
-    # beside it, the calibration tag as plain text
-    _spans.append(_span(
-        "\n" + (f"Grade {grade}" if grade else "Grade —"),
-        16, GRADE_COLORS.get(grade or "", FAINT), bold=True))
-    _spans.append(_span(
-        f"  {state}", 12,
-        DIM if state == "PRICED" else WARN, bold=True))
-    if cal_tag:
-        _spans.append(_span(f"  · {cal_tag}", 11, DIM))
-    # L11: the verdict as a PILL SPAN (its tint is the
-    # span's bgcolor), the stance as a second pill span —
-    # never a stance without a verdict
-    if term:
-        if state == "UNPRICED":
-            _spans.append(_span(f"\n {term} ", 13,
-                                UNPRICED_FG, bold=True,
-                                bg=UNPRICED_BG))
-        else:
-            _spans.append(_span(
-                f"\n {term} ", 13,
-                "#FFD700" if _is_golden else "#FFFFFF",
-                bold=True,
-                bg=VERDICT_BG.get(term, "#374151")))
-        if stance and stance in STANCE_BG:
-            _spans.append(_span(
-                f"  {STANCE_LABELS[stance]} ", 11, "#FFFFFF",
-                bold=True, bg=STANCE_BG[stance]))
-    # L12: the engine's calibration stamp, verbatim
-    if uncal:
-        _spans.append(_span("\n" + uncal, 11, WARN,
-                            bold=True))
-    # L13: the engine's note, in the app's own words
-    if verdict.get("note"):
-        _spans.append(_span(
-            "\n" + plain_note(verdict["note"]), 10, FAINT))
-    # L14: the verdict lead line — always on the face
-    if vreason:
-        _spans.append(_span(f"\n{term} — {vreason}", 11, DIM))
-    _ckey = mkt.get("fd_market_id") or (
-        mkt.get("sport"), mkt.get("away"), mkt.get("home"),
-        mkt.get("name"))
-    _details_open = _ckey in _CARD_DETAILS_OPEN
-
-    def _toggle_details(_e, _k=_ckey):
-        if _k in _CARD_DETAILS_OPEN:
-            _CARD_DETAILS_OPEN.discard(_k)
-        else:
-            _CARD_DETAILS_OPEN.add(_k)
-        if on_toggle is not None:
-            on_toggle()
-
-    # depth: the four sections (same titles, glosses and
-    # body lines) print as further spans of the same Text
-    # while this card's details are open
-    if _details_open:
-        for _sec_title, _sec_gloss, _sec_body in _sections:
-            _spans.append(_span("\n" + _sec_title, 12,
-                                ACCENT, bold=True))
-            _spans.append(_span("\n" + _sec_gloss, 11, DIM))
-            for _sec_line in _sec_body:
-                _spans.append(_span("\n" + _sec_line, 11,
-                                    DIM))
-    # the card's ONE action row: copy the slip label, the
-    # details toggle, and (when wired) the chart affordance
-    _actions = [
-        ft.IconButton(
-            icon=ft.Icons.CONTENT_COPY, icon_size=15,
-            icon_color=ACCENT, width=34, height=34,
-            tooltip="Copy the exact slip label",
-            on_click=lambda e, lbl=name["slip_label"]:
-            _copy_label(e, lbl)),
-        ft.TextButton(
-            "Hide details" if _details_open else
-            "Details — anatomy, scale, coherence, provenance",
-            icon=ft.Icons.EXPAND_LESS if _details_open
-            else ft.Icons.EXPAND_MORE,
-            style=ft.ButtonStyle(color=ACCENT),
-            on_click=_toggle_details)]
-    if on_chart is not None:
-        # affordance: this market, highlighted in the 3D
-        # panel's Charts segment
-        _actions.append(ft.TextButton(
-            "Chart — see this market in the 3D panel",
-            icon=ft.Icons.SHOW_CHART,
-            style=ft.ButtonStyle(color=ACCENT),
-            on_click=lambda e, m=mkt: on_chart(m)))
-    # Card v3 root: the standing FLAT contract (v12.5) —
-    # no gradient, no shadow; GOLDEN BET reads as the flat
-    # gold tint + the heavier gold left rule + the gold
-    # spans above. data="golden" stays: the entrance reads
-    # it for the golden scale settle (v12.6).
+    gradient = None
+    if term == "GOLDEN BET":
+        # the only gradient on a card: a restrained gold wash
+        # over the standing card surface (F3 depth pass)
+        gradient = ft.LinearGradient(
+            begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
+            colors=["#191405", CARD_BG])
     return ft.Container(
-        bgcolor="#1A1405" if _is_golden else CARD_BG,
-        border_radius=12, padding=12,
-        data="golden" if _is_golden else None,
+        bgcolor=CARD_BG, gradient=gradient, border_radius=10,
+        padding=12,
+        shadow=ft.BoxShadow(blur_radius=14, spread_radius=0,
+                            color="#00000066",
+                            offset=ft.Offset(0, 4)),
         border=ft.Border(
-            left=ft.BorderSide(5 if _is_golden else 3,
-                               GOLD if _is_golden
-                               else stripe_color),
+            left=ft.BorderSide(3, stripe_color),
             top=ft.BorderSide(1, BORDER),
             right=ft.BorderSide(1, BORDER),
             bottom=ft.BorderSide(1, BORDER)),
-        content=ft.Column(spacing=6, controls=[
-            ft.Text(spans=_spans),
-            ft.Row(spacing=4, controls=_actions)]))
+        content=ft.Column(spacing=6, controls=face + [
+            _tile("PRICE ANATOMY", "where the probability came from",
+                  anatomy),
+            _tile("SCALE",
+                  "phi — the fitted map that adjusts this lane's "
+                  "raw probabilities toward what its record has "
+                  "earned", scale),
+            _tile("COHERENCE",
+                  "do this game's prices agree with each other?"
+                  if mkt.get("sport") != "soccer" else
+                  "do this match's prices agree with each other?",
+                  coh_lines),
+            _tile("PROVENANCE",
+                  "where every number came from, and when",
+                  provenance),
+        ]))
 
 
 def _fallback_card(mkt: dict, verdict: dict, err: Exception):
@@ -2655,10 +2601,21 @@ def build_card_safe(mkt: dict, verdict: dict, rec: dict,
     loop set the count BEFORE building and had no per-card
     guard, so a single raising market killed the whole list
     silently. The fallback card carries the error on its
-    face; the board survives regardless."""
+    face; the board survives regardless.
+
+    v12.8 adapter: the builder behind this wrapper is BetFi
+    11's, and 11's signature takes only (mkt, verdict, rec,
+    quotes, rank, edge_pts, lane_ctx). The v12 call sites pass
+    on_chart / on_toggle as well — those are accepted here and
+    intentionally NOT forwarded (11's cards had neither a
+    Chart affordance nor a details toggle; its depth lives in
+    its own ExpansionTiles). Only the three arguments 11
+    takes are passed on."""
     try:
-        return build_market_card(mkt, verdict, rec,
-                                 quotes_by_game, **kw)
+        return build_market_card(
+            mkt, verdict, rec, quotes_by_game,
+            rank=kw.get("rank"), edge_pts=kw.get("edge_pts"),
+            lane_ctx=kw.get("lane_ctx"))
     except Exception as err:
         return _fallback_card(mkt, verdict, err)
 
@@ -4485,8 +4442,13 @@ def main(page: ft.Page):
                 cards_list.controls.append(ft.Text(
                     "Paging is display only — every market was priced "
                     "by the same pricing pass.", size=10, color=FAINT))
-            if state.pop("animate_next", False):
-                _animate_cards(cards_list.controls)
+            # v12.8: cards are placed EXACTLY as BetFi 11 built
+            # them — 11 had no card entrance, so _animate_cards
+            # is gated OFF for card children (the flag is still
+            # popped so it cannot pile up). View-level settles
+            # (_settle_in) are untouched: they move whole views,
+            # never cards.
+            state.pop("animate_next", False)
             stop_pulse("shimmer")   # real content landed (artist
             # §3.4: shimmer stops the moment content lands)
             cards_receipt.value = (
