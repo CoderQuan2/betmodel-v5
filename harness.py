@@ -130,8 +130,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.7.0", app.APP_VERSION == "12.7.0")
-    check("BUILD_NUMBER is 26", app.BUILD_NUMBER == 26)
+    check("APP_VERSION is 12.7.1", app.APP_VERSION == "12.7.1")
+    check("BUILD_NUMBER is 27", app.BUILD_NUMBER == 27)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1402,11 +1402,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.7 version unified: README release line",
-          "12.7.0 (build 26)" in _readme)
-    check("v12.7 version unified: workflow build args",
-          '--build-version "12.7.0"' in _wf
-          and '--build-number "26"' in _wf)
+    check("v12.7.1 version unified: README release line",
+          "12.7.1 (build 27)" in _readme)
+    check("v12.7.1 version unified: workflow build args",
+          '--build-version "12.7.1"' in _wf
+          and '--build-number "27"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1512,6 +1512,23 @@ def main():
           and all(c.animate_opacity is None for c in _cards3)
           and all(getattr(c, "opacity", 1) == 1
                   for c in _cards3))
+    # v12.7.1: the render receipt seated beside cards_count is
+    # written by that very render — it must name exactly the
+    # cards the drive appended (the Container children of the
+    # board's card list; headers are Columns, empties are Rows).
+    _receipt3 = next(
+        (c for c in walk(cards3)
+         if type(c).__name__ == "Text"
+         and (getattr(c, "value", "") or "")
+         .startswith("Rendered:")),
+        None)
+    check("v12.7.1: the board render receipt reports exactly "
+          "the cards the drive appended",
+          _receipt3 is not None
+          and _receipt3.value
+          == f"Rendered: {len(_cards3)} cards on this board",
+          f"receipt={getattr(_receipt3, 'value', None)} "
+          f"cards={len(_cards3)}")
     _ac = _src[_src.index("def _animate_cards"):
                _src.index("def render_cards")]
     check("v12.4.1: _animate_cards never touches opacity "
@@ -2442,6 +2459,155 @@ def main():
     check("v12.6: _settle_in never touches opacity "
           "(source pin — the load-bearing-visibility rule)",
           ".opacity" not in _si)
+
+    # ---------- v12.7.1 one lock ----------
+    # Every screen update is serialized through ONE module
+    # RLock: the pulse ticks, every list-mutating render, the
+    # nav swap, the workers' trailing updates — so a pulse
+    # tick can never interleave with a render's bulk patch
+    # (the on-device torn-patch / blank-board failure).
+    import threading as _threading
+    _lk = app._UPDATE_LOCK
+    _lk_acq = _lk.acquire(timeout=2)
+    _lk_re = _lk.acquire(timeout=2) if _lk_acq else False
+    if _lk_re:
+        _lk.release()
+    if _lk_acq:
+        _lk.release()
+    check("v12.7.1: _UPDATE_LOCK is a module-level RLock "
+          "(re-acquirable by its holder)",
+          _lk_acq and _lk_re)
+
+    def _fn_slice7(name):
+        i = _src.index(f"def {name}")
+        j = _src.index("\n    def ", i + 1)
+        return _src[i:j]
+
+    _pulse_src = _src[_src.index("def ice_pulse_loop"):
+                      _src.index("def start_pulse")]
+    check("v12.7.1: ice_pulse_loop wraps its tick in "
+          "_UPDATE_LOCK (inside the while — never held "
+          "across a wait)",
+          "with _UPDATE_LOCK:" in _pulse_src
+          and _pulse_src.index("with _UPDATE_LOCK:")
+          > _pulse_src.index("while not stop.is_set():"))
+    check("v12.7.1: render_cards runs inside _UPDATE_LOCK "
+          "(source pin)",
+          "_UPDATE_LOCK" in _fn_slice7("render_cards"))
+    check("v12.7.1: render_betfi runs inside _UPDATE_LOCK "
+          "(source pin)",
+          "_UPDATE_LOCK" in _fn_slice7("render_betfi"))
+    check("v12.7.1: render_protected runs inside "
+          "_UPDATE_LOCK (source pin)",
+          "_UPDATE_LOCK" in _fn_slice7("render_protected"))
+    _rc_src = _fn_slice7("render_cards")
+    check("v12.7.1: render_cards writes the render receipt "
+          "and schedules the one-pending re-assert "
+          "(source pin)",
+          "cards_receipt" in _rc_src
+          and "Rendered:" in _rc_src
+          and "_REASSERT_PENDING" in _rc_src
+          and "threading.Timer(0.35, _reassert_board)"
+          in _rc_src)
+
+    # Concurrency guard: hammer pulse-style locked updates
+    # from several threads WHILE repeatedly re-rendering the
+    # board through its own Price Slate path. This guards OUR
+    # lock discipline / deadlock-freedom — it does not claim
+    # to reproduce the client's dropped patch.
+    page7 = FakePage()
+    app.main(page7)
+    sw7 = page7.controls[1]
+    board7 = sw7.content
+    bsw7 = [c for c in walk(board7)
+            if type(c).__name__ == "AnimatedSwitcher"]
+    cards7 = bsw7[0].content
+    _show7 = next(c for c in walk(cards7)
+                  if type(c).__name__ == "Dropdown"
+                  and [o.key for o in c.options]
+                  == [k for k, _t in app.SHOW_MODES])
+    _show7.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="all")))
+
+    def _btn_label7(c):
+        ct = getattr(c, "content", None)
+        if isinstance(ct, str):
+            return ct
+        return getattr(ct, "value", None)
+    _price7 = next(c for c in walk(cards7)
+                   if type(c).__name__ == "Button"
+                   and _btn_label7(c) == "Price Slate")
+    _price7.on_click(SimpleNamespace())
+    _lists7 = [c for c in walk(cards7)
+               if type(c).__name__ == "Column"]
+    _clist7 = max(_lists7, key=lambda c: sum(
+        1 for x in getattr(c, "controls", [])
+        if type(x).__name__ == "Container"))
+
+    def _card_count7():
+        return sum(1 for x in _clist7.controls
+                   if type(x).__name__ == "Container")
+    _expected7 = _card_count7()
+
+    class _HammerCtrl:
+        """A pulse-style target: opacity writes + update(),
+        the update a no-op counter (the FakePage convention)."""
+
+        def __init__(self):
+            self.opacity = 1.0
+            self.updates = 0
+
+        def update(self):
+            self.updates += 1
+
+    _hammer = _HammerCtrl()
+    _saved_golden7 = app._PULSE_TARGETS.get("golden")
+    app._PULSE_TARGETS["golden"] = [_hammer]
+    _errors7 = []
+    _stop7 = _threading.Event()
+
+    def _pulse_hammer():
+        try:
+            while not _stop7.is_set():
+                # the pulse tick's exact shape: the whole
+                # tick inside the one lock
+                with app._UPDATE_LOCK:
+                    for ctrl in list(
+                            app._PULSE_TARGETS.get("golden")
+                            or [])[:3]:
+                        ctrl.opacity = 0.4
+                        ctrl.update()
+        except Exception as e:  # noqa: BLE001 - recorded
+            _errors7.append(e)
+
+    def _render_hammer():
+        try:
+            for _ in range(6):
+                _price7.on_click(SimpleNamespace())
+        except Exception as e:  # noqa: BLE001 - recorded
+            _errors7.append(e)
+
+    _ths7 = [_threading.Thread(target=_pulse_hammer)
+             for _ in range(3)]
+    _ths7 += [_threading.Thread(target=_render_hammer)
+              for _ in range(3)]
+    for _t in _ths7:
+        _t.start()
+    for _t in _ths7[3:]:
+        _t.join()
+    _stop7.set()
+    for _t in _ths7[:3]:
+        _t.join()
+    app._PULSE_TARGETS["golden"] = _saved_golden7 or []
+    check("v12.7.1: pulse-style locked updates hammered "
+          "during repeated board renders — no exception "
+          "escapes, no deadlock, and the board still holds "
+          "exactly the expected cards",
+          not _errors7 and _expected7 > 0
+          and _card_count7() == _expected7
+          and _hammer.updates > 0,
+          f"errors={_errors7!r} final={_card_count7()} "
+          f"expected={_expected7}")
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

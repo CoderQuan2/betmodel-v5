@@ -338,8 +338,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.7.0"
-BUILD_NUMBER = 26
+APP_VERSION = "12.7.1"
+BUILD_NUMBER = 27
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -518,6 +518,18 @@ _PULSE_STOPS = {}
 _DOT_FRESH = {"fresh": False}   # the live dot's freshness gate
 # (artist §1.2): the dot loop runs, but writes nothing while the
 # displayed pull is stale — the dot sits frozen at 60% instead.
+# v12.7.1 ONE LOCK: every screen mutation + page.update() runs
+# inside this single RLock — the daemon pulse ticks, every
+# list-mutating render, the nav swap, the workers' trailing
+# updates. On device, concurrent updates from pulse threads
+# interleaved with a render's bulk child-adds and the client
+# dropped the card patches ("client out of sync"); serializing
+# every update through one lock makes a torn patch impossible.
+# RLock, so a locked render may call locked helpers freely.
+_UPDATE_LOCK = threading.RLock()
+# v12.7.1 re-assert flag: at most one board re-assert Timer is
+# ever pending (see render_cards / _reassert_board).
+_REASSERT_PENDING = False
 # Performance budget (artist §5): at most 3 looping animations
 # stand at once in this app (dot + golden + splash-or-shimmer —
 # splash and shimmer never coexist), under the hard cap of 6.
@@ -577,12 +589,16 @@ def ice_pulse_loop(key):
             continue
         value = _pulse_value(key, _time.monotonic() - t0)
         limit = 4 if key == "shimmer" else 3
-        for ctrl in list(_PULSE_TARGETS.get(key) or [])[:limit]:
-            try:
-                ctrl.opacity = value
-                ctrl.update()
-            except Exception:
-                pass
+        # v12.7.1 one-lock: the whole tick (every ctrl write +
+        # update) runs inside the update lock, so a pulse tick
+        # can never interleave with a render's patch.
+        with _UPDATE_LOCK:
+            for ctrl in list(_PULSE_TARGETS.get(key) or [])[:limit]:
+                try:
+                    ctrl.opacity = value
+                    ctrl.update()
+                except Exception:
+                    pass
         stop.wait(0.12)
 
 
@@ -2258,22 +2274,23 @@ def _settle_in(page, ctrl, scale_from=0.99, dur=220,
     simply AT its identity state. This helper never touches
     a control's opacity and never starts a thread or timer:
     content visibility never depends on it."""
-    try:
-        ctrl.animate_scale = ft.Animation(
-            dur, ft.AnimationCurve.EASE_OUT_CUBIC)
-        ctrl.animate_offset = ft.Animation(
-            dur, ft.AnimationCurve.EASE_OUT_CUBIC)
-        ctrl.scale = ft.Scale(scale_from)
-        ctrl.offset = ft.Offset(0, dy)
-    except Exception:
-        return
-    page.update()
-    try:
-        ctrl.scale = ft.Scale(1.0)
-        ctrl.offset = ft.Offset(0, 0)
-    except Exception:
-        pass
-    page.update()
+    with _UPDATE_LOCK:
+        try:
+            ctrl.animate_scale = ft.Animation(
+                dur, ft.AnimationCurve.EASE_OUT_CUBIC)
+            ctrl.animate_offset = ft.Animation(
+                dur, ft.AnimationCurve.EASE_OUT_CUBIC)
+            ctrl.scale = ft.Scale(scale_from)
+            ctrl.offset = ft.Offset(0, dy)
+        except Exception:
+            return
+        page.update()
+        try:
+            ctrl.scale = ft.Scale(1.0)
+            ctrl.offset = ft.Offset(0, 0)
+        except Exception:
+            pass
+        page.update()
 
 
 def build_market_card(mkt: dict, verdict: dict, rec: dict,
@@ -3951,19 +3968,20 @@ def main(page: ft.Page):
             on_change=handler)
 
     def show_board_segment(seg: str):
-        state["board_seg"] = seg
-        board_seg_ctrl.selected = [seg]
-        finds = seg == "finds"
-        board_switcher.content = betfi_view if finds \
-            else cards_view
-        if finds:
-            render_betfi()
-        else:
-            render_cards()
-        # v12.6 segment transition: the incoming segment
-        # settles in (two-update, scale/offset only).
-        _settle_in(page, board_switcher.content)
-        page.update()
+        with _UPDATE_LOCK:
+            state["board_seg"] = seg
+            board_seg_ctrl.selected = [seg]
+            finds = seg == "finds"
+            board_switcher.content = betfi_view if finds \
+                else cards_view
+            if finds:
+                render_betfi()
+            else:
+                render_cards()
+            # v12.6 segment transition: the incoming segment
+            # settles in (two-update, scale/offset only).
+            _settle_in(page, board_switcher.content)
+            page.update()
 
     def on_board_seg(e):
         sel = e.control.selected or []
@@ -3974,19 +3992,20 @@ def main(page: ft.Page):
         on_board_seg)
 
     def show_slip_tool(tool: str):
-        state["slip_seg"] = tool
-        slip_seg_ctrl.selected = [tool]
-        slip_switcher.content = {"parse": parse_view,
-                                 "parlay": parlay_view,
-                                 "solver": solver_view}[tool]
-        if tool == "parse":
-            render_parse()
-        elif tool == "parlay":
-            render_parlay()
-        else:
-            render_solver()
-        render_protected()
-        page.update()
+        with _UPDATE_LOCK:
+            state["slip_seg"] = tool
+            slip_seg_ctrl.selected = [tool]
+            slip_switcher.content = {"parse": parse_view,
+                                     "parlay": parlay_view,
+                                     "solver": solver_view}[tool]
+            if tool == "parse":
+                render_parse()
+            elif tool == "parlay":
+                render_parlay()
+            else:
+                render_solver()
+            render_protected()
+            page.update()
 
     def on_slip_seg(e):
         sel = e.control.selected or []
@@ -4050,6 +4069,10 @@ def main(page: ft.Page):
     # ---------------- Cards ----------------
 
     cards_count = ft.Text("", size=11, color=FAINT)
+    # v12.7.1 render receipt: the board band states how many
+    # cards the last render_cards actually appended — the
+    # server-side truth, readable in any Pilot screenshot.
+    cards_receipt = ft.Text("", size=10, color=FAINT)
     cards_list = ft.Column(spacing=8)
     # v12.1 QoL: the board header band's pull-age line and the
     # clear-filters chip row — both live in the band (assembly
@@ -4320,129 +4343,163 @@ def main(page: ft.Page):
         # inside render_cards (two page.update() calls back to
         # back) — if the client animates between them, the rise
         # plays; if it doesn't, the cards are simply THERE.
-        cards = [c for c in cards
-                 if isinstance(c, ft.Container)][:8]
-        if not cards:
-            return
-        for c in cards:
-            c.offset = ft.Offset(0, 0.03)
-            c.animate_offset = ft.Animation(
-                180, ft.AnimationCurve.EASE_OUT_CUBIC)
-            if getattr(c, "data", None) == "golden":
-                # v12.6 golden entrance: golden cards also
-                # settle in scale (0.97 -> 1.0, 220 ms)
-                # through the same two shipped states —
-                # scale and offset only, like everything
-                # in this entrance.
-                c.scale = ft.Scale(0.97)
-                c.animate_scale = ft.Animation(
-                    220, ft.AnimationCurve.EASE_OUT_CUBIC)
-        page.update()
-        for c in cards:
-            c.offset = ft.Offset(0, 0)
-            if getattr(c, "data", None) == "golden":
-                c.scale = ft.Scale(1.0)
-        page.update()
+        with _UPDATE_LOCK:
+            cards = [c for c in cards
+                     if isinstance(c, ft.Container)][:8]
+            if not cards:
+                return
+            for c in cards:
+                c.offset = ft.Offset(0, 0.03)
+                c.animate_offset = ft.Animation(
+                    180, ft.AnimationCurve.EASE_OUT_CUBIC)
+                if getattr(c, "data", None) == "golden":
+                    # v12.6 golden entrance: golden cards also
+                    # settle in scale (0.97 -> 1.0, 220 ms)
+                    # through the same two shipped states —
+                    # scale and offset only, like everything
+                    # in this entrance.
+                    c.scale = ft.Scale(0.97)
+                    c.animate_scale = ft.Animation(
+                        220, ft.AnimationCurve.EASE_OUT_CUBIC)
+            page.update()
+            for c in cards:
+                c.offset = ft.Offset(0, 0)
+                if getattr(c, "data", None) == "golden":
+                    c.scale = ft.Scale(1.0)
+            page.update()
+
+    def _reassert_board():
+        # v12.7.1: the deferred board re-assert (see the end of
+        # render_cards). Runs on a plain Timer thread 0.35 s
+        # after a board render and re-ships the page through
+        # the one lock — if any part of the render's patch was
+        # torn in flight, the board lands whole a beat later.
+        # The flag clears first, so a fresh render during the
+        # re-assert may schedule the next one.
+        global _REASSERT_PENDING
+        _REASSERT_PENDING = False
+        try:
+            with _UPDATE_LOCK:
+                page.update()
+        except Exception:
+            pass
 
     def render_cards():
-        cards_list.controls = []
-        rec = state["slate"]
-        _sync_sport_view_dd()
-        if not rec:
-            pull_age_ctrl.value = ""
-            filter_chip_row.controls = []
-            cards_count.value = ""
-            cards_list.controls = [empty_full(
-                ft.Icons.CLOUD_OFF, "No pull yet",
-                "Tap Pull — until a live pull lands, every "
-                "market is UNVERIFIED, never assumed.")]
-            page.update()
-            return
-        entries = sorted_entries()
-        # v12.1 QoL header state: pull age + the clear-filters
-        # chip (present only while something is non-default).
-        pull_age_ctrl.value = _pull_age_text()
-        filter_chip_row.controls = (
-            [ft.TextButton(
-                "Clear filters", icon=ft.Icons.FILTER_ALT_OFF,
-                style=ft.ButtonStyle(color=ACCENT),
-                on_click=lambda _e: clear_all_filters())]
-            if _filters_nondefault() else [])
-        # v12.4 render diet: the filter dropdowns are static
-        # controls built once in the band — a render only syncs
-        # the sport dropdown's options to the slate (above) and
-        # rebuilds the card list. There is no per-slate switch
-        # row to rebuild at all anymore.
-        shown = apply_toggles(entries)
-        if len(shown) != len(entries):
-            cards_count.value = f"{len(shown)} of {len(entries)} markets"
-        else:
-            cards_count.value = f"{len(entries)} markets"
-        if state.get("league_filter"):
-            # arrived from the 3D panel (Coverage / Registry):
-            # the filter is named, and one tap returns
-            lf = state["league_filter"]
-            cards_list.controls.append(ft.Row(
-                spacing=8, wrap=True,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                controls=[
-                    ft.Icon(ft.Icons.FILTER_ALT, size=16,
-                            color=ACCENT),
-                    ft.Text(f"League: {lf['label']} — "
-                            f"{len(shown)} markets on this pull",
-                            size=12, color=INK,
-                            weight=ft.FontWeight.BOLD),
-                    ft.TextButton(
-                        "Back to 3D panel",
-                        on_click=lambda _e: nav_back()),
-                    ft.TextButton(
-                        "Clear filter",
-                        on_click=lambda _e:
-                        clear_league_filter())]))
-        markets = rec.get("markets", [])
-        quotes = game_quotes(markets)
-        ctx = lane_contexts(markets)
-        limit = state["card_limit"]
-        grouped = state["sort"] in ("pull", "time")
-        by_date = state["sort"] == "resolve"
-        last_sport = None
-        last_date = None
-        for mkt, verdict, edge in shown[:limit]:
-            if by_date:
-                label = resolve_date_label(mkt)
-                if label != last_date:
-                    last_date = label
-                    n_day = sum(1 for e in shown
-                                if resolve_date_label(e[0]) == label)
+        global _REASSERT_PENDING
+        with _UPDATE_LOCK:
+            cards_list.controls = []
+            rec = state["slate"]
+            _sync_sport_view_dd()
+            if not rec:
+                pull_age_ctrl.value = ""
+                filter_chip_row.controls = []
+                cards_count.value = ""
+                cards_receipt.value = (
+                    "Rendered: 0 cards on this board")
+                cards_list.controls = [empty_full(
+                    ft.Icons.CLOUD_OFF, "No pull yet",
+                    "Tap Pull — until a live pull lands, every "
+                    "market is UNVERIFIED, never assumed.")]
+                page.update()
+                return
+            entries = sorted_entries()
+            # v12.1 QoL header state: pull age + the clear-filters
+            # chip (present only while something is non-default).
+            pull_age_ctrl.value = _pull_age_text()
+            filter_chip_row.controls = (
+                [ft.TextButton(
+                    "Clear filters", icon=ft.Icons.FILTER_ALT_OFF,
+                    style=ft.ButtonStyle(color=ACCENT),
+                    on_click=lambda _e: clear_all_filters())]
+                if _filters_nondefault() else [])
+            # v12.4 render diet: the filter dropdowns are static
+            # controls built once in the band — a render only syncs
+            # the sport dropdown's options to the slate (above) and
+            # rebuilds the card list. There is no per-slate switch
+            # row to rebuild at all anymore.
+            shown = apply_toggles(entries)
+            if len(shown) != len(entries):
+                cards_count.value = f"{len(shown)} of {len(entries)} markets"
+            else:
+                cards_count.value = f"{len(entries)} markets"
+            if state.get("league_filter"):
+                # arrived from the 3D panel (Coverage / Registry):
+                # the filter is named, and one tap returns
+                lf = state["league_filter"]
+                cards_list.controls.append(ft.Row(
+                    spacing=8, wrap=True,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Icon(ft.Icons.FILTER_ALT, size=16,
+                                color=ACCENT),
+                        ft.Text(f"League: {lf['label']} — "
+                                f"{len(shown)} markets on this pull",
+                                size=12, color=INK,
+                                weight=ft.FontWeight.BOLD),
+                        ft.TextButton(
+                            "Back to 3D panel",
+                            on_click=lambda _e: nav_back()),
+                        ft.TextButton(
+                            "Clear filter",
+                            on_click=lambda _e:
+                            clear_league_filter())]))
+            markets = rec.get("markets", [])
+            quotes = game_quotes(markets)
+            ctx = lane_contexts(markets)
+            limit = state["card_limit"]
+            grouped = state["sort"] in ("pull", "time")
+            by_date = state["sort"] == "resolve"
+            last_sport = None
+            last_date = None
+            _n_rendered = 0
+            for mkt, verdict, edge in shown[:limit]:
+                if by_date:
+                    label = resolve_date_label(mkt)
+                    if label != last_date:
+                        last_date = label
+                        n_day = sum(1 for e in shown
+                                    if resolve_date_label(e[0]) == label)
+                        cards_list.controls.append(
+                            date_header(label, n_day))
+                elif grouped and mkt.get("sport") != last_sport:
+                    last_sport = mkt.get("sport")
+                    n_sport = sum(1 for e in shown
+                                  if e[0].get("sport") == last_sport)
                     cards_list.controls.append(
-                        date_header(label, n_day))
-            elif grouped and mkt.get("sport") != last_sport:
-                last_sport = mkt.get("sport")
-                n_sport = sum(1 for e in shown
-                              if e[0].get("sport") == last_sport)
-                cards_list.controls.append(
-                    sport_header(last_sport, n_sport))
-            cards_list.controls.append(build_card_safe(
-                mkt, verdict, rec, quotes, edge_pts=edge,
-                lane_ctx=ctx, on_chart=_card_chart,
-                on_toggle=render_cards))
-        if not shown:
-            cards_list.controls.append(empty_inline(
-                ft.Icons.SEARCH_OFF, "No markets in this view",
-                "Widen the Show or Board shows dropdown — the "
-                "pull itself is unchanged."))
-        elif len(shown) > limit:
-            cards_list.controls.append(ft.Button(
-                f"Show more ({len(shown) - limit} more)",
-                on_click=on_show_more))
-            cards_list.controls.append(ft.Text(
-                "Paging is display only — every market was priced "
-                "by the same pricing pass.", size=10, color=FAINT))
-        if state.pop("animate_next", False):
-            _animate_cards(cards_list.controls)
-        stop_pulse("shimmer")   # real content landed (artist
-        # §3.4: shimmer stops the moment content lands)
-        page.update()
+                        sport_header(last_sport, n_sport))
+                _card = build_card_safe(
+                    mkt, verdict, rec, quotes, edge_pts=edge,
+                    lane_ctx=ctx, on_chart=_card_chart,
+                    on_toggle=render_cards)
+                cards_list.controls.append(_card)
+                _n_rendered += 1
+            if not shown:
+                cards_list.controls.append(empty_inline(
+                    ft.Icons.SEARCH_OFF, "No markets in this view",
+                    "Widen the Show or Board shows dropdown — the "
+                    "pull itself is unchanged."))
+            elif len(shown) > limit:
+                cards_list.controls.append(ft.Button(
+                    f"Show more ({len(shown) - limit} more)",
+                    on_click=on_show_more))
+                cards_list.controls.append(ft.Text(
+                    "Paging is display only — every market was priced "
+                    "by the same pricing pass.", size=10, color=FAINT))
+            if state.pop("animate_next", False):
+                _animate_cards(cards_list.controls)
+            stop_pulse("shimmer")   # real content landed (artist
+            # §3.4: shimmer stops the moment content lands)
+            cards_receipt.value = (
+                f"Rendered: {_n_rendered} cards on this board")
+            page.update()
+            # v12.7.1 re-assert: schedule ONE deferred locked
+            # re-ship (0.35 s) so a torn patch self-heals; at
+            # most one is ever pending (module flag).
+            if not _REASSERT_PENDING:
+                _REASSERT_PENDING = True
+                _rt = threading.Timer(0.35, _reassert_board)
+                _rt.daemon = True
+                _rt.start()
 
     # ---------------- pull / price workers ----------------
 
@@ -4450,14 +4507,15 @@ def main(page: ft.Page):
         # A manual tap resets the auto-pull clock (v12) and —
         # v12.4 — ARMS the auto-pull loop: the user starts the
         # first pull, and only then may the loop tick.
-        state["pull_armed"] = True
-        state["last_pull_at"] = time.monotonic()
-        status.value = "Pulling the live FanDuel menu…"
-        cards_list.controls = skeleton_cards()
-        if AUTO_PULL_ENABLED:
-            start_pulse("shimmer")
-        page.update()
-        page.run_thread(_pull_worker)
+        with _UPDATE_LOCK:
+            state["pull_armed"] = True
+            state["last_pull_at"] = time.monotonic()
+            status.value = "Pulling the live FanDuel menu…"
+            cards_list.controls = skeleton_cards()
+            if AUTO_PULL_ENABLED:
+                start_pulse("shimmer")
+            page.update()
+            page.run_thread(_pull_worker)
 
     def _pull_worker(auto=False):
         # Off the event-handler thread (page.run_thread): the pull
@@ -4486,7 +4544,8 @@ def main(page: ft.Page):
                     "good pull; its stamp stands (STALE past the "
                     "engine's window). Nothing was assumed in "
                     "its place.")
-                page.update()
+                with _UPDATE_LOCK:
+                    page.update()
                 return
             state["slate"] = rec
             state["verdicts"] = None
@@ -4529,12 +4588,14 @@ def main(page: ft.Page):
                 play_sound("golden")
             if state.get("dismiss_splash"):
                 state["dismiss_splash"]()
-            page.update()
+            with _UPDATE_LOCK:
+                page.update()
         except Exception as e:
             status.value = (f"Pull failed on this device: "
                             f"{type(e).__name__}: {e}")
             try:
-                page.update()
+                with _UPDATE_LOCK:
+                    page.update()
             except Exception:
                 pass
         finally:
@@ -4562,16 +4623,17 @@ def main(page: ft.Page):
         # A manual tap resets the auto-pull clock (v12), same
         # as Pull all — and (v12.4) ARMS the auto-pull loop:
         # the user starts the first pull.
-        state["pull_armed"] = True
-        state["last_pull_at"] = time.monotonic()
-        label = SPORT_LABELS.get(state["chosen_sport"],
-                                  state["chosen_sport"])
-        status.value = f"Pulling {label}\u2026"
-        cards_list.controls = skeleton_cards()
-        if AUTO_PULL_ENABLED:
-            start_pulse("shimmer")
-        page.update()
-        page.run_thread(_sport_pull_worker)
+        with _UPDATE_LOCK:
+            state["pull_armed"] = True
+            state["last_pull_at"] = time.monotonic()
+            label = SPORT_LABELS.get(state["chosen_sport"],
+                                      state["chosen_sport"])
+            status.value = f"Pulling {label}\u2026"
+            cards_list.controls = skeleton_cards()
+            if AUTO_PULL_ENABLED:
+                start_pulse("shimmer")
+            page.update()
+            page.run_thread(_sport_pull_worker)
 
     def _menu_harvest_worker(sport, markets, token):
         # The scoped pull's background follow-up (v12.3
@@ -4639,7 +4701,8 @@ def main(page: ft.Page):
                     f"{label} markets; nothing was assumed in "
                     f"their place.")
                 refresh_stamp()
-                page.update()
+                with _UPDATE_LOCK:
+                    page.update()
                 return
             state["slate"] = merge_sport_pull(state["slate"],
                                                partial)
@@ -4669,7 +4732,8 @@ def main(page: ft.Page):
                 play_sound("golden")
             if state.get("dismiss_splash"):
                 state["dismiss_splash"]()
-            page.update()
+            with _UPDATE_LOCK:
+                page.update()
             # The per-game menus follow in the background
             # (v12.3 amendment) — scheduled LAST, after the
             # pull's own merge, save, pricing and render are
@@ -4686,7 +4750,8 @@ def main(page: ft.Page):
             status.value = (f"{label} pull failed on this "
                             f"device: {type(e).__name__}: {e}")
             try:
-                page.update()
+                with _UPDATE_LOCK:
+                    page.update()
             except Exception:
                 pass
         finally:
@@ -4734,12 +4799,14 @@ def main(page: ft.Page):
             refresh_stamp()
             if state.get("dismiss_splash"):
                 state["dismiss_splash"]()
-            page.update()
+            with _UPDATE_LOCK:
+                page.update()
         except Exception as e:
             status.value = (f"Pricing the last pull failed on "
                             f"this device: {type(e).__name__}: {e}")
             try:
-                page.update()
+                with _UPDATE_LOCK:
+                    page.update()
             except Exception:
                 pass
 
@@ -4747,15 +4814,16 @@ def main(page: ft.Page):
         # Price Slate is a user-initiated pull action — it arms
         # the auto-pull loop too (v12.4), even on the empty
         # path: the user has started the session's pulling.
-        state["pull_armed"] = True
-        if not state["slate"]:
-            status.value = "Nothing to price yet — Pull first."
+        with _UPDATE_LOCK:
+            state["pull_armed"] = True
+            if not state["slate"]:
+                status.value = "Nothing to price yet — Pull first."
+                page.update()
+                return
+            status.value = "Pricing the slate…"
+            cards_list.controls = skeleton_cards()
             page.update()
-            return
-        status.value = "Pricing the slate…"
-        cards_list.controls = skeleton_cards()
-        page.update()
-        page.run_thread(_price_worker)
+            page.run_thread(_price_worker)
 
     def _price_worker():
         # Same off-thread rule as _pull_worker.
@@ -4772,12 +4840,14 @@ def main(page: ft.Page):
             refresh_slip_badge()
             state["animate_next"] = True
             render_cards()
-            page.update()
+            with _UPDATE_LOCK:
+                page.update()
         except Exception as e:
             status.value = (f"Pricing failed on this device: "
                             f"{type(e).__name__}: {e}")
             try:
-                page.update()
+                with _UPDATE_LOCK:
+                    page.update()
             except Exception:
                 pass
 
@@ -4797,108 +4867,110 @@ def main(page: ft.Page):
             ft.Text(value, size=value_size, color=INK)])
 
     def render_parse():
-        parse_view.controls = [screen_title(
-            "Parse", "Read a pasted bet against the current pull.")]
-        rec = state["slate"]
-        if not rec:
-            parse_view.controls.append(empty_full(
-                ft.Icons.CLOUD_OFF, "No pull yet",
-                "Tap Pull — until a live pull lands, every "
-                "market is UNVERIFIED, never assumed."))
+        with _UPDATE_LOCK:
+            parse_view.controls = [screen_title(
+                "Parse", "Read a pasted bet against the current pull.")]
+            rec = state["slate"]
+            if not rec:
+                parse_view.controls.append(empty_full(
+                    ft.Icons.CLOUD_OFF, "No pull yet",
+                    "Tap Pull — until a live pull lands, every "
+                    "market is UNVERIFIED, never assumed."))
+                page.update()
+                return
+            parse_view.controls.append(ft.Container(
+                bgcolor=CARD_BG, border_radius=10, padding=12,
+                content=ft.Column(spacing=8, controls=[
+                    parse_field,
+                    ft.Button("Parse", on_click=on_parse,
+                              width=float("inf"))])))
+            if not parse_result.controls:
+                parse_result.controls = [ft.Text(
+                    "Nothing parsed yet. Paste a bet — teams, market, "
+                    "line, price — and the app will price it against "
+                    "the current pull. A bet it can't match to the "
+                    "pull gets stamped, not guessed.",
+                    size=12, color=DIM, height=1.35)]
+            parse_view.controls.append(parse_result)
             page.update()
-            return
-        parse_view.controls.append(ft.Container(
-            bgcolor=CARD_BG, border_radius=10, padding=12,
-            content=ft.Column(spacing=8, controls=[
-                parse_field,
-                ft.Button("Parse", on_click=on_parse,
-                          width=float("inf"))])))
-        if not parse_result.controls:
-            parse_result.controls = [ft.Text(
-                "Nothing parsed yet. Paste a bet — teams, market, "
-                "line, price — and the app will price it against "
-                "the current pull. A bet it can't match to the "
-                "pull gets stamped, not guessed.",
-                size=12, color=DIM, height=1.35)]
-        parse_view.controls.append(parse_result)
-        page.update()
 
     def on_parse(_e):
-        parse_result.controls = []
-        parsed = parse_slip_text(parse_field.value or "")
-        if parsed is None:
-            parse_result.controls.append(ft.Row(
-                spacing=8, vertical_alignment=
-                ft.CrossAxisAlignment.START, controls=[
-                    ft.Icon(ft.Icons.ERROR_OUTLINE, size=16,
-                            color=BAD),
-                    ft.Column(spacing=2, tight=True, controls=[
-                        ft.Text("Couldn't read that", size=12,
-                                color=BAD, weight=ft.FontWeight.BOLD),
-                        ft.Text("Try one line per bet, like: "
-                                "Lions -3.5 (-110)", size=12,
-                                color=DIM, height=1.35)])]))
-            page.update()
-            return
-        rows = []
-        if parsed.get("selection"):
-            rows.append(_kv_row("Selection", parsed["selection"]))
-        if parsed.get("partial"):
+        with _UPDATE_LOCK:
+            parse_result.controls = []
+            parsed = parse_slip_text(parse_field.value or "")
+            if parsed is None:
+                parse_result.controls.append(ft.Row(
+                    spacing=8, vertical_alignment=
+                    ft.CrossAxisAlignment.START, controls=[
+                        ft.Icon(ft.Icons.ERROR_OUTLINE, size=16,
+                                color=BAD),
+                        ft.Column(spacing=2, tight=True, controls=[
+                            ft.Text("Couldn't read that", size=12,
+                                    color=BAD, weight=ft.FontWeight.BOLD),
+                            ft.Text("Try one line per bet, like: "
+                                    "Lions -3.5 (-110)", size=12,
+                                    color=DIM, height=1.35)])]))
+                page.update()
+                return
+            rows = []
+            if parsed.get("selection"):
+                rows.append(_kv_row("Selection", parsed["selection"]))
+            if parsed.get("partial"):
+                if parsed.get("odds") is not None:
+                    rows.append(_kv_row("Odds",
+                                        f"{parsed['odds']:+d}"))
+                    rows.append(_kv_row(
+                        "Implied %",
+                        f"{b5.implied_prob(parsed['odds']) * 100:.1f}%"))
+                parse_result.controls.append(ft.Container(
+                    bgcolor=RAISED, border_radius=8, padding=12,
+                    content=ft.Column(spacing=4, controls=rows)))
+                parse_result.controls.append(ft.Text(
+                    "Parsed the price but not the market. Name the "
+                    "market (moneyline / spread / total) and parse "
+                    "again.", size=12, color=DIM, height=1.35))
+                page.update()
+                return
+            disp = fd_market_name({"market": parsed["market"],
+                                   "sport": None})
+            rows.append(_kv_row("Market", disp))
+            if parsed.get("selection"):
+                rows.append(_kv_row("Bet", parsed["selection"]))
+            if parsed.get("line") is not None:
+                rows.append(_kv_row("Line", f"{parsed['line']:+g}"))
             if parsed.get("odds") is not None:
-                rows.append(_kv_row("Odds",
-                                    f"{parsed['odds']:+d}"))
+                rows.append(_kv_row("Odds", f"{parsed['odds']:+d}"))
                 rows.append(_kv_row(
-                    "Implied %",
-                    f"{b5.implied_prob(parsed['odds']) * 100:.1f}%"))
+                    "Implied %", f"{parsed['implied'] * 100:.1f}%"))
             parse_result.controls.append(ft.Container(
                 bgcolor=RAISED, border_radius=8, padding=12,
                 content=ft.Column(spacing=4, controls=rows)))
-            parse_result.controls.append(ft.Text(
-                "Parsed the price but not the market. Name the "
-                "market (moneyline / spread / total) and parse "
-                "again.", size=12, color=DIM, height=1.35))
+            rec = state["slate"]
+            verdicts = ensure_verdicts() or []
+            markets = rec.get("markets", [])
+            found = find_parsed_match(parsed, markets, verdicts)
+            if found is None:
+                parse_result.controls.append(empty_inline(
+                    ft.Icons.SEARCH_OFF, "No matching market",
+                    "No match in the current pull for that bet. Pull "
+                    "the menu, or check the teams and market — nothing "
+                    "was assumed."))
+            else:
+                mkt, verdict = found
+                parse_result.controls.append(section_header(
+                    "MATCH IN THE LAST PULL", ACCENT))
+                parse_result.controls.append(build_card_safe(
+                    mkt, verdict, rec, game_quotes(markets),
+                    edge_pts=market_edge_pts(mkt, verdict),
+                    lane_ctx=lane_contexts(markets),
+                    on_chart=_card_chart,
+                    on_toggle=lambda: on_parse(None)))
+                parse_result.controls.append(_kelly_block(
+                    verdict.get("p"), mkt.get("price"),
+                    lane=market_lane(mkt),
+                    cal_tag=verdict.get("cal_tag"),
+                    priced=verdict.get("state") == "PRICED"))
             page.update()
-            return
-        disp = fd_market_name({"market": parsed["market"],
-                               "sport": None})
-        rows.append(_kv_row("Market", disp))
-        if parsed.get("selection"):
-            rows.append(_kv_row("Bet", parsed["selection"]))
-        if parsed.get("line") is not None:
-            rows.append(_kv_row("Line", f"{parsed['line']:+g}"))
-        if parsed.get("odds") is not None:
-            rows.append(_kv_row("Odds", f"{parsed['odds']:+d}"))
-            rows.append(_kv_row(
-                "Implied %", f"{parsed['implied'] * 100:.1f}%"))
-        parse_result.controls.append(ft.Container(
-            bgcolor=RAISED, border_radius=8, padding=12,
-            content=ft.Column(spacing=4, controls=rows)))
-        rec = state["slate"]
-        verdicts = ensure_verdicts() or []
-        markets = rec.get("markets", [])
-        found = find_parsed_match(parsed, markets, verdicts)
-        if found is None:
-            parse_result.controls.append(empty_inline(
-                ft.Icons.SEARCH_OFF, "No matching market",
-                "No match in the current pull for that bet. Pull "
-                "the menu, or check the teams and market — nothing "
-                "was assumed."))
-        else:
-            mkt, verdict = found
-            parse_result.controls.append(section_header(
-                "MATCH IN THE LAST PULL", ACCENT))
-            parse_result.controls.append(build_card_safe(
-                mkt, verdict, rec, game_quotes(markets),
-                edge_pts=market_edge_pts(mkt, verdict),
-                lane_ctx=lane_contexts(markets),
-                on_chart=_card_chart,
-                on_toggle=lambda: on_parse(None)))
-            parse_result.controls.append(_kelly_block(
-                verdict.get("p"), mkt.get("price"),
-                lane=market_lane(mkt),
-                cal_tag=verdict.get("cal_tag"),
-                priced=verdict.get("state") == "PRICED"))
-        page.update()
 
     # ---------------- Protected Slip (v12) ----------------
     # GOLDEN BET / BET HERE markets auto-populate this panel.
@@ -4957,190 +5029,191 @@ def main(page: ft.Page):
         return out
 
     def render_protected():
-        protected_view.controls = []
-        cands = protected_candidates()
-        bankroll = None
-        try:
-            bankroll = float(state.get("bankroll") or "") or None
-        except (TypeError, ValueError):
+        with _UPDATE_LOCK:
+            protected_view.controls = []
+            cands = protected_candidates()
             bankroll = None
-        rows = [ft.Text("PROTECTED SLIP — PLACEMENT-READY",
-                        size=13, color=ACCENT,
-                        weight=ft.FontWeight.BOLD),
-                ft.Text("Auto-built from this pull's GOLDEN BET / "
-                        "BET HERE markets, sized by the engine's "
-                        "Kelly organ. You place it on FanDuel "
-                        "yourself — the app never places a bet "
-                        "and never touches a sportsbook account.",
-                        size=11, color=DIM, height=1.35)]
-        if not cands:
-            rows.append(ft.Text(
-                "No GOLDEN BET or BET HERE markets on this pull "
-                "— the slip stays empty rather than promote a "
-                "market the engine did not bless.",
-                size=12, color=DIM, height=1.35))
-            protected_view.controls = [ft.Container(
-                bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
-                border_radius=14, padding=12, shadow=ELEV_L1,
-                content=ft.Column(spacing=6, controls=rows))]
-            page.update()
-            return
-        total_units = 0.0
-        total_dollars = 0.0 if bankroll else None
-        warnings = []
-        legs = []
-        seen_games = {}
-        any_golden = False
-        for m, v in cands:
-            term, _r = card_verdict(v)
-            any_golden = any_golden or term == "GOLDEN BET"
-            adv = b5.kelly_advice(
-                v["p"], m["price"], bankroll=bankroll,
-                cal_tag=v.get("cal_tag"), priced=True)
-            nm = bet_name(m, v)
-            stake_txt = f"{adv['stake_units']:.1f}u"
-            if adv["stake_dollars"] is not None:
-                stake_txt += f" (${adv['stake_dollars']:,.0f})"
-                total_dollars += adv["stake_dollars"]
-            total_units += adv["stake_units"]
-            legs.append({"name": nm["slip_label"], "term": term,
-                         "price": int(m["price"]),
-                         "stake_units": adv["stake_units"],
-                         "stake_dollars": adv["stake_dollars"]})
-            rows.append(ft.Row(
-                spacing=8, vertical_alignment=
-                ft.CrossAxisAlignment.START, controls=[
-                    verdict_pill(term),
-                    ft.Column(spacing=2, tight=True, expand=True,
-                              controls=[
-                                  ft.Text(nm["selection"],
-                                          size=13, color=INK,
-                                          weight=ft.FontWeight
-                                          .BOLD),
-                                  ft.Text(
-                                      f"{nm['market']} · "
-                                      f"{int(m['price']):+d} · "
-                                      f"Kelly stake {stake_txt}",
-                                      size=11, color=DIM,
-                                      font_family=NUM_FONT)])]))
-            for reason in adv["reasons"]:
-                if "UNCALIBRATED" in reason or "hard cap" in reason:
-                    warnings.append(f"{nm['selection']}: {reason}")
-            if v.get("note"):
-                warnings.append(
-                    f"{nm['selection']}: {plain_note(v['note'])}")
-            gkey = (m.get("sport"), m.get("home"), m.get("away"))
-            if gkey in seen_games:
-                warnings.append(
-                    "Multiple legs from the same game "
-                    f"({nm['matchup']}) — they are not "
-                    "independent; one game can sink several "
-                    "legs at once.")
-            seen_games[gkey] = True
-        total_txt = f"Total stake {total_units:.1f}u"
-        if total_dollars is not None:
-            total_txt += f" (${total_dollars:,.0f})"
-        # v12.1 QoL: the pinned summary line, directly under the
-        # panel header — legs, combined odds + combined model
-        # probability (the legs' own prices and probabilities,
-        # combined with the app's standing independence product,
-        # the same formula the Parlay tool prints), and max loss
-        # = the total stake computed above. Nothing recomputed
-        # on a second basis.
-        if legs:
-            _dec = 1.0
-            _mp = 1.0
-            for (_m, _v), _leg in zip(cands, legs):
-                _pr = int(_leg["price"])
-                _dec *= 1.0 + (_pr / 100.0 if _pr > 0
-                               else 100.0 / abs(_pr))
-                _mp *= float(_v.get("p") or 0.0)
-            _amer = (int(round((_dec - 1) * 100)) if _dec >= 2
-                     else int(round(-100.0 / (_dec - 1))))
-            _loss = f"{total_units:.1f}u"
+            try:
+                bankroll = float(state.get("bankroll") or "") or None
+            except (TypeError, ValueError):
+                bankroll = None
+            rows = [ft.Text("PROTECTED SLIP — PLACEMENT-READY",
+                            size=13, color=ACCENT,
+                            weight=ft.FontWeight.BOLD),
+                    ft.Text("Auto-built from this pull's GOLDEN BET / "
+                            "BET HERE markets, sized by the engine's "
+                            "Kelly organ. You place it on FanDuel "
+                            "yourself — the app never places a bet "
+                            "and never touches a sportsbook account.",
+                            size=11, color=DIM, height=1.35)]
+            if not cands:
+                rows.append(ft.Text(
+                    "No GOLDEN BET or BET HERE markets on this pull "
+                    "— the slip stays empty rather than promote a "
+                    "market the engine did not bless.",
+                    size=12, color=DIM, height=1.35))
+                protected_view.controls = [ft.Container(
+                    bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+                    border_radius=14, padding=12, shadow=ELEV_L1,
+                    content=ft.Column(spacing=6, controls=rows))]
+                page.update()
+                return
+            total_units = 0.0
+            total_dollars = 0.0 if bankroll else None
+            warnings = []
+            legs = []
+            seen_games = {}
+            any_golden = False
+            for m, v in cands:
+                term, _r = card_verdict(v)
+                any_golden = any_golden or term == "GOLDEN BET"
+                adv = b5.kelly_advice(
+                    v["p"], m["price"], bankroll=bankroll,
+                    cal_tag=v.get("cal_tag"), priced=True)
+                nm = bet_name(m, v)
+                stake_txt = f"{adv['stake_units']:.1f}u"
+                if adv["stake_dollars"] is not None:
+                    stake_txt += f" (${adv['stake_dollars']:,.0f})"
+                    total_dollars += adv["stake_dollars"]
+                total_units += adv["stake_units"]
+                legs.append({"name": nm["slip_label"], "term": term,
+                             "price": int(m["price"]),
+                             "stake_units": adv["stake_units"],
+                             "stake_dollars": adv["stake_dollars"]})
+                rows.append(ft.Row(
+                    spacing=8, vertical_alignment=
+                    ft.CrossAxisAlignment.START, controls=[
+                        verdict_pill(term),
+                        ft.Column(spacing=2, tight=True, expand=True,
+                                  controls=[
+                                      ft.Text(nm["selection"],
+                                              size=13, color=INK,
+                                              weight=ft.FontWeight
+                                              .BOLD),
+                                      ft.Text(
+                                          f"{nm['market']} · "
+                                          f"{int(m['price']):+d} · "
+                                          f"Kelly stake {stake_txt}",
+                                          size=11, color=DIM,
+                                          font_family=NUM_FONT)])]))
+                for reason in adv["reasons"]:
+                    if "UNCALIBRATED" in reason or "hard cap" in reason:
+                        warnings.append(f"{nm['selection']}: {reason}")
+                if v.get("note"):
+                    warnings.append(
+                        f"{nm['selection']}: {plain_note(v['note'])}")
+                gkey = (m.get("sport"), m.get("home"), m.get("away"))
+                if gkey in seen_games:
+                    warnings.append(
+                        "Multiple legs from the same game "
+                        f"({nm['matchup']}) — they are not "
+                        "independent; one game can sink several "
+                        "legs at once.")
+                seen_games[gkey] = True
+            total_txt = f"Total stake {total_units:.1f}u"
             if total_dollars is not None:
-                _loss += f" / ${total_dollars:,.0f}"
-            rows.insert(2, ft.Container(
-                gradient=PANEL_GRADIENT,
-                border=_border_all(1, HAIRLINE), border_radius=10,
-                padding=ft.Padding(left=10, right=10, top=7,
-                                   bottom=7),
-                content=ft.Text(
-                    f"{len(legs)} legs · combined odds "
-                    f"{_dec:.2f} ({_amer:+d}) · model {_mp:.1%} "
-                    f"· max loss {_loss}",
-                    size=12, color=INK,
-                    weight=ft.FontWeight.BOLD,
-                    font_family=NUM_FONT)))
-        rows.append(ft.Text(total_txt, size=15, color=INK,
-                            weight=ft.FontWeight.BOLD,
-                            font_family=NUM_FONT))
-        rows.append(ft.Text(
-            f"Max loss = the total stake above "
-            f"({total_units:.1f}u"
-            + (f" / ${total_dollars:,.0f}" if total_dollars
-               is not None else "")
-            + ") — every leg can lose, and the slip loses no "
-              "more than what is staked. There is no scenario "
-              "worse than that printed here.",
-            size=12, color=WARN, height=1.35))
-        if warnings:
-            rows.append(ft.Text("WARNINGS — READ BEFORE PLACING",
-                                size=11, color=WARN,
-                                weight=ft.FontWeight.BOLD))
-            for w in dict.fromkeys(warnings):
-                rows.append(ft.Row(spacing=6, controls=[
-                    ft.Icon(ft.Icons.WARNING_AMBER, size=14,
-                            color=WARN),
-                    ft.Text(w, size=11, color=WARN, height=1.3,
-                            expand=True)]))
-        if not state["protected_confirm"]:
-            rows.append(primary_button(
-                "Mark placed on FanDuel",
-                lambda _e: _protected_confirm(cands, legs,
-                                              total_units,
-                                              total_dollars)))
+                total_txt += f" (${total_dollars:,.0f})"
+            # v12.1 QoL: the pinned summary line, directly under the
+            # panel header — legs, combined odds + combined model
+            # probability (the legs' own prices and probabilities,
+            # combined with the app's standing independence product,
+            # the same formula the Parlay tool prints), and max loss
+            # = the total stake computed above. Nothing recomputed
+            # on a second basis.
+            if legs:
+                _dec = 1.0
+                _mp = 1.0
+                for (_m, _v), _leg in zip(cands, legs):
+                    _pr = int(_leg["price"])
+                    _dec *= 1.0 + (_pr / 100.0 if _pr > 0
+                                   else 100.0 / abs(_pr))
+                    _mp *= float(_v.get("p") or 0.0)
+                _amer = (int(round((_dec - 1) * 100)) if _dec >= 2
+                         else int(round(-100.0 / (_dec - 1))))
+                _loss = f"{total_units:.1f}u"
+                if total_dollars is not None:
+                    _loss += f" / ${total_dollars:,.0f}"
+                rows.insert(2, ft.Container(
+                    gradient=PANEL_GRADIENT,
+                    border=_border_all(1, HAIRLINE), border_radius=10,
+                    padding=ft.Padding(left=10, right=10, top=7,
+                                       bottom=7),
+                    content=ft.Text(
+                        f"{len(legs)} legs · combined odds "
+                        f"{_dec:.2f} ({_amer:+d}) · model {_mp:.1%} "
+                        f"· max loss {_loss}",
+                        size=12, color=INK,
+                        weight=ft.FontWeight.BOLD,
+                        font_family=NUM_FONT)))
+            rows.append(ft.Text(total_txt, size=15, color=INK,
+                                weight=ft.FontWeight.BOLD,
+                                font_family=NUM_FONT))
             rows.append(ft.Text(
-                "Tapping asks you to confirm the legs + total "
-                "first. Nothing is written until you confirm — "
-                "and what is written is YOUR mark, in the Pilot "
-                "Book, as PLACED (user-marked).",
-                size=10, color=FAINT, height=1.3))
-        else:
-            rows.append(ft.Text(
-                "Confirm: you placed exactly these legs on "
-                "FanDuel at the prices above?",
-                size=12, color=INK, weight=ft.FontWeight.BOLD))
-            rows.append(ft.Row(spacing=8, controls=[
-                primary_button(
-                    "Yes — mark it placed",
-                    lambda _e: _protected_mark(legs, total_units,
-                                               total_dollars)),
-                secondary_button(
-                    "Not yet",
-                    lambda _e: _protected_unconfirm())]))
-        panel_controls = []
-        if any_golden:
-            # the GOLDEN warm pulse lives on this glow bar: a
-            # pre-rendered gold glow layer whose opacity the
-            # golden pulse breathes (2800 ms) — the only warm
-            # pulse in the app, on a GOLDEN surface only.
-            glow_bar = ft.Container(
-                height=6, border_radius=3, bgcolor=GOLD,
-                shadow=GOLD_GLOW, opacity=0.425,
-                animate_opacity=ft.Animation(
-                    120, ft.AnimationCurve.EASE_IN_OUT))
-            _PULSE_TARGETS["golden"] = [glow_bar]
-            panel_controls.append(glow_bar)
-        panel_controls.append(ft.Container(
-            bgcolor=CARD_BG,
-            gradient=GOLD_GRADIENT if any_golden else PANEL_GRADIENT,
-            border=_border_all(1.5 if any_golden else 1,
-                               GOLD if any_golden else HAIRLINE),
-            border_radius=14, padding=12, shadow=ELEV_L2,
-            content=ft.Column(spacing=6, controls=rows)))
-        protected_view.controls = panel_controls
-        page.update()
+                f"Max loss = the total stake above "
+                f"({total_units:.1f}u"
+                + (f" / ${total_dollars:,.0f}" if total_dollars
+                   is not None else "")
+                + ") — every leg can lose, and the slip loses no "
+                  "more than what is staked. There is no scenario "
+                  "worse than that printed here.",
+                size=12, color=WARN, height=1.35))
+            if warnings:
+                rows.append(ft.Text("WARNINGS — READ BEFORE PLACING",
+                                    size=11, color=WARN,
+                                    weight=ft.FontWeight.BOLD))
+                for w in dict.fromkeys(warnings):
+                    rows.append(ft.Row(spacing=6, controls=[
+                        ft.Icon(ft.Icons.WARNING_AMBER, size=14,
+                                color=WARN),
+                        ft.Text(w, size=11, color=WARN, height=1.3,
+                                expand=True)]))
+            if not state["protected_confirm"]:
+                rows.append(primary_button(
+                    "Mark placed on FanDuel",
+                    lambda _e: _protected_confirm(cands, legs,
+                                                  total_units,
+                                                  total_dollars)))
+                rows.append(ft.Text(
+                    "Tapping asks you to confirm the legs + total "
+                    "first. Nothing is written until you confirm — "
+                    "and what is written is YOUR mark, in the Pilot "
+                    "Book, as PLACED (user-marked).",
+                    size=10, color=FAINT, height=1.3))
+            else:
+                rows.append(ft.Text(
+                    "Confirm: you placed exactly these legs on "
+                    "FanDuel at the prices above?",
+                    size=12, color=INK, weight=ft.FontWeight.BOLD))
+                rows.append(ft.Row(spacing=8, controls=[
+                    primary_button(
+                        "Yes — mark it placed",
+                        lambda _e: _protected_mark(legs, total_units,
+                                                   total_dollars)),
+                    secondary_button(
+                        "Not yet",
+                        lambda _e: _protected_unconfirm())]))
+            panel_controls = []
+            if any_golden:
+                # the GOLDEN warm pulse lives on this glow bar: a
+                # pre-rendered gold glow layer whose opacity the
+                # golden pulse breathes (2800 ms) — the only warm
+                # pulse in the app, on a GOLDEN surface only.
+                glow_bar = ft.Container(
+                    height=6, border_radius=3, bgcolor=GOLD,
+                    shadow=GOLD_GLOW, opacity=0.425,
+                    animate_opacity=ft.Animation(
+                        120, ft.AnimationCurve.EASE_IN_OUT))
+                _PULSE_TARGETS["golden"] = [glow_bar]
+                panel_controls.append(glow_bar)
+            panel_controls.append(ft.Container(
+                bgcolor=CARD_BG,
+                gradient=GOLD_GRADIENT if any_golden else PANEL_GRADIENT,
+                border=_border_all(1.5 if any_golden else 1,
+                                   GOLD if any_golden else HAIRLINE),
+                border_radius=14, padding=12, shadow=ELEV_L2,
+                content=ft.Column(spacing=6, controls=rows)))
+            protected_view.controls = panel_controls
+            page.update()
 
     def _protected_confirm(cands, legs, total_units, total_dollars):
         state["protected_confirm"] = True
@@ -5250,86 +5323,87 @@ def main(page: ft.Page):
             content=ft.Column(spacing=5, controls=rows))
 
     def render_parlay():
-        parlay_view.controls = [screen_title(
-            "Parlay", "Priced legs only — built from the last pull.")]
-        rec = state["slate"]
-        if not rec:
-            parlay_view.controls.append(empty_full(
-                ft.Icons.CLOUD_OFF, "No pull yet",
-                "Tap Pull — until a live pull lands, every "
-                "market is UNVERIFIED, never assumed."))
-            page.update()
-            return
-        options = priced_options()
-        state["priced_options"] = options
-        legs = state["parlay_legs"]
-        if legs:
-            for i, (mkt, verdict) in enumerate(legs):
-                _nm = bet_name(mkt, verdict)
-                edge = market_edge_pts(mkt, verdict)
-                meta = (f"{_nm['market']} · "
-                        f"{int(mkt['price']):+d} · model "
-                        f"{verdict['p'] * 100:.1f}% · edge "
-                        f"{edge:+.1f} pts" if edge is not None
-                        else f"{int(mkt['price']):+d}")
-                parlay_view.controls.append(ft.Container(
-                    bgcolor=RAISED, border_radius=8, padding=8,
-                    content=ft.Row(
-                        spacing=8, alignment=
-                        ft.MainAxisAlignment.SPACE_BETWEEN,
-                        controls=[
-                            ft.Column(spacing=2, tight=True,
-                                      controls=[
-                                          ft.Text(
-                                              _nm["selection"],
-                                              size=13, color=INK,
-                                              weight=ft.FontWeight
-                                              .BOLD),
-                                          ft.Text(meta, size=11,
-                                                  color=DIM)]),
-                            ft.IconButton(
-                                icon=ft.Icons.CLOSE, icon_size=16,
-                                icon_color=FAINT, width=40,
-                                height=40,
-                                on_click=lambda _e, i=i:
-                                on_remove_leg(i))])))
-        else:
-            parlay_view.controls.append(empty_inline(
-                ft.Icons.RECEIPT_LONG, "No legs yet",
-                "Add priced legs from the last pull and the "
-                "combined price builds here."))
-        if not options:
-            parlay_view.controls.append(empty_inline(
-                ft.Icons.SEARCH_OFF, "No priced legs on this pull",
-                "Every market on this pull is UNPRICED — there is "
-                "nothing honest to combine."))
-        else:
-            in_legs = {id(m) for m, _v in legs}
-            avail = [(i, m, v) for i, (m, v) in enumerate(options)
-                     if id(m) not in in_legs]
-            dd = ft.Dropdown(
-                value=None, width=float("inf"),
-                options=[ft.DropdownOption(
-                    key=str(i),
-                    text=bet_name(m, v)["slip_label"])
-                    for i, m, v in avail],
-                on_select=lambda e: state.update(
-                    {"parlay_pick": e.control.value}))
+        with _UPDATE_LOCK:
+            parlay_view.controls = [screen_title(
+                "Parlay", "Priced legs only — built from the last pull.")]
+            rec = state["slate"]
+            if not rec:
+                parlay_view.controls.append(empty_full(
+                    ft.Icons.CLOUD_OFF, "No pull yet",
+                    "Tap Pull — until a live pull lands, every "
+                    "market is UNVERIFIED, never assumed."))
+                page.update()
+                return
+            options = priced_options()
+            state["priced_options"] = options
+            legs = state["parlay_legs"]
+            if legs:
+                for i, (mkt, verdict) in enumerate(legs):
+                    _nm = bet_name(mkt, verdict)
+                    edge = market_edge_pts(mkt, verdict)
+                    meta = (f"{_nm['market']} · "
+                            f"{int(mkt['price']):+d} · model "
+                            f"{verdict['p'] * 100:.1f}% · edge "
+                            f"{edge:+.1f} pts" if edge is not None
+                            else f"{int(mkt['price']):+d}")
+                    parlay_view.controls.append(ft.Container(
+                        bgcolor=RAISED, border_radius=8, padding=8,
+                        content=ft.Row(
+                            spacing=8, alignment=
+                            ft.MainAxisAlignment.SPACE_BETWEEN,
+                            controls=[
+                                ft.Column(spacing=2, tight=True,
+                                          controls=[
+                                              ft.Text(
+                                                  _nm["selection"],
+                                                  size=13, color=INK,
+                                                  weight=ft.FontWeight
+                                                  .BOLD),
+                                              ft.Text(meta, size=11,
+                                                      color=DIM)]),
+                                ft.IconButton(
+                                    icon=ft.Icons.CLOSE, icon_size=16,
+                                    icon_color=FAINT, width=40,
+                                    height=40,
+                                    on_click=lambda _e, i=i:
+                                    on_remove_leg(i))])))
+            else:
+                parlay_view.controls.append(empty_inline(
+                    ft.Icons.RECEIPT_LONG, "No legs yet",
+                    "Add priced legs from the last pull and the "
+                    "combined price builds here."))
+            if not options:
+                parlay_view.controls.append(empty_inline(
+                    ft.Icons.SEARCH_OFF, "No priced legs on this pull",
+                    "Every market on this pull is UNPRICED — there is "
+                    "nothing honest to combine."))
+            else:
+                in_legs = {id(m) for m, _v in legs}
+                avail = [(i, m, v) for i, (m, v) in enumerate(options)
+                         if id(m) not in in_legs]
+                dd = ft.Dropdown(
+                    value=None, width=float("inf"),
+                    options=[ft.DropdownOption(
+                        key=str(i),
+                        text=bet_name(m, v)["slip_label"])
+                        for i, m, v in avail],
+                    on_select=lambda e: state.update(
+                        {"parlay_pick": e.control.value}))
+                parlay_view.controls.append(ft.Row(spacing=8, controls=[
+                    dd, ft.Button("Add leg", on_click=on_add_leg)]))
+                parlay_view.controls.append(parlay_msg)
             parlay_view.controls.append(ft.Row(spacing=8, controls=[
-                dd, ft.Button("Add leg", on_click=on_add_leg)]))
-            parlay_view.controls.append(parlay_msg)
-        parlay_view.controls.append(ft.Row(spacing=8, controls=[
-            ft.TextField(
-                label="Bankroll $ — for Kelly $ sizing",
-                value=state["bankroll"], width=220,
-                keyboard_type=ft.KeyboardType.NUMBER,
-                on_change=lambda e: state.update(
-                    {"bankroll": e.control.value or ""})),
-            ft.Button("Update sizing",
-                      on_click=lambda _e: render_parlay())]))
-        if legs:
-            parlay_view.controls.append(_combined_block(legs))
-        page.update()
+                ft.TextField(
+                    label="Bankroll $ — for Kelly $ sizing",
+                    value=state["bankroll"], width=220,
+                    keyboard_type=ft.KeyboardType.NUMBER,
+                    on_change=lambda e: state.update(
+                        {"bankroll": e.control.value or ""})),
+                ft.Button("Update sizing",
+                          on_click=lambda _e: render_parlay())]))
+            if legs:
+                parlay_view.controls.append(_combined_block(legs))
+            page.update()
 
     def _combined_block(legs):
         c = parlay_combine(legs)
@@ -5591,30 +5665,31 @@ def main(page: ft.Page):
         "Kelly stake — you have a guess with a formula on it.")
 
     def render_solver():
-        solver_view.controls = [
-            screen_title("Solver",
-                         "The arithmetic, in the open."),
-            _solver_block(
-                "STAKE FOR TARGET PROFIT",
-                "How much to stake so a win returns the profit "
-                "you name.",
-                [tp_profit, tp_odds], on_solve_profit, tp_err,
-                tp_result),
-            _solver_block(
-                "KELLY SIZING",
-                "The stake a probability earns, at full, half "
-                "and quarter Kelly.",
-                [k_bank, k_odds, k_prob], on_solve_kelly, k_err,
-                k_result,
-                extra=ft.Text(KELLY_WARNING, size=11, color=WARN,
-                              height=1.35)),
-            _solver_block(
-                "HEDGE — EQUAL RETURN",
-                "The hedge stake that pays the same total "
-                "whichever side wins.",
-                [h_stake, h_odds1, h_odds2], on_solve_hedge,
-                h_err, h_result)]
-        page.update()
+        with _UPDATE_LOCK:
+            solver_view.controls = [
+                screen_title("Solver",
+                             "The arithmetic, in the open."),
+                _solver_block(
+                    "STAKE FOR TARGET PROFIT",
+                    "How much to stake so a win returns the profit "
+                    "you name.",
+                    [tp_profit, tp_odds], on_solve_profit, tp_err,
+                    tp_result),
+                _solver_block(
+                    "KELLY SIZING",
+                    "The stake a probability earns, at full, half "
+                    "and quarter Kelly.",
+                    [k_bank, k_odds, k_prob], on_solve_kelly, k_err,
+                    k_result,
+                    extra=ft.Text(KELLY_WARNING, size=11, color=WARN,
+                                  height=1.35)),
+                _solver_block(
+                    "HEDGE — EQUAL RETURN",
+                    "The hedge stake that pays the same total "
+                    "whichever side wins.",
+                    [h_stake, h_odds1, h_odds2], on_solve_hedge,
+                    h_err, h_result)]
+            page.update()
 
 
     # ---------------- More + sub-views ----------------
@@ -5629,133 +5704,135 @@ def main(page: ft.Page):
         # More is closed to new tiles in 10.4.x (UX nav law):
         # the finds feed moved to the Board and the Record grew
         # into the Lab destination — what remains is reference.
-        tiles = [
-            (ft.Icons.MENU_BOOK, "Terms",
-             "What every word on a card means", "terms"),
-            (ft.Icons.FUNCTIONS, "Equations",
-             "The math, in the open", "equations"),
-            (ft.Icons.CODE, "Dev",
-             "Version, fingerprint, credit", "dev")]
-        controls = [screen_title("More", "Everything else in BetFi.")]
-        # v12.1: the sound toggle — persisted on-device, default
-        # ON. Off means play_sound no-ops everywhere at once.
-        controls.append(_switch(
-            "Sound — tap ticks, slip confirm, golden chime",
-            bool(_SOUND.get("enabled", True)),
-            lambda e: set_sound_enabled(bool(e.control.value))))
-        controls.append(ft.Text(
-            "Three quiet sounds, volume-capped, off means off — "
-            "the setting is saved on this device.",
-            size=10, color=FAINT, height=1.3))
-        controls.append(ft.Divider(color=BORDER))
-        for icon, title, sub, target in tiles:
-            controls.append(ft.ListTile(
-                leading=ft.Icon(icon, color=ACCENT),
-                title=ft.Text(title, size=14, color=INK),
-                subtitle=ft.Text(sub, size=11, color=FAINT),
-                trailing=ft.Icon(ft.Icons.CHEVRON_RIGHT,
-                                 color=FAINT),
-                on_click=lambda _e, t=target: show(t)))
+        with _UPDATE_LOCK:
+            tiles = [
+                (ft.Icons.MENU_BOOK, "Terms",
+                 "What every word on a card means", "terms"),
+                (ft.Icons.FUNCTIONS, "Equations",
+                 "The math, in the open", "equations"),
+                (ft.Icons.CODE, "Dev",
+                 "Version, fingerprint, credit", "dev")]
+            controls = [screen_title("More", "Everything else in BetFi.")]
+            # v12.1: the sound toggle — persisted on-device, default
+            # ON. Off means play_sound no-ops everywhere at once.
+            controls.append(_switch(
+                "Sound — tap ticks, slip confirm, golden chime",
+                bool(_SOUND.get("enabled", True)),
+                lambda e: set_sound_enabled(bool(e.control.value))))
+            controls.append(ft.Text(
+                "Three quiet sounds, volume-capped, off means off — "
+                "the setting is saved on this device.",
+                size=10, color=FAINT, height=1.3))
             controls.append(ft.Divider(color=BORDER))
-        more_view.controls = controls
-        page.update()
+            for icon, title, sub, target in tiles:
+                controls.append(ft.ListTile(
+                    leading=ft.Icon(icon, color=ACCENT),
+                    title=ft.Text(title, size=14, color=INK),
+                    subtitle=ft.Text(sub, size=11, color=FAINT),
+                    trailing=ft.Icon(ft.Icons.CHEVRON_RIGHT,
+                                     color=FAINT),
+                    on_click=lambda _e, t=target: show(t)))
+                controls.append(ft.Divider(color=BORDER))
+            more_view.controls = controls
+            page.update()
 
     # ---------------- BetFi finds ----------------
 
     def render_betfi():
-        betfi_view.controls = [ft.Text(
-            "Finds — golden bets first, then the ranked finds. "
-            "Same pull, same prices as All cards; the feed only "
-            "re-ranks.", size=12, color=DIM, height=1.35)]
-        rec = state["slate"]
-        if not rec:
-            betfi_view.controls.append(empty_full(
-                ft.Icons.CLOUD_OFF, "Nothing to distill",
-                "The feed distills the current pull — pull the "
-                "menu on the Board first."))
-            page.update()
-            return
-        verdicts = ensure_verdicts()
-        markets = rec.get("markets", [])
-        quotes = game_quotes(markets)
-        ctx = lane_contexts(markets)
-        golden, finds, flagged, counter = distill_finds(markets,
-                                                         verdicts)
-        betfi_view.controls.append(section_header("GOLDEN BETS",
-                                                  GOLD))
-        if golden:
-            # the GOLDEN warm pulse (2800 ms) breathes this
-            # pre-rendered glow layer's opacity — gold only,
-            # GOLDEN surface only; the empty panel below gets
-            # NO glow and NO pulse (artist §1.3 / rescue §6).
-            _glow = ft.Container(
-                height=6, border_radius=3, bgcolor=GOLD,
-                shadow=GOLD_GLOW, opacity=0.425,
-                animate_opacity=ft.Animation(
-                    120, ft.AnimationCurve.EASE_IN_OUT))
-            betfi_view.controls.append(_glow)
-        if not golden:
-            betfi_view.controls.append(empty_inline(
-                ft.Icons.STAR_OUTLINE, "No golden bets on this pull"))
-            betfi_view.controls.append(ft.Text(
-                "Nothing golden on this pull. The standard don't "
-                "drop just 'cause the panel empty.",
-                size=11, color=DIM))
-        for mkt, verdict, edge in golden:
-            betfi_view.controls.append(build_card_safe(
-                mkt, verdict, rec, quotes, edge_pts=edge,
-                lane_ctx=ctx, on_chart=_card_chart,
-                on_toggle=render_betfi))
-        betfi_view.controls.append(section_header(
-            f"FINDS — verdict ladder, then edge ({len(finds)})",
-            ACCENT))
-        if not finds:
-            betfi_view.controls.append(ft.Text(
-                "No priced, verdict-bearing market on this pull. "
-                "The feed stays empty rather than promote a "
-                "market the engine did not price.",
-                size=12, color=DIM, height=1.35))
-        for i, (mkt, verdict, edge) in enumerate(
-                finds[:CARD_PAGE], start=1):
-            betfi_view.controls.append(build_card_safe(
-                mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
-                lane_ctx=ctx, on_chart=_card_chart,
-                on_toggle=render_betfi))
-        if len(finds) > CARD_PAGE:
-            betfi_view.controls.append(ft.Text(
-                f"+{len(finds) - CARD_PAGE} more finds past the "
-                f"page cap — All cards on the Board holds the "
-                f"full list.", size=11, color=FAINT))
-        if flagged:
-            betfi_view.controls.append(section_header(
-                f"PRICE CONFLICT — two prices for the same event "
-                f"disagree inside this pull ({len(flagged)})",
-                WARN))
-            for mkt, verdict, edge in flagged:
+        with _UPDATE_LOCK:
+            betfi_view.controls = [ft.Text(
+                "Finds — golden bets first, then the ranked finds. "
+                "Same pull, same prices as All cards; the feed only "
+                "re-ranks.", size=12, color=DIM, height=1.35)]
+            rec = state["slate"]
+            if not rec:
+                betfi_view.controls.append(empty_full(
+                    ft.Icons.CLOUD_OFF, "Nothing to distill",
+                    "The feed distills the current pull — pull the "
+                    "menu on the Board first."))
+                page.update()
+                return
+            verdicts = ensure_verdicts()
+            markets = rec.get("markets", [])
+            quotes = game_quotes(markets)
+            ctx = lane_contexts(markets)
+            golden, finds, flagged, counter = distill_finds(markets,
+                                                             verdicts)
+            betfi_view.controls.append(section_header("GOLDEN BETS",
+                                                      GOLD))
+            if golden:
+                # the GOLDEN warm pulse (2800 ms) breathes this
+                # pre-rendered glow layer's opacity — gold only,
+                # GOLDEN surface only; the empty panel below gets
+                # NO glow and NO pulse (artist §1.3 / rescue §6).
+                _glow = ft.Container(
+                    height=6, border_radius=3, bgcolor=GOLD,
+                    shadow=GOLD_GLOW, opacity=0.425,
+                    animate_opacity=ft.Animation(
+                        120, ft.AnimationCurve.EASE_IN_OUT))
+                betfi_view.controls.append(_glow)
+            if not golden:
+                betfi_view.controls.append(empty_inline(
+                    ft.Icons.STAR_OUTLINE, "No golden bets on this pull"))
+                betfi_view.controls.append(ft.Text(
+                    "Nothing golden on this pull. The standard don't "
+                    "drop just 'cause the panel empty.",
+                    size=11, color=DIM))
+            for mkt, verdict, edge in golden:
                 betfi_view.controls.append(build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, on_chart=_card_chart,
                     on_toggle=render_betfi))
-        counter_lines = []
-        for _m, v, e in counter:
-            _nm = bet_name(_m, v)
-            counter_lines.append(
-                f"{_nm['selection']} · {_nm['market']} — "
-                f"{v.get('state')}"
-                + (f" · edge {e:+.1f} pts"
-                   if e is not None else ""))
-        betfi_view.controls.append(ft.ExpansionTile(
-            title=ft.Text(f"Checked — no edge ({len(counter)})",
-                          size=12, color=FAINT,
-                          weight=ft.FontWeight.BOLD),
-            controls=[ft.Container(padding=8, content=ft.Column(
-                spacing=2, controls=[_line(t, 10, FAINT)
-                                     for t in counter_lines]))]))
-        # the golden pulse key belongs to this surface's
-        # glow bar alone (v12.7: cards no longer carry bars;
-        # render_protected's glow bar is the other owner)
-        _PULSE_TARGETS["golden"] = [_glow] if golden else []
-        page.update()
+            betfi_view.controls.append(section_header(
+                f"FINDS — verdict ladder, then edge ({len(finds)})",
+                ACCENT))
+            if not finds:
+                betfi_view.controls.append(ft.Text(
+                    "No priced, verdict-bearing market on this pull. "
+                    "The feed stays empty rather than promote a "
+                    "market the engine did not price.",
+                    size=12, color=DIM, height=1.35))
+            for i, (mkt, verdict, edge) in enumerate(
+                    finds[:CARD_PAGE], start=1):
+                betfi_view.controls.append(build_card_safe(
+                    mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
+                    lane_ctx=ctx, on_chart=_card_chart,
+                    on_toggle=render_betfi))
+            if len(finds) > CARD_PAGE:
+                betfi_view.controls.append(ft.Text(
+                    f"+{len(finds) - CARD_PAGE} more finds past the "
+                    f"page cap — All cards on the Board holds the "
+                    f"full list.", size=11, color=FAINT))
+            if flagged:
+                betfi_view.controls.append(section_header(
+                    f"PRICE CONFLICT — two prices for the same event "
+                    f"disagree inside this pull ({len(flagged)})",
+                    WARN))
+                for mkt, verdict, edge in flagged:
+                    betfi_view.controls.append(build_card_safe(
+                        mkt, verdict, rec, quotes, edge_pts=edge,
+                        lane_ctx=ctx, on_chart=_card_chart,
+                        on_toggle=render_betfi))
+            counter_lines = []
+            for _m, v, e in counter:
+                _nm = bet_name(_m, v)
+                counter_lines.append(
+                    f"{_nm['selection']} · {_nm['market']} — "
+                    f"{v.get('state')}"
+                    + (f" · edge {e:+.1f} pts"
+                       if e is not None else ""))
+            betfi_view.controls.append(ft.ExpansionTile(
+                title=ft.Text(f"Checked — no edge ({len(counter)})",
+                              size=12, color=FAINT,
+                              weight=ft.FontWeight.BOLD),
+                controls=[ft.Container(padding=8, content=ft.Column(
+                    spacing=2, controls=[_line(t, 10, FAINT)
+                                         for t in counter_lines]))]))
+            # the golden pulse key belongs to this surface's
+            # glow bar alone (v12.7: cards no longer carry bars;
+            # render_protected's glow bar is the other owner)
+            _PULSE_TARGETS["golden"] = [_glow] if golden else []
+            page.update()
 
     # ---------------- Lab (the record wing) ----------------
 
@@ -5768,329 +5845,330 @@ def main(page: ft.Page):
             + _money(v)
 
     def render_lab():
-        pack = load_lab_pack()
-        record_view.controls = [screen_title(
-            "Lab",
-            "The record wing — the lab's graded history, read "
-            "from the bundled evidence pack.")]
-        if pack is None:
-            # ROOM RULE failure state: a named state, never a
-            # ledger — no lane rows, no book sections, no totals.
-            record_view.controls.append(empty_full(
-                ft.Icons.FOLDER_OFF, "Record not bundled",
-                "This build shipped without the lab evidence "
-                "pack, so the Lab shows no record at all — never "
-                "an empty ledger dressed as 0-0. The full BetFi "
-                "Xii build carries the pack."))
-            page.update()
-            return
-        exported = str(pack.get("exported_at") or "")
-        record_view.controls.append(ft.Text(
-            f"Lab record as of {exported[:10]} · evidence pack "
-            f"exported {exported} · the app reads it, only the "
-            f"lab writes it.", size=11, color=FAINT, height=1.35))
-        record_view.controls.append(section_header(
-            "LATEST PULL — WHAT THE APP DID", ACCENT))
-        rec = state["slate"]
-        if rec:
-            verdicts = ensure_verdicts() or []
-            markets = rec.get("markets", [])
-            priced_v = [v for v in verdicts
-                        if v.get("state") == "PRICED"]
-            golden_n = sum(1 for v in verdicts
-                           if card_verdict(v)[0] == "GOLDEN BET")
-            flagged_n = sum(1 for v in verdicts
-                            if v.get("state")
-                            == "COHERENCE-FLAGGED")
-            stamp_text2, _d2 = stamp_of(rec)
+        with _UPDATE_LOCK:
+            pack = load_lab_pack()
+            record_view.controls = [screen_title(
+                "Lab",
+                "The record wing — the lab's graded history, read "
+                "from the bundled evidence pack.")]
+            if pack is None:
+                # ROOM RULE failure state: a named state, never a
+                # ledger — no lane rows, no book sections, no totals.
+                record_view.controls.append(empty_full(
+                    ft.Icons.FOLDER_OFF, "Record not bundled",
+                    "This build shipped without the lab evidence "
+                    "pack, so the Lab shows no record at all — never "
+                    "an empty ledger dressed as 0-0. The full BetFi "
+                    "Xii build carries the pack."))
+                page.update()
+                return
+            exported = str(pack.get("exported_at") or "")
             record_view.controls.append(ft.Text(
-                f"Pulled: {rec.get('pulled_at')} · {stamp_text2}",
-                size=12, color=DIM))
-            record_view.controls.append(ft.Text(
-                f"Markets checked {len(markets)} · PRICED "
-                f"{len(priced_v)} · GOLDEN {golden_n} · "
-                f"price conflicts {flagged_n} · the rest "
-                f"stamped, never guessed.", size=12, color=DIM))
-            from collections import Counter
-            tags = Counter(v.get("cal_tag") for v in priced_v)
-            stances = Counter(v.get("stance") for v in priced_v)
-            record_view.controls.append(ft.Text(
-                "Calibration tags on priced markets: "
-                + " · ".join(f"{t} {tags.get(t, 0)}"
-                             for t in b5.CALIBRATION_TAGS),
-                size=12, color=DIM))
-            record_view.controls.append(ft.Text(
-                "Stances among priced markets: "
-                + " · ".join(
-                    f"{s.capitalize()} {stances.get(s, 0)}"
-                    for s in b5.STANCES),
-                size=12, color=DIM))
-        else:
-            record_view.controls.append(ft.Text(
-                "No pull on this device yet — this section fills "
-                "with the first pull. The graded record below is "
-                "the pack's, and stands whether or not a pull "
-                "has landed.", size=12, color=DIM, height=1.35))
-        record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(section_header(
-            "LANE LEDGER — WIN / LOSE OF RECORD", ACCENT))
-        card = b5.load_scorecard()
-        for _li, lane in enumerate(RECORD_LANES):
-            w, l, src = b5.lane_record(lane)
-            tag = b5.calibration_tag(lane, card)
-            status_line = ""
-            if lane not in ("nfl-ml", "nfl"):
-                try:
-                    st = b5.lane_status(card, lane)["status"]
-                    if st == "BENCHED":
-                        status_line = (" · governor: BENCHED "
-                                       "(lane sat down — its "
-                                       "recent record against "
-                                       "the market is losing)")
-                    else:
-                        status_line = f" · governor: {st}"
-                except Exception as e:
-                    status_line = f" · governor: {type(e).__name__}"
-            uncal = b5.lane_uncalibrated(lane)
-            record_view.controls.append(ft.Container(
-                bgcolor=RAISED if _li % 2 else CARD_BG,
-                border_radius=6,
-                padding=ft.Padding(left=8, right=8, top=7,
-                                   bottom=7),
-                content=ft.Column(spacing=2, controls=[
-                    ft.Row(spacing=8, controls=[
-                        ft.Text(lane, size=13, color=INK,
-                                width=110,
-                                weight=ft.FontWeight.BOLD),
-                        ft.Text(f"W {w} · L {l}", size=13,
-                                color=INK, width=92),
-                        ft.Text(f"tag {tag}{status_line}"
-                                + (f" · {uncal}" if uncal
-                                   else ""),
-                                size=11, color=DIM,
-                                expand=True)]),
-                    ft.Text(src, size=10, color=FAINT)])))
-        entries = card.get("entries") or []
-        record_view.controls.append(ft.Text(
-            f"Scorecard entries on device: {len(entries)} · "
-            f"graded by the engine's record laws; the full "
-            f"entries live in the lab.", size=11, color=FAINT))
-        # ---- the two books: separate sections, separate
-        # totals, no combined figure anywhere (lab law I-L2) ----
-        record_view.controls.append(ft.Divider(color=BORDER))
-        sealed = pack.get("sealed_cards") or []
-        if sealed:
-            tot_net = sum(float(sc.get("net_units") or 0)
-                          for sc in sealed)
-            last = sealed[-1]
-            record_view.controls.append(book_header(
-                "LAB CARD — PAPER, SEALED BY THE PIPELINE",
-                [f"Sealed cards on file: {len(sealed)} · "
-                 f"latest {last.get('date')} · "
-                 f"{last.get('name')}",
-                 f"Record {last.get('record')} · net "
-                 f"{tot_net:+.2f}u · ROI "
-                 f"{last.get('roi_pct'):+.1f}% · CLV "
-                 f"{last.get('clv')} — paper: no money ever "
-                 f"moved on this book. Totals are this book's "
-                 f"alone."],
-                ACCENT))
-            record_view.controls.append(ledger_header())
-            for _si, sc in enumerate(sealed):
-                _net = float(sc.get("net_units") or 0)
-                record_view.controls.append(ledger_row(
-                    sc.get("date"), sc.get("name"), "—", "—",
-                    sc.get("record"), f"{_net:+.2f}u",
-                    zebra=bool(_si % 2),
-                    bet_note=f"CLV {sc.get('clv')}",
-                    pl_color=("#34D399" if _net > 0 else
-                              "#F87171" if _net < 0 else INK)))
-        else:
-            record_view.controls.append(ft.Text(
-                "No sealed card in this pack.", size=12,
-                color=DIM))
-        screened = pack.get("screened_not_sealed")
-        if screened:
-            record_view.controls.append(ft.Text(
-                f"{screened} packets were screened and held — "
-                f"screened is not sealed. They never became "
-                f"cards and are not in any total above.",
-                size=11, color=FAINT, height=1.35))
-        record_view.controls.append(ft.Divider(color=BORDER))
-        tickets = pack.get("pilot_book") or []
-        closed = pack.get("pilot_book_closed_line") or {}
-        pending = [t for t in tickets
-                   if (t.get("result") or "PENDING") == "PENDING"]
-        header_lines = []
-        if closed:
-            header_lines.append(
-                f"Closed line (as of {closed.get('as_of')}): "
-                f"{_money(closed.get('staked') or 0)} staked → "
-                f"{_money(closed.get('returned') or 0)} returned "
-                f"· net {_signed_money(closed.get('net') or 0)} "
-                f"— this book only.")
-        if pending:
-            _pend_stake = sum(float(t.get("stake") or 0)
-                              for t in pending)
-            header_lines.append(
-                f"{len(pending)} ticket(s) pending — "
-                f"{_money(_pend_stake)} staked, in no "
-                f"total until they settle.")
-        header_lines.append(
-            "His plays, graded on their own lines. The two "
-            "books are never added together.")
-        record_view.controls.append(book_header(
-            "PILOT BOOK — HIS PLAYS, THEIR OWN LINES",
-            header_lines, "#EAB308"))  # gold edge: the Pilot Book
-        _marked = load_marked_slips()
-        if _marked:
-            record_view.controls.append(ft.Text(
-                "PLACED (user-marked) — slips you marked placed "
-                "from the Protected Slip. Your marks, on this "
-                "device; the app placed none of them.",
-                size=11, color=WARN, height=1.35))
-            for _ms in _marked:
-                _legs_txt = "; ".join(
-                    f"{lg['name']} · {lg['stake_units']:.1f}u"
-                    for lg in _ms.get("legs") or [])
-                record_view.controls.append(ledger_row(
-                    str(_ms.get("marked_at") or "")[:10],
-                    _legs_txt, "—", "—", "PLACED",
-                    f"{float(_ms.get('total_units') or 0):.1f}u",
-                    zebra=False,
-                    bet_note="PLACED (user-marked) · "
-                             f"{_ms.get('marked_at')}"))
-        record_view.controls.append(ledger_header())
-        for _ti, t in enumerate(tickets):
-            res = t.get("result") or "PENDING"
-            if res == "PENDING":
-                pl, plc = "—", None
-                note = (f"stake {_money(t.get('stake') or 0)}"
-                        f" · result not recorded")
+                f"Lab record as of {exported[:10]} · evidence pack "
+                f"exported {exported} · the app reads it, only the "
+                f"lab writes it.", size=11, color=FAINT, height=1.35))
+            record_view.controls.append(section_header(
+                "LATEST PULL — WHAT THE APP DID", ACCENT))
+            rec = state["slate"]
+            if rec:
+                verdicts = ensure_verdicts() or []
+                markets = rec.get("markets", [])
+                priced_v = [v for v in verdicts
+                            if v.get("state") == "PRICED"]
+                golden_n = sum(1 for v in verdicts
+                               if card_verdict(v)[0] == "GOLDEN BET")
+                flagged_n = sum(1 for v in verdicts
+                                if v.get("state")
+                                == "COHERENCE-FLAGGED")
+                stamp_text2, _d2 = stamp_of(rec)
+                record_view.controls.append(ft.Text(
+                    f"Pulled: {rec.get('pulled_at')} · {stamp_text2}",
+                    size=12, color=DIM))
+                record_view.controls.append(ft.Text(
+                    f"Markets checked {len(markets)} · PRICED "
+                    f"{len(priced_v)} · GOLDEN {golden_n} · "
+                    f"price conflicts {flagged_n} · the rest "
+                    f"stamped, never guessed.", size=12, color=DIM))
+                from collections import Counter
+                tags = Counter(v.get("cal_tag") for v in priced_v)
+                stances = Counter(v.get("stance") for v in priced_v)
+                record_view.controls.append(ft.Text(
+                    "Calibration tags on priced markets: "
+                    + " · ".join(f"{t} {tags.get(t, 0)}"
+                                 for t in b5.CALIBRATION_TAGS),
+                    size=12, color=DIM))
+                record_view.controls.append(ft.Text(
+                    "Stances among priced markets: "
+                    + " · ".join(
+                        f"{s.capitalize()} {stances.get(s, 0)}"
+                        for s in b5.STANCES),
+                    size=12, color=DIM))
             else:
-                net = float(t.get("net") or 0)
-                pl = _signed_money(net)
-                plc = ("#34D399" if net > 0 else
-                       "#F87171" if net < 0 else INK)
-                note = (f"stake {_money(t.get('stake') or 0)}"
-                        f" → returned "
-                        f"{_money(t.get('returned') or 0)}")
-            record_view.controls.append(ledger_row(
-                t.get("date"), t.get("ticket"),
-                ticket_odds(t.get("ticket")), "—", res, pl,
-                zebra=bool(_ti % 2), bet_note=note,
-                pl_color=plc))
-        record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(section_header(
-            "CLV & DRIFT — MEASUREMENT, NOT A GRADE", ACCENT))
-        _pulls, _seen_at = [], set()
-        for _d in (b5.DATA, BUNDLED_DATA_DIR):
-            try:
-                _names = sorted(os.listdir(_d))
-            except Exception:
-                _names = []
-            for _fn in _names:
-                if (_fn.startswith("menu-fanduel-")
-                        and _fn.endswith(".json")):
+                record_view.controls.append(ft.Text(
+                    "No pull on this device yet — this section fills "
+                    "with the first pull. The graded record below is "
+                    "the pack's, and stands whether or not a pull "
+                    "has landed.", size=12, color=DIM, height=1.35))
+            record_view.controls.append(ft.Divider(color=BORDER))
+            record_view.controls.append(section_header(
+                "LANE LEDGER — WIN / LOSE OF RECORD", ACCENT))
+            card = b5.load_scorecard()
+            for _li, lane in enumerate(RECORD_LANES):
+                w, l, src = b5.lane_record(lane)
+                tag = b5.calibration_tag(lane, card)
+                status_line = ""
+                if lane not in ("nfl-ml", "nfl"):
                     try:
-                        with open(os.path.join(_d, _fn)) as _fh:
-                            _rec_p = json.load(_fh)
-                    except Exception:
-                        continue
-                    if _rec_p.get("pulled_at") not in _seen_at:
-                        _seen_at.add(_rec_p.get("pulled_at"))
-                        _pulls.append(_rec_p)
-        _bets = [{"lane": e.get("lane") or "?", "price": None,
-                  "close_price": None} for e in entries]
-        try:
-            _clv = b5.clv_report(_pulls, _bets)
-        except Exception:
-            _clv = None
-        if _clv is None:
+                        st = b5.lane_status(card, lane)["status"]
+                        if st == "BENCHED":
+                            status_line = (" · governor: BENCHED "
+                                           "(lane sat down — its "
+                                           "recent record against "
+                                           "the market is losing)")
+                        else:
+                            status_line = f" · governor: {st}"
+                    except Exception as e:
+                        status_line = f" · governor: {type(e).__name__}"
+                uncal = b5.lane_uncalibrated(lane)
+                record_view.controls.append(ft.Container(
+                    bgcolor=RAISED if _li % 2 else CARD_BG,
+                    border_radius=6,
+                    padding=ft.Padding(left=8, right=8, top=7,
+                                       bottom=7),
+                    content=ft.Column(spacing=2, controls=[
+                        ft.Row(spacing=8, controls=[
+                            ft.Text(lane, size=13, color=INK,
+                                    width=110,
+                                    weight=ft.FontWeight.BOLD),
+                            ft.Text(f"W {w} · L {l}", size=13,
+                                    color=INK, width=92),
+                            ft.Text(f"tag {tag}{status_line}"
+                                    + (f" · {uncal}" if uncal
+                                       else ""),
+                                    size=11, color=DIM,
+                                    expand=True)]),
+                        ft.Text(src, size=10, color=FAINT)])))
+            entries = card.get("entries") or []
             record_view.controls.append(ft.Text(
-                "The CLV ledger could not run on this device.",
-                size=12, color=DIM))
-        else:
-            _dr = _clv["drift"]
-            record_view.controls.append(ft.Text(
-                f"Menu pulls on file: {_dr['snapshots']} · "
-                f"markets seen {_dr['markets_seen']} · tracked "
-                f"across two or more pulls "
-                f"{_dr['markets_tracked']}.", size=12, color=DIM,
-                height=1.35))
-            if _dr["markets_tracked"]:
-                record_view.controls.append(ft.Text(
-                    f"Median |drift| across tracked markets: "
-                    f"{_dr['median_abs_drift_pts']:.2f} pts "
-                    f"(implied probability, first pull to last).",
-                    size=12, color=DIM, height=1.35))
+                f"Scorecard entries on device: {len(entries)} · "
+                f"graded by the engine's record laws; the full "
+                f"entries live in the lab.", size=11, color=FAINT))
+            # ---- the two books: separate sections, separate
+            # totals, no combined figure anywhere (lab law I-L2) ----
+            record_view.controls.append(ft.Divider(color=BORDER))
+            sealed = pack.get("sealed_cards") or []
+            if sealed:
+                tot_net = sum(float(sc.get("net_units") or 0)
+                              for sc in sealed)
+                last = sealed[-1]
+                record_view.controls.append(book_header(
+                    "LAB CARD — PAPER, SEALED BY THE PIPELINE",
+                    [f"Sealed cards on file: {len(sealed)} · "
+                     f"latest {last.get('date')} · "
+                     f"{last.get('name')}",
+                     f"Record {last.get('record')} · net "
+                     f"{tot_net:+.2f}u · ROI "
+                     f"{last.get('roi_pct'):+.1f}% · CLV "
+                     f"{last.get('clv')} — paper: no money ever "
+                     f"moved on this book. Totals are this book's "
+                     f"alone."],
+                    ACCENT))
+                record_view.controls.append(ledger_header())
+                for _si, sc in enumerate(sealed):
+                    _net = float(sc.get("net_units") or 0)
+                    record_view.controls.append(ledger_row(
+                        sc.get("date"), sc.get("name"), "—", "—",
+                        sc.get("record"), f"{_net:+.2f}u",
+                        zebra=bool(_si % 2),
+                        bet_note=f"CLV {sc.get('clv')}",
+                        pl_color=("#34D399" if _net > 0 else
+                                  "#F87171" if _net < 0 else INK)))
             else:
                 record_view.controls.append(ft.Text(
-                    "Drift: insufficient snapshots — one pull "
-                    "cannot show a market moving, so no drift "
-                    "is printed. Nothing is invented to fill "
-                    "this.", size=12, color=DIM, height=1.35))
-            for _lr in _clv["lanes"]:
-                _mean = (_lr["mean_clv_pts"]
-                         if _lr["mean_clv_pts"] is not None
-                         else None)
+                    "No sealed card in this pack.", size=12,
+                    color=DIM))
+            screened = pack.get("screened_not_sealed")
+            if screened:
                 record_view.controls.append(ft.Text(
-                    f"CLV {_lr['lane']}: {_lr['closed']} closed "
-                    f"bets · {_lr['unclosed']} without a closing "
-                    f"snapshot · mean CLV "
-                    + (f"{_mean:+.2f} pts" if _mean is not None
-                       else "—")
-                    + f" · state: {_lr['state']}",
-                    size=12, color=DIM, height=1.35))
+                    f"{screened} packets were screened and held — "
+                    f"screened is not sealed. They never became "
+                    f"cards and are not in any total above.",
+                    size=11, color=FAINT, height=1.35))
+            record_view.controls.append(ft.Divider(color=BORDER))
+            tickets = pack.get("pilot_book") or []
+            closed = pack.get("pilot_book_closed_line") or {}
+            pending = [t for t in tickets
+                       if (t.get("result") or "PENDING") == "PENDING"]
+            header_lines = []
+            if closed:
+                header_lines.append(
+                    f"Closed line (as of {closed.get('as_of')}): "
+                    f"{_money(closed.get('staked') or 0)} staked → "
+                    f"{_money(closed.get('returned') or 0)} returned "
+                    f"· net {_signed_money(closed.get('net') or 0)} "
+                    f"— this book only.")
+            if pending:
+                _pend_stake = sum(float(t.get("stake") or 0)
+                                  for t in pending)
+                header_lines.append(
+                    f"{len(pending)} ticket(s) pending — "
+                    f"{_money(_pend_stake)} staked, in no "
+                    f"total until they settle.")
+            header_lines.append(
+                "His plays, graded on their own lines. The two "
+                "books are never added together.")
+            record_view.controls.append(book_header(
+                "PILOT BOOK — HIS PLAYS, THEIR OWN LINES",
+                header_lines, "#EAB308"))  # gold edge: the Pilot Book
+            _marked = load_marked_slips()
+            if _marked:
+                record_view.controls.append(ft.Text(
+                    "PLACED (user-marked) — slips you marked placed "
+                    "from the Protected Slip. Your marks, on this "
+                    "device; the app placed none of them.",
+                    size=11, color=WARN, height=1.35))
+                for _ms in _marked:
+                    _legs_txt = "; ".join(
+                        f"{lg['name']} · {lg['stake_units']:.1f}u"
+                        for lg in _ms.get("legs") or [])
+                    record_view.controls.append(ledger_row(
+                        str(_ms.get("marked_at") or "")[:10],
+                        _legs_txt, "—", "—", "PLACED",
+                        f"{float(_ms.get('total_units') or 0):.1f}u",
+                        zebra=False,
+                        bet_note="PLACED (user-marked) · "
+                                 f"{_ms.get('marked_at')}"))
+            record_view.controls.append(ledger_header())
+            for _ti, t in enumerate(tickets):
+                res = t.get("result") or "PENDING"
+                if res == "PENDING":
+                    pl, plc = "—", None
+                    note = (f"stake {_money(t.get('stake') or 0)}"
+                            f" · result not recorded")
+                else:
+                    net = float(t.get("net") or 0)
+                    pl = _signed_money(net)
+                    plc = ("#34D399" if net > 0 else
+                           "#F87171" if net < 0 else INK)
+                    note = (f"stake {_money(t.get('stake') or 0)}"
+                            f" → returned "
+                            f"{_money(t.get('returned') or 0)}")
+                record_view.controls.append(ledger_row(
+                    t.get("date"), t.get("ticket"),
+                    ticket_odds(t.get("ticket")), "—", res, pl,
+                    zebra=bool(_ti % 2), bet_note=note,
+                    pl_color=plc))
+            record_view.controls.append(ft.Divider(color=BORDER))
+            record_view.controls.append(section_header(
+                "CLV & DRIFT — MEASUREMENT, NOT A GRADE", ACCENT))
+            _pulls, _seen_at = [], set()
+            for _d in (b5.DATA, BUNDLED_DATA_DIR):
+                try:
+                    _names = sorted(os.listdir(_d))
+                except Exception:
+                    _names = []
+                for _fn in _names:
+                    if (_fn.startswith("menu-fanduel-")
+                            and _fn.endswith(".json")):
+                        try:
+                            with open(os.path.join(_d, _fn)) as _fh:
+                                _rec_p = json.load(_fh)
+                        except Exception:
+                            continue
+                        if _rec_p.get("pulled_at") not in _seen_at:
+                            _seen_at.add(_rec_p.get("pulled_at"))
+                            _pulls.append(_rec_p)
+            _bets = [{"lane": e.get("lane") or "?", "price": None,
+                      "close_price": None} for e in entries]
+            try:
+                _clv = b5.clv_report(_pulls, _bets)
+            except Exception:
+                _clv = None
+            if _clv is None:
+                record_view.controls.append(ft.Text(
+                    "The CLV ledger could not run on this device.",
+                    size=12, color=DIM))
+            else:
+                _dr = _clv["drift"]
+                record_view.controls.append(ft.Text(
+                    f"Menu pulls on file: {_dr['snapshots']} · "
+                    f"markets seen {_dr['markets_seen']} · tracked "
+                    f"across two or more pulls "
+                    f"{_dr['markets_tracked']}.", size=12, color=DIM,
+                    height=1.35))
+                if _dr["markets_tracked"]:
+                    record_view.controls.append(ft.Text(
+                        f"Median |drift| across tracked markets: "
+                        f"{_dr['median_abs_drift_pts']:.2f} pts "
+                        f"(implied probability, first pull to last).",
+                        size=12, color=DIM, height=1.35))
+                else:
+                    record_view.controls.append(ft.Text(
+                        "Drift: insufficient snapshots — one pull "
+                        "cannot show a market moving, so no drift "
+                        "is printed. Nothing is invented to fill "
+                        "this.", size=12, color=DIM, height=1.35))
+                for _lr in _clv["lanes"]:
+                    _mean = (_lr["mean_clv_pts"]
+                             if _lr["mean_clv_pts"] is not None
+                             else None)
+                    record_view.controls.append(ft.Text(
+                        f"CLV {_lr['lane']}: {_lr['closed']} closed "
+                        f"bets · {_lr['unclosed']} without a closing "
+                        f"snapshot · mean CLV "
+                        + (f"{_mean:+.2f} pts" if _mean is not None
+                           else "—")
+                        + f" · state: {_lr['state']}",
+                        size=12, color=DIM, height=1.35))
+                record_view.controls.append(ft.Text(
+                    "CLV grades the price you got against the "
+                    "close — it feeds no grade, verdict or tag "
+                    f"(engine v{b5.ENGINE_VERSION}, display only).", size=11,
+                    color=FAINT, height=1.35))
+            record_view.controls.append(ft.Divider(color=BORDER))
+            record_view.controls.append(section_header(
+                "KILL LEDGER — BARRED, READ-ONLY", ACCENT))
+            kills = pack.get("kill_ledger_items")
             record_view.controls.append(ft.Text(
-                "CLV grades the price you got against the "
-                "close — it feeds no grade, verdict or tag "
-                f"(engine v{b5.ENGINE_VERSION}, display only).", size=11,
-                color=FAINT, height=1.35))
-        record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(section_header(
-            "KILL LEDGER — BARRED, READ-ONLY", ACCENT))
-        kills = pack.get("kill_ledger_items")
-        record_view.controls.append(ft.Text(
-            f"{kills} patterns are barred by the lab's Hard Kill "
-            f"Ledger — shapes that failed their sealed tests and "
-            f"may not be bet in any form. The full text lives "
-            f"in the lab (LAB.md); the app shows the count and "
-            f"the rule, and nothing un-bars a pattern from "
-            f"here.", size=12, color=DIM, height=1.35))
-        gov = pack.get("governor_note")
-        if gov:
+                f"{kills} patterns are barred by the lab's Hard Kill "
+                f"Ledger — shapes that failed their sealed tests and "
+                f"may not be bet in any form. The full text lives "
+                f"in the lab (LAB.md); the app shows the count and "
+                f"the rule, and nothing un-bars a pattern from "
+                f"here.", size=12, color=DIM, height=1.35))
+            gov = pack.get("governor_note")
+            if gov:
+                record_view.controls.append(ft.Text(
+                    f"Governor at export: {gov}.",
+                    size=11, color=FAINT, height=1.35))
+            record_view.controls.append(ft.Divider(color=BORDER))
+            record_view.controls.append(section_header(
+                "THE RUBRIC — HOW A BET IS GRADED", ACCENT))
+            bands = " · ".join(
+                f"{g} ≥ {floor:+g}" for floor, g
+                in b5.GRADE_BANDS_V52)
             record_view.controls.append(ft.Text(
-                f"Governor at export: {gov}.",
-                size=11, color=FAINT, height=1.35))
-        record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(section_header(
-            "THE RUBRIC — HOW A BET IS GRADED", ACCENT))
-        bands = " · ".join(
-            f"{g} ≥ {floor:+g}" for floor, g
-            in b5.GRADE_BANDS_V52)
-        record_view.controls.append(ft.Text(
-            f"Grade bands (edge, points): {bands} · below the "
-            f"last floor: F.", size=12, color=DIM, height=1.35))
-        record_view.controls.append(ft.Text(
-            "Then the named adjustments: FRAGILE −1 grade when a "
-            "thin or single-source price holds half the edge; "
-            "PRICE DISCIPLINE −1 when the model asks for a price "
-            "the market rarely deals; a parlay's grade capped "
-            "at its weakest leg; UNPRICED always capped at "
-            "DO NOT BET. Every adjustment prints its reason on "
-            "the card or the slip — a grade never moves in "
-            "silence.", size=12, color=DIM, height=1.35))
-        record_view.controls.append(ft.Divider(color=BORDER))
-        record_view.controls.append(ft.Text(
-            f"App: {DISPLAY_NAME} v{APP_VERSION} · Engine: "
-            f"{ENGINE_VERSION} · {engine_fingerprint()}",
-            size=12, color=ACCENT))
-        record_view.controls.append(ft.Text(
-            f"internal id {INTERNAL_ID} · analysis only — "
-            f"{PUBLIC_NAME} never places a bet.",
-            size=11, color=FAINT))
-        page.update()
+                f"Grade bands (edge, points): {bands} · below the "
+                f"last floor: F.", size=12, color=DIM, height=1.35))
+            record_view.controls.append(ft.Text(
+                "Then the named adjustments: FRAGILE −1 grade when a "
+                "thin or single-source price holds half the edge; "
+                "PRICE DISCIPLINE −1 when the model asks for a price "
+                "the market rarely deals; a parlay's grade capped "
+                "at its weakest leg; UNPRICED always capped at "
+                "DO NOT BET. Every adjustment prints its reason on "
+                "the card or the slip — a grade never moves in "
+                "silence.", size=12, color=DIM, height=1.35))
+            record_view.controls.append(ft.Divider(color=BORDER))
+            record_view.controls.append(ft.Text(
+                f"App: {DISPLAY_NAME} v{APP_VERSION} · Engine: "
+                f"{ENGINE_VERSION} · {engine_fingerprint()}",
+                size=12, color=ACCENT))
+            record_view.controls.append(ft.Text(
+                f"internal id {INTERNAL_ID} · analysis only — "
+                f"{PUBLIC_NAME} never places a bet.",
+                size=11, color=FAINT))
+            page.update()
 
     # ---------------- Terms ----------------
 
@@ -6329,25 +6407,26 @@ def main(page: ft.Page):
     ]
 
     def render_terms():
-        controls = [_sub_header("Terms",
-                                "What every word on a card means.")]
-        for header, entries in TERMS:
-            controls.append(ft.Container(
-                padding=ft.Padding(left=0, right=0, top=16,
-                                   bottom=0),
-                content=ft.Text(header, size=13, color=ACCENT,
-                                weight=ft.FontWeight.BOLD)))
-            for head, body in entries:
-                controls.append(_term_entry(head, body))
-                if head == "UNPRICED":
-                    controls.append(ft.Text(
-                        "Plain talk: if the engine can't stand "
-                        "behind a number, it won't print one. No "
-                        "guessing, and no dressing the market's "
-                        "price up like it's ours.",
-                        size=12, color=DIM, height=1.35))
-        terms_view.controls = controls
-        page.update()
+        with _UPDATE_LOCK:
+            controls = [_sub_header("Terms",
+                                    "What every word on a card means.")]
+            for header, entries in TERMS:
+                controls.append(ft.Container(
+                    padding=ft.Padding(left=0, right=0, top=16,
+                                       bottom=0),
+                    content=ft.Text(header, size=13, color=ACCENT,
+                                    weight=ft.FontWeight.BOLD)))
+                for head, body in entries:
+                    controls.append(_term_entry(head, body))
+                    if head == "UNPRICED":
+                        controls.append(ft.Text(
+                            "Plain talk: if the engine can't stand "
+                            "behind a number, it won't print one. No "
+                            "guessing, and no dressing the market's "
+                            "price up like it's ours.",
+                            size=12, color=DIM, height=1.35))
+            terms_view.controls = controls
+            page.update()
 
     # ---------------- Equations ----------------
 
@@ -6359,102 +6438,103 @@ def main(page: ft.Page):
                 ft.Text(gloss, size=11, color=DIM, height=1.35)]))
 
     def render_equations():
-        controls = [_sub_header("Equations", "The math, in the open.")]
-        sections = [
-            ("PRICES", [
-                ("P = A ÷ (A + 100) for odds −A · "
-                 "P = 100 ÷ (B + 100) for odds +B",
-                 "Implied probability — the win chance a price "
-                 "breaks even at. Worked: −150 → 150/250 = "
-                 "60.0%. +200 → 100/300 = 33.3%."),
-                ("decimal = 1 + 100/A (odds −A) · "
-                 "1 + B/100 (odds +B)",
-                 "Decimal odds. −110 = 1.91 · +200 = 3.00 · "
-                 "−150 = 1.67."),
-                ("no-vig P = a side's implied P ÷ the sum of "
-                 "both sides' implied P",
-                 "Removes the book's margin, so the market's "
-                 "fair prices sum to 100%.")]),
-            ("EDGE AND VALUE", [
-                ("edge (pts) = (model P − implied P) × 100",
-                 "In percentage points of probability. +5.0 pts "
-                 "means the model makes it 60% where the price "
-                 "implies 55%."),
-                ("EV per $1 = P × (decimal − 1) − (1 − P)",
-                 "Expected value per $1 staked, if the model's "
-                 "probability is right."),
-                ("Kelly f = EV per $1 ÷ (decimal − 1)",
-                 "The app sizes at one quarter of this, "
-                 "hard-capped by the unit classes below.")]),
-            ("THE MODEL", [
-                ("shrunk P = no-vig P + reliability × "
-                 "(model P − no-vig P)",
-                 "Shrinkage — the phi edge grades the shrunk "
-                 "number, not the raw one. Reliability is "
-                 "learned from the lane's scored record.")]),
-            ("PARLAYS AND HEDGES", [
-                ("combined decimal = product of leg decimals · "
-                 "joint P = product of leg probabilities",
-                 "Assumes the legs are independent — same-game "
-                 "legs rarely are; treat a parlay's joint "
-                 "probability as a ceiling."),
-                ("hedge stake = original stake × original "
-                 "decimal ÷ hedge decimal",
-                 "Equal return both ways: both outcomes pay "
-                 "original stake × original decimal in total.")]),
-        ]
-        for header, blocks in sections:
+        with _UPDATE_LOCK:
+            controls = [_sub_header("Equations", "The math, in the open.")]
+            sections = [
+                ("PRICES", [
+                    ("P = A ÷ (A + 100) for odds −A · "
+                     "P = 100 ÷ (B + 100) for odds +B",
+                     "Implied probability — the win chance a price "
+                     "breaks even at. Worked: −150 → 150/250 = "
+                     "60.0%. +200 → 100/300 = 33.3%."),
+                    ("decimal = 1 + 100/A (odds −A) · "
+                     "1 + B/100 (odds +B)",
+                     "Decimal odds. −110 = 1.91 · +200 = 3.00 · "
+                     "−150 = 1.67."),
+                    ("no-vig P = a side's implied P ÷ the sum of "
+                     "both sides' implied P",
+                     "Removes the book's margin, so the market's "
+                     "fair prices sum to 100%.")]),
+                ("EDGE AND VALUE", [
+                    ("edge (pts) = (model P − implied P) × 100",
+                     "In percentage points of probability. +5.0 pts "
+                     "means the model makes it 60% where the price "
+                     "implies 55%."),
+                    ("EV per $1 = P × (decimal − 1) − (1 − P)",
+                     "Expected value per $1 staked, if the model's "
+                     "probability is right."),
+                    ("Kelly f = EV per $1 ÷ (decimal − 1)",
+                     "The app sizes at one quarter of this, "
+                     "hard-capped by the unit classes below.")]),
+                ("THE MODEL", [
+                    ("shrunk P = no-vig P + reliability × "
+                     "(model P − no-vig P)",
+                     "Shrinkage — the phi edge grades the shrunk "
+                     "number, not the raw one. Reliability is "
+                     "learned from the lane's scored record.")]),
+                ("PARLAYS AND HEDGES", [
+                    ("combined decimal = product of leg decimals · "
+                     "joint P = product of leg probabilities",
+                     "Assumes the legs are independent — same-game "
+                     "legs rarely are; treat a parlay's joint "
+                     "probability as a ceiling."),
+                    ("hedge stake = original stake × original "
+                     "decimal ÷ hedge decimal",
+                     "Equal return both ways: both outcomes pay "
+                     "original stake × original decimal in total.")]),
+            ]
+            for header, blocks in sections:
+                controls.append(ft.Container(
+                    padding=ft.Padding(left=0, right=0, top=16,
+                                       bottom=0),
+                    content=ft.Text(header, size=13, color=ACCENT,
+                                    weight=ft.FontWeight.BOLD)))
+                for eq, gloss in blocks:
+                    controls.append(_eq_block(eq, gloss))
             controls.append(ft.Container(
-                padding=ft.Padding(left=0, right=0, top=16,
-                                   bottom=0),
-                content=ft.Text(header, size=13, color=ACCENT,
+                padding=ft.Padding(left=0, right=0, top=16, bottom=0),
+                content=ft.Text("GRADE BANDS (v5.2)", size=13,
+                                color=ACCENT,
                                 weight=ft.FontWeight.BOLD)))
-            for eq, gloss in blocks:
-                controls.append(_eq_block(eq, gloss))
-        controls.append(ft.Container(
-            padding=ft.Padding(left=0, right=0, top=16, bottom=0),
-            content=ft.Text("GRADE BANDS (v5.2)", size=13,
-                            color=ACCENT,
-                            weight=ft.FontWeight.BOLD)))
-        for lo, g in b5.GRADE_BANDS_V52:
-            controls.append(_kv_row(
-                g, f"phi edge ≥ {lo:+.1f} pts", label_color=FAINT))
-        controls.append(_kv_row("F", "phi edge below −5.5 pts",
-                                label_color=FAINT))
-        controls.append(ft.Text(
-            "v5.2 widened every floor about a point from the "
-            "frozen v5.1 rubric, by Pilot order — a solid edge "
-            "now reaches B at +2.0. Named modifiers (FRAGILE, "
-            "grouping cap, provisional cap) print as tags when "
-            "they apply.", size=12, color=INK, height=1.35))
-        controls.append(ft.Container(
-            padding=ft.Padding(left=0, right=0, top=16, bottom=0),
-            content=ft.Text("STANCE RULES", size=13, color=ACCENT,
-                            weight=ft.FontWeight.BOLD)))
-        for line in [
-                "BULLISH — phi edge ≥ +2.0 pts, model P ≥ 45%, "
-                "implied P above 35%.",
-                "CONSERVATIVE — model P ≥ 65% with edge under "
-                "+2.0 pts (the fallback at model P ≥ 60%).",
-                "LONGSHOT — implied P ≤ 35%, or price +200 or "
-                "longer, or model P ≤ 45% without the bullish "
-                "shape.",
-                "Parlay stance — the longest shot sets the slip: "
-                "any LONGSHOT leg ⇒ LONGSHOT; else any BULLISH "
-                "leg ⇒ BULLISH; all CONSERVATIVE ⇒ CONSERVATIVE."]:
-            controls.append(ft.Text(line, size=12, color=INK,
-                                    height=1.35))
-        controls.append(ft.Container(
-            padding=ft.Padding(left=0, right=0, top=16, bottom=0),
-            content=ft.Text("UNIT CLASSES", size=13, color=ACCENT,
-                            weight=ft.FontWeight.BOLD)))
-        controls.append(ft.Text(
-            "edge ≥ 3 pts: up to 1.0u · above 6 pts: up to "
-            "2.0u · below 3 pts: 0.0u — before the quarter-Kelly "
-            "cap also applies; the smaller of the two sizes "
-            "prints.", size=12, color=INK, height=1.35))
-        equations_view.controls = controls
-        page.update()
+            for lo, g in b5.GRADE_BANDS_V52:
+                controls.append(_kv_row(
+                    g, f"phi edge ≥ {lo:+.1f} pts", label_color=FAINT))
+            controls.append(_kv_row("F", "phi edge below −5.5 pts",
+                                    label_color=FAINT))
+            controls.append(ft.Text(
+                "v5.2 widened every floor about a point from the "
+                "frozen v5.1 rubric, by Pilot order — a solid edge "
+                "now reaches B at +2.0. Named modifiers (FRAGILE, "
+                "grouping cap, provisional cap) print as tags when "
+                "they apply.", size=12, color=INK, height=1.35))
+            controls.append(ft.Container(
+                padding=ft.Padding(left=0, right=0, top=16, bottom=0),
+                content=ft.Text("STANCE RULES", size=13, color=ACCENT,
+                                weight=ft.FontWeight.BOLD)))
+            for line in [
+                    "BULLISH — phi edge ≥ +2.0 pts, model P ≥ 45%, "
+                    "implied P above 35%.",
+                    "CONSERVATIVE — model P ≥ 65% with edge under "
+                    "+2.0 pts (the fallback at model P ≥ 60%).",
+                    "LONGSHOT — implied P ≤ 35%, or price +200 or "
+                    "longer, or model P ≤ 45% without the bullish "
+                    "shape.",
+                    "Parlay stance — the longest shot sets the slip: "
+                    "any LONGSHOT leg ⇒ LONGSHOT; else any BULLISH "
+                    "leg ⇒ BULLISH; all CONSERVATIVE ⇒ CONSERVATIVE."]:
+                controls.append(ft.Text(line, size=12, color=INK,
+                                        height=1.35))
+            controls.append(ft.Container(
+                padding=ft.Padding(left=0, right=0, top=16, bottom=0),
+                content=ft.Text("UNIT CLASSES", size=13, color=ACCENT,
+                                weight=ft.FontWeight.BOLD)))
+            controls.append(ft.Text(
+                "edge ≥ 3 pts: up to 1.0u · above 6 pts: up to "
+                "2.0u · below 3 pts: 0.0u — before the quarter-Kelly "
+                "cap also applies; the smaller of the two sizes "
+                "prints.", size=12, color=INK, height=1.35))
+            equations_view.controls = controls
+            page.update()
 
     # ---------------- Dev ----------------
 
@@ -6473,44 +6553,45 @@ def main(page: ft.Page):
         return f"{n} of {len(INSTRUMENTS)} bundled · {total} bytes"
 
     def render_dev():
-        identity = ft.Container(
-            bgcolor=CARD_BG, border_radius=10, padding=12,
-            content=ft.Column(spacing=6, controls=[
-                ft.Text(DISPLAY_NAME, size=16, color=INK,
-                        weight=ft.FontWeight.BOLD),
-                _kv_row("App version", f"{APP_VERSION}"),
-                _kv_row("Build", str(BUILD_NUMBER)),
-                _kv_row("Engine", ENGINE_VERSION),
-                _kv_row("Engine fingerprint",
-                        engine_fingerprint()),
-                _kv_row("Menu source",
-                        "FanDuel (Michigan) public menu — "
-                        "read-only, no login"),
-                _kv_row("Storage", storage_dir()),
-                _kv_row("Internal id", INTERNAL_ID),
-                _kv_row("Evidence pack",
-                        _pack_stamp_line()),
-                _kv_row("Instruments",
-                        _instruments_line())]))
-        credit = ft.Container(
-            bgcolor=RAISED, border_radius=10, padding=12,
-            content=ft.Column(spacing=6, controls=[
-                ft.Text("BetFi Xii — by T. Abram.", size=13,
-                        color=INK, weight=ft.FontWeight.BOLD),
-                ft.Text("Engine: betmodel. Built with Praxis.",
-                        size=12, color=DIM),
-                ft.Row(spacing=6, vertical_alignment=
-                       ft.CrossAxisAlignment.START, controls=[
-                           ft.Icon(ft.Icons.INFO_OUTLINE, size=14,
-                                   color=WARN),
-                           ft.Text("Analysis only. The app point "
-                                   "at the number — you make the "
-                                   "call.", size=11, color=WARN,
-                                   height=1.35)])]))
-        dev_view.controls = [
-            _sub_header("Dev", "Build, engine, and credit."),
-            identity, credit]
-        page.update()
+        with _UPDATE_LOCK:
+            identity = ft.Container(
+                bgcolor=CARD_BG, border_radius=10, padding=12,
+                content=ft.Column(spacing=6, controls=[
+                    ft.Text(DISPLAY_NAME, size=16, color=INK,
+                            weight=ft.FontWeight.BOLD),
+                    _kv_row("App version", f"{APP_VERSION}"),
+                    _kv_row("Build", str(BUILD_NUMBER)),
+                    _kv_row("Engine", ENGINE_VERSION),
+                    _kv_row("Engine fingerprint",
+                            engine_fingerprint()),
+                    _kv_row("Menu source",
+                            "FanDuel (Michigan) public menu — "
+                            "read-only, no login"),
+                    _kv_row("Storage", storage_dir()),
+                    _kv_row("Internal id", INTERNAL_ID),
+                    _kv_row("Evidence pack",
+                            _pack_stamp_line()),
+                    _kv_row("Instruments",
+                            _instruments_line())]))
+            credit = ft.Container(
+                bgcolor=RAISED, border_radius=10, padding=12,
+                content=ft.Column(spacing=6, controls=[
+                    ft.Text("BetFi Xii — by T. Abram.", size=13,
+                            color=INK, weight=ft.FontWeight.BOLD),
+                    ft.Text("Engine: betmodel. Built with Praxis.",
+                            size=12, color=DIM),
+                    ft.Row(spacing=6, vertical_alignment=
+                           ft.CrossAxisAlignment.START, controls=[
+                               ft.Icon(ft.Icons.INFO_OUTLINE, size=14,
+                                       color=WARN),
+                               ft.Text("Analysis only. The app point "
+                                       "at the number — you make the "
+                                       "call.", size=11, color=WARN,
+                                       height=1.35)])]))
+            dev_view.controls = [
+                _sub_header("Dev", "Build, engine, and credit."),
+                identity, credit]
+            page.update()
 
     # ---------------- 3D — the instruments shelf ----------------
 
@@ -6581,12 +6662,13 @@ def main(page: ft.Page):
     panel_switcher = _switcher(panel_charts_col)
 
     def show_panel_segment(seg: str):
-        state["panel_segment"] = seg
-        panel_seg_ctrl.selected = [seg]
-        render_stage()
-        # v12.6 graph navigation: the incoming panel segment
-        # settles in (two-update, scale/offset only).
-        _settle_in(page, panel_switcher.content)
+        with _UPDATE_LOCK:
+            state["panel_segment"] = seg
+            panel_seg_ctrl.selected = [seg]
+            render_stage()
+            # v12.6 graph navigation: the incoming panel segment
+            # settles in (two-update, scale/offset only).
+            _settle_in(page, panel_switcher.content)
 
     def on_panel_seg(e):
         sel = e.control.selected or []
@@ -6747,25 +6829,26 @@ def main(page: ft.Page):
             highlight=state["chart_highlight"])
 
     def _refresh_viewer():
-        kind = state.get("viewer_kind")
-        ov = getattr(page, "overlay", None)
-        if kind is None or ov is None:
-            return
-        title = {"charts": "Xii Charts — full screen",
-                 "coverage": "Coverage — full screen",
-                 "landscape": "Edge Landscape — full screen"}[kind]
-        sheet = build_viewer_sheet(
-            title, _pull_stamp_line(), state["viewer_zoom"],
-            _viewer_body(kind), on_zoom=_viewer_zoom,
-            on_close=lambda e: close_viewer(),
-            detail=state["viewer_detail"]
-            if kind == "landscape" else "")
-        if _viewer["ctrl"] is not None and _viewer["ctrl"] in ov:
-            ov[ov.index(_viewer["ctrl"])] = sheet
-        else:
-            ov.append(sheet)
-        _viewer["ctrl"] = sheet
-        page.update()
+        with _UPDATE_LOCK:
+            kind = state.get("viewer_kind")
+            ov = getattr(page, "overlay", None)
+            if kind is None or ov is None:
+                return
+            title = {"charts": "Xii Charts — full screen",
+                     "coverage": "Coverage — full screen",
+                     "landscape": "Edge Landscape — full screen"}[kind]
+            sheet = build_viewer_sheet(
+                title, _pull_stamp_line(), state["viewer_zoom"],
+                _viewer_body(kind), on_zoom=_viewer_zoom,
+                on_close=lambda e: close_viewer(),
+                detail=state["viewer_detail"]
+                if kind == "landscape" else "")
+            if _viewer["ctrl"] is not None and _viewer["ctrl"] in ov:
+                ov[ov.index(_viewer["ctrl"])] = sheet
+            else:
+                ov.append(sheet)
+            _viewer["ctrl"] = sheet
+            page.update()
 
     def open_viewer(kind):
         state["viewer_kind"] = kind
@@ -6780,190 +6863,197 @@ def main(page: ft.Page):
                        scale_from=0.96, dur=240, dy=0.0)
 
     def close_viewer():
-        state["viewer_kind"] = None
-        ov = getattr(page, "overlay", None)
-        if ov is not None and _viewer["ctrl"] in ov:
-            ov.remove(_viewer["ctrl"])
-        _viewer["ctrl"] = None
-        page.update()
+        with _UPDATE_LOCK:
+            state["viewer_kind"] = None
+            ov = getattr(page, "overlay", None)
+            if ov is not None and _viewer["ctrl"] in ov:
+                ov.remove(_viewer["ctrl"])
+            _viewer["ctrl"] = None
+            page.update()
 
     # ---- the four segment renderers ----
 
     def render_panel_charts(col):
-        col.controls = []
-        col.controls.append(ft.Row(spacing=6, wrap=True, controls=[
-            secondary_button(
-                "Full screen — charts",
-                lambda _e: open_viewer("charts")),
-            secondary_button(
-                "Full screen — edge landscape",
-                lambda _e: open_viewer("landscape"))]))
-        entries = _panel_entries()
-        col.controls += build_xii_charts(
-            entries, zoom=state["chart_zoom"], on_tap=_chart_tap,
-            on_zoom=_chart_zoom, detail=state["chart_detail"],
-            on_point=_chart_point,
-            highlight=state["chart_highlight"])
-        if state.get("chart_board"):
-            p = state["chart_board"]
-            col.controls.append(ft.Row(
-                spacing=8, wrap=True,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                controls=[
-                    ft.Text(f"Selected: {p['label']}", size=12,
-                            color=INK),
-                    primary_button(
-                        "Show on Board",
-                        lambda _e: cross_nav_market(p))]))
-        cands = protected_candidates()
-        if cands:
-            col.controls.append(ft.Divider(color=HAIRLINE))
-            col.controls += build_slip_correlation(cands)
+        with _UPDATE_LOCK:
+            col.controls = []
+            col.controls.append(ft.Row(spacing=6, wrap=True, controls=[
+                secondary_button(
+                    "Full screen — charts",
+                    lambda _e: open_viewer("charts")),
+                secondary_button(
+                    "Full screen — edge landscape",
+                    lambda _e: open_viewer("landscape"))]))
+            entries = _panel_entries()
+            col.controls += build_xii_charts(
+                entries, zoom=state["chart_zoom"], on_tap=_chart_tap,
+                on_zoom=_chart_zoom, detail=state["chart_detail"],
+                on_point=_chart_point,
+                highlight=state["chart_highlight"])
+            if state.get("chart_board"):
+                p = state["chart_board"]
+                col.controls.append(ft.Row(
+                    spacing=8, wrap=True,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Text(f"Selected: {p['label']}", size=12,
+                                color=INK),
+                        primary_button(
+                            "Show on Board",
+                            lambda _e: cross_nav_market(p))]))
+            cands = protected_candidates()
+            if cands:
+                col.controls.append(ft.Divider(color=HAIRLINE))
+                col.controls += build_slip_correlation(cands)
 
     def render_panel_coverage(col):
-        col.controls = []
-        rec = state["slate"] or {}
-        _txt, deg = stamp_of(state["slate"])
-        col.controls += build_coverage_section(
-            rec.get("markets", []),
-            on_league=lambda s, l: cross_nav_league(s, l),
-            stamp=_pull_stamp_line(), stale=bool(deg and rec),
-            on_expand=lambda: open_viewer("coverage"))
+        with _UPDATE_LOCK:
+            col.controls = []
+            rec = state["slate"] or {}
+            _txt, deg = stamp_of(state["slate"])
+            col.controls += build_coverage_section(
+                rec.get("markets", []),
+                on_league=lambda s, l: cross_nav_league(s, l),
+                stamp=_pull_stamp_line(), stale=bool(deg and rec),
+                on_expand=lambda: open_viewer("coverage"))
 
     def render_panel_registry(col):
-        col.controls = build_registry_section(
-            on_league=lambda s, l: cross_nav_league(s, l),
-            stamp=_pull_stamp_line())
+        with _UPDATE_LOCK:
+            col.controls = build_registry_section(
+                on_league=lambda s, l: cross_nav_league(s, l),
+                stamp=_pull_stamp_line())
 
     def render_panel_instruments(col):
-        col.controls = []
-        col.controls.append(section_header(
-            "SNAPSHOT INSTRUMENTS — OPEN IN BROWSER", ACCENT))
-        col.controls.append(ft.Text(
-            f"Current pull: {_pull_stamp_line()}", size=11,
-            color=FAINT, height=1.3))
-        col.controls.append(ft.Text(
-            "The lab's instruments below are SNAPSHOTS (each "
-            "carries its label) and open full-screen via the "
-            "browser route — they are not live charts and never "
-            "pretend to be.", size=11, color=DIM, height=1.3))
-        n, _total = instruments_bundled()
-        if n == 0:
-            col.controls.append(empty_full(
-                ft.Icons.VIEW_IN_AR,
-                "Instruments not bundled in this edition",
-                "This build shipped without the instruments "
-                "folder, so the shelf prints its state instead "
-                "of a dead list. The full BetFi Xii build "
-                "carries all 11."))
-            return
-        col.controls.append(stage_status)
-        try:
-            # lazy warm-up: the loopback server starts on a
-            # worker thread the first time the shelf opens, so
-            # the first tap finds its port already bound.
-            page.run_thread(ensure_instrument_server)
-        except Exception:
-            pass
-        for family in INSTRUMENT_FAMILIES:
-            members = [i for i in INSTRUMENTS
-                       if i["family"] == family
-                       and os.path.isfile(os.path.join(
-                           INSTRUMENTS_DIR, i["file"]))]
-            if not members:
-                continue
+        with _UPDATE_LOCK:
+            col.controls = []
             col.controls.append(section_header(
-                family.upper(), ACCENT))
-            for inst in members:
-                col.controls.append(ft.Container(
-                    bgcolor=CARD_BG, border_radius=10, padding=10,
-                    content=ft.Column(spacing=4, controls=[
-                        ft.Row(
-                            spacing=8, alignment=ft
-                            .MainAxisAlignment.SPACE_BETWEEN,
-                            controls=[
-                                ft.Text(inst["name"], size=14,
-                                        color=INK, weight=ft
-                                        .FontWeight.BOLD),
-                                ft.Button(
-                                    "Open",
-                                    on_click=on_open_instrument(
-                                        inst))]),
-                        ft.Text(inst["note"], size=11, color=DIM,
-                                height=1.3),
-                        ft.Text(inst["chip"], size=10,
-                                color=FAINT)])))
-            if family == "Stocks":
-                col.controls.append(ft.Text(
-                    STOCKS_SAMPLE_NOTE, size=10, color=FAINT,
-                    height=1.35))
+                "SNAPSHOT INSTRUMENTS — OPEN IN BROWSER", ACCENT))
+            col.controls.append(ft.Text(
+                f"Current pull: {_pull_stamp_line()}", size=11,
+                color=FAINT, height=1.3))
+            col.controls.append(ft.Text(
+                "The lab's instruments below are SNAPSHOTS (each "
+                "carries its label) and open full-screen via the "
+                "browser route — they are not live charts and never "
+                "pretend to be.", size=11, color=DIM, height=1.3))
+            n, _total = instruments_bundled()
+            if n == 0:
+                col.controls.append(empty_full(
+                    ft.Icons.VIEW_IN_AR,
+                    "Instruments not bundled in this edition",
+                    "This build shipped without the instruments "
+                    "folder, so the shelf prints its state instead "
+                    "of a dead list. The full BetFi Xii build "
+                    "carries all 11."))
+                return
+            col.controls.append(stage_status)
+            try:
+                # lazy warm-up: the loopback server starts on a
+                # worker thread the first time the shelf opens, so
+                # the first tap finds its port already bound.
+                page.run_thread(ensure_instrument_server)
+            except Exception:
+                pass
+            for family in INSTRUMENT_FAMILIES:
+                members = [i for i in INSTRUMENTS
+                           if i["family"] == family
+                           and os.path.isfile(os.path.join(
+                               INSTRUMENTS_DIR, i["file"]))]
+                if not members:
+                    continue
+                col.controls.append(section_header(
+                    family.upper(), ACCENT))
+                for inst in members:
+                    col.controls.append(ft.Container(
+                        bgcolor=CARD_BG, border_radius=10, padding=10,
+                        content=ft.Column(spacing=4, controls=[
+                            ft.Row(
+                                spacing=8, alignment=ft
+                                .MainAxisAlignment.SPACE_BETWEEN,
+                                controls=[
+                                    ft.Text(inst["name"], size=14,
+                                            color=INK, weight=ft
+                                            .FontWeight.BOLD),
+                                    ft.Button(
+                                        "Open",
+                                        on_click=on_open_instrument(
+                                            inst))]),
+                            ft.Text(inst["note"], size=11, color=DIM,
+                                    height=1.3),
+                            ft.Text(inst["chip"], size=10,
+                                    color=FAINT)])))
+                if family == "Stocks":
+                    col.controls.append(ft.Text(
+                        STOCKS_SAMPLE_NOTE, size=10, color=FAINT,
+                        height=1.35))
 
     def render_stage():
-        seg = state.get("panel_segment") or "charts"
-        if seg not in _PANEL_COLS:
-            seg = "charts"
-        state["panel_segment"] = seg
-        panel_seg_ctrl.selected = [seg]
-        stage_view.controls = [screen_title(
-            "Instruments",
-            "One panel, four views of the same pull and the "
-            "same fits: live charts, priced coverage, the "
-            "snapshot instruments and the registry map."),
-            # v12.1 texture: the segment bar wears the header
-            # band, same family as the view titles.
-            ft.Container(gradient=HEADER_GRADIENT,
-                         border_radius=10,
-                         padding=ft.Padding(
-                             left=6, right=6, top=6, bottom=6),
-                         content=panel_seg_ctrl),
-            panel_switcher]
-        panel_switcher.content = _PANEL_COLS[seg]
-        {"charts": render_panel_charts,
-         "coverage": render_panel_coverage,
-         "instruments": render_panel_instruments,
-         "registry": render_panel_registry}[seg](
-            _PANEL_COLS[seg])
-        page.update()
+        with _UPDATE_LOCK:
+            seg = state.get("panel_segment") or "charts"
+            if seg not in _PANEL_COLS:
+                seg = "charts"
+            state["panel_segment"] = seg
+            panel_seg_ctrl.selected = [seg]
+            stage_view.controls = [screen_title(
+                "Instruments",
+                "One panel, four views of the same pull and the "
+                "same fits: live charts, priced coverage, the "
+                "snapshot instruments and the registry map."),
+                # v12.1 texture: the segment bar wears the header
+                # band, same family as the view titles.
+                ft.Container(gradient=HEADER_GRADIENT,
+                             border_radius=10,
+                             padding=ft.Padding(
+                                 left=6, right=6, top=6, bottom=6),
+                             content=panel_seg_ctrl),
+                panel_switcher]
+            panel_switcher.content = _PANEL_COLS[seg]
+            {"charts": render_panel_charts,
+             "coverage": render_panel_coverage,
+             "instruments": render_panel_instruments,
+             "registry": render_panel_registry}[seg](
+                _PANEL_COLS[seg])
+            page.update()
 
     # ---------------- navigation ----------------
 
     def show(name: str):
-        state["view"] = name
-        view_switcher.content = views[name]
-        # v12.1: the back-to-top button belongs to the Board
-        # only (see the assembly note — Flet 1.0.4's page-level
-        # scroll exposes no position event to gate it on).
-        try:
-            if page.floating_action_button is not None:
-                page.floating_action_button.visible = (
-                    name == "board")
-        except Exception:
-            pass
-        if page.navigation_bar is not None:
-            page.navigation_bar.selected_index = \
-                TOP_VIEWS.index(name) if name in TOP_VIEWS else 4
-        if name == "board":
-            show_board_segment(state["board_seg"])
-        elif name == "slip":
-            show_slip_tool(state["slip_seg"])
-        elif name == "lab":
-            render_lab()
-        elif name == "stage":
-            render_stage()
-        elif name == "more":
-            render_more()
-        elif name == "terms":
-            render_terms()
-        elif name == "equations":
-            render_equations()
-        elif name == "dev":
-            render_dev()
-        # v12.6 page transition: on top of the switcher's
-        # fade, the incoming view settles in (two-update,
-        # scale/offset only) — a view change you can feel
-        # land, and the view is fully present either way.
-        _settle_in(page, views[name])
-        page.update()
+        with _UPDATE_LOCK:
+            state["view"] = name
+            view_switcher.content = views[name]
+            # v12.1: the back-to-top button belongs to the Board
+            # only (see the assembly note — Flet 1.0.4's page-level
+            # scroll exposes no position event to gate it on).
+            try:
+                if page.floating_action_button is not None:
+                    page.floating_action_button.visible = (
+                        name == "board")
+            except Exception:
+                pass
+            if page.navigation_bar is not None:
+                page.navigation_bar.selected_index = \
+                    TOP_VIEWS.index(name) if name in TOP_VIEWS else 4
+            if name == "board":
+                show_board_segment(state["board_seg"])
+            elif name == "slip":
+                show_slip_tool(state["slip_seg"])
+            elif name == "lab":
+                render_lab()
+            elif name == "stage":
+                render_stage()
+            elif name == "more":
+                render_more()
+            elif name == "terms":
+                render_terms()
+            elif name == "equations":
+                render_equations()
+            elif name == "dev":
+                render_dev()
+            # v12.6 page transition: on top of the switcher's
+            # fade, the incoming view settles in (two-update,
+            # scale/offset only) — a view change you can feel
+            # land, and the view is fully present either way.
+            _settle_in(page, views[name])
+            page.update()
 
     def on_nav(e):
         # v12.1 feel: a destination switch ticks + taps back.
@@ -7043,7 +7133,7 @@ def main(page: ft.Page):
                         options=[ft.DropdownOption(key=k, text=t)
                                  for k, t in SORT_MODES],
                         on_select=on_sort),
-                    cards_count]),
+                    cards_count, cards_receipt]),
                 # v12.4: the filter dropdowns — "Board shows"
                 # (which sport of the accumulated board is on
                 # screen) and "Show" (which markets pass),
@@ -7164,21 +7254,26 @@ def main(page: ft.Page):
         stop_pulse("splash")
 
         def _remove():
-            try:
-                page.overlay.remove(ctrl)
-            except Exception:
-                pass
-            try:
-                page.update()
-            except Exception:
-                pass
+            # v12.7.1: overlay removal + update ride the lock.
+            with _UPDATE_LOCK:
+                try:
+                    page.overlay.remove(ctrl)
+                except Exception:
+                    pass
+                try:
+                    page.update()
+                except Exception:
+                    pass
 
         def _fade_out():
-            try:
-                ctrl.opacity = 0
-                ctrl.update()
-            except Exception:
-                pass
+            # v12.7.1: the fade is an update like any other —
+            # serialized through the one lock.
+            with _UPDATE_LOCK:
+                try:
+                    ctrl.opacity = 0
+                    ctrl.update()
+                except Exception:
+                    pass
         page.run_thread(_fade_out)
         # v12.4.1 hardening: removal is scheduled on a plain
         # Timer, NOT nested inside the fade — if the fade's
