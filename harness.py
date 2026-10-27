@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.23.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 44)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.24.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 45)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1443,10 +1443,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.23.0 (build 44)" in _readme)
+          "12.24.0 (build 45)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.23.0"' in _wf
-          and '--build-number "44"' in _wf)
+          '--build-version "12.24.0"' in _wf
+          and '--build-number "45"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

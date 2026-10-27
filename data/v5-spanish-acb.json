@@ -1,0 +1,69 @@
+{
+ "sport": "spanish-acb",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T21:46:42+00:00",
+ "source": "RealGM international league schedule pages (Spanish ACB; basketball.realgm.com league 4; cached 2026-10-27T21:46:42+00:00; data/cache/spanish_acb_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1028": 1361.8,
+  "1030": 1217.6,
+  "1039": 1653.3,
+  "1040": 1504.2,
+  "1042": 1308.7,
+  "129": 1373.3,
+  "16": 1598.8,
+  "164": 1286.3,
+  "167": 1284.7,
+  "18": 1708.9,
+  "182": 1647.4,
+  "22": 1488.5,
+  "23": 1662.5,
+  "33": 1350.1,
+  "342": 1567.4,
+  "43": 1556.6,
+  "439": 1483.0,
+  "473": 1409.7,
+  "52": 1826.8,
+  "56": 1769.7,
+  "651": 1440.8
+ },
+ "margin_map": {
+  "a": 0.897,
+  "b": 0.0307,
+  "sd": 12.19,
+  "n": 963
+ },
+ "backtest": {
+  "brier": 0.2034,
+  "naive_brier": 0.238,
+  "naive_home_brier": 0.238,
+  "n": 963,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "16": "Joventut Badalona",
+  "18": "Baskonia",
+  "22": "CB Girona",
+  "23": "Barca",
+  "33": "Dreamland Gran Canaria",
+  "43": "Unicaja",
+  "52": "Real Madrid",
+  "56": "Valencia Basket",
+  "129": "Casademont Zaragoza",
+  "164": "Palencia Baloncesto",
+  "167": "CB Granada",
+  "182": "UCAM Murcia CB",
+  "342": "Bilbao Basket",
+  "439": "Rio Breogan",
+  "473": "BAXI Manresa",
+  "651": "Monbus Obradoiro",
+  "1028": "MoraBanc Andorra",
+  "1030": "CB Coruna",
+  "1039": "Lenovo Tenerife",
+  "1040": "Siblo San Pablo Burgos",
+  "1042": "Forca Lleida CE"
+ }
+}

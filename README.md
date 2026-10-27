@@ -2,7 +2,7 @@
 
 **Public name: BetFi_Xii (display: BetFi Xii). Internal id:
 Bet_Finder — unchanged in the Xii rename, so on-device data
-carries over. App release: 12.23.0 (build 44) — the
+carries over. App release: 12.24.0 (build 45) — the
 Show-default fix: the board opens on All markets (12.11.0's
 default opened on Golden bets, which hid every lane without
 a scored record). The ImageBoard of 12.11.0 stands

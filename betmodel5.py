@@ -972,6 +972,246 @@ def resolve_greece_a1_team(query, ratings=None):
     return None
 
 
+# Build L: FanDuel files German BBL fixtures under the
+# Basketball page too (competition "German BBL"). The lane
+# (data/v5-german-bbl.json, tools/fit_german_bbl.py) keys on
+# RealGM team ids (the Greece A1 ESAKE-id pattern — the
+# mirror's stable keys, glossed in the fit file's "teams"
+# map), so the name -> id map mirrors
+# FD_GREECE_A1_TEAM_CODES. FanDuel's name forms come first
+# (verified against the saved slate); the source-side
+# RealGM forms ride along as aliases. Every id verified as
+# a key of the shipped v5-german-bbl fit.
+FD_GERMAN_BBL_TEAM_CODES = {
+    "Wurzburg Baskets": "687", "Ulm Baskets": "169",
+    "ALBA Berlin": "142", "BG Goettingen": "1371",
+    "BV Chemnitz 99": "1377",
+    "Basketball Lowen Braunschweig": "71",
+    "Bayern Munich": "343", "Brose Baskets Bamberg": "109",
+    "EWE Baskets Oldenburg": "680",
+    "Fraport Skyliners": "678", "Gladiators Trier": "112",
+    "HAKRO Merlins Crailsheim": "215", "MHP Riesen": "682",
+    "MLP Academics Heidelberg": "1376",
+    "Mitteldeutscher BC": "155", "Phoenix Hagen": "683",
+    "Ratiopharm Ulm": "169", "Rostock Seawolves": "1575",
+    "SC Rasta Vechta": "1353", "Science City Jena": "1178",
+    "Telekom Baskets Bonn": "181",
+    "Veolia Towers Hamburg": "1530",
+    "Walter Tigers Tubingen": "684", "s.Oliver Baskets": "687",
+    "s.Oliver Wurzburg": "687",
+}
+
+
+def _names_german_bbl(competition):
+    """True when a market's FanDuel competition string names
+    the German BBL ("German BBL" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard pattern):
+    no other competition on the page shares the string."""
+    return str(competition or "").strip().lower() == \
+        "german bbl"
+
+
+def resolve_german_bbl_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the German
+    BBL fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_german_bbl()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_GERMAN_BBL_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build L: FanDuel files Spanish ACB fixtures under the
+# Basketball page too (competition "Spanish ACB"). The lane
+# (data/v5-spanish-acb.json, tools/fit_spanish_acb.py) keys
+# on RealGM team ids, glossed in the fit file's "teams" map.
+# FanDuel's name forms come first (the slate's "Caprabo
+# Lleida" is Forca Lleida CE's sponsored name); the
+# source-side RealGM forms ride along as aliases. Every id
+# verified as a key of the shipped v5-spanish-acb fit.
+FD_SPANISH_ACB_TEAM_CODES = {
+    "Caprabo Lleida": "1042", "Real Madrid": "52",
+    "BAXI Manresa": "473", "Barca": "23", "Baskonia": "18",
+    "Bilbao Basket": "342", "CB Coruna": "1030",
+    "CB Girona": "22", "CB Granada": "167",
+    "Casademont Zaragoza": "129",
+    "Dreamland Gran Canaria": "33", "Forca Lleida CE": "1042",
+    "Joventut Badalona": "16", "Lenovo Tenerife": "1039",
+    "Monbus Obradoiro": "651", "MoraBanc Andorra": "1028",
+    "Palencia Baloncesto": "164", "Rio Breogan": "439",
+    "Siblo San Pablo Burgos": "1040", "UCAM Murcia CB": "182",
+    "Unicaja": "43", "Valencia Basket": "56",
+    "FC Barcelona": "23",
+}
+
+
+def _names_spanish_acb(competition):
+    """True when a market's FanDuel competition string names
+    the Spanish ACB ("Spanish ACB" on the saved slate). An
+    EXACT match, never a prefix: the Copa del Rey is a
+    different competition and must never route here."""
+    return str(competition or "").strip().lower() == \
+        "spanish acb"
+
+
+def resolve_spanish_acb_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the Spanish
+    ACB fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_spanish_acb()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_SPANISH_ACB_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build L: FanDuel files Turkish BSL fixtures under the
+# Basketball page too (competition "Turkish TBSL"). The
+# lane (data/v5-turkish-bsl.json, tools/fit_turkish_bsl.py)
+# keys on RealGM team ids, glossed in the fit file's
+# "teams" map. FanDuel's name forms come first (verified
+# against the saved slate: "Galatasaray SK", "Bordo Sportif
+# RS" — the Balikesir club, RealGM's "Bordo Sportif
+# Balikesir"); the source-side RealGM forms ride along as
+# aliases. Every id verified as a key of the shipped
+# v5-turkish-bsl fit.
+FD_TURKISH_BSL_TEAM_CODES = {
+    "Galatasaray SK": "338", "Bordo Sportif RS": "2702",
+    "Bordo Sportif": "2702", "Anadolu Efes": "55",
+    "Bahcesehir Koleji": "1882", "Besiktas Icrypex": "339",
+    "Bordo Sportif Balikesir": "2702", "Bursaspor": "1788",
+    "Cagdas Bodrum Spor": "2551", "Cayirova": "2629",
+    "Darussafaka Basketbol Istanbul": "1114",
+    "Demir Insaat Buyukcekmece": "1461",
+    "Esenler Erokspor": "2630", "Fenerbahce Beko": "10",
+    "Galatasaray": "338", "Korfez Mansia": "2017",
+    "Merkezefendi Belediyesi Denizli Basket": "2097",
+    "Mersin BSB": "659", "Pinar Karsiyaka": "661",
+    "Samsunspor DSI": "1768", "Socar Petkimspor": "1626",
+    "Tofas SC": "126", "Trabzonspor": "662",
+    "Turk Telekom": "353", "Yalova Group Belediye Spor": "1784",
+}
+
+
+def _names_turkish_bsl(competition):
+    """True when a market's FanDuel competition string names
+    the Turkish BSL ("Turkish TBSL" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard
+    pattern)."""
+    return str(competition or "").strip().lower() == \
+        "turkish tbsl"
+
+
+def resolve_turkish_bsl_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the Turkish
+    BSL fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_turkish_bsl()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_TURKISH_BSL_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build L: FanDuel files Italian Serie A fixtures under
+# the Basketball page too (competition "Italian Serie A
+# BB"). The lane (data/v5-italian-serie-a.json,
+# tools/fit_italian_serie_a.py) keys on RealGM team ids,
+# glossed in the fit file's "teams" map. FanDuel's name
+# forms come first (verified against the saved slate); the
+# source-side RealGM forms ride along as aliases. Every id
+# verified as a key of the shipped v5-italian-serie-a fit.
+FD_ITALIAN_SERIE_A_TEAM_CODES = {
+    "Reyer Venezia": "708", "Umana Reyer Venezia": "708",
+    "Universo Treviso Basket": "28", "Universo Treviso": "28",
+    "Pallacanestro Reggiana": "806", "Reggio Emilia": "806",
+    "Pallacanestro Cantu": "276", "Cantu": "276",
+    "Pallacanestro Trieste 2004": "1247",
+    "Pallacanestro Trieste": "1247",
+    "Scaligera Basket Verona": "813",
+    "Scaligera Verona": "813", "Tezenis Verona": "813",
+    "2B Control Trapani": "1418",
+    "AX Armani Exchange Milan": "5",
+    "Olimpia Milano": "5", "EA7 Emporio Armani Milan": "5",
+    "Acqua San Bernardo Cantu": "276",
+    "Banco di Sardegna Sassari": "669",
+    "Bertram Tortona": "1694",
+    "Carpegna Prosciutto Basket Pesaro": "673",
+    "Dolomiti Energia Trento": "1246",
+    "Enel Brindisi": "807",
+    "Georgio Tesi Group Pistoia": "802",
+    "Germani Brescia": "809", "Givova Scafati": "801",
+    "Grissin Bon Reggio Emilia": "806",
+    "Napoli Basket": "787", "Old Wild West Udine": "1771",
+    "OpenJobMetis Varese": "58", "Tezenis Scaligera Verona":
+    "813", "Umana Venezia": "708",
+    "Universo De'Longhi Treviso": "28",
+    "Vanoli Cremona": "675", "Virtus Bologna": "15",
+}
+
+
+def _names_italian_serie_a(competition):
+    """True when a market's FanDuel competition string names
+    the Italian Serie A ("Italian Serie A BB" on the saved
+    slate). An EXACT match, never a prefix — and this lane
+    only ever runs under the "nba" sport key, so the soccer
+    page's "Italian Serie A" can never reach it."""
+    return str(competition or "").strip().lower() == \
+        "italian serie a bb"
+
+
+def resolve_italian_serie_a_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the Italian
+    Serie A fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_italian_serie_a()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_ITALIAN_SERIE_A_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
 def resolve_nfl_team(query, ratings=None):
     """Full FanDuel name (or a bare code) -> the NFL lane's code,
     via FD_NFL_TEAM_CODES (defined with the menu stack; resolved
@@ -3053,6 +3293,11 @@ WNBA_FIT_PATH = os.path.join(DATA, "v5-wnba.json")
 EUROLEAGUE_FIT_PATH = os.path.join(DATA, "v5-euroleague.json")
 EUROCUP_FIT_PATH = os.path.join(DATA, "v5-eurocup.json")
 GREECE_A1_FIT_PATH = os.path.join(DATA, "v5-greece-a1.json")
+GERMAN_BBL_FIT_PATH = os.path.join(DATA, "v5-german-bbl.json")
+SPANISH_ACB_FIT_PATH = os.path.join(DATA, "v5-spanish-acb.json")
+TURKISH_BSL_FIT_PATH = os.path.join(DATA, "v5-turkish-bsl.json")
+ITALIAN_SERIE_A_FIT_PATH = os.path.join(
+    DATA, "v5-italian-serie-a.json")
 MLB_FIT_PATH = os.path.join(DATA, "v5-mlb.json")
 TENNIS_FIT_PATH = os.path.join(DATA, "v5-tennis.json")
 MMA_FIT_PATH = os.path.join(DATA, "v5-mma.json")
@@ -3294,6 +3539,86 @@ def greece_a1_lane_gate(fit):
                 f"baseline {bt.get('naive_brier')}, "
                 f"n={bt.get('n')}; lane does not price until "
                 f"a refit passes")
+    return None
+
+
+def load_german_bbl():
+    return _load_json_cached(GERMAN_BBL_FIT_PATH)
+
+
+def german_bbl_lane_gate(fit):
+    """The German BBL lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern): the fit
+    is missing, or its walk-forward exam failed. ONE helper
+    read by the checker and by coverage, so the two layers
+    can never tell different stories about this lane."""
+    if fit is None:
+        return "German BBL fit not run (tools/fit_german_bbl.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"German BBL lane FAILED-EXAM — walk-forward "
+                f"Brier {bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def load_spanish_acb():
+    return _load_json_cached(SPANISH_ACB_FIT_PATH)
+
+
+def spanish_acb_lane_gate(fit):
+    """The Spanish ACB lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "Spanish ACB fit not run (tools/fit_spanish_acb.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Spanish ACB lane FAILED-EXAM — walk-forward "
+                f"Brier {bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def load_turkish_bsl():
+    return _load_json_cached(TURKISH_BSL_FIT_PATH)
+
+
+def turkish_bsl_lane_gate(fit):
+    """The Turkish BSL lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "Turkish BSL fit not run (tools/fit_turkish_bsl.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Turkish BSL lane FAILED-EXAM — walk-forward "
+                f"Brier {bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def load_italian_serie_a():
+    return _load_json_cached(ITALIAN_SERIE_A_FIT_PATH)
+
+
+def italian_serie_a_lane_gate(fit):
+    """The Italian Serie A lane's gate stamp, or None when
+    the lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return ("Italian Serie A fit not run "
+                "(tools/fit_italian_serie_a.py)")
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Italian Serie A lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did not "
+                f"beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
     return None
 
 
@@ -3967,6 +4292,251 @@ def greece_a1_price(home, away, kind, side="home", line=None,
     return (p_cover_home if side == "home"
             else 1 - p_cover_home), \
         {"detail": f"Greece A1 margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def german_bbl_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted German
+    BBL lane — wnba_probs' body on the German BBL fit (the
+    home bump is the fit's own fitted hfa_elo param). None
+    when a name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_german_bbl_team(home, R)
+    away = resolve_german_bbl_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def german_bbl_price(home, away, kind, side="home", line=None,
+                     competition=None):
+    """The German BBL lane's answer for a fixture FanDuel
+    files under "nba" (Build L). Returns None when the
+    market's COMPETITION does not name the German BBL or the
+    market form is outside this lane (moneyline / spread /
+    alt-spread only — totals keep their own route) — the
+    caller then proceeds exactly as it did before this lane
+    existed. Otherwise the lane's (p, info) or (None,
+    reason), engine_price's own shapes, gated by
+    german_bbl_lane_gate.
+
+    The discriminator is the competition field, NEVER the
+    team set: these clubs also play the EuroLeague, the
+    EuroCup and the BCL (ALBA Berlin, Bayern Munich), and a
+    fixture filed under its own competition must not route
+    here."""
+    if not _names_german_bbl(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_german_bbl()
+    gate = german_bbl_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = german_bbl_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the German BBL fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"German BBL Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"German BBL margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def spanish_acb_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Spanish
+    ACB lane — wnba_probs' body on the Spanish ACB fit. None
+    when a name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_spanish_acb_team(home, R)
+    away = resolve_spanish_acb_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def spanish_acb_price(home, away, kind, side="home", line=None,
+                      competition=None):
+    """The Spanish ACB lane's answer for a fixture FanDuel
+    files under "nba" (Build L). Returns None when the
+    market's COMPETITION does not name the Spanish ACB or
+    the market form is outside this lane (moneyline / spread
+    / alt-spread only — totals keep their own route).
+    Otherwise the lane's (p, info) or (None, reason),
+    engine_price's own shapes, gated by
+    spanish_acb_lane_gate.
+
+    The discriminator is the competition field, NEVER the
+    team set: these clubs also play the EuroLeague, the
+    EuroCup and the BCL (Real Madrid above all), and a
+    fixture filed under its own competition (the Copa del
+    Rey included) must not route here."""
+    if not _names_spanish_acb(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_spanish_acb()
+    gate = spanish_acb_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = spanish_acb_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the Spanish ACB fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Spanish ACB Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Spanish ACB margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def turkish_bsl_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Turkish
+    BSL lane — wnba_probs' body on the Turkish BSL fit. None
+    when a name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_turkish_bsl_team(home, R)
+    away = resolve_turkish_bsl_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def turkish_bsl_price(home, away, kind, side="home", line=None,
+                      competition=None):
+    """The Turkish BSL lane's answer for a fixture FanDuel
+    files under "nba" (Build L). Returns None when the
+    market's COMPETITION does not name the Turkish BSL
+    ("Turkish TBSL") or the market form is outside this lane
+    (moneyline / spread / alt-spread only — totals keep
+    their own route). Otherwise the lane's (p, info) or
+    (None, reason), engine_price's own shapes, gated by
+    turkish_bsl_lane_gate.
+
+    The discriminator is the competition field, NEVER the
+    team set: these clubs also play the EuroLeague and the
+    BCL (Galatasaray among them), and a fixture filed under
+    its own competition must not route here."""
+    if not _names_turkish_bsl(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_turkish_bsl()
+    gate = turkish_bsl_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = turkish_bsl_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the Turkish BSL fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Turkish BSL Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Turkish BSL margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def italian_serie_a_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Italian
+    Serie A lane — wnba_probs' body on the Italian Serie A
+    fit. None when a name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_italian_serie_a_team(home, R)
+    away = resolve_italian_serie_a_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def italian_serie_a_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The Italian Serie A lane's answer for a fixture
+    FanDuel files under "nba" (Build L). Returns None when
+    the market's COMPETITION does not name the Italian Serie
+    A ("Italian Serie A BB") or the market form is outside
+    this lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info) or
+    (None, reason), engine_price's own shapes, gated by
+    italian_serie_a_lane_gate.
+
+    The discriminator is the competition field, NEVER the
+    team set: these clubs also play the EuroLeague and the
+    EuroCup (Virtus Bologna, Olimpia Milano), and a fixture
+    filed under its own competition must not route here."""
+    if not _names_italian_serie_a(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_italian_serie_a()
+    gate = italian_serie_a_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = italian_serie_a_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the Italian Serie A fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Italian Serie A Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Italian Serie A margin map N({mu:+.1f}, "
                    f"{sd:.1f}) (in-sample map — FRAGILE "
                    f"lineage)",
          "fragile": True}
@@ -5963,6 +6533,73 @@ def universal_coverage(markets, data_dir=None):
                         is not None:
                     continue
                 return f"team not in the Greece A1 fit: {t}"
+            if sport == "nba" and _names_german_bbl(
+                    mkt.get("competition")):
+                # Build L: the German BBL lane prices its own
+                # fixtures — coverage reads the same gate +
+                # resolver the checker prices through
+                # (german_bbl_lane_gate /
+                # resolve_german_bbl_team), so the two layers
+                # tell one story. Keyed on the market's
+                # competition field, never the team set.
+                bfit = load_german_bbl()
+                gate = german_bbl_lane_gate(bfit)
+                if gate:
+                    return gate
+                if resolve_german_bbl_team(
+                        t, (bfit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the German BBL fit: {t}"
+            if sport == "nba" and _names_spanish_acb(
+                    mkt.get("competition")):
+                # Build L: the Spanish ACB lane prices its
+                # own fixtures — coverage reads the same gate
+                # + resolver the checker prices through
+                # (spanish_acb_lane_gate /
+                # resolve_spanish_acb_team). Competition-keyed.
+                afit = load_spanish_acb()
+                gate = spanish_acb_lane_gate(afit)
+                if gate:
+                    return gate
+                if resolve_spanish_acb_team(
+                        t, (afit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the Spanish ACB fit: {t}"
+            if sport == "nba" and _names_turkish_bsl(
+                    mkt.get("competition")):
+                # Build L: the Turkish BSL lane prices its
+                # own fixtures — coverage reads the same gate
+                # + resolver the checker prices through
+                # (turkish_bsl_lane_gate /
+                # resolve_turkish_bsl_team). Competition-keyed.
+                tfit = load_turkish_bsl()
+                gate = turkish_bsl_lane_gate(tfit)
+                if gate:
+                    return gate
+                if resolve_turkish_bsl_team(
+                        t, (tfit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the Turkish BSL fit: {t}"
+            if sport == "nba" and _names_italian_serie_a(
+                    mkt.get("competition")):
+                # Build L: the Italian Serie A lane prices
+                # its own fixtures — coverage reads the same
+                # gate + resolver the checker prices through
+                # (italian_serie_a_lane_gate /
+                # resolve_italian_serie_a_team).
+                # Competition-keyed.
+                ifit = load_italian_serie_a()
+                gate = italian_serie_a_lane_gate(ifit)
+                if gate:
+                    return gate
+                if resolve_italian_serie_a_team(
+                        t, (ifit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the Italian Serie A fit: {t}"
             comp = OTHER_COMPETITION_TEAMS.get(t)
             if comp == "WNBA" and sport == "nba":
                 # Build I: the WNBA lane prices its own
@@ -6183,8 +6820,13 @@ SPORT_FIT_NOTES = {
            "the EuroLeague off its own — v5-euroleague.json, "
            "Build J; the EuroCup off its own — "
            "v5-eurocup.json, Build K; Greece A1 off its own "
-           "— v5-greece-a1.json, Build K; other competitions "
-           "on that page — NBL/CBA — are not the NBA fit)",
+           "— v5-greece-a1.json, Build K; the German BBL, "
+           "Spanish ACB, Turkish BSL and Italian Serie A off "
+           "their own — v5-german-bbl.json / "
+           "v5-spanish-acb.json / v5-turkish-bsl.json / "
+           "v5-italian-serie-a.json, Build L; other "
+           "competitions on that page — CBA/B.League/LNB — "
+           "are not the NBA fit)",
     "nhl": "NHL Elo, moneyline (Ice Hockey page; AHL/NCAA "
            "hockey on that page are not the NHL fit)",
     "mlb": "MLB Elo + runs model, moneyline (v5-mlb.json; "
@@ -6706,6 +7348,40 @@ def engine_price(sport, kind, home, away, side="home", line=None,
                                   competition)
             if gpr is not None:
                 return gpr
+            # Build L: a German BBL fixture filed under this
+            # page routes to the German BBL lane (its own
+            # fitted Elo lane, exam-gated through
+            # german_bbl_lane_gate) before the competition
+            # stamp — the same resolver-first order, after
+            # Greece A1. The lane keys on the market's
+            # competition field, never the team set, so
+            # European fixtures of the same clubs fall
+            # through untouched.
+            bpr = german_bbl_price(home, away, kind, side, line,
+                                   competition)
+            if bpr is not None:
+                return bpr
+            # Build L: a Spanish ACB fixture routes to the
+            # Spanish ACB lane (exam-gated through
+            # spanish_acb_lane_gate), competition-keyed.
+            apr = spanish_acb_price(home, away, kind, side, line,
+                                    competition)
+            if apr is not None:
+                return apr
+            # Build L: a Turkish BSL fixture routes to the
+            # Turkish BSL lane (exam-gated through
+            # turkish_bsl_lane_gate), competition-keyed.
+            tpr = turkish_bsl_price(home, away, kind, side, line,
+                                    competition)
+            if tpr is not None:
+                return tpr
+            # Build L: an Italian Serie A fixture routes to
+            # the Italian Serie A lane (exam-gated through
+            # italian_serie_a_lane_gate), competition-keyed.
+            ipr = italian_serie_a_price(home, away, kind, side,
+                                        line, competition)
+            if ipr is not None:
+                return ipr
             # R4: name the real competition when FanDuel filed
             # a WNBA / NBL / CBA fixture under the NBA page —
             # the same stamp coverage prints (one helper).

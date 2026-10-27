@@ -1,0 +1,70 @@
+{
+ "sport": "italian-serie-a",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T21:46:58+00:00",
+ "source": "RealGM international league schedule pages (Italian Lega Basket Serie A; basketball.realgm.com league 6; cached 2026-10-27T21:46:58+00:00; data/cache/italian_serie_a_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1246": 1520.5,
+  "1247": 1483.6,
+  "1418": 1701.3,
+  "15": 1876.6,
+  "1694": 1491.7,
+  "1771": 1366.2,
+  "276": 1340.2,
+  "28": 1515.5,
+  "5": 1707.6,
+  "58": 1471.7,
+  "669": 1336.8,
+  "673": 1370.5,
+  "675": 1411.4,
+  "708": 1629.1,
+  "787": 1536.5,
+  "801": 1225.6,
+  "802": 1247.9,
+  "806": 1613.0,
+  "807": 1444.2,
+  "809": 1683.6,
+  "813": 1526.5
+ },
+ "margin_map": {
+  "a": 0.474,
+  "b": 0.0314,
+  "sd": 12.46,
+  "n": 730
+ },
+ "backtest": {
+  "brier": 0.2106,
+  "naive_brier": 0.2386,
+  "naive_home_brier": 0.2386,
+  "n": 730,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "5": "AX Armani Exchange Milan",
+  "15": "Virtus Bologna",
+  "28": "Universo De'Longhi Treviso",
+  "58": "OpenJobMetis Varese",
+  "276": "Acqua San Bernardo Cantu",
+  "669": "Banco di Sardegna Sassari",
+  "673": "Carpegna Prosciutto Basket Pesaro",
+  "675": "Vanoli Cremona",
+  "708": "Umana Venezia",
+  "787": "Napoli Basket",
+  "801": "Givova Scafati",
+  "802": "Georgio Tesi Group Pistoia",
+  "806": "Grissin Bon Reggio Emilia",
+  "807": "Enel Brindisi",
+  "809": "Germani Brescia",
+  "813": "Tezenis Scaligera Verona",
+  "1246": "Dolomiti Energia Trento",
+  "1247": "Pallacanestro Trieste 2004",
+  "1418": "2B Control Trapani",
+  "1694": "Bertram Tortona",
+  "1771": "Old Wild West Udine"
+ },
+ "teams_note": "RealGM hangs a wrong club name on team id(s) 675, 809 \u2014 the id's schedule history is one real club's, pinned by home venue + rosters in the lane builder's docstring; the gloss here names the real club."
+}
