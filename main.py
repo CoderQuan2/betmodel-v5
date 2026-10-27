@@ -353,8 +353,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.16.0"
-BUILD_NUMBER = 37
+APP_VERSION = "12.17.0"
+BUILD_NUMBER = 38
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the

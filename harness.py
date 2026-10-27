@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.16.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 37)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.17.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 38)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -657,10 +657,12 @@ def main():
     _mp, _mi = b5.engine_price("mma", "moneyline",
                                "Charles Oliveira", "Diego Lopes",
                                side="home")
-    check("R3 mma: lane ships FAILED-EXAM with its numbers "
-          "(walk-forward did not beat naive — does not price)",
-          _mp is None and "FAILED-EXAM" in _mi
-          and "0.2454" in _mi and "0.2451" in _mi,
+    check("R3 mma: lane prices off the passed refit "
+          "(attempt 2: Brier 0.2438 vs naive 0.2441, n=9091; "
+          "attempt 1's 0.2454 vs 0.2451 failure is history)",
+          _mp is not None and 0 < _mp < 1
+          and "0.2438" in _mi.get("detail", "")
+          and "0.2441" in _mi.get("detail", ""),
           f"{_mp} {_mi}")
     cov3 = b5.universal_coverage([
         {"sport": "tennis", "home": "Novak Djokovic",
@@ -674,11 +676,12 @@ def main():
     _tc = next(c for c in cov3 if c["sport"] == "tennis")
     _mc = next(c for c in cov3 if c["sport"] == "mma")
     _ttc = next(c for c in cov3 if c["sport"] == "table-tennis")
-    check("R3 coverage: tennis capable, mma FAILED-EXAM, table "
-          "tennis still named-unchecked (checker == coverage)",
+    check("R3 coverage: tennis capable, mma capable (refit "
+          "passed), table tennis still named-unchecked "
+          "(checker == coverage)",
           _tc["priced_capable"] == 1
-          and _mc["unpriced"] == 1
-          and any("FAILED-EXAM" in m for m in _mc["missing"])
+          and _mc["priced_capable"] == 1
+          and _mc["unpriced"] == 0
           and any("no checker registered for table-tennis" in m
                   for m in _ttc["missing"]),
           f"ten={_tc} mma={_mc} tt={_ttc}")
@@ -1429,10 +1432,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.16.0 (build 37)" in _readme)
+          "12.17.0 (build 38)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.16.0"' in _wf
-          and '--build-number "37"' in _wf)
+          '--build-version "12.17.0"' in _wf
+          and '--build-number "38"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
