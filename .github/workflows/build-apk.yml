@@ -7,9 +7,18 @@ name: Build BetFi Xii APK
 # to main.
 #
 # App release v12 (2026-10-24) — BetFi Xii:
-# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.8.0,
-#   build 28; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
+# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.8.1,
+#   build 29; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
 #   artifact betfi-xii-apk.
+# - BUILD 29 PACKAGING CHANGE (2026-10-27): the release build no
+#   longer uses --split-per-abi — it produces ONE universal APK,
+#   exactly as every build up to 11.0.2 did. Reason: --split-per-abi
+#   entered this workflow in 859828c (12.0.0), the precise commit
+#   that opens the card-rendering regression window on the Pilot's
+#   device (card outlines paint, contents never do, across eight
+#   builds and three card implementations, while two matched-version
+#   real clients render the same code fully). The staging step's
+#   universal fallback (below) selects the single APK loudly.
 # - Snapdragon 8 Gen 3 target (Galaxy S24 generation, Adreno
 #   750, arm64-v8a): the release build uses --split-per-abi
 #   (verified present in flet 1.0.4 --help) and the staging
@@ -101,7 +110,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --split-per-abi --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.8.0" --build-number "28"
+        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.8.1" --build-number "29"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
