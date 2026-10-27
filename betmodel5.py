@@ -4054,6 +4054,129 @@ def nba_probs(fit, home, away):
     return p, mm["a"] + mm["b"] * d, mm["sd"]
 
 
+CFL_FIT_PATH = os.path.join(DATA, "v5-cfl.json")
+
+# The CFL's nine clubs under FanDuel's name forms (the saved
+# slate prints "British Columbia Lions"; the roster list in
+# OTHER_COMPETITION_TEAMS carries the same club as "BC Lions"
+# — the alias below bridges the two forms).
+CFL_TEAM_NAMES = frozenset({
+    "British Columbia Lions", "Calgary Stampeders",
+    "Edmonton Elks", "Hamilton Tiger-Cats",
+    "Montreal Alouettes", "Ottawa Redblacks",
+    "Saskatchewan Roughriders", "Toronto Argonauts",
+    "Winnipeg Blue Bombers"})
+FD_CFL_NAME_ALIASES = {"BC Lions": "British Columbia Lions"}
+
+
+def _names_cfl(competition):
+    """True when a market's FanDuel competition string names
+    the CFL ("Canada - CFL - Matches" on the saved slate)."""
+    return "cfl" in str(competition or "").lower().replace(
+        "-", " ").split()
+
+
+def _is_cfl_team(name):
+    return name in CFL_TEAM_NAMES or name in FD_CFL_NAME_ALIASES
+
+
+def _is_cfl_market(competition, home, away):
+    return (_names_cfl(competition) or _is_cfl_team(home)
+            or _is_cfl_team(away))
+
+
+def load_cfl():
+    return _load_json_cached(CFL_FIT_PATH)
+
+
+def cfl_lane_gate(fit):
+    """The CFL lane's gate stamp, or None when the lane may
+    price (the wnba_lane_gate pattern): the fit is missing,
+    or its walk-forward exam failed. ONE helper read by the
+    checker and by coverage, so the two layers can never tell
+    different stories about this lane."""
+    if fit is None:
+        return "CFL fit not run (tools/fit_cfl.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"CFL lane FAILED-EXAM — walk-forward Brier "
+                f"{bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def resolve_cfl_team(query, ratings=None):
+    """FanDuel name -> the CFL fit's team key, or None
+    (resolve_euroleague_team's contract)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_cfl()
+        ratings = (fit or {}).get("ratings") or {}
+    return _resolve_or_none(ratings, str(query).strip(),
+                             FD_CFL_NAME_ALIASES)
+
+
+def cfl_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted CFL
+    lane — wnba_probs' body on the CFL fit. None when a name
+    misses the fit."""
+    R = fit["ratings"]
+    home = resolve_cfl_team(home, R)
+    away = resolve_cfl_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 55)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def cfl_price(home, away, kind, side="home", line=None,
+              competition=None):
+    """The CFL lane's answer for a fixture FanDuel files
+    under "ncaaf" (Build N). Returns None when the fixture
+    is not CFL (its competition names another league and
+    neither club is a CFL club) or the market form is
+    outside this lane (moneyline / spread / alt-spread —
+    totals route through totals_price("cfl") in the ncaaf
+    totals branch) — the caller then proceeds exactly as it
+    did before this lane existed. Otherwise the lane's
+    (p, info) or (None, reason), engine_price's own shapes,
+    gated by cfl_lane_gate. Consulted only where the CFB
+    resolver itself failed, so a CFB fixture's price is
+    exactly what it was."""
+    if not _is_cfl_market(competition, home, away):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_cfl()
+    gate = cfl_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = cfl_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the CFL fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"CFL Elo lane (fit {fit['fitted_at']}; "
+                       f"walk-forward Brier {bt.get('brier')} "
+                       f"vs naive {bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"CFL margin map N({mu:+.1f}, {sd:.1f}) "
+                   f"(in-sample map — FRAGILE lineage)",
+         "fragile": True}
+
+
 def wnba_probs(fit, home, away):
     """(p_home, margin_mu, margin_sd) from the fitted WNBA
     lane — nba_probs' body on the WNBA fit (the home bump is
@@ -6524,12 +6647,20 @@ def universal_coverage(markets, data_dir=None):
         if bt in ("totals", "alt-total"):
             # R5: read the lane's totals fit — the same file
             # totals_price() prices from, so coverage and the
-            # checker cannot disagree about this cell.
-            if sport not in TOTALS_LANES:
+            # checker cannot disagree about this cell. Build
+            # N: a CFL fixture filed under ncaaf reads the
+            # CFL totals fit — the file its checker prices
+            # from — under the same rule.
+            tsport = sport
+            if sport == "ncaaf" and _is_cfl_market(
+                    mkt.get("competition"), mkt.get("home"),
+                    mkt.get("away")):
+                tsport = "cfl"
+            if tsport not in TOTALS_LANES:
                 return ("no totals distribution for this lane "
                         "yet — close by: fit one "
                         "(tools/fit_totals.py)")
-            tf = _load_json_cached(_totals_path(sport, d))
+            tf = _load_json_cached(_totals_path(tsport, d))
             if tf is None:
                 return ("no totals distribution for this lane "
                         "yet — close by: fit one "
@@ -6551,14 +6682,14 @@ def universal_coverage(markets, data_dir=None):
                 if sport == "nfl" and resolve_nfl_team(
                         t, tteams) is not None:
                     continue  # engine_price pre-resolves it too
-                if sport == "ncaaf" and _resolve_or_none(
+                if tsport == "ncaaf" and _resolve_or_none(
                         tteams, t,
                         FD_CFB_SCHOOL_ALIASES) is not None:
                     continue  # engine_price pre-resolves it too
                 try:
                     resolve_team(tteams, taliases.get(t, t))
                 except SystemExit:
-                    return (f"team not in the {sport} totals "
+                    return (f"team not in the {tsport} totals "
                             f"fit: {t}")
             return None
         if bt == "team-props" and sport in TOTALS_LANES:
@@ -6983,6 +7114,24 @@ def universal_coverage(markets, data_dir=None):
                         is not None:
                     continue
                 return f"team not in the WNBA fit: {t}"
+            if sport == "ncaaf" and (comp == "CFL"
+                                     or _is_cfl_team(t)
+                                     or _names_cfl(
+                                         mkt.get("competition"))):
+                # Build N: the CFL lane prices its own
+                # fixtures — coverage reads the same gate +
+                # resolver the checker prices through
+                # (cfl_lane_gate / resolve_cfl_team), so the
+                # two layers tell one story.
+                cfit = load_cfl()
+                gate = cfl_lane_gate(cfit)
+                if gate:
+                    return gate
+                if resolve_cfl_team(
+                        t, (cfit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the CFL fit: {t}"
             if comp:
                 return (f"competition not in this app: {comp} "
                         f"({t}) — FanDuel files it under "
@@ -7181,7 +7330,8 @@ SPORT_FIT_NOTES = {
     "nfl": "phi/Elo moneyline + margin distribution (rides "
            "the American Football page)",
     "ncaaf": "CFB distributional ratings + margin lane (rides "
-             "the American Football page)",
+             "the American Football page; the CFL prices off "
+             "its own Elo fit — v5-cfl.json, Build N)",
     "nba": "NBA Elo + margin map (Basketball page; the WNBA "
            "prices off its own Elo fit — v5-wnba.json, Build I; "
            "the EuroLeague off its own — v5-euroleague.json, "
@@ -7289,7 +7439,7 @@ def sport_inventory(event_types=None):
 # naive baseline on MAE and Brier); FAILED-EXAM lanes (NHL and
 # MLB game totals) stamp the exam numbers and never price.
 
-TOTALS_LANES = ("nfl", "ncaaf", "nba", "nhl", "mlb")
+TOTALS_LANES = ("nfl", "ncaaf", "nba", "nhl", "mlb", "cfl")
 
 
 def _latest_exam(tf):
@@ -7617,6 +7767,17 @@ def engine_price(sport, kind, home, away, side="home", line=None,
         return None, "no NFL engine for this market"
     if sport == "ncaaf":
         if kind in ("totals", "alt-total"):
+            # Build N: a CFL fixture filed under the NCAAF
+            # page routes to the CFL totals lane (its own
+            # fitted distribution, exam-gated inside
+            # totals_price through the shared totals path)
+            # before the competition stamp — the lane keys
+            # on the market's competition field and the CFL
+            # club set. Non-CFL fixtures fall through
+            # untouched.
+            if _is_cfl_market(competition, home, away):
+                return totals_price("cfl", home, away,
+                                    side, line)
             # membership truth, shared with the moneyline
             # lane: bare FanDuel school names resolve through
             # FD_CFB_SCHOOL_ALIASES (the totals fit keys carry
@@ -7651,7 +7812,17 @@ def engine_price(sport, kind, home, away, side="home", line=None,
         except SystemExit as e:
             # membership failure names itself (not found /
             # ambiguous after aliases) — a named UNPRICED, not a
-            # checker crash.
+            # checker crash. Build N: before the stamp, a CFL
+            # fixture routes to the CFL lane (its own fitted
+            # Elo lane, exam-gated through cfl_lane_gate) —
+            # consulted only where the CFB resolver itself
+            # failed, so a CFB fixture's price is exactly
+            # what it was. Non-CFL fixtures fall through to
+            # the stamp untouched.
+            cpr = cfl_price(home, away, kind, side, line,
+                            competition)
+            if cpr is not None:
+                return cpr
             return None, str(e)
         return None, "no NCAAF engine for this market"
     if sport == "nhl":

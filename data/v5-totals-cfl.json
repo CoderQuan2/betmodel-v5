@@ -1,0 +1,84 @@
+{
+ "sport": "cfl",
+ "lane": "cfl-totals",
+ "fitted_at": "2026-10-27T22:28:44+00:00",
+ "source": "CFL official API (cfl.ca/api/v1/content/data/schedule), regular seasons 2016-2019, 2021-2026 \u2014 same stream as v5-cfl.json",
+ "history_n": 792,
+ "params": {
+  "prior_games": 4,
+  "distribution": "normal",
+  "burn_in": 60
+ },
+ "distribution_why": "Normal on total points: a CFL total is the sum of many scoring events across two offenses (the fit_totals NFL treatment).",
+ "league": {
+  "LH": 26.591,
+  "LA": 24.894,
+  "mean_team_score": 25.742,
+  "total_mean": 51.485,
+  "total_sd": 13.98
+ },
+ "sigma": 13.818,
+ "teams": {
+  "British Columbia Lions": {
+   "off": 1.0994,
+   "def": 1.0248,
+   "gp": 35.83984375
+  },
+  "Calgary Stampeders": {
+   "off": 1.163,
+   "def": 1.1047,
+   "gp": 35.83984375
+  },
+  "Edmonton Elks": {
+   "off": 1.0433,
+   "def": 1.0107,
+   "gp": 35.83984375
+  },
+  "Hamilton Tiger-Cats": {
+   "off": 1.0088,
+   "def": 1.0921,
+   "gp": 35.83984375
+  },
+  "Montreal Alouettes": {
+   "off": 1.142,
+   "def": 0.9724,
+   "gp": 35.83984375
+  },
+  "Ottawa Redblacks": {
+   "off": 0.9295,
+   "def": 1.2543,
+   "gp": 35.83984375
+  },
+  "Saskatchewan Roughriders": {
+   "off": 1.0138,
+   "def": 0.9837,
+   "gp": 35.83984375
+  },
+  "Toronto Argonauts": {
+   "off": 1.0916,
+   "def": 1.1158,
+   "gp": 35.83984375
+  },
+  "Winnipeg Blue Bombers": {
+   "off": 1.0294,
+   "def": 0.9625,
+   "gp": 35.83984375
+  }
+ },
+ "aliases": {
+  "BC Lions": "British Columbia Lions"
+ },
+ "backtest": {
+  "n": 732,
+  "mae_model": 11.186,
+  "mae_naive": 11.338,
+  "brier_model": 0.248,
+  "brier_naive": 0.2499,
+  "logscore_model": -3.1281,
+  "logscore_naive": -3.1361,
+  "sigma_resid": 13.818,
+  "verdict": "PASS",
+  "protocol": "walk-forward (strengths/league rates from prior games only); naive = expanding league-average total; Brier scored on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED"
+}

@@ -193,5 +193,23 @@
   "verdict": "FAILED-EXAM",
   "protocol": "walk-forward (strengths/league rates from prior games only); naive = expanding league-average total; Brier scored on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive"
  },
- "status": "FAILED-EXAM"
+ "status": "FAILED-EXAM",
+ "refit_attempt_2": {
+  "n": 2233,
+  "mae_model": 3.713,
+  "mae_naive": 3.622,
+  "brier_model": 0.2579,
+  "brier_naive": 0.2511,
+  "logscore_model": -2.0506,
+  "logscore_naive": -2.0255,
+  "sigma_resid": 4.707,
+  "verdict": "FAILED-EXAM",
+  "protocol": "walk-forward, attempt 1's protocol unchanged (burn-in 200; naive = expanding league-average total; Brier on P(over L*), L* = .5 line at the naive mean; PASS requires MAE and Brier both better than naive); attempt 2 adds the pre-registered starting-pitcher adjustment (probable starters, MLB Stats API; per-start team runs allowed, shrunk 5 pseudo-starts at the expanding league mean team score)",
+  "pitcher_matching": {
+   "stream_games": 2433,
+   "matched": 2432,
+   "both_starters_named": 2425,
+   "source": "MLB Stats API schedule (statsapi.mlb.com), hydrate=probablePitcher, 2025 regular season"
+  }
+ }
 }

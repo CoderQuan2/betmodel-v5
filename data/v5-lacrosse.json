@@ -1,0 +1,66 @@
+{
+ "sport": "lacrosse",
+ "league": "nll",
+ "fitted_at": "2026-10-27T22:33:39+00:00",
+ "source": "ESPN NLL scoreboard day pulls (site.api.espn.com lacrosse/nll), seasons 2024-25 .. 2025-26 (the route serves nothing earlier); fetched 2026-10-27T22:33:31+00:00",
+ "exam": {
+  "seasons": [
+   {
+    "season": "2024-25",
+    "champion": "Buffalo Bandits",
+    "rs_games": 126,
+    "po_games": 7,
+    "p_champion_model": 0.2787,
+    "p_champion_naive": 0.1111,
+    "brier_model": 0.6235,
+    "brier_naive": 0.8561,
+    "logloss_model": 1.2778,
+    "logloss_naive": 2.1972
+   },
+   {
+    "season": "2025-26",
+    "champion": "Toronto Rock",
+    "rs_games": 126,
+    "po_games": 8,
+    "p_champion_model": 0.0766,
+    "p_champion_naive": 0.0952,
+    "brier_model": 1.0453,
+    "brier_naive": 0.8878,
+    "logloss_model": 2.5698,
+    "logloss_naive": 2.3514
+   }
+  ],
+  "seasons_won": 1,
+  "mean_brier_model": 0.8344,
+  "mean_brier_naive": 0.872,
+  "mean_logloss_model": 1.9238,
+  "mean_logloss_naive": 2.2743,
+  "verdict": "FAILED-EXAM",
+  "bar": "model beats naive on Brier AND log-loss in BOTH examined seasons and on both means (the fit_outrights >= 2-of-3 bar as a clean sweep \u2014 only two completed seasons exist on the verified ESPN route)",
+  "sims_per_season": 20000
+ },
+ "live": {
+  "season": "2026-27",
+  "basis": "spring-2026 strengths; that season's fixture pairings as the schedule template",
+  "played": 0,
+  "remaining": 126,
+  "sims": 20000,
+  "shares": {
+   "Halifax Thunderbirds": 0.0571,
+   "Oshawa FireWolves": 0.0018,
+   "Saskatchewan Rush": 0.1476,
+   "Calgary Roughnecks": 0.0079,
+   "Ottawa Black Bears": 0.0083,
+   "Philadelphia Wings": 0.0015,
+   "Colorado Mammoth": 0.1173,
+   "Buffalo Bandits": 0.0434,
+   "Georgia Swarm": 0.3427,
+   "San Diego Seals": 0.0165,
+   "Rochester Knighthawks": 0.0016,
+   "Toronto Rock": 0.0661,
+   "Vancouver Warriors": 0.1716,
+   "Las Vegas Desert Dogs": 0.0163
+  }
+ },
+ "status": "FAILED-EXAM"
+}
