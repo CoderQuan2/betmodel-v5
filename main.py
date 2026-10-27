@@ -112,6 +112,7 @@ never places a bet and never touches a sportsbook account.
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import os
@@ -338,8 +339,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.9.0"
-BUILD_NUMBER = 30
+APP_VERSION = "12.10.0"
+BUILD_NUMBER = 31
 DISPLAY_NAME = "BetFi Xii"
 # v12.9 DIAGNOSTIC LADDER gate (build 30 is a diagnostic
 # build): on the Pilot's phone, build 28's cards paint as
@@ -350,11 +351,12 @@ DISPLAY_NAME = "BetFi Xii"
 # seats a ladder of minimal test cards on the board, one per
 # add-path (initial tree / tap / worker thread / the render
 # path / extra nesting / image content), and ONE device
-# screenshot bisects the failing layer. Default ON — the
-# shipped APK sets no env; BETFI_DIAGNOSTIC=0 restores
-# build 29's behavior exactly (the harness runs flag-off).
+# screenshot bisected it — only the tap-added rung ever
+# painted. Build 31 retires the ladder to opt-in: default
+# OFF; BETFI_DIAGNOSTIC=1 re-arms it (the harness runs
+# flag-off except its dedicated ladder boot).
 DIAGNOSTIC_LADDER = os.environ.get(
-    "BETFI_DIAGNOSTIC", "1") == "1"
+    "BETFI_DIAGNOSTIC", "0") == "1"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
 # user starts the first pull, so the loop idles until the
@@ -541,9 +543,80 @@ _DOT_FRESH = {"fresh": False}   # the live dot's freshness gate
 # every update through one lock makes a torn patch impossible.
 # RLock, so a locked render may call locked helpers freely.
 _UPDATE_LOCK = threading.RLock()
-# v12.7.1 re-assert flag: at most one board re-assert Timer is
-# ever pending (see render_cards / _reassert_board).
-_REASSERT_PENDING = False
+# v12.10 EVENT-LOOP BATCHED APPLIER. Device evidence
+# (build 30's ladder): the one card that paints on the
+# Pilot's phone is TEST B — appended alone, after boot, by
+# a tap: a single small patch, delivered on the event
+# loop. Everything the old render shape shipped (one bulk
+# patch from a worker thread, plus a deferred Timer re-ship
+# of that same patch) arrives as full-height empty
+# containers, while worker value-writes (counts, stamps)
+# have always displayed. So the board and the finds now
+# render the tap's way: the render computes everything up
+# front, then a job — reset, batches of at most 3 controls,
+# finish — is applied by the coroutine below, scheduled
+# with page.run_task (the event loop), one page.update()
+# per step, yielding between batches. A job superseded by
+# a newer render (its sequence stamp no longer current)
+# aborts before its next step and never touches the
+# screen again.
+
+
+def _chunk3(controls):
+    """Chunk an ordered control list into batches of <= 3 —
+    the applier's patch size (the tap-sized patch)."""
+    return [controls[i:i + 3]
+            for i in range(0, len(controls), 3)]
+
+
+async def _run_apply(job):
+    """Apply one render job on the event loop.
+
+    Job keys: page; reset (fn: clear the target list + the
+    render's value writes); batches (list of control lists);
+    extend (fn(batch): append one batch to the target list);
+    finish (fn or None: closing writes — the receipt, pulse
+    targets); is_current (fn: False once a newer render has
+    been dispatched); status (a Text or None, for error
+    surfacing). Every step runs inside _UPDATE_LOCK and
+    ships its own page.update(); the sleep(0) between
+    batches lets each patch flush before the next is built.
+    A failure is printed and written to the status line —
+    never swallowed silently, never fatal to the loop."""
+    page = job["page"]
+    try:
+        if not job["is_current"]():
+            return
+        with _UPDATE_LOCK:
+            job["reset"]()
+            page.update()
+        for batch in job["batches"]:
+            with _UPDATE_LOCK:
+                if not job["is_current"]():
+                    return
+                job["extend"](batch)
+                page.update()
+            await asyncio.sleep(0)
+        with _UPDATE_LOCK:
+            if not job["is_current"]():
+                return
+            if job.get("finish") is not None:
+                job["finish"]()
+            page.update()
+    except Exception as ex:  # noqa: BLE001 - surfaced below
+        print(f"BetFi Xii: render apply failed: "
+              f"{type(ex).__name__}: {ex}")
+        try:
+            _status = job.get("status")
+            if _status is not None:
+                with _UPDATE_LOCK:
+                    _status.value = (
+                        "That render hit a snag "
+                        f"({type(ex).__name__}) — the pull "
+                        "itself is fine; tap Pull to redraw.")
+                    page.update()
+        except Exception:
+            pass
 # Performance budget (artist §5): at most 3 looping animations
 # stand at once in this app (dot + golden + splash-or-shimmer —
 # splash and shimmer never coexist), under the hard cap of 6.
@@ -3929,6 +4002,7 @@ def main(page: ft.Page):
              "parlay_legs": [], "view": "board",
              "board_seg": "all", "slip_seg": "parse",
              "instrument_url": None, "animate_next": False,
+             "apply_seq": 0,
              "bankroll": "",
              "chart_zoom": 1.0, "chart_detail": "",
              "pull_busy": False, "last_pull_at": 0.0,
@@ -4458,82 +4532,113 @@ def main(page: ft.Page):
                     c.scale = ft.Scale(1.0)
             page.update()
 
-    def _reassert_board():
-        # v12.7.1: the deferred board re-assert (see the end of
-        # render_cards). Runs on a plain Timer thread 0.35 s
-        # after a board render and re-ships the page through
-        # the one lock — if any part of the render's patch was
-        # torn in flight, the board lands whole a beat later.
-        # The flag clears first, so a fresh render during the
-        # re-assert may schedule the next one.
-        global _REASSERT_PENDING
-        _REASSERT_PENDING = False
-        try:
-            with _UPDATE_LOCK:
-                page.update()
-        except Exception:
-            pass
+    def _dispatch_apply(job):
+        # v12.10: stamp the job with the next apply sequence
+        # and schedule it on the event loop (page.run_task is
+        # this codebase's established thread-to-loop bridge).
+        # A job whose stamp is no longer current when the
+        # applier reaches it — a newer render was dispatched
+        # behind it — aborts without touching the screen:
+        # supersession replaces pile-ups.
+        state["apply_seq"] = state.get("apply_seq", 0) + 1
+        _seq = state["apply_seq"]
+        job["seq"] = _seq
+        job["is_current"] = (
+            lambda s=_seq: state.get("apply_seq") == s)
+        job["page"] = page
+        job["status"] = status
+        page.run_task(_run_apply, job)
 
     def render_cards():
-        global _REASSERT_PENDING
+        # v12.10: the computation is the build-29 render
+        # unchanged — same filters, same verdicts, every card
+        # built by build_card_safe, same league/date grouping,
+        # same count and receipt strings. What changed is the
+        # APPLY: nothing in this function mutates the screen
+        # anymore. It builds a job (reset / batches of <= 3 /
+        # finish) and the event-loop applier (_run_apply)
+        # streams it on in small patches — the shape of the
+        # one add-path that has always painted on device: a
+        # tap's single small patch, delivered on the event
+        # loop. The old shape (a worker thread shipping one
+        # bulk patch, then a deferred Timer re-ship of the
+        # same patch a beat later) is retired with it.
         with _UPDATE_LOCK:
-            cards_list.controls = []
+            rec = state["slate"]
+            _sync_sport_view_dd()
+            if not rec:
+                def _reset_empty():
+                    cards_list.controls = []
+                    pull_age_ctrl.value = ""
+                    filter_chip_row.controls = []
+                    cards_count.value = ""
+                    if DIAGNOSTIC_LADDER:
+                        cards_list.controls = (
+                            _diag_render_block())
+                    cards_list.controls.append(empty_full(
+                        ft.Icons.CLOUD_OFF, "No pull yet",
+                        "Tap Pull — until a live pull lands, "
+                        "every market is UNVERIFIED, never "
+                        "assumed."))
+
+                def _finish_empty():
+                    cards_receipt.value = (
+                        "Rendered: 0 cards on this board")
+
+                _dispatch_apply({
+                    "reset": _reset_empty,
+                    "batches": [],
+                    "extend":
+                        lambda b: cards_list.controls.extend(b),
+                    "finish": _finish_empty})
+                return
+            entries = sorted_entries()
+            # v12.1 QoL header state: pull age + the
+            # clear-filters chip (present only while
+            # something is non-default). Computed here;
+            # the job's reset applies them — value writes,
+            # the class that has always displayed.
+            _age_text = _pull_age_text()
+            _chip_row = (
+                [ft.TextButton(
+                    "Clear filters",
+                    icon=ft.Icons.FILTER_ALT_OFF,
+                    style=ft.ButtonStyle(color=ACCENT),
+                    on_click=lambda _e: clear_all_filters())]
+                if _filters_nondefault() else [])
+            # v12.4 render diet: the filter dropdowns are
+            # static controls built once in the band — a
+            # render only syncs the sport dropdown's options
+            # to the slate (above) and rebuilds the card
+            # list. There is no per-slate switch row to
+            # rebuild at all anymore.
+            shown = apply_toggles(entries)
+            if len(shown) != len(entries):
+                _count_text = (f"{len(shown)} of "
+                               f"{len(entries)} markets")
+            else:
+                _count_text = f"{len(entries)} markets"
+            ordered = []
             if DIAGNOSTIC_LADDER:
                 # v12.9 ladder: the render-path rungs ride
                 # every render, ahead of whatever the render
                 # itself seats (real cards included).
-                cards_list.controls.extend(
-                    _diag_render_block())
-            rec = state["slate"]
-            _sync_sport_view_dd()
-            if not rec:
-                pull_age_ctrl.value = ""
-                filter_chip_row.controls = []
-                cards_count.value = ""
-                cards_receipt.value = (
-                    "Rendered: 0 cards on this board")
-                cards_list.controls = [empty_full(
-                    ft.Icons.CLOUD_OFF, "No pull yet",
-                    "Tap Pull — until a live pull lands, every "
-                    "market is UNVERIFIED, never assumed.")]
-                if DIAGNOSTIC_LADDER:
-                    cards_list.controls = (
-                        _diag_render_block()
-                        + cards_list.controls)
-                page.update()
-                return
-            entries = sorted_entries()
-            # v12.1 QoL header state: pull age + the clear-filters
-            # chip (present only while something is non-default).
-            pull_age_ctrl.value = _pull_age_text()
-            filter_chip_row.controls = (
-                [ft.TextButton(
-                    "Clear filters", icon=ft.Icons.FILTER_ALT_OFF,
-                    style=ft.ButtonStyle(color=ACCENT),
-                    on_click=lambda _e: clear_all_filters())]
-                if _filters_nondefault() else [])
-            # v12.4 render diet: the filter dropdowns are static
-            # controls built once in the band — a render only syncs
-            # the sport dropdown's options to the slate (above) and
-            # rebuilds the card list. There is no per-slate switch
-            # row to rebuild at all anymore.
-            shown = apply_toggles(entries)
-            if len(shown) != len(entries):
-                cards_count.value = f"{len(shown)} of {len(entries)} markets"
-            else:
-                cards_count.value = f"{len(entries)} markets"
+                ordered.extend(_diag_render_block())
             if state.get("league_filter"):
-                # arrived from the 3D panel (Coverage / Registry):
-                # the filter is named, and one tap returns
+                # arrived from the 3D panel (Coverage /
+                # Registry): the filter is named, and one
+                # tap returns
                 lf = state["league_filter"]
-                cards_list.controls.append(ft.Row(
+                ordered.append(ft.Row(
                     spacing=8, wrap=True,
-                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    vertical_alignment=
+                    ft.CrossAxisAlignment.CENTER,
                     controls=[
                         ft.Icon(ft.Icons.FILTER_ALT, size=16,
                                 color=ACCENT),
                         ft.Text(f"League: {lf['label']} — "
-                                f"{len(shown)} markets on this pull",
+                                f"{len(shown)} markets on "
+                                f"this pull",
                                 size=12, color=INK,
                                 weight=ft.FontWeight.BOLD),
                         ft.TextButton(
@@ -4557,54 +4662,69 @@ def main(page: ft.Page):
                     label = resolve_date_label(mkt)
                     if label != last_date:
                         last_date = label
-                        n_day = sum(1 for e in shown
-                                    if resolve_date_label(e[0]) == label)
-                        cards_list.controls.append(
+                        n_day = sum(
+                            1 for e in shown
+                            if resolve_date_label(e[0])
+                            == label)
+                        ordered.append(
                             date_header(label, n_day))
                 elif grouped and mkt.get("sport") != last_sport:
                     last_sport = mkt.get("sport")
-                    n_sport = sum(1 for e in shown
-                                  if e[0].get("sport") == last_sport)
-                    cards_list.controls.append(
+                    n_sport = sum(
+                        1 for e in shown
+                        if e[0].get("sport") == last_sport)
+                    ordered.append(
                         sport_header(last_sport, n_sport))
                 _card = build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, on_chart=_card_chart,
                     on_toggle=render_cards)
-                cards_list.controls.append(_card)
+                ordered.append(_card)
                 _n_rendered += 1
             if not shown:
-                cards_list.controls.append(empty_inline(
-                    ft.Icons.SEARCH_OFF, "No markets in this view",
-                    "Widen the Show or Board shows dropdown — the "
-                    "pull itself is unchanged."))
+                ordered.append(empty_inline(
+                    ft.Icons.SEARCH_OFF,
+                    "No markets in this view",
+                    "Widen the Show or Board shows dropdown "
+                    "— the pull itself is unchanged."))
             elif len(shown) > limit:
-                cards_list.controls.append(ft.Button(
+                ordered.append(ft.Button(
                     f"Show more ({len(shown) - limit} more)",
                     on_click=on_show_more))
-                cards_list.controls.append(ft.Text(
-                    "Paging is display only — every market was priced "
-                    "by the same pricing pass.", size=10, color=FAINT))
-            # v12.8: cards are placed EXACTLY as BetFi 11 built
-            # them — 11 had no card entrance, so _animate_cards
-            # is gated OFF for card children (the flag is still
-            # popped so it cannot pile up). View-level settles
-            # (_settle_in) are untouched: they move whole views,
-            # never cards.
+                ordered.append(ft.Text(
+                    "Paging is display only — every market "
+                    "was priced by the same pricing pass.",
+                    size=10, color=FAINT))
+            # v12.8: cards are placed EXACTLY as BetFi 11
+            # built them — 11 had no card entrance, so
+            # _animate_cards stays gated OFF for card
+            # children (the flag is still popped so it
+            # cannot pile up). View-level settles
+            # (_settle_in) are untouched: they move whole
+            # views, never cards.
             state.pop("animate_next", False)
-            stop_pulse("shimmer")   # real content landed (artist
-            # §3.4: shimmer stops the moment content lands)
-            cards_receipt.value = (
-                f"Rendered: {_n_rendered} cards on this board")
-            page.update()
-            # v12.7.1 re-assert: schedule ONE deferred locked
-            # re-ship (0.35 s) so a torn patch self-heals; at
-            # most one is ever pending (module flag).
-            if not _REASSERT_PENDING:
-                _REASSERT_PENDING = True
-                _rt = threading.Timer(0.35, _reassert_board)
-                _rt.daemon = True
-                _rt.start()
+            _receipt_text = (
+                f"Rendered: {_n_rendered} cards on this "
+                f"board")
+
+            def _reset():
+                cards_list.controls = []
+                pull_age_ctrl.value = _age_text
+                filter_chip_row.controls = _chip_row
+                cards_count.value = _count_text
+                stop_pulse("shimmer")   # real content landed
+                # (artist §3.4: shimmer stops the moment
+                # content lands)
+
+            def _finish():
+                cards_receipt.value = _receipt_text
+
+            _dispatch_apply({
+                "reset": _reset,
+                "batches": _chunk3(ordered),
+                "extend":
+                    lambda b: cards_list.controls.extend(b),
+                "finish": _finish})
 
     # ---------------- pull / price workers ----------------
 
@@ -5844,79 +5964,105 @@ def main(page: ft.Page):
     # ---------------- BetFi finds ----------------
 
     def render_betfi():
+        # v12.10: the finds computation and its ordering are
+        # unchanged — applied by the event-loop batched
+        # applier like the board (see render_cards). The
+        # section chrome (the intro line) seats in the job's
+        # reset; every section after it streams on in
+        # batches of <= 3; the finish registers the golden
+        # glow layer with the pulse, once its surface is on
+        # screen.
         with _UPDATE_LOCK:
-            betfi_view.controls = [ft.Text(
-                "Finds — golden bets first, then the ranked finds. "
-                "Same pull, same prices as All cards; the feed only "
-                "re-ranks.", size=12, color=DIM, height=1.35)]
+            _intro = ft.Text(
+                "Finds — golden bets first, then the ranked "
+                "finds. Same pull, same prices as All cards; "
+                "the feed only re-ranks.",
+                size=12, color=DIM, height=1.35)
             rec = state["slate"]
             if not rec:
-                betfi_view.controls.append(empty_full(
-                    ft.Icons.CLOUD_OFF, "Nothing to distill",
-                    "The feed distills the current pull — pull the "
-                    "menu on the Board first."))
-                page.update()
+                def _reset_empty():
+                    betfi_view.controls = [
+                        _intro,
+                        empty_full(
+                            ft.Icons.CLOUD_OFF,
+                            "Nothing to distill",
+                            "The feed distills the current "
+                            "pull — pull the menu on the Board "
+                            "first.")]
+
+                _dispatch_apply({
+                    "reset": _reset_empty,
+                    "batches": [],
+                    "extend":
+                        lambda b: betfi_view.controls.extend(b),
+                    "finish": None})
                 return
             verdicts = ensure_verdicts()
             markets = rec.get("markets", [])
             quotes = game_quotes(markets)
             ctx = lane_contexts(markets)
-            golden, finds, flagged, counter = distill_finds(markets,
-                                                             verdicts)
-            betfi_view.controls.append(section_header("GOLDEN BETS",
-                                                      GOLD))
+            golden, finds, flagged, counter = distill_finds(
+                markets, verdicts)
+            ordered = []
+            ordered.append(section_header("GOLDEN BETS", GOLD))
+            _glow = None
             if golden:
-                # the GOLDEN warm pulse (2800 ms) breathes this
-                # pre-rendered glow layer's opacity — gold only,
-                # GOLDEN surface only; the empty panel below gets
-                # NO glow and NO pulse (artist §1.3 / rescue §6).
+                # the GOLDEN warm pulse (2800 ms) breathes
+                # this pre-rendered glow layer's opacity —
+                # gold only, GOLDEN surface only; the empty
+                # panel below gets NO glow and NO pulse
+                # (artist §1.3 / rescue §6).
                 _glow = ft.Container(
                     height=6, border_radius=3, bgcolor=GOLD,
                     shadow=GOLD_GLOW, opacity=0.425,
                     animate_opacity=ft.Animation(
                         120, ft.AnimationCurve.EASE_IN_OUT))
-                betfi_view.controls.append(_glow)
+                ordered.append(_glow)
             if not golden:
-                betfi_view.controls.append(empty_inline(
-                    ft.Icons.STAR_OUTLINE, "No golden bets on this pull"))
-                betfi_view.controls.append(ft.Text(
-                    "Nothing golden on this pull. The standard don't "
-                    "drop just 'cause the panel empty.",
+                ordered.append(empty_inline(
+                    ft.Icons.STAR_OUTLINE,
+                    "No golden bets on this pull"))
+                ordered.append(ft.Text(
+                    "Nothing golden on this pull. The standard "
+                    "don't drop just 'cause the panel empty.",
                     size=11, color=DIM))
             for mkt, verdict, edge in golden:
-                betfi_view.controls.append(build_card_safe(
+                ordered.append(build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, on_chart=_card_chart,
                     on_toggle=render_betfi))
-            betfi_view.controls.append(section_header(
-                f"FINDS — verdict ladder, then edge ({len(finds)})",
-                ACCENT))
+            ordered.append(section_header(
+                f"FINDS — verdict ladder, then edge "
+                f"({len(finds)})", ACCENT))
             if not finds:
-                betfi_view.controls.append(ft.Text(
-                    "No priced, verdict-bearing market on this pull. "
-                    "The feed stays empty rather than promote a "
-                    "market the engine did not price.",
+                ordered.append(ft.Text(
+                    "No priced, verdict-bearing market on this "
+                    "pull. The feed stays empty rather than "
+                    "promote a market the engine did not price.",
                     size=12, color=DIM, height=1.35))
             for i, (mkt, verdict, edge) in enumerate(
                     finds[:CARD_PAGE], start=1):
-                betfi_view.controls.append(build_card_safe(
-                    mkt, verdict, rec, quotes, rank=i, edge_pts=edge,
-                    lane_ctx=ctx, on_chart=_card_chart,
+                ordered.append(build_card_safe(
+                    mkt, verdict, rec, quotes, rank=i,
+                    edge_pts=edge, lane_ctx=ctx,
+                    on_chart=_card_chart,
                     on_toggle=render_betfi))
             if len(finds) > CARD_PAGE:
-                betfi_view.controls.append(ft.Text(
-                    f"+{len(finds) - CARD_PAGE} more finds past the "
-                    f"page cap — All cards on the Board holds the "
-                    f"full list.", size=11, color=FAINT))
+                ordered.append(ft.Text(
+                    f"+{len(finds) - CARD_PAGE} more finds past "
+                    f"the page cap — All cards on the Board "
+                    f"holds the full list.",
+                    size=11, color=FAINT))
             if flagged:
-                betfi_view.controls.append(section_header(
-                    f"PRICE CONFLICT — two prices for the same event "
-                    f"disagree inside this pull ({len(flagged)})",
-                    WARN))
+                ordered.append(section_header(
+                    f"PRICE CONFLICT — two prices for the same "
+                    f"event disagree inside this pull "
+                    f"({len(flagged)})", WARN))
                 for mkt, verdict, edge in flagged:
-                    betfi_view.controls.append(build_card_safe(
-                        mkt, verdict, rec, quotes, edge_pts=edge,
-                        lane_ctx=ctx, on_chart=_card_chart,
+                    ordered.append(build_card_safe(
+                        mkt, verdict, rec, quotes,
+                        edge_pts=edge, lane_ctx=ctx,
+                        on_chart=_card_chart,
                         on_toggle=render_betfi))
             counter_lines = []
             for _m, v, e in counter:
@@ -5926,18 +6072,34 @@ def main(page: ft.Page):
                     f"{v.get('state')}"
                     + (f" · edge {e:+.1f} pts"
                        if e is not None else ""))
-            betfi_view.controls.append(ft.ExpansionTile(
-                title=ft.Text(f"Checked — no edge ({len(counter)})",
-                              size=12, color=FAINT,
-                              weight=ft.FontWeight.BOLD),
-                controls=[ft.Container(padding=8, content=ft.Column(
-                    spacing=2, controls=[_line(t, 10, FAINT)
-                                         for t in counter_lines]))]))
-            # the golden pulse key belongs to this surface's
-            # glow bar alone (v12.7: cards no longer carry bars;
-            # render_protected's glow bar is the other owner)
-            _PULSE_TARGETS["golden"] = [_glow] if golden else []
-            page.update()
+            ordered.append(ft.ExpansionTile(
+                title=ft.Text(
+                    f"Checked — no edge ({len(counter)})",
+                    size=12, color=FAINT,
+                    weight=ft.FontWeight.BOLD),
+                controls=[ft.Container(
+                    padding=8, content=ft.Column(
+                        spacing=2,
+                        controls=[_line(t, 10, FAINT)
+                                  for t in counter_lines]))]))
+
+            def _reset():
+                betfi_view.controls = [_intro]
+
+            def _finish():
+                # the golden pulse key belongs to this
+                # surface's glow bar alone (v12.7: cards no
+                # longer carry bars; render_protected's glow
+                # bar is the other owner)
+                _PULSE_TARGETS["golden"] = (
+                    [_glow] if golden else [])
+
+            _dispatch_apply({
+                "reset": _reset,
+                "batches": _chunk3(ordered),
+                "extend":
+                    lambda b: betfi_view.controls.extend(b),
+                "finish": _finish})
 
     # ---------------- Lab (the record wing) ----------------
 

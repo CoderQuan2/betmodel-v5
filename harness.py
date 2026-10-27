@@ -22,6 +22,7 @@ import json
 import os
 import sys
 import tempfile
+import threading
 import time
 from types import SimpleNamespace
 
@@ -52,7 +53,10 @@ def check(name, ok, detail=""):
 
 class FakePage:
     """The probe-page convention: run_thread inline (workers
-    complete synchronously), run_task closes coroutines."""
+    complete synchronously), run_task EXECUTES coroutines to
+    completion (build 31 — the board/finds renders are
+    dispatched as coroutines; a fake that merely closes them
+    would test nothing)."""
 
     def __init__(self):
         self.controls = []
@@ -66,6 +70,7 @@ class FakePage:
         self.spacing = None
         self.scroll = None
         self.updates = 0
+        self.task_errors = []
 
     def add(self, *controls):
         self.controls.extend(controls)
@@ -77,9 +82,43 @@ class FakePage:
         return fn(*args, **kwargs)
 
     def run_task(self, fn, *args, **kwargs):
+        # Execute the coroutine to completion on a fresh
+        # loop. Exceptions inside a driven coroutine are
+        # recorded in task_errors, never raised at the call
+        # site — a real run_task schedules the task; the
+        # scheduler never sees the task's exception.
         out = fn(*args, **kwargs)
         if asyncio.iscoroutine(out):
-            out.close()
+            errs = self.__dict__.setdefault("task_errors", [])
+            try:
+                asyncio.get_running_loop()
+                nested = True
+            except RuntimeError:
+                nested = False
+            if nested:
+                # A loop is already running on this thread
+                # (a driven coroutine dispatched again):
+                # drive this one on a helper thread's loop
+                # and wait — still completion-before-return.
+                def _drive():
+                    lp = asyncio.new_event_loop()
+                    try:
+                        lp.run_until_complete(out)
+                    except Exception as ex:  # noqa: BLE001
+                        errs.append(ex)
+                    finally:
+                        lp.close()
+                _t = threading.Thread(target=_drive)
+                _t.start()
+                _t.join()
+            else:
+                lp = asyncio.new_event_loop()
+                try:
+                    lp.run_until_complete(out)
+                except Exception as ex:  # noqa: BLE001
+                    errs.append(ex)
+                finally:
+                    lp.close()
         return None
 
 
@@ -134,6 +173,7 @@ import json
 import os
 import sys
 import tempfile
+import threading
 import time
 from types import SimpleNamespace
 
@@ -154,7 +194,8 @@ with open(os.path.join(STORAGE, "Bet_Finder-last-pull.json"),
 class FakePage:
     # The harness probe-page convention, copied: run_thread
     # inline (workers complete synchronously), run_task
-    # closes coroutines.
+    # EXECUTES coroutines to completion (build 31 — the
+    # board/finds renders arrive as dispatched coroutines).
     def __init__(self):
         self.controls = []
         self.overlay = []
@@ -178,9 +219,38 @@ class FakePage:
         return fn(*args, **kwargs)
 
     def run_task(self, fn, *args, **kwargs):
+        # Execute the coroutine to completion on a fresh
+        # loop; exceptions are recorded in task_errors,
+        # never raised at the call site (a real run_task
+        # schedules — the scheduler never sees them).
         out = fn(*args, **kwargs)
         if asyncio.iscoroutine(out):
-            out.close()
+            errs = self.__dict__.setdefault("task_errors", [])
+            try:
+                asyncio.get_running_loop()
+                nested = True
+            except RuntimeError:
+                nested = False
+            if nested:
+                def _drive():
+                    lp = asyncio.new_event_loop()
+                    try:
+                        lp.run_until_complete(out)
+                    except Exception as ex:  # noqa: BLE001
+                        errs.append(ex)
+                    finally:
+                        lp.close()
+                _t = threading.Thread(target=_drive)
+                _t.start()
+                _t.join()
+            else:
+                lp = asyncio.new_event_loop()
+                try:
+                    lp.run_until_complete(out)
+                except Exception as ex:  # noqa: BLE001
+                    errs.append(ex)
+                finally:
+                    lp.close()
         return None
 
 
@@ -260,8 +330,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.9.0", app.APP_VERSION == "12.9.0")
-    check("BUILD_NUMBER is 30", app.BUILD_NUMBER == 30)
+    check("APP_VERSION is 12.10.0", app.APP_VERSION == "12.10.0")
+    check("BUILD_NUMBER is 31", app.BUILD_NUMBER == 31)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1492,11 +1562,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.9 version unified: README release line",
-          "12.9.0 (build 30)" in _readme)
-    check("v12.9 version unified: workflow build args",
-          '--build-version "12.9.0"' in _wf
-          and '--build-number "30"' in _wf)
+    check("v12.10 version unified: README release line",
+          "12.10.0 (build 31)" in _readme)
+    check("v12.10 version unified: workflow build args",
+          '--build-version "12.10.0"' in _wf
+          and '--build-number "31"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2633,13 +2703,13 @@ def main():
           "_UPDATE_LOCK" in _fn_slice7("render_protected"))
     _rc_src = _fn_slice7("render_cards")
     check("v12.7.1: render_cards writes the render receipt "
-          "and schedules the one-pending re-assert "
-          "(source pin)",
+          "(source pin — the one-pending 0.35s re-assert it "
+          "once scheduled was retired by 12.10's batched "
+          "applier and exists nowhere in the app anymore)",
           "cards_receipt" in _rc_src
           and "Rendered:" in _rc_src
-          and "_REASSERT_PENDING" in _rc_src
-          and "threading.Timer(0.35, _reassert_board)"
-          in _rc_src)
+          and "_reassert_board" not in _src
+          and "_REASSERT_PENDING" not in _src)
 
     # Concurrency guard: hammer pulse-style locked updates
     # from several threads WHILE repeatedly re-rendering the
@@ -2742,9 +2812,10 @@ def main():
 
     # ---------- v12.9 diagnostic ladder ----------
     check("v12.9: ladder gate exists in source and "
-          "defaults on",
+          "defaults off (build 31 retired the ladder to "
+          "opt-in)",
           "DIAGNOSTIC_LADDER = os.environ.get(" in _src
-          and '"BETFI_DIAGNOSTIC", "1") == "1"' in _src
+          and '"BETFI_DIAGNOSTIC", "0") == "1"' in _src
           and "def _diag_card(" in _src
           and "def _diag_render_block(" in _src)
     check("v12.9: this harness runs flag-off (the gate "
@@ -2779,6 +2850,136 @@ def main():
           "initial tree, B tap-added, C worker-added, "
           "D1-D3 render path, E image, F nested",
           _ladder_ok, _ladder_detail)
+
+    # ---------- v12.10 event-loop batched applier ----------
+    check("v12.10: batched applier present — _run_apply + "
+          "_dispatch_apply exist, jobs are dispatched via "
+          "page.run_task, and the deferred re-ship exists "
+          "nowhere in the app (source pins)",
+          "async def _run_apply(" in _src
+          and "def _dispatch_apply(" in _src
+          and "page.run_task(_run_apply" in _src
+          and "def _chunk3(" in _src
+          and "_reassert_board" not in _src
+          and "_REASSERT_PENDING" not in _src)
+    check("v12.10: render_cards and render_betfi both "
+          "dispatch apply jobs (source pins)",
+          "_dispatch_apply(" in _fn_slice7("render_cards")
+          and "_dispatch_apply(" in _fn_slice7("render_betfi"))
+
+    # Functional: a fresh boot + the standard Price Slate
+    # drive. The fake's run_task now executes dispatched
+    # coroutines to completion, so when the drive returns
+    # the applier must have run to completion: the board
+    # holds the full card count, the receipt names it, and
+    # the render arrived as a stream of updates (reset +
+    # batches + finish), not one bulk patch.
+    page10 = FakePage()
+    app.main(page10)
+    sw10 = page10.controls[1]
+    board10 = sw10.content
+    bsw10 = [c for c in walk(board10)
+             if type(c).__name__ == "AnimatedSwitcher"]
+    cards10 = bsw10[0].content
+    _show10 = next(c for c in walk(cards10)
+                   if type(c).__name__ == "Dropdown"
+                   and [o.key for o in c.options]
+                   == [k for k, _t in app.SHOW_MODES])
+    _show10.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="all")))
+
+    def _btn_label10(c):
+        ct = getattr(c, "content", None)
+        if isinstance(ct, str):
+            return ct
+        return getattr(ct, "value", None)
+    _price10 = next(c for c in walk(cards10)
+                    if type(c).__name__ == "Button"
+                    and _btn_label10(c) == "Price Slate")
+    _lists10 = [c for c in walk(cards10)
+                if type(c).__name__ == "Column"]
+    _clist10 = max(_lists10, key=lambda c: sum(
+        1 for x in getattr(c, "controls", [])
+        if type(x).__name__ == "Container"))
+
+    def _card_count10():
+        return sum(1 for x in _clist10.controls
+                   if type(x).__name__ == "Container")
+    _before10 = page10.updates
+    _price10.on_click(SimpleNamespace())
+    _delta10 = page10.updates - _before10
+    _n10 = _card_count10()
+    _receipt10 = next(
+        (c for c in walk(cards10)
+         if type(c).__name__ == "Text"
+         and (getattr(c, "value", "") or "")
+         .startswith("Rendered:")), None)
+    check("v12.10: the applier runs to completion under "
+          "the fake — after the Price Slate drive the board "
+          "holds the full expected card count and the "
+          "receipt names it",
+          _n10 >= 10
+          and _receipt10 is not None
+          and _receipt10.value
+          == f"Rendered: {_n10} cards on this board",
+          f"cards={_n10} receipt="
+          f"{getattr(_receipt10, 'value', None)}")
+    check("v12.10: a board apply streams — reset + batches "
+          "of <=3 + finish produce at least 4 page updates "
+          "for one render (never one bulk patch)",
+          _n10 >= 10 and _delta10 >= 4,
+          f"updates during one render={_delta10} "
+          f"cards={_n10}")
+
+    # Supersession, driven directly against the applier: a
+    # job whose stamp is already stale lands nothing (its
+    # reset never runs); the current job lands fully; a job
+    # superseded mid-stream stops before its next batch.
+    _fp10 = FakePage()
+    _cell10 = {"n": 2}
+    _landed10 = []
+    _resets10 = []
+
+    def _job10(seq, tag, batches):
+        return {"page": _fp10,
+                "reset": lambda t=tag: _resets10.append(t),
+                "batches": batches,
+                "extend": lambda b: _landed10.extend(b),
+                "finish": None,
+                "is_current":
+                    lambda s=seq: _cell10["n"] == s,
+                "status": None}
+    _lp10 = asyncio.new_event_loop()
+    try:
+        _lp10.run_until_complete(
+            app._run_apply(_job10(1, "stale", [["x"]])))
+        _lp10.run_until_complete(app._run_apply(
+            _job10(2, "fresh", [["y1"], ["y2"]])))
+        _flip10 = {"n": 0}
+
+        def _flaky10():
+            _flip10["n"] += 1
+            return _flip10["n"] <= 2
+        _landed10b = []
+        _job10b = {"page": _fp10,
+                   "reset": lambda: None,
+                   "batches": [[1], [2], [3]],
+                   "extend": lambda b: _landed10b.extend(b),
+                   "finish": None,
+                   "is_current": _flaky10,
+                   "status": None}
+        _lp10.run_until_complete(app._run_apply(_job10b))
+    finally:
+        _lp10.close()
+    check("v12.10: supersession — a stale job lands "
+          "nothing, the current job lands fully, and a job "
+          "superseded mid-stream stops before its next "
+          "batch",
+          _landed10 == ["y1", "y2"]
+          and _resets10 == ["fresh"]
+          and _landed10b == [1],
+          f"landed={_landed10} resets={_resets10} "
+          f"mid-stream={_landed10b}")
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

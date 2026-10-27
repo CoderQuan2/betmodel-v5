@@ -7,9 +7,19 @@ name: Build BetFi Xii APK
 # to main.
 #
 # App release v12 (2026-10-24) — BetFi Xii:
-# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.9.0,
-#   build 30; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
+# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.10.0,
+#   build 31; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
 #   artifact betfi-xii-apk.
+# - BUILD 31 RENDER CHANGE (2026-10-27): the board and the
+#   finds no longer ship one bulk patch from a worker thread
+#   (plus a deferred re-ship). Renders are computed up front
+#   and applied on the event loop in batches of <= 3 controls
+#   (page.run_task + a sequence-stamped job; a superseded job
+#   aborts) — the shape of the one add-path build 30's ladder
+#   proved paints on the Pilot's device (a tap's small patch).
+#   Build 30's diagnostic ladder is retired to opt-in
+#   (BETFI_DIAGNOSTIC=1). Packaging is build 29's universal
+#   APK, unchanged.
 # - BUILD 30 IS A DIAGNOSTIC BUILD (2026-10-27): the app code
 #   is build 29's plus the diagnostic ladder on the board
 #   (BETFI_DIAGNOSTIC, default on) — minimal test cards seated
@@ -116,7 +126,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.9.0" --build-number "30"
+        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.10.0" --build-number "31"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
