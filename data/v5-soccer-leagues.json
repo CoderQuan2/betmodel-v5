@@ -1,6 +1,6 @@
 {
  "sport": "soccer",
- "fitted_at": "2026-10-24T23:03:19+00:00",
+ "fitted_at": "2026-10-27T19:53:31+00:00",
  "leagues": {
   "serie-a": {
    "params": {
@@ -2886,241 +2886,283 @@
     "hfa_elo": 65,
     "prior_games": 8
    },
-   "source": "ESPN scoreboard day pulls (arg.2, 2025 Primera Nacional regular phase (reducido playoffs excluded))",
+   "source": "ESPN scoreboard day pulls (arg.2, Primera Nacional 2025 + 2026 seasons (regular phases; the 2026 window runs to date, so late-phase fixtures of the same clubs are fitted as pulled \u2014 the Round-4 completion that lands the 2026 field: Godoy Cruz / San Martin (San Juan) relegated in, Midland / Rafaela / Ciudad de Bolivar / Acassuso promoted in); 0 of 507 day pulls failed and were re-counted as absent, not filled)",
    "elo": {
-    "Chaco For Ever": 1528.8,
-    "Estudiantes (Buenos Aires)": 1559.3,
+    "Chaco For Ever": 1515.9,
+    "Estudiantes (Buenos Aires)": 1532.8,
     "Arsenal Sarandi": 1457.5,
-    "All Boys": 1494.1,
-    "Nueva Chicago": 1488.1,
-    "San Telmo": 1471.0,
-    "San Miguel": 1523.3,
-    "Trist\u00e1n Su\u00e1rez": 1540.8,
-    "Colegiales": 1519.3,
+    "All Boys": 1462.6,
+    "Nueva Chicago": 1440.1,
+    "San Telmo": 1453.5,
+    "San Miguel": 1437.4,
+    "Trist\u00e1n Su\u00e1rez": 1595.7,
+    "Colegiales": 1538.1,
     "Alvarado (Mar del Plata)": 1454.7,
     "Gimnasia (Mendoza)": 1575.7,
     "Estudiantes de R\u00edo Cuarto": 1564.9,
-    "Los Andes": 1473.5,
-    "Patronato": 1510.6,
-    "Quilmes": 1464.1,
-    "Gimnasia y Tiro (Salta)": 1532.0,
-    "Almagro": 1448.9,
-    "San Mart\u00edn (Tucum\u00e1n)": 1502.9,
-    "Almirante Brown": 1472.8,
-    "Deportivo Mor\u00f3n": 1557.8,
-    "Central Norte": 1449.6,
+    "Los Andes": 1462.7,
+    "Patronato": 1482.6,
+    "Quilmes": 1461.8,
+    "Gimnasia y Tiro (Salta)": 1554.4,
+    "Almagro": 1465.1,
+    "San Mart\u00edn (Tucum\u00e1n)": 1507.3,
+    "Almirante Brown": 1497.0,
+    "Deportivo Mor\u00f3n": 1554.1,
+    "Central Norte": 1467.3,
     "Talleres de Remedios": 1398.0,
-    "Ferro Carril Oeste": 1484.6,
-    "G\u00fcemes": 1500.3,
-    "Gimnasia y Esgrima (Jujuy)": 1539.5,
-    "Defensores de Belgrano": 1510.3,
-    "Mitre (Santiago del Estero)": 1473.0,
+    "Ferro Carril Oeste": 1563.4,
+    "G\u00fcemes": 1411.6,
+    "Gimnasia y Esgrima (Jujuy)": 1564.9,
+    "Defensores de Belgrano": 1470.2,
+    "Mitre (Santiago del Estero)": 1472.4,
     "Defensores Unidos": 1395.8,
-    "Racing (C\u00f3rdoba)": 1471.3,
-    "Deportivo Maip\u00fa": 1515.5,
-    "Agropecuario": 1545.0,
-    "Chacarita Juniors": 1503.2,
-    "Atlanta": 1533.0,
-    "Deportivo Madryn": 1573.5,
-    "Temperley": 1549.8,
-    "Col\u00f3n (Santa Fe)": 1417.6
+    "Racing (C\u00f3rdoba)": 1463.1,
+    "Deportivo Maip\u00fa": 1523.8,
+    "Agropecuario": 1504.0,
+    "Chacarita Juniors": 1454.4,
+    "Atlanta": 1561.2,
+    "Deportivo Madryn": 1573.0,
+    "Temperley": 1595.1,
+    "Col\u00f3n (Santa Fe)": 1514.0,
+    "Atletico Rafaela": 1496.9,
+    "Godoy Cruz Antonio Tomba": 1568.2,
+    "Ciudad de Bol\u00edvar": 1512.1,
+    "Acassuso": 1443.2,
+    "San Mart\u00edn (San Juan)": 1512.3,
+    "Midland": 1521.0
    },
    "strengths": {
     "Chaco For Ever": {
-     "att": 1.086,
-     "def": 0.875,
-     "gp": 34
+     "att": 1.069,
+     "def": 0.959,
+     "gp": 69
     },
     "Estudiantes (Buenos Aires)": {
-     "att": 1.27,
-     "def": 0.77,
-     "gp": 34
+     "att": 1.153,
+     "def": 0.874,
+     "gp": 68
     },
     "Arsenal Sarandi": {
-     "att": 1.191,
-     "def": 1.428,
+     "att": 1.151,
+     "def": 1.379,
      "gp": 34
     },
     "All Boys": {
-     "att": 0.816,
-     "def": 0.87,
-     "gp": 33
+     "att": 0.701,
+     "def": 0.871,
+     "gp": 67
     },
     "Nueva Chicago": {
-     "att": 0.902,
-     "def": 1.06,
-     "gp": 34
+     "att": 0.818,
+     "def": 1.027,
+     "gp": 68
     },
     "San Telmo": {
-     "att": 1.007,
-     "def": 1.297,
-     "gp": 34
+     "att": 0.931,
+     "def": 1.249,
+     "gp": 69
     },
     "San Miguel": {
-     "att": 1.033,
-     "def": 0.928,
-     "gp": 34
+     "att": 0.93,
+     "def": 1.069,
+     "gp": 68
     },
     "Trist\u00e1n Su\u00e1rez": {
-     "att": 1.06,
-     "def": 0.796,
-     "gp": 34
+     "att": 0.999,
+     "def": 0.636,
+     "gp": 68
     },
     "Colegiales": {
-     "att": 0.875,
-     "def": 0.875,
-     "gp": 34
+     "att": 0.959,
+     "def": 0.904,
+     "gp": 69
     },
     "Alvarado (Mar del Plata)": {
-     "att": 0.665,
-     "def": 1.06,
+     "att": 0.646,
+     "def": 1.025,
      "gp": 34
     },
     "Gimnasia (Mendoza)": {
-     "att": 1.112,
-     "def": 0.665,
+     "att": 1.075,
+     "def": 0.646,
      "gp": 34
     },
     "Estudiantes de R\u00edo Cuarto": {
-     "att": 1.112,
-     "def": 0.77,
+     "att": 1.075,
+     "def": 0.747,
      "gp": 34
     },
     "Los Andes": {
-     "att": 0.95,
-     "def": 0.95,
-     "gp": 33
+     "att": 0.871,
+     "def": 0.857,
+     "gp": 67
     },
     "Patronato": {
-     "att": 1.007,
-     "def": 0.928,
-     "gp": 34
+     "att": 0.944,
+     "def": 0.958,
+     "gp": 68
     },
     "Quilmes": {
-     "att": 0.981,
-     "def": 1.033,
-     "gp": 34
+     "att": 0.959,
+     "def": 0.959,
+     "gp": 69
     },
     "Gimnasia y Tiro (Salta)": {
-     "att": 1.086,
-     "def": 0.796,
-     "gp": 34
+     "att": 1.097,
+     "def": 0.86,
+     "gp": 68
     },
     "Almagro": {
-     "att": 0.823,
-     "def": 1.007,
-     "gp": 34
+     "att": 0.876,
+     "def": 1.111,
+     "gp": 69
     },
     "San Mart\u00edn (Tucum\u00e1n)": {
-     "att": 1.033,
-     "def": 0.954,
-     "gp": 34
+     "att": 1.083,
+     "def": 1.014,
+     "gp": 69
     },
     "Almirante Brown": {
-     "att": 0.928,
-     "def": 1.191,
-     "gp": 34
+     "att": 0.888,
+     "def": 0.972,
+     "gp": 68
     },
     "Deportivo Mor\u00f3n": {
-     "att": 1.139,
-     "def": 0.691,
-     "gp": 34
+     "att": 1.321,
+     "def": 0.874,
+     "gp": 68
     },
     "Central Norte": {
-     "att": 0.902,
-     "def": 1.27,
-     "gp": 34
+     "att": 0.804,
+     "def": 1.111,
+     "gp": 68
     },
     "Talleres de Remedios": {
-     "att": 0.638,
-     "def": 1.244,
+     "att": 0.62,
+     "def": 1.202,
      "gp": 34
     },
     "Ferro Carril Oeste": {
-     "att": 0.823,
-     "def": 1.06,
-     "gp": 34
+     "att": 0.959,
+     "def": 0.986,
+     "gp": 69
     },
     "G\u00fcemes": {
-     "att": 0.928,
-     "def": 1.033,
-     "gp": 34
+     "att": 0.843,
+     "def": 1.324,
+     "gp": 67
     },
     "Gimnasia y Esgrima (Jujuy)": {
-     "att": 1.139,
-     "def": 0.717,
-     "gp": 34
+     "att": 1.321,
+     "def": 0.972,
+     "gp": 68
     },
     "Defensores de Belgrano": {
-     "att": 0.981,
-     "def": 0.875,
-     "gp": 34
+     "att": 0.874,
+     "def": 0.916,
+     "gp": 68
     },
     "Mitre (Santiago del Estero)": {
-     "att": 0.928,
-     "def": 1.007,
-     "gp": 34
+     "att": 0.93,
+     "def": 1.083,
+     "gp": 68
     },
     "Defensores Unidos": {
-     "att": 0.638,
-     "def": 1.56,
+     "att": 0.62,
+     "def": 1.505,
      "gp": 34
     },
     "Racing (C\u00f3rdoba)": {
-     "att": 1.191,
-     "def": 1.376,
-     "gp": 34
+     "att": 1.055,
+     "def": 1.293,
+     "gp": 68
     },
     "Deportivo Maip\u00fa": {
-     "att": 1.086,
-     "def": 0.981,
-     "gp": 34
+     "att": 1.139,
+     "def": 0.986,
+     "gp": 68
     },
     "Agropecuario": {
-     "att": 1.323,
-     "def": 1.086,
-     "gp": 34
+     "att": 1.083,
+     "def": 1.111,
+     "gp": 68
     },
     "Chacarita Juniors": {
-     "att": 1.165,
-     "def": 0.954,
-     "gp": 34
+     "att": 0.986,
+     "def": 0.999,
+     "gp": 68
     },
     "Atlanta": {
-     "att": 1.007,
-     "def": 0.928,
-     "gp": 34
+     "att": 1.097,
+     "def": 0.958,
+     "gp": 68
     },
     "Deportivo Madryn": {
-     "att": 1.376,
-     "def": 0.928,
-     "gp": 34
+     "att": 1.428,
+     "def": 0.918,
+     "gp": 69
     },
     "Temperley": {
-     "att": 1.004,
-     "def": 0.789,
-     "gp": 33
+     "att": 1.112,
+     "def": 0.815,
+     "gp": 67
     },
     "Col\u00f3n (Santa Fe)": {
-     "att": 0.789,
-     "def": 1.247,
-     "gp": 33
+     "att": 1.013,
+     "def": 1.027,
+     "gp": 68
+    },
+    "Atletico Rafaela": {
+     "att": 0.902,
+     "def": 1.05,
+     "gp": 35
+    },
+    "Godoy Cruz Antonio Tomba": {
+     "att": 1.404,
+     "def": 1.0,
+     "gp": 34
+    },
+    "Ciudad de Bol\u00edvar": {
+     "att": 0.927,
+     "def": 0.952,
+     "gp": 35
+    },
+    "Acassuso": {
+     "att": 0.823,
+     "def": 1.075,
+     "gp": 34
+    },
+    "San Mart\u00edn (San Juan)": {
+     "att": 1.101,
+     "def": 1.05,
+     "gp": 34
+    },
+    "Midland": {
+     "att": 1.202,
+     "def": 0.924,
+     "gp": 34
     }
    },
    "league": {
-    "LH": 1.116,
-    "LA": 0.704,
-    "L": 0.904
+    "LH": 1.155,
+    "LA": 0.734,
+    "L": 0.942
    },
    "backtest": {
-    "brier3": 0.6299,
-    "accuracy": 0.4426,
-    "n": 610,
+    "brier3": 0.6298,
+    "accuracy": 0.4605,
+    "n": 1227,
     "protocol": "walk-forward (strengths/Elo from prior games only)"
    },
    "league_name": "Primera Nacional (Argentina)",
-   "fitted_at": "2026-10-24T23:03:19+00:00",
-   "season": "2025"
+   "fitted_at": "2026-10-27T19:53:31+00:00",
+   "season": "2025+2026",
+   "exam": {
+    "naive_brier3": 0.6355,
+    "model_brier3": 0.6298,
+    "ships": true,
+    "rule": "ships iff walk-forward brier3 < naive brier3 (constant outcome-rate forecast on the same pulled games)"
+   }
   },
   "usl-championship": {
    "params": {
@@ -5741,6 +5783,372 @@
    "league_name": "Primera B (Argentina)",
    "fitted_at": "2026-10-24T23:44:22+00:00",
    "season": "2025+2026"
+  },
+  "eliteserien": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (nor.1, Norwegian Eliteserien 2025 + 2026 to date; 0 of 473 day pulls failed and were re-counted as absent, not filled)",
+   "elo": {
+    "Stromsgodset": 1390.8,
+    "Rosenborg": 1555.9,
+    "Fredrikstad": 1504.4,
+    "SK Brann": 1515.6,
+    "V\u00e5lerenga": 1479.8,
+    "Viking FK": 1692.9,
+    "Tromso": 1567.3,
+    "Haugesund": 1342.7,
+    "Hamarkameratene": 1457.5,
+    "Kristiansund BK": 1433.4,
+    "KFUM Oslo": 1484.3,
+    "Sandefjord": 1486.4,
+    "Molde": 1530.9,
+    "Sarpsborg FK": 1494.6,
+    "Bryne": 1454.3,
+    "Bodo/Glimt": 1674.0,
+    "IK Start": 1428.1,
+    "Aalesund": 1483.0,
+    "Lillestrom": 1523.9
+   },
+   "strengths": {
+    "Stromsgodset": {
+     "att": 0.825,
+     "def": 1.405,
+     "gp": 30
+    },
+    "Rosenborg": {
+     "att": 1.055,
+     "def": 0.872,
+     "gp": 54
+    },
+    "Fredrikstad": {
+     "att": 0.813,
+     "def": 0.865,
+     "gp": 53
+    },
+    "SK Brann": {
+     "att": 1.113,
+     "def": 0.989,
+     "gp": 53
+    },
+    "V\u00e5lerenga": {
+     "att": 0.994,
+     "def": 1.126,
+     "gp": 54
+    },
+    "Viking FK": {
+     "att": 1.537,
+     "def": 0.731,
+     "gp": 53
+    },
+    "Tromso": {
+     "att": 1.082,
+     "def": 0.824,
+     "gp": 53
+    },
+    "Haugesund": {
+     "att": 0.576,
+     "def": 1.538,
+     "gp": 30
+    },
+    "Hamarkameratene": {
+     "att": 0.872,
+     "def": 1.106,
+     "gp": 54
+    },
+    "Kristiansund BK": {
+     "att": 0.741,
+     "def": 1.196,
+     "gp": 53
+    },
+    "KFUM Oslo": {
+     "att": 0.855,
+     "def": 0.938,
+     "gp": 53
+    },
+    "Sandefjord": {
+     "att": 0.927,
+     "def": 0.876,
+     "gp": 53
+    },
+    "Molde": {
+     "att": 1.144,
+     "def": 0.927,
+     "gp": 53
+    },
+    "Sarpsborg FK": {
+     "att": 0.917,
+     "def": 1.0,
+     "gp": 53
+    },
+    "Bryne": {
+     "att": 0.825,
+     "def": 1.14,
+     "gp": 30
+    },
+    "Bodo/Glimt": {
+     "att": 1.584,
+     "def": 0.627,
+     "gp": 54
+    },
+    "IK Start": {
+     "att": 0.767,
+     "def": 1.357,
+     "gp": 23
+    },
+    "Aalesund": {
+     "att": 1.011,
+     "def": 1.255,
+     "gp": 23
+    },
+    "Lillestrom": {
+     "att": 0.909,
+     "def": 0.889,
+     "gp": 23
+    }
+   },
+   "league": {
+    "LH": 1.789,
+    "LA": 1.368,
+    "L": 1.586
+   },
+   "backtest": {
+    "brier3": 0.5692,
+    "accuracy": 0.5469,
+    "n": 426,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Eliteserien (Norway)",
+   "fitted_at": "2026-10-27T19:53:31+00:00",
+   "season": "2025+2026",
+   "exam": {
+    "naive_brier3": 0.6246,
+    "model_brier3": 0.5692,
+    "ships": true,
+    "rule": "ships iff walk-forward brier3 < naive brier3 (constant outcome-rate forecast on the same pulled games)"
+   }
+  },
+  "israeli-premier": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (isr.1, Israeli Premier League 2024-25 (the only season ESPN's scoreboard archive serves for isr.1; the 2025-26 and 2026-27 windows were pulled and returned no games, 0 failed days); 0 day pulls failed)",
+   "elo": {
+    "Maccabi Haifa": 1550.2,
+    "Ironi Tiberias": 1456.9,
+    "Maccabi Raina": 1457.8,
+    "Maccabi Netanya": 1492.5,
+    "Hapoel Hadera": 1427.5,
+    "Hapoel Haifa": 1517.8,
+    "Bnei Sakhnin": 1460.7,
+    "Maccabi Petah-Tikva": 1447.3,
+    "Beitar Jerusalem": 1512.3,
+    "Moadon Sport Ashdod": 1472.4,
+    "Hapoel Kiryat Shmona": 1432.3,
+    "Hapoel Be'er": 1633.6,
+    "Hapoel Jerusalem": 1506.1,
+    "Maccabi Tel-Aviv": 1632.6
+   },
+   "strengths": {
+    "Maccabi Haifa": {
+     "att": 1.253,
+     "def": 1.022,
+     "gp": 36
+    },
+    "Ironi Tiberias": {
+     "att": 0.69,
+     "def": 0.991,
+     "gp": 33
+    },
+    "Maccabi Raina": {
+     "att": 0.832,
+     "def": 0.956,
+     "gp": 33
+    },
+    "Maccabi Netanya": {
+     "att": 1.022,
+     "def": 1.138,
+     "gp": 36
+    },
+    "Hapoel Hadera": {
+     "att": 0.743,
+     "def": 1.203,
+     "gp": 33
+    },
+    "Hapoel Haifa": {
+     "att": 1.022,
+     "def": 1.006,
+     "gp": 36
+    },
+    "Bnei Sakhnin": {
+     "att": 0.655,
+     "def": 0.92,
+     "gp": 33
+    },
+    "Maccabi Petah-Tikva": {
+     "att": 0.743,
+     "def": 1.079,
+     "gp": 33
+    },
+    "Beitar Jerusalem": {
+     "att": 1.138,
+     "def": 1.072,
+     "gp": 36
+    },
+    "Moadon Sport Ashdod": {
+     "att": 1.044,
+     "def": 1.168,
+     "gp": 33
+    },
+    "Hapoel Kiryat Shmona": {
+     "att": 0.761,
+     "def": 1.115,
+     "gp": 33
+    },
+    "Hapoel Be'er": {
+     "att": 1.418,
+     "def": 0.643,
+     "gp": 36
+    },
+    "Hapoel Jerusalem": {
+     "att": 1.026,
+     "def": 0.938,
+     "gp": 33
+    },
+    "Maccabi Tel-Aviv": {
+     "att": 1.55,
+     "def": 0.775,
+     "gp": 36
+    }
+   },
+   "league": {
+    "LH": 1.452,
+    "LA": 1.298,
+    "L": 1.379
+   },
+   "backtest": {
+    "brier3": 0.6193,
+    "accuracy": 0.4792,
+    "n": 240,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Premier League (Israel)",
+   "fitted_at": "2026-10-27T19:53:31+00:00",
+   "season": "2024-25",
+   "exam": {
+    "naive_brier3": 0.655,
+    "model_brier3": 0.6193,
+    "ships": true,
+    "rule": "ships iff walk-forward brier3 < naive brier3 (constant outcome-rate forecast on the same pulled games)"
+   }
+  },
+  "maltese-premier": {
+   "params": {
+    "K": 20,
+    "hfa_elo": 65,
+    "prior_games": 8
+   },
+   "source": "ESPN scoreboard day pulls (mlt.1, Maltese Premier League 2024-25 (the only season ESPN's scoreboard archive serves for mlt.1; the 2025-26 and 2026-27 windows were pulled and returned no games, 0 failed days); 0 day pulls failed)",
+   "elo": {
+    "Sliema Wanderers": 1543.8,
+    "Mosta FC": 1468.1,
+    "Balzan FC": 1445.8,
+    "Birkirkara": 1537.3,
+    "Floriana FC": 1583.8,
+    "Melita FC": 1409.8,
+    "Naxxar Lions": 1473.5,
+    "Hibernians": 1505.0,
+    "Hamrun Spartans": 1567.8,
+    "Zabbar Saint Patrick FC": 1461.8,
+    "Marsaxlokk FC": 1528.2,
+    "Gzira United": 1475.2
+   },
+   "strengths": {
+    "Sliema Wanderers": {
+     "att": 1.121,
+     "def": 0.786,
+     "gp": 34
+    },
+    "Mosta FC": {
+     "att": 0.884,
+     "def": 1.236,
+     "gp": 32
+    },
+    "Balzan FC": {
+     "att": 0.864,
+     "def": 1.177,
+     "gp": 32
+    },
+    "Birkirkara": {
+     "att": 1.047,
+     "def": 0.73,
+     "gp": 34
+    },
+    "Floriana FC": {
+     "att": 1.158,
+     "def": 0.619,
+     "gp": 34
+    },
+    "Melita FC": {
+     "att": 0.92,
+     "def": 1.396,
+     "gp": 33
+    },
+    "Naxxar Lions": {
+     "att": 0.786,
+     "def": 1.244,
+     "gp": 33
+    },
+    "Hibernians": {
+     "att": 1.04,
+     "def": 0.982,
+     "gp": 32
+    },
+    "Hamrun Spartans": {
+     "att": 1.103,
+     "def": 0.712,
+     "gp": 34
+    },
+    "Zabbar Saint Patrick FC": {
+     "att": 1.079,
+     "def": 1.177,
+     "gp": 32
+    },
+    "Marsaxlokk FC": {
+     "att": 1.119,
+     "def": 0.962,
+     "gp": 32
+    },
+    "Gzira United": {
+     "att": 0.864,
+     "def": 1.021,
+     "gp": 32
+    }
+   },
+   "league": {
+    "LH": 1.222,
+    "LA": 1.336,
+    "L": 1.279
+   },
+   "backtest": {
+    "brier3": 0.6337,
+    "accuracy": 0.4721,
+    "n": 197,
+    "protocol": "walk-forward (strengths/Elo from prior games only)"
+   },
+   "league_name": "Premier League (Malta)",
+   "fitted_at": "2026-10-27T19:53:31+00:00",
+   "season": "2024-25",
+   "exam": {
+    "naive_brier3": 0.6527,
+    "model_brier3": 0.6337,
+    "ships": true,
+    "rule": "ships iff walk-forward brier3 < naive brier3 (constant outcome-rate forecast on the same pulled games)"
+   }
   }
  },
  "control": {

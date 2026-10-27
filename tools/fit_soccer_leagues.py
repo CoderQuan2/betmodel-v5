@@ -122,11 +122,80 @@ ESPN_LEAGUES = [
      "label": "2025 Brazilian Serie B",
      "windows": [(date(2025, 4, 5), date(2025, 11, 23))]},
     {"key": "nacional-b", "slug": "arg.2",
-     "name": "Primera Nacional (Argentina)", "season": "2025",
-     "label": "2025 Primera Nacional regular phase (reducido "
-              "playoffs excluded)",
-     "windows": [(date(2025, 2, 7), date(2025, 10, 5))]},
+     "name": "Primera Nacional (Argentina)", "season": "2025+2026",
+     "label": "Primera Nacional 2025 + 2026 seasons (regular "
+              "phases; the 2026 window runs to date, so late-"
+              "phase fixtures of the same clubs are fitted as "
+              "pulled — the Round-4 completion that lands the "
+              "2026 field: Godoy Cruz / San Martin (San Juan) "
+              "relegated in, Midland / Rafaela / Ciudad de "
+              "Bolivar / Acassuso promoted in)",
+     "windows": [(date(2025, 2, 7), date(2025, 10, 5)),
+                 (date(2026, 2, 1), date(2026, 10, 24))]},
 ]
+
+# Round 4 (BetFi Xii pricing Build C, census step 5): the
+# remaining FanDuel soccer leagues with an ESPN route. Slug
+# verification (2026-10-27, by the Round-2 route — ESPN's core
+# league index plus scoreboard probes; a slug that 400s is not
+# a league):
+#   nor.1  IN the 220-league core index; scoreboard names it
+#          "Norwegian Eliteserien" and returns results.
+#   isr.1  NOT in the core index, but the scoreboard route
+#          resolves it, names it "Israeli Premier League",
+#          lists its 14 clubs on the teams endpoint, and
+#          returns results (weekly sample of 2024-25 found
+#          events on matchdays throughout the season).
+#   mlt.1  Same shape: resolves, names "Maltese Premier
+#          League", 12 clubs, results on matchdays.
+#   col.1  Already in use (colombia-primera, Round 2).
+# NOT verified — probed and rejected, never guessed in:
+#   Canadian Premier League (can.1 / can.cpl / canpl.1 all
+#   HTTP 400, teams 404, no Canadian men's league in the core
+#   index — only can.w.nsl), Bosnian Premier Liga (bos.1 /
+#   bih.1 400), Andorran Primera Divisio (and.1 / andorra.1
+#   400). Those leagues stay UNPRICED with their named reason
+#   until a source verifies.
+# Windows follow the Round-2 pattern: the last completed
+# season(s) PLUS the current season to date (2026-10-24).
+ESPN_LEAGUES_R3 = [
+    {"key": "eliteserien", "slug": "nor.1",
+     "name": "Eliteserien (Norway)", "season": "2025+2026",
+     "label": "Norwegian Eliteserien 2025 + 2026 to date",
+     "windows": [(date(2025, 3, 29), date(2025, 11, 30)),
+                 (date(2026, 3, 13), date(2026, 10, 24))]},
+    {"key": "israeli-premier", "slug": "isr.1",
+     "name": "Premier League (Israel)", "season": "2024-25",
+     "label": "Israeli Premier League 2024-25 (the only "
+              "season ESPN's archive serves for isr.1; the "
+              "later windows below were pulled in Round 4 "
+              "and returned no games)",
+     "windows": [(date(2024, 8, 20), date(2025, 5, 31)),
+                 (date(2025, 8, 20), date(2026, 5, 31)),
+                 (date(2026, 8, 15), date(2026, 10, 24))]},
+    {"key": "maltese-premier", "slug": "mlt.1",
+     "name": "Premier League (Malta)", "season": "2024-25",
+     "label": "Maltese Premier League 2024-25 (the only "
+              "season ESPN's archive serves for mlt.1; the "
+              "later windows below were pulled in Round 4 "
+              "and returned no games)",
+     "windows": [(date(2024, 8, 14), date(2025, 5, 15)),
+                 (date(2025, 8, 14), date(2026, 5, 15)),
+                 (date(2026, 8, 12), date(2026, 10, 24))]},
+]
+
+# Round-4 boundary refit (census step 5, job 4): the
+# Championship's shipped fit is the 2024-25 football-data file,
+# whose roster never held Ipswich (a 2024-25 Premier League
+# club) — so Ipswich's 2025-26 Championship fixtures price off
+# the pooled England system or not at all. The refit is the
+# SAME source one season on (football-data.co.uk 2526/E1.csv;
+# football-data's name forms — "Ipswich", "Hull" — are the
+# forms FanDuel lists). It ships only if its walk-forward
+# brier3 is at least as good as the recorded fit it replaces
+# (the gate is evaluated in build_c against the file on disk).
+CHAMPIONSHIP_REFIT_CSV = ("https://www.football-data.co.uk/"
+                          "mmz4281/2526/E1.csv")
 
 # Round 2 (BetFi Xii loop): the leagues the Round-1 report named as
 # the remainder — USL first (on every US pull), then the South /
@@ -893,10 +962,176 @@ def fit_pooled_system(games, tiers, source):
         "backtest": bt_of(recs)}
 
 
+def naive_brier3(games):
+    """The naive baseline for the Round-4 exam: a constant
+    forecast at the pulled games' own outcome rates, graded
+    with the same 3-way Brier as fit_league's walk-forward.
+    (With p set to the outcome frequencies this is exactly
+    1 - sum(freq^2); it is computed game by game so the
+    definition on record is the grading, not the shortcut.)"""
+    n = len(games)
+    if not n:
+        return None
+    fh = sum(1 for g in games if g["hs"] > g["as"]) / n
+    fd = sum(1 for g in games if g["hs"] == g["as"]) / n
+    fa = 1.0 - fh - fd
+    tot = 0.0
+    for g in games:
+        y = (1 if g["hs"] > g["as"] else 0 if g["hs"] == g["as"]
+             else -1)
+        tot += ((fh - (1 if y == 1 else 0)) ** 2
+                + (fd - (1 if y == 0 else 0)) ** 2
+                + (fa - (1 if y == -1 else 0)) ** 2)
+    return round(tot / n, 4)
+
+
+def build_c(out_path, fitted_at):
+    """Round 4 (pricing Build C) — a TARGETED merge, not a
+    full rebuild: only the Build C jobs touch the shipped
+    file, every other entry is carried byte-for-byte. Jobs:
+    (1) the Round-3-verified new leagues (ESPN_LEAGUES_R3),
+    each gated by the standing exam — walk-forward brier3
+    must beat the naive baseline on the same games, or the
+    league is recorded here and NOT shipped; (2) the
+    nacional-b completion refit (2025 + 2026 arg.2 windows,
+    the 2026 field); (3) the Championship boundary refit
+    (football-data 2526/E1.csv), gated against the recorded
+    fit it replaces. Returns 0; per-job outcomes print."""
+    with open(out_path) as f:
+        blob = json.load(f)
+    leagues = blob.setdefault("leagues", {})
+
+    def exam_block(games, fit):
+        nb = naive_brier3(games)
+        return {"naive_brier3": nb,
+                "model_brier3": fit["backtest"]["brier3"],
+                "ships": bool(nb is not None
+                              and fit["backtest"]["brier3"] < nb),
+                "rule": "ships iff walk-forward brier3 < naive "
+                        "brier3 (constant outcome-rate forecast "
+                        "on the same pulled games)"}
+
+    for job in ESPN_LEAGUES_R3:
+        games, failed_days, total_days = \
+            fetch_espn_season_tolerant(job["slug"],
+                                       job["windows"])
+        games = [g for g in games
+                 if "All-Stars" not in g["home"]
+                 and "All-Stars" not in g["away"]]
+        if len(games) < 50:
+            print(f"[HELD] {job['name']} (ESPN {job['slug']}): "
+                  f"only {len(games)} completed games pulled — "
+                  f"too few to fit honestly; NOT shipped")
+            continue
+        source = (f"ESPN scoreboard day pulls ({job['slug']}, "
+                  f"{job['label']}; {failed_days} of {total_days} "
+                  f"day pulls failed and were re-counted as "
+                  f"absent, not filled)")
+        fit = fit_league(games, source)
+        fit["league_name"] = job["name"]
+        fit["fitted_at"] = fitted_at
+        fit["season"] = job["season"]
+        fit["exam"] = exam_block(games, fit)
+        bt = fit["backtest"]
+        if not fit["exam"]["ships"]:
+            print(f"[HELD] {job['name']} (ESPN {job['slug']}): "
+                  f"walk-forward brier3 {bt['brier3']} does NOT "
+                  f"beat naive {fit['exam']['naive_brier3']} "
+                  f"(n={bt['n']}) — FAILED-EXAM at the gate, "
+                  f"NOT shipped")
+            continue
+        leagues[job["key"]] = fit
+        print(f"[OK] {job['name']} (ESPN {job['slug']}): "
+              f"n={bt['n']} · brier3={bt['brier3']} vs naive "
+              f"{fit['exam']['naive_brier3']} (PASS) · "
+              f"teams={len(fit['strengths'])} · "
+              f"failed_days={failed_days}/{total_days}")
+
+    # nacional-b completion: refit on the fullest current
+    # field (the league entry's own windows now run 2025 +
+    # 2026). The old fit's numbers are printed beside the new
+    # ones; the refit ships unless it fails the standing exam
+    # outright (brier3 >= naive), in which case the shipped
+    # fit stands and the failure is the report.
+    job = next(j for j in ESPN_LEAGUES if j["key"] == "nacional-b")
+    games, failed_days, total_days = \
+        fetch_espn_season_tolerant(job["slug"], job["windows"])
+    games = [g for g in games
+             if "All-Stars" not in g["home"]
+             and "All-Stars" not in g["away"]]
+    old = leagues.get("nacional-b") or {}
+    old_bt = old.get("backtest") or {}
+    source = (f"ESPN scoreboard day pulls ({job['slug']}, "
+              f"{job['label']}; {failed_days} of {total_days} "
+              f"day pulls failed and were re-counted as "
+              f"absent, not filled)")
+    fit = fit_league(games, source)
+    fit["league_name"] = job["name"]
+    fit["fitted_at"] = fitted_at
+    fit["season"] = job["season"]
+    fit["exam"] = exam_block(games, fit)
+    bt = fit["backtest"]
+    print(f"[{'OK' if fit['exam']['ships'] else 'HELD'}] "
+          f"Primera Nacional completion refit (ESPN "
+          f"{job['slug']}): old n={old_bt.get('n')} brier3="
+          f"{old_bt.get('brier3')} -> new n={bt['n']} brier3="
+          f"{bt['brier3']} vs naive "
+          f"{fit['exam']['naive_brier3']} · teams "
+          f"{len(old.get('strengths') or {})} -> "
+          f"{len(fit['strengths'])} · failed_days="
+          f"{failed_days}/{total_days}")
+    if fit["exam"]["ships"]:
+        leagues["nacional-b"] = fit
+
+    # Championship boundary refit: same source, one season
+    # on. Ships only if its walk-forward brier3 is at least
+    # as good as the recorded fit it replaces.
+    old = leagues.get("championship") or {}
+    old_bt = old.get("backtest") or {}
+    games = parse_games(fetch_csv(CHAMPIONSHIP_REFIT_CSV))
+    if len(games) < 50:
+        print(f"[HELD] Championship refit: only {len(games)} "
+              f"games parsed from {CHAMPIONSHIP_REFIT_CSV} — "
+              f"old fit kept")
+    else:
+        fit = fit_league(
+            games, f"football-data.co.uk results CSV "
+                   f"{CHAMPIONSHIP_REFIT_CSV}")
+        fit["league_name"] = "Championship (England)"
+        fit["fitted_at"] = fitted_at
+        fit["season"] = "2025-26"
+        bt = fit["backtest"]
+        ships = (old_bt.get("brier3") is not None
+                 and bt["brier3"] <= old_bt["brier3"])
+        fit["exam"] = {
+            "replaced_brier3": old_bt.get("brier3"),
+            "replaced_n": old_bt.get("n"),
+            "model_brier3": bt["brier3"], "ships": bool(ships),
+            "rule": "boundary refit ships iff its walk-forward "
+                    "brier3 <= the recorded fit it replaces"}
+        print(f"[{'OK' if ships else 'HELD'}] Championship "
+              f"boundary refit (2526/E1): recorded n="
+              f"{old_bt.get('n')} brier3={old_bt.get('brier3')} "
+              f"-> new n={bt['n']} brier3={bt['brier3']} · "
+              f"teams={len(fit['strengths'])} · Ipswich in fit: "
+              f"{'Ipswich' in fit['strengths']}")
+        if ships:
+            leagues["championship"] = fit
+
+    blob["fitted_at"] = fitted_at
+    with open(out_path, "w") as f:
+        json.dump(blob, f, indent=1)
+    print(f"Wrote {out_path}: leagues={sorted(leagues)}")
+    return 0
+
+
 def main(argv):
     out_path = os.path.join(CLONE, "data", "v5-soccer-leagues.json")
     if "--out" in argv:
         out_path = argv[argv.index("--out") + 1]
+    if "--build-c" in argv:
+        return build_c(out_path, datetime.now().astimezone()
+                       .isoformat(timespec="seconds"))
     fitted_at = datetime.now().astimezone().isoformat(
         timespec="seconds")
     blob = {"sport": "soccer", "fitted_at": fitted_at,
