@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.13.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 34)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.14.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 35)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -720,10 +720,13 @@ def main():
         "cricket", "moneyline", "Denmark", "Papua New Guinea",
         side="home",
         competition="ICC Cricket World Cup Challenge League")
-    check("R4 cricket: Challenge League lane ships FAILED-EXAM "
-          "with its numbers (does not price)",
-          _lp is None and "FAILED-EXAM" in _li
-          and "0.2253" in _li and "0.2234" in _li, f"{_li}")
+    _lista_blk = (b5.load_cricket().get("lanes") or {})["lista_m"]
+    check("R4 cricket: Challenge League lane prices off the "
+          "passed refit (attempt 2: Brier 0.1903 vs naive "
+          "0.2253, n=127; the FAILED-EXAM stamp is retired)",
+          _lp is not None and 0 < _lp < 1
+          and _lista_blk["backtest"]["brier"] < _lista_blk[
+              "backtest"]["naive_brier"], f"p={_lp}")
     _rp, _ri = b5.engine_price(
         "rugby-union", "spread", "Canterbury", "Northland",
         side="home", line=-6.5, competition="New Zealand - NPC")
@@ -1426,10 +1429,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.13.0 (build 34)" in _readme)
+          "12.14.0 (build 35)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.13.0"' in _wf
-          and '--build-number "34"' in _wf)
+          '--build-version "12.14.0"' in _wf
+          and '--build-number "35"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

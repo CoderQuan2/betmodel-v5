@@ -1,5 +1,5 @@
 {
- "fitted_at": "2026-10-24T22:55:54.004356+00:00",
+ "fitted_at": "2026-10-27T19:31:11.644062+00:00",
  "source": "Cricsheet (cricsheet.org) all_csv2.zip match info files \u2014 public ball-by-ball archive; lanes classified by the archive's own team_type/match_type/event fields",
  "model": "sequential Elo K=20, start 1500, no home edge; test lane three-way with a running draw rate",
  "lanes": {
@@ -118,48 +118,77 @@
   },
   "lista_m": {
    "ratings": {
+    "Malaysia": 1475.95,
+    "Denmark": 1534.65,
+    "Qatar": 1469.97,
+    "Singapore": 1279.41,
+    "Canada": 1783.88,
+    "Vanuatu": 1367.12,
+    "Jersey": 1819.57,
+    "Uganda": 1613.55,
+    "Hong Kong": 1605.47,
+    "Italy": 1763.11,
+    "Bermuda": 1348.07,
+    "Kenya": 1471.2,
+    "Kuwait": 1566.01,
+    "Papua New Guinea": 1509.8,
+    "Bahrain": 1491.53,
+    "Tanzania": 1431.09
+   },
+   "elo_ratings": {
     "Malaysia": 1455.71,
-    "Denmark": 1518.53,
-    "Qatar": 1453.57,
+    "Denmark": 1518.37,
+    "Qatar": 1477.09,
     "Singapore": 1375.71,
     "Canada": 1594.23,
     "Vanuatu": 1440.58,
-    "Jersey": 1601.82,
+    "Jersey": 1615.83,
     "Uganda": 1539.18,
     "Hong Kong": 1538.26,
     "Italy": 1555.96,
     "Bermuda": 1460.62,
-    "Kenya": 1493.36,
-    "Kuwait": 1539.7,
-    "Papua New Guinea": 1503.26,
+    "Kenya": 1486.21,
+    "Kuwait": 1516.71,
+    "Papua New Guinea": 1496.02,
     "Bahrain": 1486.53,
     "Tanzania": 1442.97
    },
    "games": {
     "Malaysia": 14,
-    "Denmark": 22,
-    "Qatar": 20,
+    "Denmark": 24,
+    "Qatar": 22,
     "Singapore": 28,
     "Canada": 13,
     "Vanuatu": 11,
-    "Jersey": 16,
+    "Jersey": 18,
     "Uganda": 20,
     "Hong Kong": 15,
     "Italy": 21,
     "Bermuda": 4,
-    "Kenya": 16,
-    "Kuwait": 8,
-    "Papua New Guinea": 8,
+    "Kenya": 19,
+    "Kuwait": 10,
+    "Papua New Guinea": 9,
     "Bahrain": 13,
     "Tanzania": 13
    },
    "backtest": {
-    "n": 121,
-    "brier": 0.2253,
-    "naive_brier": 0.2234,
-    "accuracy": 0.686
+    "n": 127,
+    "brier": 0.1903,
+    "naive_brier": 0.2253,
+    "accuracy": 0.7402
    },
-   "n_matches": 128
+   "refit": {
+    "attempt": 2,
+    "model": "sigmoid(logit(Elo p) + 0.35 * dNRR10 + 0.50 * dForm5); shipped ratings are feature-adjusted so the engine's Elo logistic reproduces it",
+    "features": "last-10 mean match net run rate from the archive's ball-by-ball files; last-5 result points, missing slots padded 0.5; both from prior matches only",
+    "prior_attempt": {
+     "model": "Elo only",
+     "brier": 0.2253,
+     "naive_brier": 0.2234,
+     "n": 121
+    }
+   },
+   "n_matches": 134
   },
   "odi_f": {
    "ratings": {

@@ -37,6 +37,23 @@ running draw rate (prior 0.30, weight 20 matches); exam =
 win rates. The engine prices the FanDuel Draw runner from
 p_draw and the side runners from (1 - p_draw) * p_decisive.
 
+lista_m REFIT (Build B, 2026-10-27 — attempt 2): the Elo-only
+lane FAILED-EXAM (0.2253 vs naive 0.2234, n=121). One refit
+with richer inputs from the same archive's ball-by-ball files:
+p = sigmoid(logit(Elo p) + 0.35 * dNRR10 + 0.50 * dForm5),
+where dNRR10 is the difference of the teams' mean match net
+run rate (runs/over scored minus conceded, from the ball
+files) over their last 10 matches and dForm5 the difference
+of their last-5 result points (missing slots padded 0.5) —
+both computed ONLY from prior matches, walk-forward, against
+the same running-win-rate naive. The shipped ratings are the
+feature-adjusted ratings R' = R + (400/ln 10) * (0.35 * NRR10
++ 0.50 * Form5) at the final state, so the engine's plain Elo
+logistic on them reproduces the refit probabilities exactly;
+the raw Elo is kept under elo_ratings and the attempt under
+refit. Coefficients were fixed before the attempt ran; a
+failed attempt stays FAILED-EXAM with its numbers recorded.
+
 Usage: fit_cricket.py [out_path] (default ../data/v5-cricket.json)
 The zip is cached under /tmp/guy4 (re-runs offline); set
 CRICSHEET_ZIP to a local all_csv2.zip to skip the download.
@@ -44,6 +61,7 @@ CRICSHEET_ZIP to a local all_csv2.zip to skip the download.
 import csv
 import io
 import json
+import math
 import os
 import sys
 import urllib.request
@@ -90,7 +108,9 @@ def load_matches():
                 "match_type": info.get("match_type"),
                 "team_type": info.get("team_type"),
                 "event": info.get("event") or "",
-                "gender": info.get("gender")})
+                "gender": info.get("gender"),
+                "match_id": info.get("match_id"),
+                "file_stem": name[: -len("_info.csv")]})
     matches.sort(key=lambda m: m["date"])
     return matches
 
@@ -213,6 +233,136 @@ def run_lane(matches, three_way=False):
     return out
 
 
+# --- lista_m refit (Build B attempt 2; see the module docstring).
+LISTA_W_NRR = 0.35
+LISTA_W_FORM = 0.50
+
+
+def match_nrr(file_stem):
+    """{team: match net run rate in runs/over} from one match's
+    ball-by-ball file, or {} when the archive carries no ball
+    file for it. Runs = runs_off_bat + extras; a legal delivery
+    is a row with neither wides nor noballs."""
+    ball = file_stem + ".csv"
+    agg = {}
+    with zipfile.ZipFile(SRC) as z:
+        if ball not in z.namelist():
+            return {}
+        text = z.read(ball).decode("utf-8")
+    for row in csv.DictReader(io.StringIO(text)):
+        bt, bw = row["batting_team"], row["bowling_team"]
+        for t in (bt, bw):
+            agg.setdefault(t, {"rs": 0, "bf": 0, "rc": 0, "bb": 0})
+        runs = int(row["runs_off_bat"] or 0) + int(row["extras"] or 0)
+        legal = 0 if (row["wides"] or row["noballs"]) else 1
+        agg[bt]["rs"] += runs
+        agg[bt]["bf"] += legal
+        agg[bw]["rc"] += runs
+        agg[bw]["bb"] += legal
+    return {t: (d["rs"] / d["bf"] - d["rc"] / d["bb"]) * 6.0
+            for t, d in agg.items() if d["bf"] and d["bb"]}
+
+
+def run_lane_lista(matches):
+    """The one lista_m refit attempt: sequential Elo plus
+    pre-match form/NRR features, walk-forward on the lane's own
+    protocol (same running-win-rate naive, ties excluded from
+    the Brier and counted 0.5 in the updates). Lane matches are
+    ordered by (date, match_id) so the exam is deterministic.
+    The returned ratings are feature-adjusted (module
+    docstring) so engine pricing reproduces this model."""
+    ms = sorted(matches, key=lambda m: (
+        m["date"],
+        int(m["match_id"]) if str(m.get("match_id")).isdigit()
+        else 0))
+    elo, wins, games = {}, {}, {}
+    form, nrrh = {}, {}
+    brier = naive_brier = 0.0
+    n = correct = 0
+
+    def wr(t):
+        return (wins.get(t, 0) + 2.0) / (games.get(t, 0) + 4.0)
+
+    def form5(t):
+        h = form.get(t, [])[-5:]
+        return (sum(h) + 0.5 * (5 - len(h))) / 5
+
+    def nrr10(t):
+        h = nrrh.get(t, [])[-10:]
+        return sum(h) / len(h) if h else 0.0
+
+    for m in ms:
+        a, b = m["teams"]
+        w = m["winner"]
+        if w in (None, "", "no result"):
+            continue
+        ra, rb = elo.get(a, START), elo.get(b, START)
+        p_a = elo_p(ra, rb)
+        mnrr = match_nrr(m["file_stem"])
+        if w == "tie":
+            elo[a] = ra + K * (0.5 - p_a)
+            elo[b] = rb + K * (0.5 - (1 - p_a))
+            games[a] = games.get(a, 0) + 1
+            games[b] = games.get(b, 0) + 1
+            form.setdefault(a, []).append(0.5)
+            form.setdefault(b, []).append(0.5)
+            for t in (a, b):
+                if t in mnrr:
+                    nrrh.setdefault(t, []).append(mnrr[t])
+            continue
+        if w not in (a, b):
+            continue
+        z = (math.log(p_a / (1 - p_a))
+             + LISTA_W_NRR * (nrr10(a) - nrr10(b))
+             + LISTA_W_FORM * (form5(a) - form5(b)))
+        p = 1 / (1 + math.exp(-z))
+        pn_a = wr(a) / (wr(a) + wr(b))
+        y = 1.0 if w == a else 0.0
+        brier += (p - y) ** 2
+        naive_brier += (pn_a - y) ** 2
+        n += 1
+        if (p >= 0.5) == (y == 1.0):
+            correct += 1
+        elo[a] = ra + K * (y - p_a)
+        elo[b] = rb + K * ((1 - y) - (1 - p_a))
+        wins[w] = wins.get(w, 0) + 1
+        games[a] = games.get(a, 0) + 1
+        games[b] = games.get(b, 0) + 1
+        form.setdefault(a, []).append(y)
+        form.setdefault(b, []).append(1 - y)
+        for t in (a, b):
+            if t in mnrr:
+                nrrh.setdefault(t, []).append(mnrr[t])
+    scale = 400.0 / math.log(10)
+    ratings = {t: round(r + scale * (LISTA_W_NRR * nrr10(t)
+                                     + LISTA_W_FORM * form5(t)), 2)
+               for t, r in elo.items()}
+    return {"ratings": ratings,
+            "elo_ratings": {t: round(r, 2) for t, r in elo.items()},
+            "games": games,
+            "backtest": {
+                "n": n,
+                "brier": round(brier / n, 4) if n else None,
+                "naive_brier": (round(naive_brier / n, 4)
+                                if n else None),
+                "accuracy": round(correct / n, 4) if n else None},
+            "refit": {
+                "attempt": 2,
+                "model": ("sigmoid(logit(Elo p) + 0.35 * dNRR10 "
+                          "+ 0.50 * dForm5); shipped ratings are "
+                          "feature-adjusted so the engine's Elo "
+                          "logistic reproduces it"),
+                "features": ("last-10 mean match net run rate "
+                             "from the archive's ball-by-ball "
+                             "files; last-5 result points, "
+                             "missing slots padded 0.5; both "
+                             "from prior matches only"),
+                "prior_attempt": {
+                    "model": "Elo only",
+                    "brier": 0.2253, "naive_brier": 0.2234,
+                    "n": 121}}}
+
+
 def main():
     out_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "..",
@@ -233,7 +383,8 @@ def main():
                      "running draw rate"),
            "lanes": {}}
     for lane, ms in sorted(lanes.items()):
-        blk = run_lane(ms, three_way=lane.startswith("test"))
+        blk = (run_lane_lista(ms) if lane == "lista_m"
+               else run_lane(ms, three_way=lane.startswith("test")))
         blk["n_matches"] = len(ms)
         fit["lanes"][lane] = blk
         bt = blk["backtest"]
