@@ -1,0 +1,9646 @@
+{
+ "fetched_at": "2026-10-27T22:08:37+00:00",
+ "source": "nationalleague.ch official API (/api/games)",
+ "games": [
+  {
+   "date": "2023-09-13",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "SCL Tigers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "HC Lugano",
+   "away": "EHC Biel-Bienne",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "EV Zug",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "ZSC Lions",
+   "away": "HC Ajoie",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "HC Ajoie",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "SC Bern",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "HC Lugano",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "EV Zug",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "HC Ajoie",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "HC Ambri-Piotta",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "HC Davos",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "SCL Tigers",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "EV Zug",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "HC Ambri-Piotta",
+   "away": "Lausanne HC",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "HC Davos",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SCL Tigers",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-28",
+   "home": "Lausanne HC",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "HC Ajoie",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "SCL Tigers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "EV Zug",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "ZSC Lions",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "HC Ajoie",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "SC Bern",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "EHC Biel-Bienne",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Lausanne HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "HC Davos",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "EHC Kloten",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 9,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "HC Lugano",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "EHC Kloten",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 0,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "EV Zug",
+   "away": "HC Ajoie",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "SC Bern",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "EV Zug",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "HC Lugano",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "Lausanne HC",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "EHC Biel-Bienne",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "EV Zug",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "ZSC Lions",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "SC Bern",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "HC Davos",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "HC Lugano",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "Lausanne HC",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "EHC Kloten",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "SCL Tigers",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "HC Davos",
+   "away": "HC Ambri-Piotta",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-15",
+   "home": "EV Zug",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 8,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "EV Zug",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "SC Bern",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-22",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "HC Lugano",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "EV Zug",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "EHC Biel-Bienne",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "ZSC Lions",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "EHC Kloten",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "EV Zug",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "EHC Biel-Bienne",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "EV Zug",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "HC Ambri-Piotta",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "SC Bern",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "SCL Tigers",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Lausanne HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "HC Ambri-Piotta",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "SC Bern",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "EHC Kloten",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "ZSC Lions",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "HC Ajoie",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "HC Davos",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "Lausanne HC",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "EV Zug",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "HC Davos",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "ZSC Lions",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "SCL Tigers",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "HC Lugano",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "EV Zug",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "HC Davos",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Kloten",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "EV Zug",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "HC Davos",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "SCL Tigers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "EHC Kloten",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Lausanne HC",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "HC Lugano",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "SC Bern",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "EV Zug",
+   "away": "HC Ajoie",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "HC Lugano",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "EHC Kloten",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "SCL Tigers",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Lausanne HC",
+   "away": "HC Davos",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "SCL Tigers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "HC Lugano",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "EV Zug",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "EHC Kloten",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "ZSC Lions",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "SC Bern",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "EV Zug",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "EHC Biel-Bienne",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "HC Davos",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "ZSC Lions",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "EV Zug",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "EHC Biel-Bienne",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "SCL Tigers",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "HC Ajoie",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "SC Bern",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-21",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "HC Lugano",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "EV Zug",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "HC Ajoie",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "HC Lugano",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "EV Zug",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "EV Zug",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "HC Ajoie",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-04",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "EHC Biel-Bienne",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-18",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "SCL Tigers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "ZSC Lions",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "HC Davos",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "EV Zug",
+   "away": "SCL Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "HC Lugano",
+   "away": "SC Bern",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "EV Zug",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Lausanne HC",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "SC Bern",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "SCL Tigers",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "EV Zug",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "HC Davos",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "HC Ajoie",
+   "away": "SC Bern",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "SC Bern",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "EHC Kloten",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "SCL Tigers",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "EV Zug",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-09",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-10",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "ZSC Lions",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "EV Zug",
+   "away": "EHC Biel-Bienne",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "HC Ajoie",
+   "away": "HC Davos",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "EHC Biel-Bienne",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-16",
+   "home": "EV Zug",
+   "away": "HC Ajoie",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "EHC Kloten",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "HC Lugano",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "EV Zug",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "ZSC Lions",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "HC Ajoie",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "SC Bern",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "HC Davos",
+   "away": "HC Lugano",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "EV Zug",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "HC Ajoie",
+   "away": "EHC Biel-Bienne",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "HC Lugano",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "HC Ambri-Piotta",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-31",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "Lausanne HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "EHC Kloten",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "EV Zug",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "Lausanne HC",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "HC Lugano",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "SC Bern",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "EV Zug",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "SCL Tigers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "ZSC Lions",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "EHC Biel-Bienne",
+   "away": "Lausanne HC",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "HC Lugano",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "EV Zug",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "HC Davos",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "Lausanne HC",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "EV Zug",
+   "away": "ZSC Lions",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Bern",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "SCL Tigers",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "HC Davos",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "EHC Kloten",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "HC Lugano",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "SC Bern",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "HC Ambri-Piotta",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "HC Ambri-Piotta",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "SCL Tigers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "EHC Kloten",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "ZSC Lions",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "SC Bern",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "EHC Biel-Bienne",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "HC Davos",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "HC Ajoie",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Kloten",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "EV Zug",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Bern",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "EHC Kloten",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-23",
+   "home": "EV Zug",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "SCL Tigers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "EV Zug",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "HC Lugano",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-06",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "HC Davos",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "EHC Kloten",
+   "away": "ZSC Lions",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "EV Zug",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "HC Lugano",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "EHC Kloten",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "ZSC Lions",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "EV Zug",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "SCL Tigers",
+   "away": "EHC Biel-Bienne",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "EV Zug",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "SC Bern",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "EHC Biel-Bienne",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "HC Ajoie",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "SC Bern",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "ZSC Lions",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "EV Zug",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-23",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Lausanne HC",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "EV Zug",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "HC Ambri-Piotta",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "SC Bern",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-30",
+   "home": "HC Davos",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Lausanne HC",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "HC Davos",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "HC Lugano",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-03",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "EHC Biel-Bienne",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Lausanne HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "ZSC Lions",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "HC Ajoie",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "HC Lugano",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "SCL Tigers",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "EV Zug",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "SC Bern",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "Lausanne HC",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "HC Davos",
+   "away": "HC Ambri-Piotta",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "HC Ajoie",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "EV Zug",
+   "away": "ZSC Lions",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "HC Lugano",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-25",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-25",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "HC Lugano",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "SCL Tigers",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "EV Zug",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-11",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "SCL Tigers",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "HC Ambri-Piotta",
+   "away": "Lausanne HC",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "ZSC Lions",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "EV Zug",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "SC Bern",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 11,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "EV Zug",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "HC Lugano",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "HC Davos",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "EV Zug",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "HC Ajoie",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "HC Lugano",
+   "away": "SC Bern",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "EV Zug",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "HC Ajoie",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "HC Ambri-Piotta",
+   "away": "EV Zug",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "SC Bern",
+   "away": "EHC Kloten",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "HC Lugano",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "SCL Tigers",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "HC Davos",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "EHC Kloten",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "EV Zug",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Lausanne HC",
+   "away": "SC Bern",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "SC Bern",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "SCL Tigers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "SCL Tigers",
+   "away": "HC Ajoie",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "Lausanne HC",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "HC Lugano",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "EV Zug",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "SC Bern",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "EHC Kloten",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "ZSC Lions",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Lausanne HC",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "ZSC Lions",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "SCL Tigers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "EV Zug",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "HC Davos",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "EHC Kloten",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "Lausanne HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "EV Zug",
+   "away": "HC Ajoie",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "HC Ajoie",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "EHC Biel-Bienne",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "EHC Kloten",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "EHC Biel-Bienne",
+   "away": "Lausanne HC",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Lausanne HC",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-30",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "HC Davos",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-13",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "SC Bern",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "EHC Biel-Bienne",
+   "away": "ZSC Lions",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "EV Zug",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "HC Lugano",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "HC Ajoie",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-20",
+   "home": "HC Lugano",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-20",
+   "home": "HC Davos",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "ZSC Lions",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "EHC Biel-Bienne",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "ZSC Lions",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "EV Zug",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-27",
+   "home": "EV Zug",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "HC Davos",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "HC Davos",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "HC Ajoie",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "EHC Biel-Bienne",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "HC Lugano",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "EV Zug",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "ZSC Lions",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "EV Zug",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "HC Davos",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "ZSC Lions",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-22",
+   "home": "Lausanne HC",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-22",
+   "home": "HC Lugano",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "SC Bern",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Lausanne HC",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "EV Zug",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "HC Ajoie",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "EHC Kloten",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "HC Davos",
+   "away": "HC Ambri-Piotta",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "HC Lugano",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "SCL Tigers",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "EV Zug",
+   "away": "EHC Kloten",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "HC Ambri-Piotta",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "HC Ajoie",
+   "away": "EHC Biel-Bienne",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "SC Bern",
+   "away": "HC Ambri-Piotta",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "EHC Kloten",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "EV Zug",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "SCL Tigers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "EV Zug",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "HC Ajoie",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "HC Lugano",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Lausanne HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "SCL Tigers",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "EV Zug",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-26",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "EHC Kloten",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-29",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Lugano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-29",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-29",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "EHC Biel-Bienne",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "ZSC Lions",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "SCL Tigers",
+   "away": "HC Ambri-Piotta",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "HC Ambri-Piotta",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "SC Bern",
+   "away": "EHC Kloten",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "HC Lugano",
+   "away": "EHC Biel-Bienne",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "ZSC Lions",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "EV Zug",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "EHC Kloten",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Lausanne HC",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "HC Lugano",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "EV Zug",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "SC Bern",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "Lausanne HC",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-05",
+   "home": "SCL Tigers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-07",
+   "home": "EV Zug",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "SC Bern",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "HC Davos",
+   "away": "EHC Biel-Bienne",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-09",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "HC Ajoie",
+   "away": "HC Ambri-Piotta",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "EHC Biel-Bienne",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "HC Davos",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Lausanne HC",
+   "away": "EV Zug",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "HC Lugano",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "ZSC Lions",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "SC Bern",
+   "away": "HC Davos",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "EHC Kloten",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "SCL Tigers",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "HC Ajoie",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "EHC Biel-Bienne",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "HC Davos",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Lausanne HC",
+   "away": "HC Ambri-Piotta",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "ZSC Lions",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "HC Ajoie",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "EHC Kloten",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "HC Lugano",
+   "away": "EV Zug",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "SCL Tigers",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "HC Davos",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-24",
+   "home": "EHC Kloten",
+   "away": "EHC Biel-Bienne",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "HC Ambri-Piotta",
+   "away": "ZSC Lions",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "SC Bern",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "SCL Tigers",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "HC Ajoie",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "HC Davos",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "HC Lugano",
+   "away": "HC Ambri-Piotta",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "ZSC Lions",
+   "away": "EHC Kloten",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "EHC Biel-Bienne",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "HC Ajoie",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Davos",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "SC Bern",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EHC Kloten",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "SCL Tigers",
+   "away": "HC Lugano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "ZSC Lions",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "Lausanne HC",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-01",
+   "home": "HC Ambri-Piotta",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "SC Bern",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "HC Davos",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "EHC Kloten",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Lausanne HC",
+   "away": "EHC Biel-Bienne",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "HC Lugano",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Davos",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ambri-Piotta",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "SC Bern",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "SCL Tigers",
+   "away": "EHC Kloten",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "ZSC Lions",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "HC Ajoie",
+   "away": "HC Lugano",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "EV Zug",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "Lausanne HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-08",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Ajoie",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "SC Bern",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "HC Davos",
+   "away": "EHC Kloten",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "HC Lugano",
+   "away": "ZSC Lions",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "SCL Tigers",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "HC Ajoie",
+   "away": "SCL Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "HC Ambri-Piotta",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Lausanne HC",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "ZSC Lions",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "EHC Kloten",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "Lausanne HC",
+   "away": "HC Ajoie",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "SC Bern",
+   "away": "Lausanne HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "EHC Biel-Bienne",
+   "away": "HC Ajoie",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "SCL Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "EHC Kloten",
+   "away": "HC Ambri-Piotta",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "HC Lugano",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "ZSC Lions",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "HC Ajoie",
+   "away": "EV Zug",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "HC Ambri-Piotta",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "HC Davos",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Lugano",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "EHC Biel-Bienne",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Lausanne HC",
+   "away": "EHC Kloten",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "SCL Tigers",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "HC Ambri-Piotta",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "SC Bern",
+   "away": "SCL Tigers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "EHC Biel-Bienne",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "EHC Kloten",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "ZSC Lions",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "HC Ajoie",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "HC Davos",
+   "away": "SC Bern",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "EHC Biel-Bienne",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "HC Ambri-Piotta",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "HC Lugano",
+   "away": "EHC Kloten",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "ZSC Lions",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "EV Zug",
+   "away": "Lausanne HC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "HC Ambri-Piotta",
+   "away": "HC Ajoie",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "EHC Biel-Bienne",
+   "away": "EV Zug",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "EHC Kloten",
+   "away": "SC Rapperswil-Jona Lakers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "Lausanne HC",
+   "away": "Fribourg-Gott\u00e9ron",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "SCL Tigers",
+   "away": "HC Davos",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "SC Bern",
+   "away": "HC Lugano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Gen\u00e8ve-Servette HC",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Fribourg-Gott\u00e9ron",
+   "away": "HC Davos",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "HC Ambri-Piotta",
+   "away": "EHC Biel-Bienne",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "SC Bern",
+   "away": "ZSC Lions",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "EHC Kloten",
+   "away": "HC Ajoie",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "SC Rapperswil-Jona Lakers",
+   "away": "Gen\u00e8ve-Servette HC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Lausanne HC",
+   "away": "SCL Tigers",
+   "hs": 3,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "EV Zug",
+   "away": "HC Lugano",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  }
+ ]
+}

@@ -1,0 +1,9444 @@
+{
+ "fetched_at": "2026-10-27T22:11:57+00:00",
+ "source": "Elite Prospects league scores pages (public mirror)",
+ "report": [
+  "2023-2024: RS closed: 364 games, 14 teams, all pairs at 4 (listed 404)",
+  "2024-2025: RS closed: 364 games, 14 teams, all pairs at 4 (listed 407)",
+  "2025-2026: RS closed: 364 games, 14 teams, all pairs at 4 (listed 406)",
+  "2026-2027: partial season, 87 games taken as listed"
+ ],
+ "games": [
+  {
+   "date": "2023-09-14",
+   "home": "EHC M\u00fcnchen",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Schwenninger Wild Wings",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "Fischtown Pinguins",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "K\u00f6lner Haie",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "Iserlohn Roosters",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "Adler Mannheim",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "Augsburger Panther",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-21",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "EHC M\u00fcnchen",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Augsburger Panther",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "ERC Ingolstadt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "K\u00f6lner Haie",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Straubing Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Augsburger Panther",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Schwenninger Wild Wings",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-27",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-28",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Straubing Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Augsburger Panther",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "Fischtown Pinguins",
+   "away": "Schwenninger Wild Wings",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "ERC Ingolstadt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Iserlohn Roosters",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "K\u00f6lner Haie",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "EHC M\u00fcnchen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Fischtown Pinguins",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Adler Mannheim",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Iserlohn Roosters",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "ERC Ingolstadt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Schwenninger Wild Wings",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "K\u00f6lner Haie",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Fischtown Pinguins",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "EHC M\u00fcnchen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "Adler Mannheim",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "Grizzlys Wolfsburg",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-19",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Adler Mannheim",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Straubing Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Augsburger Panther",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Grizzlys Wolfsburg",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "Iserlohn Roosters",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "Iserlohn Roosters",
+   "away": "Adler Mannheim",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "Augsburger Panther",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Straubing Tigers",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "ERC Ingolstadt",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "Adler Mannheim",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "EHC M\u00fcnchen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Fischtown Pinguins",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "K\u00f6lner Haie",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Iserlohn Roosters",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Augsburger Panther",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 10,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Straubing Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Iserlohn Roosters",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "K\u00f6lner Haie",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Schwenninger Wild Wings",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Straubing Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Fischtown Pinguins",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "Grizzlys Wolfsburg",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "ERC Ingolstadt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "EHC M\u00fcnchen",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "Augsburger Panther",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "Iserlohn Roosters",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "Schwenninger Wild Wings",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-16",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-16",
+   "home": "Augsburger Panther",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Adler Mannheim",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "Straubing Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "K\u00f6lner Haie",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "ERC Ingolstadt",
+   "away": "Iserlohn Roosters",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Augsburger Panther",
+   "away": "EHC M\u00fcnchen",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Adler Mannheim",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "K\u00f6lner Haie",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Schwenninger Wild Wings",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-30",
+   "home": "Schwenninger Wild Wings",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "EHC M\u00fcnchen",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "ERC Ingolstadt",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "K\u00f6lner Haie",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Fischtown Pinguins",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Augsburger Panther",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-07",
+   "home": "K\u00f6lner Haie",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Iserlohn Roosters",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "EHC M\u00fcnchen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "Schwenninger Wild Wings",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-10",
+   "home": "Adler Mannheim",
+   "away": "K\u00f6lner Haie",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-14",
+   "home": "ERC Ingolstadt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-15",
+   "home": "Adler Mannheim",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-15",
+   "home": "Iserlohn Roosters",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-15",
+   "home": "K\u00f6lner Haie",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-15",
+   "home": "Grizzlys Wolfsburg",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-15",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-15",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "Fischtown Pinguins",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "EHC M\u00fcnchen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-17",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "ERC Ingolstadt",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Straubing Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "ERC Ingolstadt",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-23",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "EHC M\u00fcnchen",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "Iserlohn Roosters",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Straubing Tigers",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "K\u00f6lner Haie",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Schwenninger Wild Wings",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Adler Mannheim",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Fischtown Pinguins",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "ERC Ingolstadt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Straubing Tigers",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Iserlohn Roosters",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "K\u00f6lner Haie",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-02",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Straubing Tigers",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Grizzlys Wolfsburg",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Schwenninger Wild Wings",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-11",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Iserlohn Roosters",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Schwenninger Wild Wings",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Straubing Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Fischtown Pinguins",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Fischtown Pinguins",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "EHC M\u00fcnchen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "Augsburger Panther",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "ERC Ingolstadt",
+   "away": "Iserlohn Roosters",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "Adler Mannheim",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "Adler Mannheim",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "EHC M\u00fcnchen",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "ERC Ingolstadt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "Straubing Tigers",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-25",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "EHC M\u00fcnchen",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Augsburger Panther",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Adler Mannheim",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Iserlohn Roosters",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Schwenninger Wild Wings",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-01",
+   "home": "EHC M\u00fcnchen",
+   "away": "Straubing Tigers",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Schwenninger Wild Wings",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "Schwenninger Wild Wings",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "Straubing Tigers",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "K\u00f6lner Haie",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "Adler Mannheim",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "ERC Ingolstadt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "EHC M\u00fcnchen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Fischtown Pinguins",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Augsburger Panther",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-21",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-21",
+   "home": "Grizzlys Wolfsburg",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 9,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-22",
+   "home": "Iserlohn Roosters",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Adler Mannheim",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Schwenninger Wild Wings",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Fischtown Pinguins",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Straubing Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Adler Mannheim",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "ERC Ingolstadt",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-28",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Iserlohn Roosters",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Straubing Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Grizzlys Wolfsburg",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Fischtown Pinguins",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "Augsburger Panther",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "Grizzlys Wolfsburg",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "Fischtown Pinguins",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "EHC M\u00fcnchen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "Iserlohn Roosters",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-08",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "Augsburger Panther",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Straubing Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Iserlohn Roosters",
+   "away": "EHC M\u00fcnchen",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Fischtown Pinguins",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "Iserlohn Roosters",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "Grizzlys Wolfsburg",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "ERC Ingolstadt",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-26",
+   "home": "Fischtown Pinguins",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Fischtown Pinguins",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Straubing Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 7,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Straubing Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "Augsburger Panther",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "EHC M\u00fcnchen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "Adler Mannheim",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-03",
+   "home": "K\u00f6lner Haie",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Adler Mannheim",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "ERC Ingolstadt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Iserlohn Roosters",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 0,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "EHC M\u00fcnchen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Adler Mannheim",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "EHC M\u00fcnchen",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-10",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Augsburger Panther",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 7,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Straubing Tigers",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "EHC M\u00fcnchen",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "Schwenninger Wild Wings",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "K\u00f6lner Haie",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "Schwenninger Wild Wings",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "ERC Ingolstadt",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Adler Mannheim",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "EHC M\u00fcnchen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-24",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-24",
+   "home": "ERC Ingolstadt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Iserlohn Roosters",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Grizzlys Wolfsburg",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Fischtown Pinguins",
+   "away": "K\u00f6lner Haie",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "Straubing Tigers",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-31",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-31",
+   "home": "Augsburger Panther",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-31",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "EHC M\u00fcnchen",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Schwenninger Wild Wings",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Fischtown Pinguins",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Adler Mannheim",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Straubing Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Adler Mannheim",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "EHC M\u00fcnchen",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Schwenninger Wild Wings",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "Augsburger Panther",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "Iserlohn Roosters",
+   "away": "EHC M\u00fcnchen",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "K\u00f6lner Haie",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Adler Mannheim",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "K\u00f6lner Haie",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "EHC M\u00fcnchen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Grizzlys Wolfsburg",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "EHC M\u00fcnchen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "ERC Ingolstadt",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Schwenninger Wild Wings",
+   "away": "Adler Mannheim",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Grizzlys Wolfsburg",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "Fischtown Pinguins",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "Straubing Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "ERC Ingolstadt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "Adler Mannheim",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Augsburger Panther",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Iserlohn Roosters",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Straubing Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "K\u00f6lner Haie",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Fischtown Pinguins",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "EHC M\u00fcnchen",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-12",
+   "home": "ERC Ingolstadt",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Augsburger Panther",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Iserlohn Roosters",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Grizzlys Wolfsburg",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Adler Mannheim",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Schwenninger Wild Wings",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "ERC Ingolstadt",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "EHC M\u00fcnchen",
+   "hs": 0,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "Iserlohn Roosters",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-19",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Straubing Tigers",
+   "away": "Augsburger Panther",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "ERC Ingolstadt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Fischtown Pinguins",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Adler Mannheim",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Augsburger Panther",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Grizzlys Wolfsburg",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Schwenninger Wild Wings",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Adler Mannheim",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "K\u00f6lner Haie",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Fischtown Pinguins",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "ERC Ingolstadt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Schwenninger Wild Wings",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Adler Mannheim",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Schwenninger Wild Wings",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Augsburger Panther",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Iserlohn Roosters",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "EHC M\u00fcnchen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Augsburger Panther",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Schwenninger Wild Wings",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "K\u00f6lner Haie",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Fischtown Pinguins",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-06",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "Straubing Tigers",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "EHC M\u00fcnchen",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Augsburger Panther",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "Fischtown Pinguins",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "Adler Mannheim",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "Augsburger Panther",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Schwenninger Wild Wings",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Iserlohn Roosters",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Straubing Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "EHC M\u00fcnchen",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "K\u00f6lner Haie",
+   "away": "Iserlohn Roosters",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-23",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Adler Mannheim",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Augsburger Panther",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Iserlohn Roosters",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "K\u00f6lner Haie",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Grizzlys Wolfsburg",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "Straubing Tigers",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-30",
+   "home": "Iserlohn Roosters",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Straubing Tigers",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Schwenninger Wild Wings",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "EHC M\u00fcnchen",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 10,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-13",
+   "home": "EHC M\u00fcnchen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Adler Mannheim",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Iserlohn Roosters",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Schwenninger Wild Wings",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "K\u00f6lner Haie",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "ERC Ingolstadt",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Fischtown Pinguins",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Iserlohn Roosters",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Schwenninger Wild Wings",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Adler Mannheim",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Straubing Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 4,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "Augsburger Panther",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "Schwenninger Wild Wings",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "Iserlohn Roosters",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-23",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-25",
+   "home": "Fischtown Pinguins",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-26",
+   "home": "Straubing Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-26",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-26",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-26",
+   "home": "ERC Ingolstadt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-28",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-28",
+   "home": "ERC Ingolstadt",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-28",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-28",
+   "home": "Grizzlys Wolfsburg",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-28",
+   "home": "Fischtown Pinguins",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-28",
+   "home": "EHC M\u00fcnchen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "Iserlohn Roosters",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-02",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "Augsburger Panther",
+   "away": "D\u00fcsseldorfer EG",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "ERC Ingolstadt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "K\u00f6lner Haie",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-03-04",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "ERC Ingolstadt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "Straubing Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "D\u00fcsseldorfer EG",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-03-07",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "ERC Ingolstadt",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Fischtown Pinguins",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "EHC M\u00fcnchen",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Grizzlys Wolfsburg",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Iserlohn Roosters",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Straubing Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Schwenninger Wild Wings",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Fischtown Pinguins",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Adler Mannheim",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Straubing Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Augsburger Panther",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-25",
+   "home": "ERC Ingolstadt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Iserlohn Roosters",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Straubing Tigers",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "Schwenninger Wild Wings",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "Iserlohn Roosters",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Augsburger Panther",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "EHC M\u00fcnchen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "ERC Ingolstadt",
+   "away": "Straubing Tigers",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Straubing Tigers",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Iserlohn Roosters",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Fischtown Pinguins",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Straubing Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "K\u00f6lner Haie",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Schwenninger Wild Wings",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Adler Mannheim",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "K\u00f6lner Haie",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Fischtown Pinguins",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Iserlohn Roosters",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Augsburger Panther",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "K\u00f6lner Haie",
+   "away": "Straubing Tigers",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "EHC M\u00fcnchen",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "EHC M\u00fcnchen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "Augsburger Panther",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Adler Mannheim",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Fischtown Pinguins",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Schwenninger Wild Wings",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Fischtown Pinguins",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "EHC M\u00fcnchen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-30",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-30",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 10,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Adler Mannheim",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Straubing Tigers",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "ERC Ingolstadt",
+   "hs": 0,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-11-13",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Grizzlys Wolfsburg",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Adler Mannheim",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Schwenninger Wild Wings",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "K\u00f6lner Haie",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "EHC M\u00fcnchen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Adler Mannheim",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "K\u00f6lner Haie",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "ERC Ingolstadt",
+   "away": "Fischtown Pinguins",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Straubing Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Augsburger Panther",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Iserlohn Roosters",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "EHC M\u00fcnchen",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "ERC Ingolstadt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Fischtown Pinguins",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "ERC Ingolstadt",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Schwenninger Wild Wings",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Augsburger Panther",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Iserlohn Roosters",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Adler Mannheim",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Schwenninger Wild Wings",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "Augsburger Panther",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Straubing Tigers",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Grizzlys Wolfsburg",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Iserlohn Roosters",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Adler Mannheim",
+   "away": "Augsburger Panther",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "ERC Ingolstadt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Fischtown Pinguins",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "EHC M\u00fcnchen",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Iserlohn Roosters",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Straubing Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Schwenninger Wild Wings",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Augsburger Panther",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "Fischtown Pinguins",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "ERC Ingolstadt",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "EHC M\u00fcnchen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "ERC Ingolstadt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 8,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "EHC M\u00fcnchen",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Schwenninger Wild Wings",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Iserlohn Roosters",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Straubing Tigers",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 8,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Augsburger Panther",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "ERC Ingolstadt",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Adler Mannheim",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Iserlohn Roosters",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Adler Mannheim",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 7,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "ERC Ingolstadt",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "K\u00f6lner Haie",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Schwenninger Wild Wings",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "EHC M\u00fcnchen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Straubing Tigers",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Augsburger Panther",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Fischtown Pinguins",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "Iserlohn Roosters",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Straubing Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Grizzlys Wolfsburg",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Adler Mannheim",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "EHC M\u00fcnchen",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Adler Mannheim",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Augsburger Panther",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Fischtown Pinguins",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "ERC Ingolstadt",
+   "away": "Straubing Tigers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Straubing Tigers",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "K\u00f6lner Haie",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Fischtown Pinguins",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-22",
+   "home": "Adler Mannheim",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Straubing Tigers",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Schwenninger Wild Wings",
+   "away": "K\u00f6lner Haie",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "EHC M\u00fcnchen",
+   "away": "Fischtown Pinguins",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Adler Mannheim",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Iserlohn Roosters",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "ERC Ingolstadt",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "ERC Ingolstadt",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Augsburger Panther",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Iserlohn Roosters",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Fischtown Pinguins",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Straubing Tigers",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "K\u00f6lner Haie",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Adler Mannheim",
+   "away": "Augsburger Panther",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Fischtown Pinguins",
+   "away": "Adler Mannheim",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Augsburger Panther",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "K\u00f6lner Haie",
+   "away": "ERC Ingolstadt",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Schwenninger Wild Wings",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "EHC M\u00fcnchen",
+   "away": "K\u00f6lner Haie",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "K\u00f6lner Haie",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Iserlohn Roosters",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Fischtown Pinguins",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Augsburger Panther",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Adler Mannheim",
+   "away": "K\u00f6lner Haie",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "EHC M\u00fcnchen",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Straubing Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "Iserlohn Roosters",
+   "away": "Fischtown Pinguins",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "Straubing Tigers",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "Grizzlys Wolfsburg",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "Schwenninger Wild Wings",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "Dresdner Eisl\u00f6wen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "Grizzlys Wolfsburg",
+   "away": "K\u00f6lner Haie",
+   "hs": 8,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "Schwenninger Wild Wings",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-13",
+   "home": "EHC M\u00fcnchen",
+   "away": "Straubing Tigers",
+   "hs": 10,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "Fischtown Pinguins",
+   "away": "Dresdner Eisl\u00f6wen",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-15",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-17",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Straubing Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Krefeld Pinguine",
+   "away": "Fischtown Pinguins",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Schwenninger Wild Wings",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "EHC M\u00fcnchen",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "K\u00f6lner Haie",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 4,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Iserlohn Roosters",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Adler Mannheim",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "ERC Ingolstadt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Fischtown Pinguins",
+   "away": "Iserlohn Roosters",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Grizzlys Wolfsburg",
+   "away": "EHC M\u00fcnchen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Augsburger Panther",
+   "away": "Schwenninger Wild Wings",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Straubing Tigers",
+   "away": "Krefeld Pinguine",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "K\u00f6lner Haie",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-24",
+   "home": "Iserlohn Roosters",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Fischtown Pinguins",
+   "away": "EHC M\u00fcnchen",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Adler Mannheim",
+   "away": "Krefeld Pinguine",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "K\u00f6lner Haie",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Straubing Tigers",
+   "away": "ERC Ingolstadt",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Schwenninger Wild Wings",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "EHC M\u00fcnchen",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Augsburger Panther",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Krefeld Pinguine",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "ERC Ingolstadt",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-01",
+   "home": "Adler Mannheim",
+   "away": "Iserlohn Roosters",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Krefeld Pinguine",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "K\u00f6lner Haie",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Schwenninger Wild Wings",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Straubing Tigers",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Augsburger Panther",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Schwenninger Wild Wings",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Fischtown Pinguins",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Iserlohn Roosters",
+   "away": "Krefeld Pinguine",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "ERC Ingolstadt",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Adler Mannheim",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "EHC M\u00fcnchen",
+   "away": "Augsburger Panther",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-08",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Krefeld Pinguine",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Augsburger Panther",
+   "away": "Fischtown Pinguins",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Adler Mannheim",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "EHC M\u00fcnchen",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Straubing Tigers",
+   "away": "Iserlohn Roosters",
+   "hs": 11,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Krefeld Pinguine",
+   "away": "Augsburger Panther",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "ERC Ingolstadt",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Iserlohn Roosters",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "K\u00f6lner Haie",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Fischtown Pinguins",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Schwenninger Wild Wings",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Adler Mannheim",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-15",
+   "home": "Grizzlys Wolfsburg",
+   "away": "Krefeld Pinguine",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Augsburger Panther",
+   "away": "Adler Mannheim",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Fischtown Pinguins",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "EHC M\u00fcnchen",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Schwenninger Wild Wings",
+   "away": "ERC Ingolstadt",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Straubing Tigers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Iserlohn Roosters",
+   "away": "K\u00f6lner Haie",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Iserlohn Roosters",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "Straubing Tigers",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "Krefeld Pinguine",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "Adler Mannheim",
+   "away": "Schwenninger Wild Wings",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "K\u00f6lner Haie",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "ERC Ingolstadt",
+   "away": "Augsburger Panther",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "EHC M\u00fcnchen",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "K\u00f6lner Haie",
+   "away": "Schwenninger Wild Wings",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "ERC Ingolstadt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Schwenninger Wild Wings",
+   "away": "Fischtown Pinguins",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "EHC M\u00fcnchen",
+   "away": "Iserlohn Roosters",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Adler Mannheim",
+   "away": "L\u00f6wen Frankfurt",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "N\u00fcrnberg Ice Tigers",
+   "away": "Krefeld Pinguine",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Eisb\u00e4ren Berlin",
+   "away": "Augsburger Panther",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Straubing Tigers",
+   "away": "K\u00f6lner Haie",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Grizzlys Wolfsburg",
+   "away": "ERC Ingolstadt",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "L\u00f6wen Frankfurt",
+   "away": "Grizzlys Wolfsburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Schwenninger Wild Wings",
+   "away": "Eisb\u00e4ren Berlin",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Iserlohn Roosters",
+   "away": "N\u00fcrnberg Ice Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Augsburger Panther",
+   "away": "Straubing Tigers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Krefeld Pinguine",
+   "away": "EHC M\u00fcnchen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Fischtown Pinguins",
+   "away": "ERC Ingolstadt",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "K\u00f6lner Haie",
+   "away": "Adler Mannheim",
+   "hs": 5,
+   "as": 5,
+   "final": true
+  }
+ ]
+}

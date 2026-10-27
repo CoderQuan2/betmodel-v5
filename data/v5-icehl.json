@@ -1,0 +1,52 @@
+{
+ "sport": "icehl",
+ "league": "ICE Hockey League (Austria)",
+ "season": "validated regular seasons 2023-24..2025-26 + 2026-27 partial (see cache report)",
+ "fitted_at": "2026-10-27T22:13:41+00:00",
+ "source": "Elite Prospects league scores pages (public mirror; cached 2026-10-27T22:13:41+00:00; data/cache/ep_icehl_games.json)",
+ "params": {
+  "K": 8.0,
+  "hfa_elo": 32.0
+ },
+ "ratings": {
+  "Asiago": 1425.3,
+  "Black Wings Linz": 1538.8,
+  "EC Salzburg": 1567.8,
+  "EC-KAC": 1587.0,
+  "Feh\u00e9rv\u00e1r AV19": 1468.1,
+  "Ferencv\u00e1rosi TC": 1452.9,
+  "Graz99ers": 1578.3,
+  "HC Bolzano": 1582.3,
+  "HC Innsbruck": 1372.9,
+  "HC Pustertal": 1528.3,
+  "HK Olimpija Ljubljana": 1551.6,
+  "Milano HC": 1485.0,
+  "Pioneers Vorarlberg": 1373.8,
+  "Vienna Capitals": 1488.8,
+  "Villacher SV": 1499.3
+ },
+ "games": {
+  "Asiago": 48,
+  "Black Wings Linz": 111,
+  "EC Salzburg": 110,
+  "EC-KAC": 111,
+  "Feh\u00e9rv\u00e1r AV19": 112,
+  "Ferencv\u00e1rosi TC": 61,
+  "Graz99ers": 110,
+  "HC Bolzano": 110,
+  "HC Innsbruck": 111,
+  "HC Pustertal": 109,
+  "HK Olimpija Ljubljana": 110,
+  "Milano HC": 16,
+  "Pioneers Vorarlberg": 111,
+  "Vienna Capitals": 109,
+  "Villacher SV": 109
+ },
+ "backtest": {
+  "brier": 0.2261,
+  "naive_brier": 0.2463,
+  "naive_home_brier": 0.2463,
+  "n": 724,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo, NHL-lane protocol)"
+ }
+}

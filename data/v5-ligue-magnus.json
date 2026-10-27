@@ -1,0 +1,46 @@
+{
+ "sport": "ligue-magnus",
+ "league": "France Ligue Magnus",
+ "season": "validated regular seasons 2023-24..2025-26 + 2026-27 partial (see cache report)",
+ "fitted_at": "2026-10-27T22:12:46+00:00",
+ "source": "Elite Prospects league scores pages (public mirror; cached 2026-10-27T22:12:46+00:00; data/cache/ep_ligue-magnus_games.json)",
+ "params": {
+  "K": 8.0,
+  "hfa_elo": 32.0
+ },
+ "ratings": {
+  "Amiens": 1468.7,
+  "Angers": 1618.3,
+  "Anglet": 1393.7,
+  "Bordeaux": 1538.9,
+  "Brian\u00e7on": 1454.4,
+  "Cergy-Pontoise": 1441.0,
+  "Chamonix": 1429.5,
+  "Gap": 1401.7,
+  "Grenoble": 1650.6,
+  "Marseille": 1502.0,
+  "Nice": 1466.1,
+  "Rouen": 1635.1
+ },
+ "games": {
+  "Amiens": 145,
+  "Angers": 145,
+  "Anglet": 145,
+  "Bordeaux": 145,
+  "Brian\u00e7on": 145,
+  "Cergy-Pontoise": 145,
+  "Chamonix": 144,
+  "Gap": 145,
+  "Grenoble": 144,
+  "Marseille": 146,
+  "Nice": 145,
+  "Rouen": 146
+ },
+ "backtest": {
+  "brier": 0.2175,
+  "naive_brier": 0.2456,
+  "naive_home_brier": 0.2456,
+  "n": 870,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo, NHL-lane protocol)"
+ }
+}

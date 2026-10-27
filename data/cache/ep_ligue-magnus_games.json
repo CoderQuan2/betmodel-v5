@@ -1,0 +1,6972 @@
+{
+ "fetched_at": "2026-10-27T22:12:46+00:00",
+ "source": "Elite Prospects league scores pages (public mirror)",
+ "report": [
+  "2023-2024: RS closed: 264 games, 12 teams, all pairs at 4 (listed 265)",
+  "2024-2025: RS closed: 264 games, 12 teams, all pairs at 4 (listed 313)",
+  "2025-2026: RS closed: 264 games, 12 teams, all pairs at 4 (listed 314)",
+  "2026-2027: partial season, 78 games taken as listed"
+ ],
+ "games": [
+  {
+   "date": "2023-09-09",
+   "home": "Nice",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-09",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-09",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-09",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-09",
+   "home": "Cergy-Pontoise",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-12",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-12",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-12",
+   "home": "Angers",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-12",
+   "home": "Gap",
+   "away": "Cergy-Pontoise",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Cergy-Pontoise",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "Rouen",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Marseille",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Bordeaux",
+   "away": "Nice",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Nice",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Chamonix",
+   "away": "Gap",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-22",
+   "home": "Angers",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-24",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Amiens",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Grenoble",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Gap",
+   "away": "Angers",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-28",
+   "home": "Rouen",
+   "away": "Nice",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Brian\u00e7on",
+   "away": "Gap",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Anglet",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Bordeaux",
+   "away": "Brian\u00e7on",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Grenoble",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Cergy-Pontoise",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Gap",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 9,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Brian\u00e7on",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-06",
+   "home": "Angers",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "Grenoble",
+   "away": "Gap",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Amiens",
+   "away": "Anglet",
+   "hs": 8,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Brian\u00e7on",
+   "away": "Nice",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-13",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "Marseille",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "Anglet",
+   "away": "Angers",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "Cergy-Pontoise",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Chamonix",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Angers",
+   "away": "Nice",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-20",
+   "home": "Grenoble",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "Gap",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Nice",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Anglet",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-27",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Nice",
+   "away": "Marseille",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Anglet",
+   "away": "Nice",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Bordeaux",
+   "away": "Angers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-03",
+   "home": "Marseille",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Nice",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Chamonix",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-17",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "Angers",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "Amiens",
+   "away": "Brian\u00e7on",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "Bordeaux",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "Rouen",
+   "away": "Brian\u00e7on",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Chamonix",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Angers",
+   "away": "Amiens",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Anglet",
+   "away": "Gap",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-24",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Grenoble",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Amiens",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Chamonix",
+   "away": "Brian\u00e7on",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-01",
+   "home": "Marseille",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Gap",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-03",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 12,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Brian\u00e7on",
+   "away": "Angers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Chamonix",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-08",
+   "home": "Marseille",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Nice",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Marseille",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Rouen",
+   "away": "Brian\u00e7on",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Brian\u00e7on",
+   "away": "Nice",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Chamonix",
+   "away": "Anglet",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Angers",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Gap",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Marseille",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Amiens",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Grenoble",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Gap",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "Rouen",
+   "away": "Nice",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Anglet",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-05",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "Chamonix",
+   "away": "Gap",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "Angers",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Bordeaux",
+   "away": "Angers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-12",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Rouen",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "Bordeaux",
+   "away": "Nice",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "Chamonix",
+   "away": "Brian\u00e7on",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "Cergy-Pontoise",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "Gap",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "Amiens",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-19",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Anglet",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Grenoble",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Gap",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-26",
+   "home": "Angers",
+   "away": "Cergy-Pontoise",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Cergy-Pontoise",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Amiens",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Angers",
+   "away": "Nice",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Amiens",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Marseille",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-02",
+   "home": "Anglet",
+   "away": "Angers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Brian\u00e7on",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Nice",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Chamonix",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Grenoble",
+   "away": "Gap",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-13",
+   "home": "Angers",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Amiens",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Bordeaux",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Anglet",
+   "away": "Nice",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Cergy-Pontoise",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Brian\u00e7on",
+   "away": "Angers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-20",
+   "home": "Nice",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-02-20",
+   "home": "Brian\u00e7on",
+   "away": "Gap",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-20",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-20",
+   "home": "Chamonix",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-20",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-20",
+   "home": "Anglet",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Amiens",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Grenoble",
+   "away": "Brian\u00e7on",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Gap",
+   "away": "Angers",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Cergy-Pontoise",
+   "away": "Chamonix",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-23",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Chamonix",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Angers",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Bordeaux",
+   "away": "Anglet",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-01",
+   "home": "Grenoble",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-13",
+   "home": "Brian\u00e7on",
+   "away": "Gap",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-13",
+   "home": "Nice",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-13",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-13",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-14",
+   "home": "Cergy-Pontoise",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Chamonix",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Amiens",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Marseille",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-17",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Nice",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Anglet",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "Rouen",
+   "away": "Nice",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Chamonix",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Grenoble",
+   "away": "Gap",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Angers",
+   "away": "Nice",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Rouen",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Nice",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Chamonix",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Gap",
+   "away": "Marseille",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Amiens",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Grenoble",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Marseille",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Anglet",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Gap",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "Amiens",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "Angers",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Anglet",
+   "away": "Nice",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 10,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 7,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Grenoble",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Bordeaux",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Anglet",
+   "away": "Gap",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Bordeaux",
+   "away": "Angers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Chamonix",
+   "away": "Gap",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Grenoble",
+   "away": "Brian\u00e7on",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 8,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Brian\u00e7on",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Cergy-Pontoise",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Bordeaux",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Cergy-Pontoise",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Gap",
+   "away": "Angers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-08",
+   "home": "Rouen",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-08",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-08",
+   "home": "Bordeaux",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-08",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-08",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-08",
+   "home": "Marseille",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-10",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "Angers",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Nice",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Gap",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Amiens",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Angers",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Brian\u00e7on",
+   "away": "Nice",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Chamonix",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Grenoble",
+   "away": "Rouen",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Anglet",
+   "away": "Angers",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Cergy-Pontoise",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Angers",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Amiens",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Marseille",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Angers",
+   "away": "Rouen",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "Gap",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Bordeaux",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Marseille",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Angers",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Rouen",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Angers",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Anglet",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Marseille",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Chamonix",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Grenoble",
+   "away": "Brian\u00e7on",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Anglet",
+   "away": "Nice",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Gap",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Cergy-Pontoise",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Angers",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Grenoble",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Anglet",
+   "away": "Gap",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Chamonix",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Grenoble",
+   "away": "Gap",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 9,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Nice",
+   "away": "Amiens",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Brian\u00e7on",
+   "away": "Marseille",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Anglet",
+   "away": "Angers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Cergy-Pontoise",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "Gap",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Bordeaux",
+   "away": "Nice",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Amiens",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Nice",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Gap",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Amiens",
+   "away": "Chamonix",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Brian\u00e7on",
+   "away": "Angers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Chamonix",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Brian\u00e7on",
+   "away": "Nice",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Chamonix",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Angers",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Anglet",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Gap",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Bordeaux",
+   "away": "Angers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Angers",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Amiens",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Marseille",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Brian\u00e7on",
+   "away": "Gap",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Nice",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 8,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 1,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 0,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Chamonix",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Grenoble",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Angers",
+   "away": "Nice",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Marseille",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "Amiens",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-09",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Brian\u00e7on",
+   "away": "Angers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Nice",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Rouen",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Chamonix",
+   "away": "Gap",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Grenoble",
+   "away": "Rouen",
+   "hs": 9,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 7,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-17",
+   "home": "Cergy-Pontoise",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-18",
+   "home": "Chamonix",
+   "away": "Grenoble",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Gap",
+   "away": "Angers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Cergy-Pontoise",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Amiens",
+   "away": "Anglet",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Bordeaux",
+   "away": "Brian\u00e7on",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Rouen",
+   "away": "Nice",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Brian\u00e7on",
+   "away": "Angers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Nice",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Grenoble",
+   "away": "Bordeaux",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "Cergy-Pontoise",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "Gap",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "Angers",
+   "away": "Grenoble",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "Chamonix",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "Anglet",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Bordeaux",
+   "away": "Angers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Chamonix",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Amiens",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Angers",
+   "away": "Rouen",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Marseille",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Grenoble",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Nice",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Brian\u00e7on",
+   "away": "Gap",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Chamonix",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Rouen",
+   "away": "Nice",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Gap",
+   "away": "Angers",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Amiens",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Marseille",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Cergy-Pontoise",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Rouen",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Amiens",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Chamonix",
+   "away": "Gap",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-13",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Gap",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Anglet",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Marseille",
+   "away": "Chamonix",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Bordeaux",
+   "away": "Nice",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Bordeaux",
+   "away": "Brian\u00e7on",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Angers",
+   "away": "Nice",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Anglet",
+   "away": "Gap",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Cergy-Pontoise",
+   "away": "Chamonix",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Grenoble",
+   "away": "Brian\u00e7on",
+   "hs": 10,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Angers",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Bordeaux",
+   "away": "Nice",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-30",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-30",
+   "home": "Grenoble",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Cergy-Pontoise",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Angers",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-10",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-10",
+   "home": "Brian\u00e7on",
+   "away": "Nice",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-10",
+   "home": "Chamonix",
+   "away": "Anglet",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Marseille",
+   "away": "Grenoble",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Amiens",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Brian\u00e7on",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Nice",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Bordeaux",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Angers",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Gap",
+   "away": "Cergy-Pontoise",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Chamonix",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Amiens",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Anglet",
+   "away": "Nice",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Nice",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Rouen",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Gap",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Brian\u00e7on",
+   "away": "Angers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Marseille",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Cergy-Pontoise",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Angers",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Amiens",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Amiens",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Grenoble",
+   "away": "Gap",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Cergy-Pontoise",
+   "away": "Bordeaux",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Angers",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Gap",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Anglet",
+   "away": "Nice",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Chamonix",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Brian\u00e7on",
+   "away": "Nice",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Angers",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Gap",
+   "away": "Angers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Nice",
+   "away": "Marseille",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Amiens",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Grenoble",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 11,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Marseille",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Anglet",
+   "away": "Gap",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Gap",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Amiens",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Bordeaux",
+   "away": "Anglet",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Chamonix",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Anglet",
+   "away": "Angers",
+   "hs": 0,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Rouen",
+   "away": "Bordeaux",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Brian\u00e7on",
+   "away": "Gap",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Cergy-Pontoise",
+   "away": "Chamonix",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Chamonix",
+   "away": "Anglet",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Bordeaux",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Gap",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Rouen",
+   "away": "Brian\u00e7on",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Angers",
+   "away": "Nice",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Grenoble",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Brian\u00e7on",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Rouen",
+   "away": "Nice",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Chamonix",
+   "away": "Gap",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Angers",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Anglet",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-03",
+   "home": "Gap",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-05",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Grenoble",
+   "away": "Anglet",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Marseille",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-16",
+   "home": "Angers",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Chamonix",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "Grenoble",
+   "away": "Gap",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "Anglet",
+   "away": "Angers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Nice",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Bordeaux",
+   "away": "Angers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Grenoble",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Amiens",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Nice",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 10,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Marseille",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Nice",
+   "away": "Amiens",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Cergy-Pontoise",
+   "away": "Grenoble",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Chamonix",
+   "away": "Grenoble",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Anglet",
+   "away": "Rouen",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Gap",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Brian\u00e7on",
+   "away": "Rouen",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Amiens",
+   "away": "Nice",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Grenoble",
+   "away": "Angers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Anglet",
+   "away": "Bordeaux",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Cergy-Pontoise",
+   "away": "Marseille",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Nice",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Chamonix",
+   "away": "Amiens",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Marseille",
+   "away": "Brian\u00e7on",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Bordeaux",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Rouen",
+   "away": "Grenoble",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Angers",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Brian\u00e7on",
+   "away": "Bordeaux",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Gap",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Marseille",
+   "away": "Rouen",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Amiens",
+   "away": "Angers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Cergy-Pontoise",
+   "away": "Nice",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Anglet",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Rouen",
+   "away": "Gap",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Nice",
+   "away": "Brian\u00e7on",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Chamonix",
+   "away": "Cergy-Pontoise",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Bordeaux",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Grenoble",
+   "away": "Amiens",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Angers",
+   "away": "Anglet",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Cergy-Pontoise",
+   "away": "Angers",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Brian\u00e7on",
+   "away": "Chamonix",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Amiens",
+   "away": "Gap",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Marseille",
+   "away": "Nice",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Bordeaux",
+   "away": "Rouen",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Anglet",
+   "away": "Grenoble",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Rouen",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Nice",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Gap",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Chamonix",
+   "away": "Marseille",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Grenoble",
+   "away": "Cergy-Pontoise",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Angers",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Nice",
+   "away": "Rouen",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Brian\u00e7on",
+   "away": "Grenoble",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Marseille",
+   "away": "Angers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Cergy-Pontoise",
+   "away": "Gap",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Anglet",
+   "away": "Amiens",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Bordeaux",
+   "away": "Chamonix",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Angers",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Rouen",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Grenoble",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Gap",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Chamonix",
+   "away": "Nice",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Amiens",
+   "away": "Cergy-Pontoise",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Rouen",
+   "away": "Chamonix",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Nice",
+   "away": "Angers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Brian\u00e7on",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Marseille",
+   "away": "Gap",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Cergy-Pontoise",
+   "away": "Anglet",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "Bordeaux",
+   "away": "Grenoble",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-12",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-15",
+   "home": "Rouen",
+   "away": "Marseille",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Gap",
+   "away": "Bordeaux",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Amiens",
+   "away": "Marseille",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Grenoble",
+   "away": "Nice",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Anglet",
+   "away": "Brian\u00e7on",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Angers",
+   "away": "Chamonix",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Cergy-Pontoise",
+   "away": "Rouen",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Nice",
+   "away": "Gap",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Brian\u00e7on",
+   "away": "Cergy-Pontoise",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Bordeaux",
+   "away": "Amiens",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Marseille",
+   "away": "Anglet",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Rouen",
+   "away": "Angers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Cergy-Pontoise",
+   "away": "Brian\u00e7on",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Amiens",
+   "away": "Bordeaux",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Grenoble",
+   "away": "Chamonix",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Gap",
+   "away": "Nice",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Anglet",
+   "away": "Marseille",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Nice",
+   "away": "Grenoble",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Brian\u00e7on",
+   "away": "Anglet",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Rouen",
+   "away": "Cergy-Pontoise",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Chamonix",
+   "away": "Angers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Marseille",
+   "away": "Amiens",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Bordeaux",
+   "away": "Gap",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  }
+ ]
+}

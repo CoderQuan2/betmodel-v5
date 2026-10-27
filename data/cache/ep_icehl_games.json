@@ -1,0 +1,5804 @@
+{
+ "fetched_at": "2026-10-27T22:13:41+00:00",
+ "source": "Elite Prospects league scores pages (public mirror)",
+ "report": [
+  "2023-2024: EXCLUDED \u2014 pair ('Black Wings Linz', 'HK Olimpija Ljubljana') exceeded 4 meetings at 2023-09-15 before the round robin closed (listed 487)",
+  "2024-2025: RS closed: 312 games, 13 teams, all pairs at 4 (listed 356)",
+  "2025-2026: RS closed: 312 games, 13 teams, all pairs at 4 (listed 349)",
+  "2026-2027: partial season, 100 games taken as listed"
+ ],
+ "games": [
+  {
+   "date": "2024-09-20",
+   "home": "Vienna Capitals",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "HC Innsbruck",
+   "away": "Pioneers Vorarlberg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "EC-KAC",
+   "away": "EC Salzburg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "HC Bolzano",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-20",
+   "home": "HC Pustertal",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Pioneers Vorarlberg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "EC-KAC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "EC Salzburg",
+   "away": "Asiago",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "HC Innsbruck",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "HC Bolzano",
+   "away": "HC Pustertal",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "Villacher SV",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "Black Wings Linz",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Asiago",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Black Wings Linz",
+   "away": "Vienna Capitals",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "Graz99ers",
+   "away": "Villacher SV",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "HC Bolzano",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-27",
+   "home": "HC Pustertal",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "EC Salzburg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "HC Innsbruck",
+   "away": "Asiago",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Graz99ers",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "EC-KAC",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Vienna Capitals",
+   "away": "HC Bolzano",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "Black Wings Linz",
+   "away": "Asiago",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "EC-KAC",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "EC Salzburg",
+   "away": "HC Pustertal",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "EC-KAC",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Vienna Capitals",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "HC Innsbruck",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC Salzburg",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "HC Pustertal",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-04",
+   "home": "HC Bolzano",
+   "away": "Asiago",
+   "hs": 2,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "Pioneers Vorarlberg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Bolzano",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Graz99ers",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "Villacher SV",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-06",
+   "home": "HC Pustertal",
+   "away": "EC-KAC",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Vienna Capitals",
+   "away": "Asiago",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "EC Salzburg",
+   "away": "HC Pustertal",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Villacher SV",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-11",
+   "home": "Graz99ers",
+   "away": "HC Innsbruck",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Asiago",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "EC-KAC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "EC Salzburg",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "HC Innsbruck",
+   "away": "Black Wings Linz",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-13",
+   "home": "HC Pustertal",
+   "away": "Villacher SV",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Black Wings Linz",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Pustertal",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Vienna Capitals",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Graz99ers",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Innsbruck",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-18",
+   "home": "Asiago",
+   "away": "EC Salzburg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Vienna Capitals",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Black Wings Linz",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "EC Salzburg",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Asiago",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "Villacher SV",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-20",
+   "home": "HC Bolzano",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "HC Innsbruck",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "Asiago",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "HC Pustertal",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "EC-KAC",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Villacher SV",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "EC-KAC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Graz99ers",
+   "away": "Asiago",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Pioneers Vorarlberg",
+   "away": "Vienna Capitals",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "HC Bolzano",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "HC Pustertal",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "HC Innsbruck",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Asiago",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Villacher SV",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Vienna Capitals",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "Asiago",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Asiago",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Black Wings Linz",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "EC Salzburg",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "EC-KAC",
+   "away": "HC Innsbruck",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "HC Pustertal",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "HC Bolzano",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Graz99ers",
+   "away": "Pioneers Vorarlberg",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "HC Pustertal",
+   "away": "EC Salzburg",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Villacher SV",
+   "away": "Asiago",
+   "hs": 10,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Vienna Capitals",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "HC Innsbruck",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Vienna Capitals",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Pustertal",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "Asiago",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "HC Bolzano",
+   "away": "Villacher SV",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "EC-KAC",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Vienna Capitals",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "HC Innsbruck",
+   "away": "HC Bolzano",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Villacher SV",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-15",
+   "home": "Asiago",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "Vienna Capitals",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "HC Pustertal",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "Black Wings Linz",
+   "away": "Asiago",
+   "hs": 7,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "EC Salzburg",
+   "away": "HC Bolzano",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "HC Innsbruck",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-17",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC-KAC",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-11-20",
+   "home": "Villacher SV",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-20",
+   "home": "Pioneers Vorarlberg",
+   "away": "Black Wings Linz",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-20",
+   "home": "Asiago",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-20",
+   "home": "HC Bolzano",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Graz99ers",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Black Wings Linz",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "HC Innsbruck",
+   "away": "Villacher SV",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "Pioneers Vorarlberg",
+   "away": "Asiago",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-22",
+   "home": "HC Pustertal",
+   "away": "Vienna Capitals",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "HC Bolzano",
+   "away": "Vienna Capitals",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "EC Salzburg",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Graz99ers",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Asiago",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "Black Wings Linz",
+   "away": "Villacher SV",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-24",
+   "home": "EC-KAC",
+   "away": "HC Pustertal",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Graz99ers",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "EC Salzburg",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "HC Innsbruck",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "Villacher SV",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-27",
+   "home": "HC Pustertal",
+   "away": "Asiago",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Black Wings Linz",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Vienna Capitals",
+   "away": "HC Innsbruck",
+   "hs": 10,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Pioneers Vorarlberg",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "Asiago",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "HC Bolzano",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Innsbruck",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "Pioneers Vorarlberg",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "HC Bolzano",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "EC-KAC",
+   "away": "Asiago",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "EC Salzburg",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-01",
+   "home": "Vienna Capitals",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "Graz99ers",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "Black Wings Linz",
+   "away": "Pioneers Vorarlberg",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "Asiago",
+   "away": "HC Bolzano",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Graz99ers",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Black Wings Linz",
+   "away": "HC Bolzano",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "HC Innsbruck",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Villacher SV",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-06",
+   "home": "Asiago",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "HC Pustertal",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Black Wings Linz",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "HC Bolzano",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Asiago",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Graz99ers",
+   "away": "Villacher SV",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "Villacher SV",
+   "away": "EC Salzburg",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Vienna Capitals",
+   "away": "Black Wings Linz",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "EC Salzburg",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "EC-KAC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "Villacher SV",
+   "away": "HC Innsbruck",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-13",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Pioneers Vorarlberg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-14",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-14",
+   "home": "Villacher SV",
+   "away": "Pioneers Vorarlberg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Black Wings Linz",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Graz99ers",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-15",
+   "home": "Vienna Capitals",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "EC-KAC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "HC Innsbruck",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Graz99ers",
+   "away": "Vienna Capitals",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "HC Innsbruck",
+   "away": "Asiago",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "EC Salzburg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC-KAC",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "HC Bolzano",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Asiago",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Black Wings Linz",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "EC-KAC",
+   "away": "EC Salzburg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Villacher SV",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "Vienna Capitals",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-22",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Black Wings Linz",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Villacher SV",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Asiago",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "Graz99ers",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "HC Bolzano",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Vienna Capitals",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "HC Innsbruck",
+   "away": "Villacher SV",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Graz99ers",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "EC Salzburg",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Asiago",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "HC Pustertal",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "EC-KAC",
+   "away": "Asiago",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "EC Salzburg",
+   "away": "HC Innsbruck",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Vienna Capitals",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "HC Bolzano",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-01",
+   "home": "Vienna Capitals",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-01",
+   "home": "Graz99ers",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-01",
+   "home": "HC Innsbruck",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-01",
+   "home": "Villacher SV",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-01",
+   "home": "HC Pustertal",
+   "away": "Asiago",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-01",
+   "home": "Black Wings Linz",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "EC-KAC",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "EC Salzburg",
+   "away": "Vienna Capitals",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "Asiago",
+   "away": "Villacher SV",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "HC Bolzano",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "HC Pustertal",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Pioneers Vorarlberg",
+   "away": "Asiago",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "HC Innsbruck",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Vienna Capitals",
+   "away": "Graz99ers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "Villacher SV",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-05",
+   "home": "HC Bolzano",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "Graz99ers",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "Black Wings Linz",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "EC Salzburg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "EC-KAC",
+   "away": "Villacher SV",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "Asiago",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Graz99ers",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Vienna Capitals",
+   "away": "Asiago",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "Black Wings Linz",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "HC Innsbruck",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-10",
+   "home": "HC Pustertal",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "EC Salzburg",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Pioneers Vorarlberg",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "HC Pustertal",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Asiago",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "EC-KAC",
+   "away": "Vienna Capitals",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-12",
+   "home": "Villacher SV",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "HC Pustertal",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "HC Bolzano",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Villacher SV",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "EC-KAC",
+   "away": "HC Bolzano",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Pioneers Vorarlberg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Vienna Capitals",
+   "away": "HC Innsbruck",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-17",
+   "home": "Asiago",
+   "away": "HC Pustertal",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Vienna Capitals",
+   "away": "Pioneers Vorarlberg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Innsbruck",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Graz99ers",
+   "away": "Asiago",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "Black Wings Linz",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-19",
+   "home": "HC Pustertal",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Graz99ers",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "EC Salzburg",
+   "away": "EC-KAC",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "HC Innsbruck",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Villacher SV",
+   "away": "Vienna Capitals",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Pioneers Vorarlberg",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "Asiago",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-24",
+   "home": "HC Bolzano",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "HC Pustertal",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "HC Bolzano",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Black Wings Linz",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "EC-KAC",
+   "away": "HC Innsbruck",
+   "hs": 11,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Pioneers Vorarlberg",
+   "away": "Villacher SV",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Vienna Capitals",
+   "away": "EC Salzburg",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Graz99ers",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Villacher SV",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "HC Innsbruck",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Vienna Capitals",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "Asiago",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "EC Salzburg",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "EC-KAC",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "HC Innsbruck",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "HC Bolzano",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-31",
+   "home": "HC Pustertal",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Pioneers Vorarlberg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Asiago",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "EC Salzburg",
+   "away": "HC Bolzano",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Black Wings Linz",
+   "away": "HC Pustertal",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Villacher SV",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-02",
+   "home": "Graz99ers",
+   "away": "HC Innsbruck",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-11",
+   "home": "Asiago",
+   "away": "EC Salzburg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "Black Wings Linz",
+   "away": "Graz99ers",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "EC-KAC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "Vienna Capitals",
+   "away": "Villacher SV",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "HC Bolzano",
+   "away": "Asiago",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "HC Pustertal",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-13",
+   "home": "HC Innsbruck",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "EC Salzburg",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "HC Innsbruck",
+   "away": "Vienna Capitals",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Asiago",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Pioneers Vorarlberg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "HC Pustertal",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "Pioneers Vorarlberg",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "EC Salzburg",
+   "away": "Asiago",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Black Wings Linz",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Graz99ers",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-19",
+   "home": "EC Salzburg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Villacher SV",
+   "away": "Asiago",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Black Wings Linz",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "EC-KAC",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "Vienna Capitals",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-21",
+   "home": "HC Bolzano",
+   "away": "HC Innsbruck",
+   "hs": 9,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Vienna Capitals",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Black Wings Linz",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "EC-KAC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "HC Innsbruck",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "HC Bolzano",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Black Wings Linz",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "EC Salzburg",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "HC Pustertal",
+   "away": "Graz99ers",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Vienna Capitals",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Villacher SV",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Graz99ers",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Vienna Capitals",
+   "away": "Black Wings Linz",
+   "hs": 7,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "EC Salzburg",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Bolzano",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Pioneers Vorarlberg",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Villacher SV",
+   "away": "HC Pustertal",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Vienna Capitals",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "EC-KAC",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Graz99ers",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 9,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Black Wings Linz",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "HC Innsbruck",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "EC-KAC",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Pioneers Vorarlberg",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "HC Bolzano",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "HC Pustertal",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "HC Innsbruck",
+   "away": "Vienna Capitals",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "HC Pustertal",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Graz99ers",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "EC Salzburg",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "HC Bolzano",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Vienna Capitals",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Villacher SV",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Black Wings Linz",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "EC Salzburg",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "Vienna Capitals",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "HC Innsbruck",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Pioneers Vorarlberg",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "EC-KAC",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Black Wings Linz",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Villacher SV",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "HC Bolzano",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Graz99ers",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "EC Salzburg",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Black Wings Linz",
+   "hs": 8,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "HC Pustertal",
+   "away": "HC Bolzano",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "Villacher SV",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "HC Bolzano",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Vienna Capitals",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "EC-KAC",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Vienna Capitals",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Villacher SV",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC Salzburg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "HC Innsbruck",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "HC Bolzano",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "EC Salzburg",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Pioneers Vorarlberg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Villacher SV",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Graz99ers",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "HC Pustertal",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Black Wings Linz",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC-KAC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "HC Innsbruck",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "EC Salzburg",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "HC Pustertal",
+   "away": "Villacher SV",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "HC Innsbruck",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Vienna Capitals",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Black Wings Linz",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Graz99ers",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "EC Salzburg",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "EC-KAC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Graz99ers",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "HC Innsbruck",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "HC Bolzano",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Black Wings Linz",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "EC Salzburg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "EC-KAC",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "HC Bolzano",
+   "away": "HC Pustertal",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "Pioneers Vorarlberg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Black Wings Linz",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Vienna Capitals",
+   "away": "Villacher SV",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "HC Bolzano",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "HC Pustertal",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "EC-KAC",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "HC Innsbruck",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "HC Pustertal",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Graz99ers",
+   "away": "EC Salzburg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Villacher SV",
+   "away": "EC-KAC",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Black Wings Linz",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "Vienna Capitals",
+   "away": "HC Innsbruck",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "EC Salzburg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Pioneers Vorarlberg",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Villacher SV",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "Graz99ers",
+   "away": "HC Innsbruck",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "EC-KAC",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Villacher SV",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "EC Salzburg",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "HC Innsbruck",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "HC Bolzano",
+   "away": "Pioneers Vorarlberg",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Pioneers Vorarlberg",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Black Wings Linz",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Graz99ers",
+   "away": "HC Bolzano",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "EC-KAC",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Villacher SV",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "HC Pustertal",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Vienna Capitals",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Black Wings Linz",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Pustertal",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "EC Salzburg",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "HC Innsbruck",
+   "away": "EC-KAC",
+   "hs": 9,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Pioneers Vorarlberg",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Villacher SV",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "EC-KAC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Graz99ers",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "HC Pustertal",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "HC Bolzano",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "HC Bolzano",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "HC Pustertal",
+   "away": "Pioneers Vorarlberg",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "EC-KAC",
+   "away": "Villacher SV",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Graz99ers",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "HC Innsbruck",
+   "away": "EC Salzburg",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "Graz99ers",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "Villacher SV",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "Black Wings Linz",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-03",
+   "home": "HC Pustertal",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Pustertal",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Vienna Capitals",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Villacher SV",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Black Wings Linz",
+   "away": "Pioneers Vorarlberg",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "EC Salzburg",
+   "away": "EC-KAC",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "HC Innsbruck",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "Black Wings Linz",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Pioneers Vorarlberg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Vienna Capitals",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "HC Innsbruck",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "EC-KAC",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Villacher SV",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "Graz99ers",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "Vienna Capitals",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "EC Salzburg",
+   "away": "Pioneers Vorarlberg",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "HC Bolzano",
+   "away": "Black Wings Linz",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "HC Pustertal",
+   "away": "HC Innsbruck",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Graz99ers",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Villacher SV",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Black Wings Linz",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "EC-KAC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "HC Bolzano",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "EC Salzburg",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Pioneers Vorarlberg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "EC-KAC",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "HC Innsbruck",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "HC Pustertal",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Graz99ers",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "HC Innsbruck",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-26",
+   "home": "HC Bolzano",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-27",
+   "home": "EC-KAC",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Black Wings Linz",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "EC Salzburg",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Villacher SV",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Vienna Capitals",
+   "away": "EC-KAC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Graz99ers",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Villacher SV",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Black Wings Linz",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "HC Innsbruck",
+   "away": "EC Salzburg",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "HC Bolzano",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-01",
+   "home": "EC Salzburg",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-01",
+   "home": "Villacher SV",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-01",
+   "home": "Vienna Capitals",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-01",
+   "home": "Graz99ers",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-01",
+   "home": "HC Pustertal",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-01",
+   "home": "EC-KAC",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Black Wings Linz",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "HC Innsbruck",
+   "away": "EC-KAC",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Graz99ers",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "EC Salzburg",
+   "away": "Vienna Capitals",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "HC Pustertal",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-05",
+   "home": "Vienna Capitals",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-05",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-05",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Graz99ers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-05",
+   "home": "EC-KAC",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-05",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-05",
+   "home": "HC Bolzano",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Graz99ers",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Vienna Capitals",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Villacher SV",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "EC Salzburg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-09",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Pioneers Vorarlberg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "HC Bolzano",
+   "away": "Villacher SV",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "Graz99ers",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-11",
+   "home": "HC Pustertal",
+   "away": "EC Salzburg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "Black Wings Linz",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Villacher SV",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "HC Innsbruck",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "EC-KAC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Pioneers Vorarlberg",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "HC Pustertal",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "HC Bolzano",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "HC Innsbruck",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Villacher SV",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Pioneers Vorarlberg",
+   "away": "Graz99ers",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "HC Pustertal",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "EC Salzburg",
+   "away": "HC Bolzano",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Black Wings Linz",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "EC Salzburg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "HC Innsbruck",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "HC Pustertal",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Graz99ers",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Vienna Capitals",
+   "away": "HC Pustertal",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Villacher SV",
+   "away": "Black Wings Linz",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "HC Bolzano",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Pustertal",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Pioneers Vorarlberg",
+   "away": "Villacher SV",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Vienna Capitals",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "HC Innsbruck",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "EC-KAC",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "Villacher SV",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "Black Wings Linz",
+   "away": "HC Bolzano",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "EC Salzburg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "EC-KAC",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "HC Pustertal",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Graz99ers",
+   "away": "Pioneers Vorarlberg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Vienna Capitals",
+   "away": "HC Innsbruck",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC Salzburg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "HC Pustertal",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "Vienna Capitals",
+   "away": "Pioneers Vorarlberg",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "Graz99ers",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "Villacher SV",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 8,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "EC-KAC",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "HC Bolzano",
+   "away": "HC Pustertal",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-14",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-15",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2026-02-15",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Villacher SV",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-18",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Vienna Capitals",
+   "hs": 7,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-18",
+   "home": "Pioneers Vorarlberg",
+   "away": "Black Wings Linz",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "Black Wings Linz",
+   "away": "Vienna Capitals",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "EC Salzburg",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "EC-KAC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "Pioneers Vorarlberg",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "HC Bolzano",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "HC Pustertal",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "HC Innsbruck",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "HC Bolzano",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "EC Salzburg",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "Black Wings Linz",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "Villacher SV",
+   "away": "Pioneers Vorarlberg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "Graz99ers",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Vienna Capitals",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "EC-KAC",
+   "away": "HC Innsbruck",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Graz99ers",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Black Wings Linz",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Vienna Capitals",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "HC Innsbruck",
+   "away": "Pioneers Vorarlberg",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "HC Pustertal",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "HC Bolzano",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "EC-KAC",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Villacher SV",
+   "away": "HC Pustertal",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Black Wings Linz",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "EC Salzburg",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Black Wings Linz",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "EC Salzburg",
+   "away": "EC-KAC",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "HC Innsbruck",
+   "away": "Milano HC",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Pioneers Vorarlberg",
+   "away": "Villacher SV",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "HC Pustertal",
+   "away": "Graz99ers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "HC Bolzano",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "HC Innsbruck",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Pioneers Vorarlberg",
+   "away": "Graz99ers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Black Wings Linz",
+   "away": "Milano HC",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "EC-KAC",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "HC Bolzano",
+   "away": "EC Salzburg",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "Graz99ers",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "Vienna Capitals",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "EC Salzburg",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "Black Wings Linz",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "EC-KAC",
+   "away": "Villacher SV",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "Pioneers Vorarlberg",
+   "away": "Milano HC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Milano HC",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Graz99ers",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "HK Olimpija Ljubljana",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "EC Salzburg",
+   "away": "Villacher SV",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Black Wings Linz",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "HC Innsbruck",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "Vienna Capitals",
+   "away": "Milano HC",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "EC Salzburg",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "HC Pustertal",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Pioneers Vorarlberg",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "EC-KAC",
+   "away": "Graz99ers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "HC Innsbruck",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Villacher SV",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "Graz99ers",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Black Wings Linz",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "HC Innsbruck",
+   "away": "Pioneers Vorarlberg",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Villacher SV",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "EC-KAC",
+   "away": "Milano HC",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "EC Salzburg",
+   "away": "HC Bolzano",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Vienna Capitals",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Villacher SV",
+   "away": "Milano HC",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Black Wings Linz",
+   "away": "Graz99ers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "HC Pustertal",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "HC Bolzano",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "Graz99ers",
+   "away": "HC Innsbruck",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "EC Salzburg",
+   "away": "Milano HC",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "HC Bolzano",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Pioneers Vorarlberg",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "HC Pustertal",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Villacher SV",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Black Wings Linz",
+   "away": "EC-KAC",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Vienna Capitals",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Graz99ers",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Black Wings Linz",
+   "away": "HC Pustertal",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "EC Salzburg",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Villacher SV",
+   "away": "HC Bolzano",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Pioneers Vorarlberg",
+   "away": "EC-KAC",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Milano HC",
+   "away": "HC Innsbruck",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Vienna Capitals",
+   "away": "HC Pustertal",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Pioneers Vorarlberg",
+   "away": "Black Wings Linz",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "Milano HC",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "HC Innsbruck",
+   "away": "Villacher SV",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "EC-KAC",
+   "away": "EC Salzburg",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "EC Salzburg",
+   "away": "Black Wings Linz",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Villacher SV",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "EC-KAC",
+   "away": "Vienna Capitals",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "HK Olimpija Ljubljana",
+   "away": "HC Bolzano",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "HC Pustertal",
+   "away": "HC Innsbruck",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Milano HC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Vienna Capitals",
+   "away": "Pioneers Vorarlberg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "Villacher SV",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "EC-KAC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "Milano HC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "HC Innsbruck",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "HC Bolzano",
+   "away": "Black Wings Linz",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "Graz99ers",
+   "away": "Milano HC",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "Villacher SV",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "Black Wings Linz",
+   "away": "Vienna Capitals",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "EC Salzburg",
+   "away": "HK Olimpija Ljubljana",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "EC-KAC",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "HC Pustertal",
+   "away": "Pioneers Vorarlberg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "HC Bolzano",
+   "away": "HC Innsbruck",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Graz99ers",
+   "away": "Black Wings Linz",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "HC Innsbruck",
+   "away": "EC Salzburg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Feh\u00e9rv\u00e1r AV19",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Pioneers Vorarlberg",
+   "away": "HC Bolzano",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Milano HC",
+   "away": "EC-KAC",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "Ferencv\u00e1rosi TC",
+   "away": "HC Pustertal",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Vienna Capitals",
+   "away": "Graz99ers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "EC Salzburg",
+   "away": "Pioneers Vorarlberg",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Black Wings Linz",
+   "away": "Ferencv\u00e1rosi TC",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "HC Pustertal",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "HK Olimpija Ljubljana",
+   "away": "Milano HC",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "EC-KAC",
+   "away": "HC Bolzano",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-25",
+   "home": "Villacher SV",
+   "away": "HC Innsbruck",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Feh\u00e9rv\u00e1r AV19",
+   "away": "Milano HC",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  }
+ ]
+}

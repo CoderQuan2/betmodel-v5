@@ -4542,6 +4542,351 @@ def italian_serie_a_price(home, away, kind, side="home",
          "fragile": True}
 
 
+# ---------------------------------------------------------------- hockey
+# Build M: the foreign leagues FanDuel files under the
+# "nhl" page (AHL + nine European leagues on the saved
+# slate). Each fitted lane carries the NHL lane's OWN
+# protocol (sequential Elo K=8, HFA_ELO=32, no MOV
+# multiplier — betmodel5 run_elo's nhl branch), its
+# walk-forward exam against the overall-home-rate
+# naive baseline (the house gate), and prices through
+# the NHL lane's sigma-integrated logistic
+# (nhl_win_prob's trapezoid over the NHL rating_sigma
+# schedule). Moneyline only — the NHL lane itself
+# prices no spread/puck-line, and NHL totals are
+# terminally FAILED-EXAM, so these lanes intercept
+# moneyline alone; every other form keeps the stamp
+# it has today. Detection keys on the market's exact
+# COMPETITION string, never the team set (these clubs
+# also play cup and cross-border fixtures). The
+# Kazakhstan Pro League is NOT in the registry: its
+# source hunt verified no enumerable results route
+# (Elite Prospects carries no KZ scores; the official
+# pro.ligasy.kz exposes only per-game pages and a
+# current-window schedule), so it keeps its stamp.
+AHL_FIT_PATH = os.path.join(DATA, "v5-ahl.json")
+LIIGA_FIT_PATH = os.path.join(DATA, "v5-liiga.json")
+SHL_FIT_PATH = os.path.join(DATA, "v5-shl.json")
+SWISS_NL_FIT_PATH = os.path.join(DATA, "v5-swiss-nl.json")
+DEL_FIT_PATH = os.path.join(DATA, "v5-del.json")
+ICEHL_FIT_PATH = os.path.join(DATA, "v5-icehl.json")
+DENMARK_FIT_PATH = os.path.join(DATA, "v5-denmark.json")
+NORWAY_FIT_PATH = os.path.join(DATA, "v5-norway.json")
+LIGUE_MAGNUS_FIT_PATH = os.path.join(
+    DATA, "v5-ligue-magnus.json")
+
+# FanDuel name -> fit key, per lane. FanDuel's forms
+# come first (verified against the saved slate); the
+# source-side forms ride along as aliases. Every target
+# verified as a key of its shipped fit.
+FD_AHL_TEAM_CODES = {
+    "Rockford Icehogs": "Rockford IceHogs",
+}
+FD_LIIGA_TEAM_CODES = {
+    "KalPa Hockey": "KalPa", "Kiekko-Espoo": "K-Espoo",
+    "Pelicans Lahti": "Pelicans",
+    "SaiPa Lappeenranta": "SaiPa", "TPS Turku": "TPS",
+    "Vaasan Sport": "Sport",
+}
+FD_SHL_TEAM_CODES = {
+    "Frolunda HC": "FHC", "Frölunda HC": "FHC",
+    "Linkopings HC": "LHC", "Linköping HC": "LHC",
+    "Malmo IF": "MIF", "Malmö Redhawks": "MIF",
+    "Malmö IF": "MIF",
+    "Rogle BK": "RBK", "Rögle BK": "RBK",
+    "Brynäs IF": "BIF", "Djurgårdens IF": "DIF",
+    "Färjestad BK": "FBK", "HV71": "HV71",
+    "IF Björklöven": "IFB", "Björklöven": "IFB",
+    "IK Oskarshamn": "IKO", "Luleå Hockey": "LHF",
+    "Luleå HF": "LHF", "Leksands IF": "LIF",
+    "MoDo Hockey": "MODO", "Örebro Hockey": "OHK",
+    "Örebro HK": "OHK", "Skellefteå AIK": "SAIK",
+    "Timrå IK": "TIK", "Växjö Lakers": "VLH",
+}
+FD_SWISS_NL_TEAM_CODES = {
+    "EHC Biel": "EHC Biel-Bienne",
+    "Geneve-Servette HC": "Genève-Servette HC",
+    "HC Ajoie Porrentruy": "HC Ajoie",
+    "HC Fribourg-Gotteron": "Fribourg-Gottéron",
+    "HC Lausanne": "Lausanne HC",
+    "SCL Tigers Langnau": "SCL Tigers",
+    "ZSC Lions Zurich": "ZSC Lions",
+}
+FD_DEL_TEAM_CODES = {
+    "Kolner Haie": "Kölner Haie",
+}
+FD_ICEHL_TEAM_CODES = {
+    "Fehervar AV19": "Fehérvár AV19",
+    "Red Bull Salzburg": "EC Salzburg",
+    "EC Red Bull Salzburg": "EC Salzburg",
+    "KAC Klagenfurt": "EC-KAC",
+    "Graz 99ers": "Graz99ers",
+    "HC TWK Innsbruck": "HC Innsbruck",
+    "EC VSV": "Villacher SV",
+    "Olimpija Ljubljana": "HK Olimpija Ljubljana",
+    "Ferencvaros": "Ferencvárosi TC",
+    "Ferencvaros-Esmtk": "Ferencvárosi TC",
+}
+FD_DENMARK_TEAM_CODES = {
+    "SoenderjyskE Ishockey": "Sønderjyske",
+    "Sonderjyske Ishockey": "Sønderjyske",
+}
+FD_NORWAY_TEAM_CODES = {
+    "Narvik Ishockeyklubb": "Narvik Hockey",
+    "Storhamar Hockey": "Storhamar",
+    "Valerenga": "Vålerenga",
+}
+FD_LIGUE_MAGNUS_TEAM_CODES = {
+    "Anglet Hormadi Elite": "Anglet",
+    "Bordeaux GHC": "Bordeaux",
+    "HC Amiens Somme": "Amiens",
+    "Les Aigles de Nice": "Nice",
+    "Rapaces de Gap": "Gap",
+    "Spartiates de Marseille": "Marseille",
+}
+
+
+def _hockey_lane_gate(label, builder, fit):
+    """The shared foreign-hockey gate stamp, or None
+    when the lane may price (the wnba_lane_gate
+    pattern): the fit is missing, or its walk-forward
+    exam failed. ONE helper read by the checker and by
+    coverage, so the two layers can never tell
+    different stories about these lanes."""
+    if fit is None:
+        return f"{label} fit not run ({builder})"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"{label} lane FAILED-EXAM — walk-forward "
+                f"Brier {bt.get('brier')} did not beat the "
+                f"naive baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def load_ahl():
+    return _load_json_cached(AHL_FIT_PATH)
+
+
+def ahl_lane_gate(fit):
+    return _hockey_lane_gate("AHL", "tools/fit_ahl.py", fit)
+
+
+def load_liiga():
+    return _load_json_cached(LIIGA_FIT_PATH)
+
+
+def liiga_lane_gate(fit):
+    return _hockey_lane_gate(
+        "Liiga", "tools/fit_liiga.py", fit)
+
+
+def load_shl():
+    return _load_json_cached(SHL_FIT_PATH)
+
+
+def shl_lane_gate(fit):
+    return _hockey_lane_gate("SHL", "tools/fit_shl.py", fit)
+
+
+def load_swiss_nl():
+    return _load_json_cached(SWISS_NL_FIT_PATH)
+
+
+def swiss_nl_lane_gate(fit):
+    return _hockey_lane_gate(
+        "Swiss NL", "tools/fit_swiss_nl.py", fit)
+
+
+def load_del():
+    return _load_json_cached(DEL_FIT_PATH)
+
+
+def del_lane_gate(fit):
+    return _hockey_lane_gate(
+        "German DEL", "tools/fit_ep_hockey.py del", fit)
+
+
+def load_icehl():
+    return _load_json_cached(ICEHL_FIT_PATH)
+
+
+def icehl_lane_gate(fit):
+    return _hockey_lane_gate(
+        "ICE Hockey League", "tools/fit_ep_hockey.py "
+        "icehl", fit)
+
+
+def load_denmark():
+    return _load_json_cached(DENMARK_FIT_PATH)
+
+
+def denmark_lane_gate(fit):
+    return _hockey_lane_gate(
+        "Denmark Metal Ligaen",
+        "tools/fit_ep_hockey.py denmark", fit)
+
+
+def load_norway():
+    return _load_json_cached(NORWAY_FIT_PATH)
+
+
+def norway_lane_gate(fit):
+    return _hockey_lane_gate(
+        "Norway EliteHockey Ligaen",
+        "tools/fit_ep_hockey.py norway", fit)
+
+
+def load_ligue_magnus():
+    return _load_json_cached(LIGUE_MAGNUS_FIT_PATH)
+
+
+def ligue_magnus_lane_gate(fit):
+    return _hockey_lane_gate(
+        "France Ligue Magnus",
+        "tools/fit_ep_hockey.py ligue-magnus", fit)
+
+
+HOCKEY_LANES = [
+    {"key": "ahl", "label": "AHL",
+     "competition": "USA - AHL - Matches",
+     "load": load_ahl, "gate": ahl_lane_gate,
+     "codes": FD_AHL_TEAM_CODES},
+    {"key": "liiga", "label": "Liiga",
+     "competition": "Finnish SM-Liiga",
+     "load": load_liiga, "gate": liiga_lane_gate,
+     "codes": FD_LIIGA_TEAM_CODES},
+    {"key": "shl", "label": "SHL",
+     "competition": "Swedish SHL",
+     "load": load_shl, "gate": shl_lane_gate,
+     "codes": FD_SHL_TEAM_CODES},
+    {"key": "swiss-nl", "label": "Swiss NL",
+     "competition": "Swiss NLA",
+     "load": load_swiss_nl, "gate": swiss_nl_lane_gate,
+     "codes": FD_SWISS_NL_TEAM_CODES},
+    {"key": "del", "label": "German DEL",
+     "competition": "German DEL",
+     "load": load_del, "gate": del_lane_gate,
+     "codes": FD_DEL_TEAM_CODES},
+    {"key": "icehl", "label": "ICE Hockey League",
+     "competition": "Austria - EHL",
+     "load": load_icehl, "gate": icehl_lane_gate,
+     "codes": FD_ICEHL_TEAM_CODES},
+    {"key": "denmark", "label": "Denmark Metal Ligaen",
+     "competition": "Denmark - Metal Ligaen",
+     "load": load_denmark, "gate": denmark_lane_gate,
+     "codes": FD_DENMARK_TEAM_CODES},
+    {"key": "norway", "label": "Norway EliteHockey Ligaen",
+     "competition": "Norwegian Get Ligaen",
+     "load": load_norway, "gate": norway_lane_gate,
+     "codes": FD_NORWAY_TEAM_CODES},
+    {"key": "ligue-magnus", "label": "France Ligue Magnus",
+     "competition": "France - Ligue Magnus",
+     "load": load_ligue_magnus,
+     "gate": ligue_magnus_lane_gate,
+     "codes": FD_LIGUE_MAGNUS_TEAM_CODES},
+]
+
+
+def hockey_lane_for_competition(competition):
+    """The fitted foreign-hockey lane a market's
+    FanDuel competition string names, or None. An
+    EXACT match on the competition string — the
+    discriminator is the competition field, never the
+    team set (the Build J law)."""
+    want = str(competition or "").strip()
+    for lane in HOCKEY_LANES:
+        if want == lane["competition"]:
+            return lane
+    return None
+
+
+def resolve_hockey_team(lane, query, ratings=None):
+    """Full FanDuel name (or a fit key itself) -> the
+    lane fit's team key, or None: exact key, then the
+    lane's explicit FD name map (case-insensitive,
+    every target a verified fit key), then the
+    canonical normalized resolver."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = lane["load"]()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    for name, key in lane["codes"].items():
+        if name.lower() == q.lower() and key in ratings:
+            return key
+    return _resolve_or_none(ratings, q)
+
+
+def hockey_probs(fit, lane, home, away):
+    """P(home wins) for a foreign-hockey fixture: the
+    NHL lane's sigma-integrated Elo logistic
+    (nhl_win_prob's trapezoid, verbatim) over the
+    lane's fitted ratings, with per-team sigmas from
+    the NHL rating_sigma schedule over the fit's
+    per-team game counts. None when a name misses the
+    fit."""
+    R = fit["ratings"]
+    home = resolve_hockey_team(lane, home, R)
+    away = resolve_hockey_team(lane, away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", NHL_HFA_ELO)
+    counts = fit.get("games") or {}
+    diff_adj = (R[home] + hfa) - R[away]
+    sd = math.sqrt(
+        rating_sigma("nhl", counts.get(home, 0)) ** 2
+        + rating_sigma("nhl", counts.get(away, 0)) ** 2)
+    n = 161
+    lo, hi = diff_adj - 4 * sd, diff_adj + 4 * sd
+    step = (hi - lo) / (n - 1)
+    tot = wsum = 0.0
+    for i in range(n):
+        x = lo + i * step
+        w = math.exp(-0.5 * ((x - diff_adj) / sd) ** 2)
+        w *= 0.5 if i in (0, n - 1) else 1.0
+        tot += w * elo_expected(x)
+        wsum += w
+    return tot / wsum
+
+
+def hockey_price(home, away, kind, side="home", line=None,
+                 competition=None):
+    """The foreign-hockey lanes' answer for a fixture
+    FanDuel files under "nhl" (Build M). Returns None
+    when the market's COMPETITION names no fitted
+    lane or the market form is outside these lanes
+    (moneyline only — the NHL lane's own priced
+    shape) — the caller then proceeds exactly as it
+    did before these lanes existed. Otherwise the
+    lane's (p, info) or (None, reason), engine_price's
+    own shapes, gated by the lane's shared gate."""
+    lane = hockey_lane_for_competition(competition)
+    if lane is None:
+        return None
+    if kind != "moneyline":
+        return None
+    fit = lane["load"]()
+    gate = lane["gate"](fit)
+    if gate:
+        return None, gate
+    p_home = hockey_probs(fit, lane, home, away)
+    if p_home is None:
+        return None, (f"team not in the {lane['label']} "
+                      f"fit ({home}/{away})")
+    bt = fit.get("backtest") or {}
+    return (p_home if side == "home" else 1 - p_home), \
+        {"detail": f"{lane['label']} Elo lane (fit "
+                   f"{fit['fitted_at']}; walk-forward "
+                   f"Brier {bt.get('brier')} vs naive "
+                   f"{bt.get('naive_brier')}, "
+                   f"n={bt.get('n')})"}
+
+
 # ---------------------------------------------------------------- soccer
 # Elo + Poisson scoring (Maher-lite): team attack/defence strengths
 # with prior shrinkage, league home/away scoring rates, a Poisson
@@ -6479,6 +6824,28 @@ def universal_coverage(markets, data_dir=None):
                 continue
             if res(t) is not None:
                 continue
+            if sport == "nhl":
+                # Build M: the foreign-hockey lanes price
+                # their own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (the lane's shared gate /
+                # resolve_hockey_team), so the two layers
+                # tell one story. Keyed on the market's
+                # competition field, never the team set.
+                lane = hockey_lane_for_competition(
+                    mkt.get("competition"))
+                if lane is not None:
+                    fit = lane["load"]()
+                    gate = lane["gate"](fit)
+                    if gate:
+                        return gate
+                    if resolve_hockey_team(
+                            lane, t,
+                            (fit or {}).get("ratings")
+                            or {}) is not None:
+                        continue
+                    return (f"team not in the "
+                            f"{lane['label']} fit: {t}")
             if sport == "nba" and _names_euroleague(
                     mkt.get("competition")):
                 # Build J: the EuroLeague lane prices its own
@@ -6827,8 +7194,13 @@ SPORT_FIT_NOTES = {
            "v5-italian-serie-a.json, Build L; other "
            "competitions on that page — CBA/B.League/LNB — "
            "are not the NBA fit)",
-    "nhl": "NHL Elo, moneyline (Ice Hockey page; AHL/NCAA "
-           "hockey on that page are not the NHL fit)",
+    "nhl": "NHL Elo, moneyline (Ice Hockey page; the "
+           "AHL and the European leagues on that page "
+           "price off their own Build M fits — v5-ahl / "
+           "v5-liiga / v5-shl / v5-swiss-nl / v5-del / "
+           "v5-icehl / v5-denmark / v5-norway / "
+           "v5-ligue-magnus; NCAA hockey and the "
+           "Kazakhstan Pro League are not fitted)",
     "mlb": "MLB Elo + runs model, moneyline (v5-mlb.json; "
            "totals not wired — runs model carried in the fit "
            "file for the totals lane)",
@@ -7289,6 +7661,22 @@ def engine_price(sport, kind, home, away, side="home", line=None,
             try:
                 w = nhl_win_prob(home, away)
             except SystemExit as e:
+                # Build M: a foreign fixture filed under
+                # this page (AHL / Liiga / SHL / Swiss NL /
+                # DEL / ICE / Metal Ligaen / EliteHockey /
+                # Ligue Magnus) routes to its fitted lane
+                # (the NHL lane's own Elo protocol,
+                # exam-gated through the shared hockey
+                # gate) — the lane keys on the market's
+                # competition field, never the team set,
+                # and only runs where the NHL resolver
+                # itself failed, so an NHL fixture's price
+                # is exactly what it was. Non-lane fixtures
+                # fall through to the NHL stamp untouched.
+                hpr = hockey_price(home, away, kind, side,
+                                   line, competition)
+                if hpr is not None:
+                    return hpr
                 return None, str(e)
             return (w["p_home"] if side == "home" else 1 - w["p_home"]), \
                 {"detail": "v4 NHL Elo (sigma-integrated)"}
