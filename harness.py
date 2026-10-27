@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.20.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 41)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.21.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 42)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -778,11 +778,13 @@ def main():
     _nbl_chk = b5.run_checker(_nbl, _ctxv)
     _nbl_cov = next(c for c in b5.universal_coverage([_nbl])
                     if c["sport"] == "nba")
-    check("R4 competition truth: WNBA moneyline + WNBA prop + "
-          "NBL team total name their real competitions in BOTH "
-          "layers",
-          "WNBA" in _wn_chk["note"]
-          and any("WNBA" in m for m in _wn_cov["missing"])
+    check("R4 competition truth: WNBA moneyline prices in "
+          "BOTH layers (Build I lane), WNBA prop + NBL team "
+          "total still name their real competitions",
+          _wn_chk["state"] == "PRICED"
+          and "WNBA" in _wn_chk["note"]
+          and _wn_cov["priced_capable"] == 1
+          and _wn_cov["missing"] == []
           and "WNBA" in _wp_chk["note"]
           and "NBL (Australia)" in _nbl_chk["note"]
           and any("NBL (Australia)" in m
@@ -1441,10 +1443,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.20.0 (build 41)" in _readme)
+          "12.21.0 (build 42)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.20.0"' in _wf
-          and '--build-number "41"' in _wf)
+          '--build-version "12.21.0"' in _wf
+          and '--build-number "42"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

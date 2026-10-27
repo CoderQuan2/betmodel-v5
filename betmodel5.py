@@ -740,6 +740,43 @@ def resolve_nba_team(query, ratings=None):
     return None
 
 
+# Build I: FanDuel files WNBA fixtures under the Basketball
+# page; the WNBA lane (data/v5-wnba.json, tools/fit_wnba.py)
+# keys on ESPN codes exactly like the NBA fit does, so the
+# name -> code map mirrors FD_NBA_TEAM_CODES. Every code
+# verified as a key of the shipped v5-wnba fit.
+FD_WNBA_TEAM_CODES = {
+    "Atlanta Dream": "ATL", "Chicago Sky": "CHI",
+    "Connecticut Sun": "CON", "Dallas Wings": "DAL",
+    "Golden State Valkyries": "GS", "Indiana Fever": "IND",
+    "Las Vegas Aces": "LV", "Los Angeles Sparks": "LA",
+    "Minnesota Lynx": "MIN", "New York Liberty": "NY",
+    "Phoenix Mercury": "PHX", "Portland Fire": "POR",
+    "Seattle Storm": "SEA", "Toronto Tempo": "TOR",
+    "Washington Mystics": "WSH",
+}
+
+
+def resolve_wnba_team(query, ratings=None):
+    """Full FanDuel name (or a bare code) -> the WNBA fit's
+    code, or None. `ratings` defaults to the shipped fit's
+    ratings (resolve_nba_team's contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_wnba()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_WNBA_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
 def resolve_nfl_team(query, ratings=None):
     """Full FanDuel name (or a bare code) -> the NFL lane's code,
     via FD_NFL_TEAM_CODES (defined with the menu stack; resolved
@@ -804,7 +841,9 @@ for _t in ("Atlanta Dream", "Chicago Sky", "Connecticut Sun",
            "Dallas Wings", "Golden State Valkyries",
            "Indiana Fever", "Las Vegas Aces", "Los Angeles Sparks",
            "Minnesota Lynx", "New York Liberty", "Phoenix Mercury",
-           "Seattle Storm", "Washington Mystics"):
+           "Seattle Storm", "Washington Mystics",
+           # 2026 expansion franchises (Build I)
+           "Portland Fire", "Toronto Tempo"):
     OTHER_COMPETITION_TEAMS[_t] = "WNBA"
 # R4 (fix-guy): FanDuel's Baseball page also files OTHER
 # leagues' fixtures under "mlb" (NPB / KBO / CPBL observed
@@ -2815,6 +2854,7 @@ def prop_from_scoring_plays(player, stat_name, line, side, price):
 
 # CACHE is defined in the header constants
 NBA_FIT_PATH = os.path.join(DATA, "v5-nba.json")
+WNBA_FIT_PATH = os.path.join(DATA, "v5-wnba.json")
 MLB_FIT_PATH = os.path.join(DATA, "v5-mlb.json")
 TENNIS_FIT_PATH = os.path.join(DATA, "v5-tennis.json")
 MMA_FIT_PATH = os.path.join(DATA, "v5-mma.json")
@@ -2969,6 +3009,28 @@ def fit_nba(persist=True):
 
 def load_nba():
     return _load_json_cached(NBA_FIT_PATH)
+
+
+def load_wnba():
+    return _load_json_cached(WNBA_FIT_PATH)
+
+
+def wnba_lane_gate(fit):
+    """The WNBA lane's gate stamp, or None when the lane may
+    price (the mlb_lane_gate pattern): the fit is missing, or
+    its walk-forward exam failed. ONE helper read by the
+    checker and by coverage, so the two layers can never tell
+    different stories about this lane."""
+    if fit is None:
+        return "WNBA fit not run (tools/fit_wnba.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"WNBA lane FAILED-EXAM — walk-forward Brier "
+                f"{bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
 
 
 def load_mlb():
@@ -3401,6 +3463,62 @@ def nba_probs(fit, home, away):
     p = 1 / (1 + 10 ** (-d / 400))
     mm = fit["margin_map"]
     return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def wnba_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted WNBA
+    lane — nba_probs' body on the WNBA fit (the home bump is
+    the fit's own fitted hfa_elo param). None when a name
+    misses the fit."""
+    R = fit["ratings"]
+    home = resolve_wnba_team(home, R)
+    away = resolve_wnba_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def wnba_price(home, away, kind, side="home", line=None):
+    """The WNBA lane's answer for a fixture FanDuel files
+    under "nba" (Build I). Returns None when the fixture is
+    not WNBA (neither team names the WNBA through the shared
+    other-competition lookup) or the market form is outside
+    this lane (moneyline / spread / alt-spread only — totals
+    keep their own route) — the caller then proceeds exactly
+    as it did before this lane existed. Otherwise the lane's
+    (p, info) or (None, reason), engine_price's own shapes,
+    gated by wnba_lane_gate."""
+    hit = other_competition_for(home, away)
+    if not hit or hit[1] != "WNBA":
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_wnba()
+    gate = wnba_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = wnba_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the WNBA fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"WNBA Elo lane (fit {fit['fitted_at']}; "
+                       f"walk-forward Brier {bt.get('brier')} "
+                       f"vs naive {bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"WNBA margin map N({mu:+.1f}, {sd:.1f}) "
+                   f"(in-sample map — FRAGILE lineage)",
+         "fragile": True}
 
 
 # ---------------------------------------------------------------- soccer
@@ -5341,6 +5459,21 @@ def universal_coverage(markets, data_dir=None):
             if res(t) is not None:
                 continue
             comp = OTHER_COMPETITION_TEAMS.get(t)
+            if comp == "WNBA" and sport == "nba":
+                # Build I: the WNBA lane prices its own
+                # fixtures — coverage reads the same gate +
+                # resolver the checker prices through
+                # (wnba_lane_gate / resolve_wnba_team), so
+                # the two layers tell one story.
+                wfit = load_wnba()
+                gate = wnba_lane_gate(wfit)
+                if gate:
+                    return gate
+                if resolve_wnba_team(
+                        t, (wfit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the WNBA fit: {t}"
             if comp:
                 return (f"competition not in this app: {comp} "
                         f"({t}) — FanDuel files it under "
@@ -5540,9 +5673,10 @@ SPORT_FIT_NOTES = {
            "the American Football page)",
     "ncaaf": "CFB distributional ratings + margin lane (rides "
              "the American Football page)",
-    "nba": "NBA Elo + margin map (Basketball page; other "
-           "competitions on that page — WNBA/NBL — are not the "
-           "NBA fit)",
+    "nba": "NBA Elo + margin map (Basketball page; the WNBA "
+           "prices off its own Elo fit — v5-wnba.json, Build I; "
+           "other competitions on that page — NBL/CBA — are "
+           "not the NBA fit)",
     "nhl": "NHL Elo, moneyline (Ice Hockey page; AHL/NCAA "
            "hockey on that page are not the NHL fit)",
     "mlb": "MLB Elo + runs model, moneyline (v5-mlb.json; "
@@ -6018,6 +6152,16 @@ def engine_price(sport, kind, home, away, side="home", line=None,
             return None, "NBA fit not run (betmodel5.py fit-nba)"
         pr = nba_probs(fit, home, away)
         if pr is None:
+            # Build I: a WNBA fixture filed under this page
+            # routes to the WNBA lane (its own fitted Elo
+            # lane, exam-gated through wnba_lane_gate) before
+            # the competition stamp — the lane resolver runs
+            # first, the competition naming second, the order
+            # every lane in this engine keeps. Non-WNBA
+            # fixtures fall through untouched.
+            wpr = wnba_price(home, away, kind, side, line)
+            if wpr is not None:
+                return wpr
             # R4: name the real competition when FanDuel filed
             # a WNBA / NBL / CBA fixture under the NBA page —
             # the same stamp coverage prints (one helper).
