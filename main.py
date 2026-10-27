@@ -353,8 +353,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.27.0"
-BUILD_NUMBER = 48
+APP_VERSION = "12.28.0"
+BUILD_NUMBER = 49
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -378,6 +378,29 @@ def auto_pull_should_tick(armed, busy, last_pull_at, now,
     if not armed or busy:
         return False
     return (now - (last_pull_at or 0.0)) >= interval
+
+
+# Sports whose markets arrive on another sport's FanDuel page
+# (the parser's own stamps): loading the host page alone is
+# what refreshes them — the only routed pair on the menu.
+_ROUTED_SPORT_HOST = {"ncaaf": "nfl"}
+
+
+def auto_pull_sport(sport_view, chosen):
+    """Which sport an AUTO tick loads alone (v12.28, the
+    Pilot's 'sport load alone' rule): the sport in front of
+    the user when the board is showing one sport alone — a
+    routed sport loads its host page, the only page that
+    carries it — else the chooser's sport. The full menu is
+    never an auto load; it stays the manual Pull all. A
+    MANUAL scoped pull always loads the chooser's sport: the
+    chooser sits next to the Pull button and names its
+    target, while the loop has no button, so it follows the
+    user's eyes instead."""
+    host = _ROUTED_SPORT_HOST.get(sport_view, sport_view)
+    if host in b5.FANDUEL_EVENT_TYPES:
+        return host
+    return chosen or "nfl"
 
 # ------------------------------------------------------------------
 # BetFi Xii ICE design system (v12, from the artist's
@@ -5299,7 +5322,13 @@ def main(page: ft.Page):
         if state["pull_busy"]:
             return
         state["pull_busy"] = True
-        sport = state.get("chosen_sport") or "nfl"
+        # v12.28: an auto tick loads the sport in front of the
+        # user alone (auto_pull_sport); a manual pull loads
+        # the chooser's sport, as its button promises.
+        sport = (auto_pull_sport(state.get("sport_view"),
+                                 state.get("chosen_sport"))
+                 if auto else
+                 state.get("chosen_sport") or "nfl")
         label = SPORT_LABELS.get(sport, sport.upper())
         try:
             partial = pull_menu_sport(sport)
@@ -5380,9 +5409,11 @@ def main(page: ft.Page):
         # Pull, Pull all, or Price Slate) sets pull_armed; from
         # then on a tick is due every AUTO_PULL_INTERVAL_S since
         # the last pull (the gate is auto_pull_should_tick, pure
-        # and harness-pinned). v12.3 re-scope stands: a tick
-        # refreshes ONLY the chosen sport (the scoped worker +
-        # merge) — the full pull is manual, via Pull all. Never
+        # and harness-pinned). v12.3 re-scope stands, sharpened
+        # v12.28: a tick loads ONE sport alone — the sport the
+        # board is showing when it shows one (auto_pull_sport),
+        # else the chosen sport (the scoped worker + merge) —
+        # the full pull is manual, via Pull all. Never
         # overlaps a running pull (the gate and the worker both
         # refuse). Started ONLY from the real entry path — see
         # the __main__ block and AUTO_PULL_ENABLED; the harness

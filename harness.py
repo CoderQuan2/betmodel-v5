@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.27.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 48)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.28.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 49)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1460,10 +1460,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.27.0 (build 48)" in _readme)
+          "12.28.0 (build 49)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.27.0"' in _wf
-          and '--build-number "48"' in _wf)
+          '--build-version "12.28.0"' in _wf
+          and '--build-number "49"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1996,6 +1996,15 @@ def main():
           "worker, not the full pull",
           "run_thread(_sport_pull_worker, True)" in _src
           and "run_thread(_pull_worker, True)" not in _src)
+    check("v12.28: an auto tick loads the viewed sport alone "
+          "(auto_pull_sport truth table)",
+          app.auto_pull_sport("nba", "soccer") == "nba"
+          and app.auto_pull_sport("ncaaf", "soccer") == "nfl"
+          and app.auto_pull_sport("all", "soccer") == "soccer"
+          and app.auto_pull_sport(None, "soccer") == "soccer"
+          and app.auto_pull_sport("all", None) == "nfl"
+          and "auto_pull_sport(state.get(\"sport_view\")"
+          in _src)
 
     # drive the chooser + Pull end to end on stubs: the
     # saved snapshot must show ONLY nba refreshed.
