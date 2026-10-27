@@ -3702,10 +3702,12 @@ SOCCER_NAME_ALIASES = {
     "braga": "sp braga",
     "sl benfica": "benfica", "vitoria guimaraes": "guimaraes",
     "olympiacos": "olympiakos", "aek": "aek athens",
+    "ofi": "ofi crete",
     "heart of midlothian": "hearts",
     "rsc anderlecht": "anderlecht", "krc genk": "genk",
     "kaa gent": "gent", "union saint gilloise": "st gilloise",
     "union sg": "st gilloise",
+    "union st gilloise": "st gilloise",
     "royale union saint gilloise": "st gilloise",
     "standard liege": "standard", "oh leuven": "oud heverlee leuven",
     "sint truiden": "st truiden",
@@ -3759,6 +3761,7 @@ SOCCER_NAME_ALIASES = {
     "queretaro fc": "queretaro", "juarez": "fc juarez",
     # Argentina (FanDuel -> ESPN arg.1)
     "newells": "newells old boys",
+    "belgrano": "belgrano cordoba",
     "racing": "racing club", "racing club avellaneda": "racing club",
     "ca river plate": "river plate", "ca boca juniors": "boca juniors",
     "ca independiente": "independiente",
@@ -3789,6 +3792,10 @@ SOCCER_NAME_ALIASES = {
     "puerto cabello": "academia puerto cabello",
     # Ecuador (ecu.1): LDU = Liga Deportiva Universitaria
     "ldu": "liga de quito", "ldu quito": "liga de quito",
+    # NWSL (FanDuel (W) display form -> ESPN usa.nwsl fit
+    # name; the forms layer strips the (W) marker before the
+    # alias lookup, so the key is the bare normalized name)
+    "nj ny gotham fc": "gotham fc",
 }
 
 # The shipped EPL fit keys teams by CODE (v5-soccer.json). FanDuel
