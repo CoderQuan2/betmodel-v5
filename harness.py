@@ -2785,7 +2785,7 @@ def main():
           and "def _diag_" not in _src)
     check("v12.11: pillow pinned in requirements and the "
           "bundled DejaVu faces exist in assets/fonts",
-          "pillow==13.0.0" in _req
+          "pillow==12.3.0" in _req
           and all(os.path.exists(os.path.join(
               HERE, "assets", "fonts", _ff)) for _ff in (
                   "DejaVuSans.ttf", "DejaVuSans-Bold.ttf",
