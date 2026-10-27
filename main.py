@@ -353,8 +353,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.11.0"
-BUILD_NUMBER = 32
+APP_VERSION = "12.12.0"
+BUILD_NUMBER = 33
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -882,10 +882,17 @@ SHOW_MODES = [("all", "All markets"),
               ("golden", "Golden bets"),
               ("quick", "Quick bets (≤2h)"),
               ("nodnb", "No do-not-bets")]
-# The startup defaults (v12.4): nothing toggled on, ever — the
-# board opens on All sports with Show = Golden bets, and the
-# scoped-pull chooser opens on soccer.
-DEFAULT_SHOW = "golden"
+# The startup defaults (v12.4; Show amended v12.12): nothing
+# toggled on, ever — the board opens on All sports with
+# Show = All markets, and the scoped-pull chooser opens on
+# soccer. (v12.4–v12.11 opened on Show = Golden bets; that
+# front door hid every lane without a scored record — the
+# record-less soft caps soccer/NBA below GOLDEN BET, so the
+# default board showed NFL only. Diagnosis:
+# SPORTS-DIAGNOSIS-2026-10-27. Golden bets remains a Show
+# filter; the ladder sort still leads with it when a lane
+# mints one.)
+DEFAULT_SHOW = "all"
 DEFAULT_SPORT_VIEW = "all"
 
 GRADE_COLORS = {
@@ -4429,8 +4436,9 @@ def main(page: ft.Page):
              "sort": "verdict", "card_limit": CARD_PAGE, "search": "",
              # v12.4 board filters: two dropdown values, no
              # switches. Startup is the clean state — sport
-             # view on All sports, Show on Golden bets (the
-             # Pilot's first-pull default view).
+             # view on All sports, Show on All markets (the
+             # v12.12 front door: the whole slate; Golden
+             # bets is a filter, not the entrance).
              "sport_view": DEFAULT_SPORT_VIEW,
              "show": DEFAULT_SHOW,
              "pull_armed": False,
@@ -4742,10 +4750,10 @@ def main(page: ft.Page):
         return base
 
     def _filters_nondefault():
-        """Non-default is measured against the v12.4 startup
-        state: sport view off All sports, Show off the Golden
-        bets default, a search typed, or a panel league filter
-        riding."""
+        """Non-default is measured against the startup
+        state: sport view off All sports, Show off the All
+        markets default, a search typed, or a panel league
+        filter riding."""
         if state.get("search"):
             return True
         if state.get("league_filter"):

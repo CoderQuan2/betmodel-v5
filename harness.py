@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.11.0", app.APP_VERSION == "12.11.0")
-    check("BUILD_NUMBER is 32", app.BUILD_NUMBER == 32)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.12.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 33)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -312,10 +312,11 @@ def main():
     check("board segment host is an AnimatedSwitcher (F3)",
           len(board_sw) == 1)
     cards_view = board_sw[0].content
-    # v12.4 startup state, asserted BEFORE anything drives it:
-    # Show opens on Golden bets, the sport view on All sports,
-    # the pull chooser on the persisted sport — and the board
-    # carries NO switches at all (the switch wall is gone).
+    # startup state, asserted BEFORE anything drives it:
+    # Show opens on All markets (v12.12 — v12.4–v12.11 opened
+    # on Golden bets), the sport view on All sports, the pull
+    # chooser on the persisted sport — and the board carries
+    # NO switches at all (the switch wall is gone).
     _dds0 = [c for c in walk(cards_view)
              if type(c).__name__ == "Dropdown"]
     _show_dd0 = next(
@@ -326,17 +327,20 @@ def main():
         d for d in _dds0
         if [o.key for o in d.options]
         == ["all", "nfl", "ncaaf"])
-    check("v12.4: startup state — Show = Golden bets, Board "
-          "shows = All sports, nothing toggled on",
-          _show_dd0.value == "golden"
+    check("v12.12 re-pin (was v12.4): startup state — Show = "
+          "All markets, Board shows = All sports, nothing "
+          "toggled on",
+          _show_dd0.value == "all"
           and _sv_dd0.value == "all")
     check("v12.4: the board renders zero switches (the switch "
           "wall is gone)",
           not any(type(c).__name__ == "Switch"
                   for c in walk(board)))
-    # The card assertions below predate the golden startup
-    # view (re-pinned in v12.4): drive Show to All markets
-    # through the dropdown — the dropdown IS the filter now.
+    # The card assertions below were written against the
+    # Golden-bets startup view (v12.4): they drive Show to
+    # All markets through the dropdown. Under the v12.12
+    # default the board already opens there — the drive is
+    # now a no-op safeguard; the dropdown IS the filter.
     _show_dd0.on_select(SimpleNamespace(
         control=SimpleNamespace(value="all")))
     all_texts = texts(cards_view)
@@ -1421,11 +1425,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.11 version unified: README release line",
-          "12.11.0 (build 32)" in _readme)
-    check("v12.11 version unified: workflow build args",
-          '--build-version "12.11.0"' in _wf
-          and '--build-number "32"' in _wf)
+    check("v12.12 version unified: README release line",
+          "12.12.0 (build 33)" in _readme)
+    check("v12.12 version unified: workflow build args",
+          '--build-version "12.12.0"' in _wf
+          and '--build-number "33"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1489,13 +1493,15 @@ def main():
           any(("pulled" in t and "ago" in t)
               or "not pulled yet" in t
               for t in texts(cards3)))
-    # v12.4: this fresh boot opened on the Golden bets startup
-    # view (no golden bets on the fixture pull = no cards).
-    # Drive Show to All markets, then land a fresh pricing
-    # pass through the band's own Price Slate action — the
-    # path that used to set the entrance flag — before
-    # measuring the board (v12.8: cards get NO entrance;
-    # they are placed exactly as 11 built them).
+    # v12.12 re-pin (was v12.4): this fresh boot opened on
+    # the All markets startup view — under the old Golden
+    # bets default this fixture pull (no GOLDEN BETs on it)
+    # rendered no cards at all. Drive Show to All markets
+    # anyway (a no-op under the new default), then land a
+    # fresh pricing pass through the band's own Price Slate
+    # action — the path that used to set the entrance flag —
+    # before measuring the board (v12.8: cards get NO
+    # entrance; they are placed exactly as 11 built them).
     _show3 = next(c for c in walk(cards3)
                   if type(c).__name__ == "Dropdown"
                   and [o.key for o in c.options]
@@ -1571,8 +1577,11 @@ def main():
           f"golden={_golden_exp} badge={_badge}")
     # back to the startup defaults before the chip flow, so
     # the chip's appearance is the search's doing alone
+    # (v12.12: the startup Show default is All markets —
+    # driving to "golden" here would itself be a non-default
+    # filter and summon the chip on its own)
     _show3.on_select(SimpleNamespace(
-        control=SimpleNamespace(value="golden")))
+        control=SimpleNamespace(value="all")))
     _sf = next(c for c in walk(cards3)
                if type(c).__name__ == "TextField")
     _sf.on_change(SimpleNamespace(
@@ -2140,7 +2149,7 @@ def main():
     check("v12.4: the Board shows dropdown is All sports + "
           "the slate's sports, at its startup values",
           [o.key for o in _sv5.options] == _exp5
-          and _sv5.value == "all" and _show5.value == "golden"
+          and _sv5.value == "all" and _show5.value == "all"
           and not any(type(c).__name__ == "Switch"
                       for c in walk(board5)))
     _show5.on_select(SimpleNamespace(
@@ -2200,10 +2209,11 @@ def main():
           and any(type(x).__name__ == "GestureDetector"
                   for x in _clist5b.controls))
 
-    # the serialization smoke gate's coverage, kept: the
-    # golden startup view shrinks the boot tree (0 cards on
-    # this fixture), so scan THIS fully-driven board tree for
-    # set-valued control fields — the 11.0.1 crash class.
+    # the serialization smoke gate's coverage, kept: scan
+    # THIS fully-driven board tree for set-valued control
+    # fields — the 11.0.1 crash class. (The comment this
+    # replaces credited the old golden startup view for the
+    # small boot tree; the scan never depended on it.)
     import dataclasses as _dc
 
     def _set_hits(_v, _depth=0):
@@ -3052,6 +3062,241 @@ def main():
                                 app.market_edge_pts(_m, _v))
               for _m, _v in zip(_mkts11, _vrd11)},
           f"parse det={_pdet11 is not None}")
+
+    # ---------- v12.12: the Show-default fix ----------
+    # Diagnosis (SPORTS-DIAGNOSIS-2026-10-27): the board
+    # booted on Show = Golden bets, and GOLDEN BET requires
+    # zero soft conditions in the engine's verdict ladder —
+    # a record-less lane IS a soft, the shipped scorecard
+    # carries no soccer or nba-ml record, and NFL's lane
+    # alone has one (3-8). So the boot filter passed NFL
+    # and silently excluded every soccer/NBA market, and a
+    # manual scoped pull (which pins Board shows to the
+    # pulled sport but never touched Show) landed on the
+    # empty board. The fix is the front door only:
+    # DEFAULT_SHOW "golden" -> "all". The ladder, the
+    # golden gate and the Show filter itself are untouched
+    # — (b) below proves the filter still filters.
+    from datetime import datetime as _dt12
+    check("v12.12: DEFAULT_SHOW is All markets",
+          app.DEFAULT_SHOW == "all")
+
+    # (a) + (b): a fresh boot over a mixed REAL slate in a
+    # fresh storage dir. Markets are real (the saga's saved
+    # slate, mobile/perf-ab/slate.json), priced by the real
+    # engine through the app's own cached pass. The record
+    # is stamped FRESH: the engine degrades every grade on
+    # a stale pull (betmodel5.menu_stamp, STALE_AFTER_H) —
+    # that honesty is not what is on trial here. One NFL
+    # moneyline is repriced (+300) so the engine mints a
+    # genuine GOLDEN BET through its own checker, making
+    # (b) non-vacuous; its untainted twin is excluded from
+    # the NFL sample so no fixture appears twice.
+    _perf12 = json.load(open(os.path.join(
+        HERE, os.pardir, "perf-ab", "slate.json")))
+    _gold_src12 = next(
+        m for m in _perf12["markets"]
+        if m.get("sport") == "nfl"
+        and m.get("market") == "moneyline")
+    _gold12 = dict(_gold_src12)
+    _gold12["price"] = 300
+    _nfl12 = [m for m in _perf12["markets"]
+              if m.get("sport") == "nfl"
+              and not (m.get("fd_market_id")
+                       == _gold_src12.get("fd_market_id")
+                       and m.get("side")
+                       == _gold_src12.get("side"))][:6]
+    _soc12 = [m for m in _perf12["markets"]
+              if m.get("sport") == "soccer"][:6]
+    _nba12 = [m for m in _perf12["markets"]
+              if m.get("sport") == "nba"][:6]
+    _mkts12 = _nfl12 + [_gold12] + _soc12 + _nba12
+    _rec12 = {"pulled_at": _dt12.now().astimezone().isoformat(
+                  timespec="seconds"),
+              "source": _perf12.get("source"),
+              "verified": True,
+              "markets": _mkts12,
+              "sports": {s: (_perf12.get("sports") or {}).get(
+                             s, {})
+                         for s in ("nfl", "soccer", "nba")},
+              "tree": {}, "event_menus": {}}
+    _vs12, _cache12 = app._price_markets_cached(
+        _mkts12, _rec12, {})
+    _png12 = {}
+    for _m12, _v12 in zip(_mkts12, _vs12):
+        _png12[app._card_png_collapsed(
+            _m12, _v12, app.market_edge_pts(_m12, _v12))] = (
+            _m12.get("sport"),
+            app.card_verdict(_v12)[0] == "GOLDEN BET")
+    _golden12 = {p for p, (_s12, _g12) in _png12.items()
+                 if _g12}
+    _gold_png12 = app._card_png_collapsed(
+        _gold12, _vs12[_mkts12.index(_gold12)],
+        app.market_edge_pts(
+            _gold12, _vs12[_mkts12.index(_gold12)]))
+    _dir12 = tempfile.mkdtemp(prefix="betfixii-v1212-")
+    _env12 = os.environ.get("FLET_APP_STORAGE_DATA")
+    try:
+        os.environ["FLET_APP_STORAGE_DATA"] = _dir12
+        with open(os.path.join(
+                _dir12, "Bet_Finder-last-pull.json"),
+                "w") as _f12:
+            json.dump(_rec12, _f12)
+        page12 = FakePage()
+        app.main(page12)
+        _board12 = page12.controls[1].content
+        _bsw12 = [c for c in walk(_board12)
+                  if type(c).__name__ == "AnimatedSwitcher"]
+        _cards12 = _bsw12[0].content
+        _show12 = next(
+            c for c in walk(_cards12)
+            if type(c).__name__ == "Dropdown"
+            and [o.key for o in c.options]
+            == [k for k, _t in app.SHOW_MODES])
+
+        def _dets12():
+            _lists = [c for c in walk(_cards12)
+                      if type(c).__name__ == "Column"]
+            _cl = max(_lists, key=lambda c: sum(
+                1 for x in getattr(c, "controls", [])
+                if type(x).__name__ == "GestureDetector"))
+            return [x for x in _cl.controls
+                    if type(x).__name__ == "GestureDetector"]
+
+        def _per12(dets):
+            _per = {}
+            for _d in dets:
+                _hit = _png12.get(_d.content.src)
+                if _hit:
+                    _per[_hit[0]] = _per.get(_hit[0], 0) + 1
+            return _per
+
+        _boot_dets12 = _dets12()
+        _boot_per12 = _per12(_boot_dets12)
+        check("v12.12 (a): a fresh boot over a mixed slate "
+              "renders rows for NFL, soccer AND NBA under "
+              "the boot-default view",
+              _show12.value == "all"
+              and len(_boot_dets12) == len(_mkts12)
+              and _boot_per12.get("nfl", 0) > 0
+              and _boot_per12.get("soccer", 0) > 0
+              and _boot_per12.get("nba", 0) > 0,
+              f"show={_show12.value} per-sport={_boot_per12} "
+              f"dets={len(_boot_dets12)}/{len(_mkts12)}")
+        _show12.on_select(SimpleNamespace(
+            control=SimpleNamespace(value="golden")))
+        _g_dets12 = _dets12()
+        _g_srcs12 = {d.content.src for d in _g_dets12}
+        check("v12.12 (b): Show = Golden bets still filters "
+              "to GOLDEN BET verdicts only — every golden on "
+              "this slate is NFL, the record lanes' privilege "
+              "exactly as diagnosed",
+              len(_golden12) >= 1
+              and _gold_png12 in _golden12
+              and _g_srcs12 == _golden12
+              and all(_png12[p][0] == "nfl" for p in _golden12),
+              f"golden={len(_golden12)} rendered="
+              f"{len(_g_dets12)} per-sport="
+              f"{_per12(_g_dets12)}")
+    finally:
+        os.environ["FLET_APP_STORAGE_DATA"] = _env12
+
+    # (c): a MANUAL scoped soccer pull lands on its rows.
+    # Same end-to-end machinery as the v12.3 drive (chooser
+    # + the band's Pull button, engine fetch/parse seams
+    # stubbed): the worker pins Board shows to soccer, and
+    # under the v12.12 default the pulled sport's rows are
+    # what the board shows — the receipt names them. Under
+    # the old golden default this exact drive rendered 0.
+    page13 = FakePage()
+    app.main(page13)
+    _board13 = page13.controls[1].content
+    _bsw13 = [c for c in walk(_board13)
+              if type(c).__name__ == "AnimatedSwitcher"]
+    _cards13 = _bsw13[0].content
+    _chooser13 = next(
+        d for d in walk(_board13)
+        if type(d).__name__ == "Dropdown"
+        and len(getattr(d, "options", None) or []) == 17)
+    _fetch_calls.clear()
+    _menu_calls.clear()
+    b5.fd_get = _stub_get
+    b5.fd_parse_sport_page = _stub_parse
+    b5.fd_event_menu = _stub_event_menu
+    try:
+        _chooser13.on_select(SimpleNamespace(
+            control=SimpleNamespace(value="soccer")))
+
+        def _btn_label13(c):
+            t = getattr(c, "text", None)
+            if t:
+                return t
+            ct = getattr(c, "content", None)
+            if isinstance(ct, str):
+                return ct
+            return getattr(ct, "value", None)
+        _pull13 = [c for c in walk(_board13)
+                   if type(c).__name__ == "Button"
+                   and _btn_label13(c) == "Pull"]
+        if _pull13:
+            _pull13[0].on_click(SimpleNamespace())
+        _receipt13 = next(
+            (c for c in walk(_cards13)
+             if type(c).__name__ == "Text"
+             and (getattr(c, "value", "") or "")
+             .startswith("Rendered:")),
+            None)
+        _n13 = int(_receipt13.value.split()[1]) \
+            if _receipt13 else -1
+        _snap13 = json.load(open(os.path.join(
+            STORAGE, "Bet_Finder-last-pull.json")))
+        _soc13 = [m for m in _snap13["markets"]
+                  if m.get("sport") == "soccer"]
+        _vs13, _c13 = app._price_markets_cached(
+            _snap13["markets"], _snap13, {})
+        _soc_pngs13 = {
+            app._card_png_collapsed(
+                m, v, app.market_edge_pts(m, v))
+            for m, v in zip(_snap13["markets"], _vs13)
+            if m.get("sport") == "soccer"}
+        _lists13 = [c for c in walk(_cards13)
+                    if type(c).__name__ == "Column"]
+        _cl13 = max(_lists13, key=lambda c: sum(
+            1 for x in getattr(c, "controls", [])
+            if type(x).__name__ == "GestureDetector"))
+        _dets13 = [x for x in _cl13.controls
+                   if type(x).__name__ == "GestureDetector"]
+        _sv_cands13 = [
+            d for d in walk(_cards13)
+            if type(d).__name__ == "Dropdown"
+            and [o.key for o in d.options]
+            != [k for k, _t in app.SHOW_MODES]
+            and len(d.options) != 17
+            and [o.key for o in d.options][:1] == ["all"]
+            and "soccer" in [o.key for o in d.options]]
+        _sv13 = _sv_cands13[0] if _sv_cands13 else None
+        check("v12.12 (c): a manual scoped soccer pull lands "
+              "on a board showing the pulled sport's rows "
+              "(receipt > 0, every row a soccer card)",
+              len(_pull13) == 1
+              and _n13 > 0
+              and _n13 == len(_dets13)
+              and len(_soc13) == 3
+              and len(_dets13) == len(_soc13)
+              and all(d.content.src in _soc_pngs13
+                      for d in _dets13)
+              and _sv13 is not None
+              and _sv13.value == "soccer",
+              f"receipt={getattr(_receipt13, 'value', None)} "
+              f"dets={len(_dets13)} soccer={len(_soc13)} "
+              f"sv={getattr(_sv13, 'value', None)} "
+              f"sv-cands="
+              f"{[getattr(d, 'value', None) for d in _sv_cands13]}")
+    finally:
+        b5.fd_get = _orig_fd_get
+        b5.fd_parse_sport_page = _orig_parse
+        b5.fd_event_menu = _orig_event_menu
+        app.set_chosen_sport("nfl")
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

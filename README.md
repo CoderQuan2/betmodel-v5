@@ -2,8 +2,11 @@
 
 **Public name: BetFi_Xii (display: BetFi Xii). Internal id:
 Bet_Finder — unchanged in the Xii rename, so on-device data
-carries over. App release: 12.11.0 (build 32) — the
-ImageBoard: cards are drawn pictures (Design C odds-board
+carries over. App release: 12.12.0 (build 33) — the
+Show-default fix: the board opens on All markets (12.11.0's
+default opened on Golden bets, which hid every lane without
+a scored record). The ImageBoard of 12.11.0 stands
+unchanged: cards are drawn pictures (Design C odds-board
 rows on the Board, Design B tickets on Finds and Parse);
 the widget card system is deleted** with the
 betmodel **v5.4** engine. BetFi Xii (2026-10-24) is the
