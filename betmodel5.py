@@ -3648,6 +3648,13 @@ SOCCER_NAME_ALIASES = {
     "celta vigo": "celta", "rc celta": "celta",
     "real betis": "betis", "real sociedad": "sociedad",
     "rayo vallecano": "vallecano", "deportivo alaves": "alaves",
+    # FanDuel's bare "Deportivo" on a Spanish fixture is
+    # Deportivo La Coruna, whose football-data key is
+    # "La Coruna" (held by the la-liga-2 fit and the Spain
+    # country system). Safe as a full-name alias: the lookup
+    # is by whole normalized name, so "deportivo cali" is a
+    # different key and still resolves to the Colombian club.
+    "deportivo": "la coruna",
     "ca osasuna": "osasuna", "racing santander": "santander",
     "sporting gijon": "sp gijon", "real sporting": "sp gijon",
     "real valladolid": "valladolid", "ud las palmas": "las palmas",
@@ -3769,6 +3776,16 @@ SOCCER_NAME_ALIASES = {
     "talleres cordoba": "talleres",
     "velez": "velez sarsfield",
     "colon": "colon santa fe",
+    # Primera Nacional (arg.2 — FanDuel short forms -> the
+    # nacional-b fit's full club names; every target verified
+    # present in the shipped fit, Build D)
+    "chacarita": "chacarita juniors",
+    "cd maipu": "deportivo maipu",
+    "estudiantes de caseros": "estudiantes buenos aires",
+    "gimnasia jujuy": "gimnasia y esgrima jujuy",
+    "club atletico mitre": "mitre santiago del estero",
+    "club gimnasia y tiro": "gimnasia y tiro salta",
+    "godoy cruz": "godoy cruz antonio tomba",
     # Round 2 leagues (FanDuel -> ESPN fit names, verified
     # against each fit's own key list; one club each)
     # Paraguay (par.1)
@@ -3797,6 +3814,44 @@ SOCCER_NAME_ALIASES = {
     # alias lookup, so the key is the bare normalized name)
     "nj ny gotham fc": "gotham fc",
 }
+
+# Competition-scoped name forms: normalized competition (as the
+# pull stamps it) -> {normalized display name: the fit's own
+# name}. For display names shared by clubs in DIFFERENT
+# countries, where a global alias would misname one of them:
+# FanDuel's "Fortaleza FC" is Fortaleza CEIF on a Colombian
+# Primera A fixture and Fortaleza of Brazil on a Brazilian one
+# ("fortaleza fc" already resolves to the Brazilian club through
+# its fit's plain "Fortaleza" key — no alias needed there).
+# Only the market's own competition can say which club is
+# meant, so these are applied at the one pricing point that
+# carries the competition (engine_price's soccer branch), never
+# in the global resolver.
+SOCCER_SCOPED_NAME_ALIASES = {
+    "colombian primera a": {"fortaleza fc": "Fortaleza CEIF"},
+}
+
+
+def _soccer_scoped_names(home, away, competition):
+    """(home, away) with the competition's scoped name forms
+    applied, or None when the competition names no scope or no
+    side changes."""
+    if not competition:
+        return None
+    scope = SOCCER_SCOPED_NAME_ALIASES.get(_soccer_norm(competition))
+    if not scope:
+        return None
+    out = []
+    changed = False
+    for name in (home, away):
+        tgt = scope.get(_soccer_norm(name)) \
+            if isinstance(name, str) else None
+        if tgt:
+            out.append(tgt)
+            changed = True
+        else:
+            out.append(name)
+    return tuple(out) if changed else None
 
 # The shipped EPL fit keys teams by CODE (v5-soccer.json). FanDuel
 # prints names; this table bridges name -> code for that fit only.
@@ -6143,6 +6198,19 @@ def engine_price(sport, kind, home, away, side="home", line=None,
                       f"— see coverage queue")
     if sport == "soccer":
         fit, _league_key = soccer_fit_for(home, away)
+        if fit is None:
+            # Competition-scoped namesakes (see
+            # SOCCER_SCOPED_NAME_ALIASES): retry once under the
+            # scoped forms the market's own competition names.
+            # The plain attempt above is untouched, and the
+            # scoped names are committed only when they
+            # actually find the fit.
+            scoped = _soccer_scoped_names(home, away, competition)
+            if scoped is not None:
+                sfit, skey = soccer_fit_for(*scoped)
+                if sfit is not None:
+                    home, away = scoped
+                    fit, _league_key = sfit, skey
         if fit is None:
             if load_soccer() is None \
                     and load_soccer_leagues() is None:
