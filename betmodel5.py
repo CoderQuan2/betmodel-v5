@@ -848,6 +848,130 @@ def resolve_euroleague_team(query, ratings=None):
     return None
 
 
+# Build K: FanDuel files EuroCup fixtures under the
+# Basketball page too (competition "EuroCup"). The EuroCup
+# is the EuroLeague organizer's second competition; the lane
+# (data/v5-eurocup.json, tools/fit_eurocup.py) keys on the
+# official API's club codes exactly like the EuroLeague fit
+# does, so the name -> code map mirrors
+# FD_EUROLEAGUE_TEAM_CODES. FanDuel's name forms come first
+# (verified against the saved slate); the source-side forms
+# ride along as aliases. Every code verified as a key of the
+# shipped v5-eurocup fit.
+FD_EUROCUP_TEAM_CODES = {
+    "Aquila Basket Trento": "TRN", "Dolomiti Energia Trento": "TRN",
+    "BC Lietkabelis Panevezys": "LKB", "Lietkabelis Panevezys": "LKB",
+    "BC Roma Spqr": "BCR", "Roma Basketball": "BCR",
+    "BC Siauliai": "SIA", "Siauliai Basketball": "SIA",
+    "Bahcesehir Koleji": "BAH", "Bahcesehir College Istanbul": "BAH",
+    "Balkan Botevgrad": "BLK",
+    "Basquet Manresa": "MAN", "Kids&Us Manresa": "MAN",
+    "Buducnost Podgorica": "BUD", "Buducnost VOLI Podgorica": "BUD",
+    "KK Bosna Royal Sarajevo": "BOS",
+    "BOSNA BH Telecom Sarajevo": "BOS",
+    "Maxima Roma": "MRO",
+    "PAOK BC": "PAO", "PAOK Thessaloniki": "PAO",
+    "Skyliners Frankfurt": "FRA",
+    "Ulm Basketball": "ULM", "ratiopharm ulm": "ULM",
+    "Universitatea Cluj": "CLU", "U-BT Cluj-Napoca": "CLU",
+}
+
+
+def _names_eurocup(competition):
+    """True when a market's FanDuel competition string names
+    the EuroCup ("EuroCup" on the saved slate). An EXACT
+    match, never a prefix: "Eurocup - Women" is a different
+    competition (the women's EuroCup) and must never route
+    here, and neither may the EuroLeague above it."""
+    return str(competition or "").strip().lower() == "eurocup"
+
+
+def resolve_eurocup_team(query, ratings=None):
+    """Full FanDuel name (or a bare code) -> the EuroCup
+    fit's club code, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_euroleague_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_eurocup()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_EUROCUP_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build K: FanDuel files Greece A1 fixtures under the
+# Basketball page too (competition "Greece - A1"). The lane
+# (data/v5-greece-a1.json, tools/fit_greece_a1.py) keys on
+# the league's own ESAKE club ids (the official Game
+# Center's stable keys — hex ids, glossed in the fit file's
+# "teams" map), so the name -> id map mirrors
+# FD_EUROCUP_TEAM_CODES. FanDuel's name forms come first
+# (verified against the saved slate); the source-side Greek
+# forms ride along as aliases. Every id verified as a key
+# of the shipped v5-greece-a1 fit.
+FD_GREECE_A1_TEAM_CODES = {
+    "Olympiacos BC": "00000002", "ΟΛΥΜΠΙΑΚΟΣ": "00000002",
+    "Panathinaikos BC": "00000001",
+    "ΠΑΝΑΘΗΝΑΪΚΟΣ AKTOR": "00000001",
+    "ΠΑΝΑΘΗΝΑΪΚΟΣ": "00000001",
+    "AEK Athens": "00000010", "AEK BC": "00000010",
+    "ΑΕΚ": "00000010",
+    "Aris BC": "00000005", "ΑΡΗΣ": "00000005",
+    "PAOK BC": "0000000C", "ΠΑΟΚ": "0000000C",
+    "Peristeri BC": "0000000D", "ΠΕΡΙΣΤΕΡΙ": "0000000D",
+    "Promitheas Patras BC": "2A25C696",
+    "ΠΡΟΜΗΘΕΑΣ ΠΑΤΡΑΣ": "2A25C696",
+    "AO Kolossos Rodou": "0000000A",
+    "Kolossos Rodou": "0000000A", "ΚΟΛΟΣΣΟΣ": "0000000A",
+    "Maroussi BC": "0000000F", "ΜΑΡΟΥΣΙ": "0000000F",
+    "ASK Karditsas BC": "B742845D", "ΚΑΡΔΙΤΣΑ": "B742845D",
+    "Iraklis Thessaloniki": "00000011", "ΗΡΑΚΛΗΣ": "00000011",
+    "AO Mykonos BC": "BB4B460F", "ΜΥΚΟΝΟΣ": "BB4B460F",
+    "AE Doxa Lefkadas": "3CA10C07",
+    "ΔΟΞΑ ΛΕΥΚΑΔΑΣ": "3CA10C07",
+    "Vikos Falcons BC": "0041ADCB", "VIKOS ΦALCONS": "0041ADCB",
+}
+
+
+def _names_greece_a1(competition):
+    """True when a market's FanDuel competition string
+    names the Greek A1 ("Greece - A1" on the saved slate).
+    An EXACT match, never a prefix: no other competition on
+    the page shares the string, and a looser test could one
+    day catch a namesake (the EuroCup guard, one lane up)."""
+    return str(competition or "").strip().lower() == \
+        "greece - a1"
+
+
+def resolve_greece_a1_team(query, ratings=None):
+    """Full FanDuel name (or a bare ESAKE id) -> the Greece
+    A1 fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_eurocup_team's contract,
+    one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_greece_a1()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_GREECE_A1_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
 def resolve_nfl_team(query, ratings=None):
     """Full FanDuel name (or a bare code) -> the NFL lane's code,
     via FD_NFL_TEAM_CODES (defined with the menu stack; resolved
@@ -2927,6 +3051,8 @@ def prop_from_scoring_plays(player, stat_name, line, side, price):
 NBA_FIT_PATH = os.path.join(DATA, "v5-nba.json")
 WNBA_FIT_PATH = os.path.join(DATA, "v5-wnba.json")
 EUROLEAGUE_FIT_PATH = os.path.join(DATA, "v5-euroleague.json")
+EUROCUP_FIT_PATH = os.path.join(DATA, "v5-eurocup.json")
+GREECE_A1_FIT_PATH = os.path.join(DATA, "v5-greece-a1.json")
 MLB_FIT_PATH = os.path.join(DATA, "v5-mlb.json")
 TENNIS_FIT_PATH = os.path.join(DATA, "v5-tennis.json")
 MMA_FIT_PATH = os.path.join(DATA, "v5-mma.json")
@@ -3120,6 +3246,50 @@ def euroleague_lane_gate(fit):
     bt = fit.get("backtest") or {}
     if not _exam_passed(bt):
         return (f"EuroLeague lane FAILED-EXAM — walk-forward "
+                f"Brier {bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def load_eurocup():
+    return _load_json_cached(EUROCUP_FIT_PATH)
+
+
+def eurocup_lane_gate(fit):
+    """The EuroCup lane's gate stamp, or None when the lane
+    may price (the euroleague_lane_gate pattern): the fit is
+    missing, or its walk-forward exam failed. ONE helper
+    read by the checker and by coverage, so the two layers
+    can never tell different stories about this lane."""
+    if fit is None:
+        return "EuroCup fit not run (tools/fit_eurocup.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"EuroCup lane FAILED-EXAM — walk-forward "
+                f"Brier {bt.get('brier')} did not beat the naive "
+                f"baseline {bt.get('naive_brier')}, "
+                f"n={bt.get('n')}; lane does not price until "
+                f"a refit passes")
+    return None
+
+
+def load_greece_a1():
+    return _load_json_cached(GREECE_A1_FIT_PATH)
+
+
+def greece_a1_lane_gate(fit):
+    """The Greece A1 lane's gate stamp, or None when the
+    lane may price (the eurocup_lane_gate pattern): the fit
+    is missing, or its walk-forward exam failed. ONE helper
+    read by the checker and by coverage, so the two layers
+    can never tell different stories about this lane."""
+    if fit is None:
+        return "Greece A1 fit not run (tools/fit_greece_a1.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Greece A1 lane FAILED-EXAM — walk-forward "
                 f"Brier {bt.get('brier')} did not beat the naive "
                 f"baseline {bt.get('naive_brier')}, "
                 f"n={bt.get('n')}; lane does not price until "
@@ -3672,6 +3842,131 @@ def euroleague_price(home, away, kind, side="home", line=None,
     return (p_cover_home if side == "home"
             else 1 - p_cover_home), \
         {"detail": f"EuroLeague margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def eurocup_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted EuroCup
+    lane — wnba_probs' body on the EuroCup fit (the home
+    bump is the fit's own fitted hfa_elo param). None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_eurocup_team(home, R)
+    away = resolve_eurocup_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def eurocup_price(home, away, kind, side="home", line=None,
+                  competition=None):
+    """The EuroCup lane's answer for a fixture FanDuel files
+    under "nba" (Build K). Returns None when the market's
+    COMPETITION does not name the EuroCup or the market form
+    is outside this lane (moneyline / spread / alt-spread
+    only — totals keep their own route) — the caller then
+    proceeds exactly as it did before this lane existed.
+    Otherwise the lane's (p, info) or (None, reason),
+    engine_price's own shapes, gated by eurocup_lane_gate.
+
+    The discriminator is the competition field, NEVER the
+    team set: these clubs also play domestic leagues and the
+    EuroLeague (PAOK and Aris play the Greek A1; several
+    EuroCup clubs are EuroLeague alumni), and a fixture
+    filed under its own competition must not route here."""
+    if not _names_eurocup(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_eurocup()
+    gate = eurocup_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = eurocup_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the EuroCup fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"EuroCup Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"EuroCup margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def greece_a1_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Greece
+    A1 lane — wnba_probs' body on the Greece A1 fit (the
+    home bump is the fit's own fitted hfa_elo param). None
+    when a name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_greece_a1_team(home, R)
+    away = resolve_greece_a1_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def greece_a1_price(home, away, kind, side="home", line=None,
+                    competition=None):
+    """The Greece A1 lane's answer for a fixture FanDuel
+    files under "nba" (Build K). Returns None when the
+    market's COMPETITION does not name the Greece A1 or the
+    market form is outside this lane (moneyline / spread /
+    alt-spread only — totals keep their own route) — the
+    caller then proceeds exactly as it did before this lane
+    existed. Otherwise the lane's (p, info) or (None,
+    reason), engine_price's own shapes, gated by
+    greece_a1_lane_gate.
+
+    The discriminator is the competition field, NEVER the
+    team set: these clubs also play the EuroLeague and the
+    EuroCup (Olympiacos and Panathinaikos above all), and a
+    fixture filed under its own competition must not route
+    here."""
+    if not _names_greece_a1(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_greece_a1()
+    gate = greece_a1_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = greece_a1_probs(fit, home, away)
+    if pr is None:
+        return None, f"team not in the Greece A1 fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Greece A1 Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward Brier "
+                       f"{bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Greece A1 margin map N({mu:+.1f}, "
                    f"{sd:.1f}) (in-sample map — FRAGILE "
                    f"lineage)",
          "fragile": True}
@@ -5632,6 +5927,42 @@ def universal_coverage(markets, data_dir=None):
                         is not None:
                     continue
                 return f"team not in the EuroLeague fit: {t}"
+            if sport == "nba" and _names_eurocup(
+                    mkt.get("competition")):
+                # Build K: the EuroCup lane prices its own
+                # fixtures — coverage reads the same gate +
+                # resolver the checker prices through
+                # (eurocup_lane_gate / resolve_eurocup_team),
+                # so the two layers tell one story. Keyed on
+                # the market's competition field, never the
+                # team set.
+                ufit = load_eurocup()
+                gate = eurocup_lane_gate(ufit)
+                if gate:
+                    return gate
+                if resolve_eurocup_team(
+                        t, (ufit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the EuroCup fit: {t}"
+            if sport == "nba" and _names_greece_a1(
+                    mkt.get("competition")):
+                # Build K: the Greece A1 lane prices its own
+                # fixtures — coverage reads the same gate +
+                # resolver the checker prices through
+                # (greece_a1_lane_gate /
+                # resolve_greece_a1_team), so the two layers
+                # tell one story. Keyed on the market's
+                # competition field, never the team set.
+                gfit = load_greece_a1()
+                gate = greece_a1_lane_gate(gfit)
+                if gate:
+                    return gate
+                if resolve_greece_a1_team(
+                        t, (gfit or {}).get("ratings") or {}) \
+                        is not None:
+                    continue
+                return f"team not in the Greece A1 fit: {t}"
             comp = OTHER_COMPETITION_TEAMS.get(t)
             if comp == "WNBA" and sport == "nba":
                 # Build I: the WNBA lane prices its own
@@ -5850,8 +6181,10 @@ SPORT_FIT_NOTES = {
     "nba": "NBA Elo + margin map (Basketball page; the WNBA "
            "prices off its own Elo fit — v5-wnba.json, Build I; "
            "the EuroLeague off its own — v5-euroleague.json, "
-           "Build J; other competitions on that page — "
-           "NBL/CBA — are not the NBA fit)",
+           "Build J; the EuroCup off its own — "
+           "v5-eurocup.json, Build K; Greece A1 off its own "
+           "— v5-greece-a1.json, Build K; other competitions "
+           "on that page — NBL/CBA — are not the NBA fit)",
     "nhl": "NHL Elo, moneyline (Ice Hockey page; AHL/NCAA "
            "hockey on that page are not the NHL fit)",
     "mlb": "MLB Elo + runs model, moneyline (v5-mlb.json; "
@@ -6349,6 +6682,30 @@ def engine_price(sport, kind, home, away, side="home", line=None,
                                    competition)
             if epr is not None:
                 return epr
+            # Build K: a EuroCup fixture filed under this
+            # page routes to the EuroCup lane (its own fitted
+            # Elo lane, exam-gated through eurocup_lane_gate)
+            # before the competition stamp — the same
+            # resolver-first order. The lane keys on the
+            # market's competition field, never the team set,
+            # so domestic fixtures of the same clubs fall
+            # through untouched.
+            upr = eurocup_price(home, away, kind, side, line,
+                                competition)
+            if upr is not None:
+                return upr
+            # Build K: a Greece A1 fixture filed under this
+            # page routes to the Greece A1 lane (its own
+            # fitted Elo lane, exam-gated through
+            # greece_a1_lane_gate) before the competition
+            # stamp — the same resolver-first order. The lane
+            # keys on the market's competition field, never
+            # the team set, so European fixtures of the same
+            # clubs fall through untouched.
+            gpr = greece_a1_price(home, away, kind, side, line,
+                                  competition)
+            if gpr is not None:
+                return gpr
             # R4: name the real competition when FanDuel filed
             # a WNBA / NBL / CBA fixture under the NBA page —
             # the same stamp coverage prints (one helper).
