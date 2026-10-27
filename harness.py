@@ -18,6 +18,7 @@ Run:  python harness.py            (exit 0 = all checks pass)
 """
 import asyncio
 import hashlib
+import io
 import json
 import os
 import sys
@@ -26,15 +27,13 @@ import threading
 import time
 from types import SimpleNamespace
 
+from PIL import Image as _PIL_Image
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 STORAGE = tempfile.mkdtemp(prefix="betfixii-harness-")
 os.environ["FLET_APP_STORAGE_DATA"] = STORAGE
-# v12.9: the harness exercises the app exactly as build 29 —
-# the diagnostic ladder is gated OFF for every check below
-# (the flag-on boot has its own subprocess check at the end).
-os.environ["BETFI_DIAGNOSTIC"] = "0"
 MENU = os.path.join(HERE, "data", "menu-fanduel-20261019-1232.json")
 with open(MENU) as f:
     _rec = json.load(f)
@@ -167,171 +166,14 @@ def texts(ctrl):
     return out
 
 
-_LADDER_RUNNER_SRC = '''
-import asyncio
-import json
-import os
-import sys
-import tempfile
-import threading
-import time
-from types import SimpleNamespace
-
-HERE = sys.argv[1]
-MENU = sys.argv[2]
-sys.path.insert(0, HERE)
-
-STORAGE = tempfile.mkdtemp(prefix="betfixii-ladder-")
-os.environ["FLET_APP_STORAGE_DATA"] = STORAGE
-os.environ["BETFI_DIAGNOSTIC"] = "1"
-with open(MENU) as f:
-    _rec = json.load(f)
-with open(os.path.join(STORAGE, "Bet_Finder-last-pull.json"),
-          "w") as f:
-    json.dump(_rec, f)
-
-
-class FakePage:
-    # The harness probe-page convention, copied: run_thread
-    # inline (workers complete synchronously), run_task
-    # EXECUTES coroutines to completion (build 31 — the
-    # board/finds renders arrive as dispatched coroutines).
-    def __init__(self):
-        self.controls = []
-        self.overlay = []
-        self.navigation_bar = None
-        self.services = []
-        self.title = None
-        self.bgcolor = None
-        self.theme_mode = None
-        self.padding = None
-        self.spacing = None
-        self.scroll = None
-        self.updates = 0
-
-    def add(self, *controls):
-        self.controls.extend(controls)
-
-    def update(self, *args, **kwargs):
-        self.updates += 1
-
-    def run_thread(self, fn, *args, **kwargs):
-        return fn(*args, **kwargs)
-
-    def run_task(self, fn, *args, **kwargs):
-        # Execute the coroutine to completion on a fresh
-        # loop; exceptions are recorded in task_errors,
-        # never raised at the call site (a real run_task
-        # schedules — the scheduler never sees them).
-        out = fn(*args, **kwargs)
-        if asyncio.iscoroutine(out):
-            errs = self.__dict__.setdefault("task_errors", [])
-            try:
-                asyncio.get_running_loop()
-                nested = True
-            except RuntimeError:
-                nested = False
-            if nested:
-                def _drive():
-                    lp = asyncio.new_event_loop()
-                    try:
-                        lp.run_until_complete(out)
-                    except Exception as ex:  # noqa: BLE001
-                        errs.append(ex)
-                    finally:
-                        lp.close()
-                _t = threading.Thread(target=_drive)
-                _t.start()
-                _t.join()
-            else:
-                lp = asyncio.new_event_loop()
-                try:
-                    lp.run_until_complete(out)
-                except Exception as ex:  # noqa: BLE001
-                    errs.append(ex)
-                finally:
-                    lp.close()
-        return None
-
-
-def walk(ctrl, depth=0):
-    yield ctrl
-    if depth > 40:
-        return
-    for attr in ("controls", "content"):
-        v = getattr(ctrl, attr, None)
-        if isinstance(v, (list, tuple)):
-            for c in v:
-                yield from walk(c, depth + 1)
-        elif v is not None and not isinstance(
-                v, (str, int, float, bool)):
-            yield from walk(v, depth + 1)
-
-
-def all_texts(page):
-    out = []
-    for root in page.controls:
-        for c in walk(root):
-            if type(c).__name__ == "Text":
-                s = getattr(c, "value", None) or ""
-                if s:
-                    out.append(s)
-    return out
-
-
-def has(page, needle):
-    return any(needle in t for t in all_texts(page))
-
-
-def main():
-    import main as app
-    assert app.DIAGNOSTIC_LADDER is True, "gate not on"
-    page = FakePage()
-    app.main(page)
-    # A rides the initial tree; D1-D3, F and E are seated by
-    # the boot render (the boot worker runs inline on the
-    # fake page and renders the seeded slate).
-    for needle in ("DIAGNOSTIC LADDER", "TEST A", "TEST D1",
-                   "TEST D2", "TEST D3", "TEST F", "TEST E"):
-        assert has(page, needle), f"missing {needle}"
-    print("LADDER A/D/E/F OK")
-    # B: tap the ladder button, on the event thread.
-    btn = None
-    for root in page.controls:
-        for c in walk(root):
-            if type(c).__name__ == "Button" and \\
-                    getattr(c, "content", None) == \\
-                    "Add TEST B card":
-                btn = c
-    assert btn is not None, "B button not found"
-    btn.on_click(SimpleNamespace(control=btn))
-    assert has(page, "TEST B"), "TEST B missing after tap"
-    print("LADDER B OK")
-    # C: the worker lands ~3 s after the board first shows.
-    deadline = time.time() + 10
-    while time.time() < deadline:
-        if has(page, "TEST C"):
-            break
-        time.sleep(0.25)
-    assert has(page, "TEST C"), "TEST C never arrived"
-    print("LADDER C OK")
-    print("LADDER-OK")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
-'''
-
-
 def main():
     import flet as ft
     import main as app
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.10.0", app.APP_VERSION == "12.10.0")
-    check("BUILD_NUMBER is 31", app.BUILD_NUMBER == 31)
+    check("APP_VERSION is 12.11.0", app.APP_VERSION == "12.11.0")
+    check("BUILD_NUMBER is 32", app.BUILD_NUMBER == 32)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -498,26 +340,44 @@ def main():
     _show_dd0.on_select(SimpleNamespace(
         control=SimpleNamespace(value="all")))
     all_texts = texts(cards_view)
+    # v12.11 re-home: cards are drawn images now — the board
+    # renders market cards when its list holds
+    # GestureDetectors whose images decode at the ImageBoard
+    # row geometry.
+    _dets0 = [c for c in walk(cards_view)
+              if type(c).__name__ == "GestureDetector"]
     check("board renders market cards",
-          any("Find it:" in t for t in all_texts))
-    card = next(c for c in walk(cards_view)
-                if any("Find it:" in t for t in texts(c))
-                and type(c).__name__ == "Container")
-    ct = texts(card)
-    # v12.8: the card is BetFi 11's — every face row is its
-    # own Text again, so F1 order is measured by entry index
-    # in the card's text list (the v12.5-v12.7 span/face-string
-    # adaptations are retired with the cards they described).
-    _i_path = next(i for i, t in enumerate(ct)
+          bool(_dets0) and all(
+              _PIL_Image.open(io.BytesIO(
+                  c.content.src)).size == (1170, 177)
+              for c in _dets0))
+    card = _dets0[0]
+    # F1 order is measured on the card's line plan (the
+    # readable form of the expanded drawing): the market /
+    # selection headline prints above the FanDuel path, and
+    # the path itself is carried. The plan's market is
+    # identified by byte-matching the collapsed draw.
+    _m0 = _v0 = None
+    for _mm, _vv in zip(_rec["markets"], b5.run_slate(_rec)):
+        if app._card_png_collapsed(
+                _mm, _vv, app.market_edge_pts(_mm, _vv)
+                ) == card.content.src:
+            _m0, _v0 = _mm, _vv
+            break
+    _plan0 = app._card_line_plan(
+        _m0, _v0, _rec, app.game_quotes(_rec["markets"]),
+        edge_pts=app.market_edge_pts(_m0, _v0),
+        lane_ctx=app.lane_contexts(_rec["markets"]))
+    _i_path = next(i for i, t in enumerate(_plan0)
                    if t.startswith("Find it:"))
     check("F1 order: market/selection print above the FD path",
           _i_path > 0 and any(
-              h in ct[i]
+              h in _plan0[i]
               for i in range(_i_path)
               for h in ("Moneyline", "Point Spread",
                         "Total Points")))
     check("F1: card carries a FanDuel navigation path",
-          any(t.startswith("FanDuel \u2192 ") for t in ct))
+          any("FanDuel \u2192 " in t for t in _plan0))
     check("v12.4 re-pin (was F3 first-render animation): a "
           "filter re-render does not replay entrances \u2014 cards "
           "arrive static; the animated first render is pinned "
@@ -525,29 +385,27 @@ def main():
           getattr(card, "opacity", 1) == 1
           and getattr(card, "animate_opacity", None) is None)
 
-    # v12.8: 11's construction, asserted as coded \u2014 the root
-    # carries 11's depth shadow (the v12.5 FLAT pin and the
-    # v12.7 typographic pins are RETIRED: they described cards
-    # the Pilot has replaced; the fixture pin below is now the
-    # card's structural guard), no gradient off GOLDEN, and
-    # the depth is 11's four ExpansionTiles in 11's order.
-    check("v12.8: card root is 11's construction \u2014 depth "
-          "shadow present, gradient only on GOLDEN BET",
-          getattr(card, "shadow", None) is not None
-          and getattr(card, "gradient", None) is None)
-    _tiles8 = [c for c in walk(card)
-               if type(c).__name__ == "ExpansionTile"]
-    check("v12.8: card depth is 11's four ExpansionTiles "
+    # v12.11 re-home (the v12.8 widget-construction pins are
+    # retired with the widget card system): the card's
+    # structure is the drawing itself, and its depth is the
+    # four sections in order, whose anatomy leads with the
+    # verdict line and carries state + calibration tag.
+    _secs0 = app._depth_sections(
+        _m0, _v0, _rec, app.game_quotes(_rec["markets"]),
+        edge_pts=app.market_edge_pts(_m0, _v0),
+        lane_ctx=app.lane_contexts(_rec["markets"]))
+    check("v12.11: card depth is the four sections "
           "(PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE)",
-          [getattr(t.title, "value", None) for t in _tiles8]
+          [t for t, _ls in _secs0]
           == ["PRICE ANATOMY", "SCALE", "COHERENCE",
               "PROVENANCE"],
-          f"tiles={[getattr(t.title, 'value', None) for t in _tiles8]}")
+          f"sections={[t for t, _ls in _secs0]}")
     check("v12.8: 11's anatomy leads with the verdict line "
           "and carries state + calibration tag",
-          any("state:" in t for t in texts(_tiles8[0]))
-          and any("calibration tag:" in t
-                  for t in texts(_tiles8[0])))
+          any(ln.startswith("state:")
+              for ln in _secs0[0][1])
+          and any(ln.startswith("calibration tag:")
+                  for ln in _secs0[0][1]))
 
     # finds segment: the golden panel is honest on this slate
     seg = next(c for c in walk(board)
@@ -1541,18 +1399,19 @@ def main():
           any("Coverage" in t for t in texts(switcher.content)))
     page.navigation_bar.on_change(SimpleNamespace(
         control=SimpleNamespace(selected_index=0)))
-    # v12.8 RETIRED: "panel cross-nav: a card's Chart
-    # affordance opens the Charts segment" — the Chart button
-    # was a v12-only card affordance (on_chart); BetFi 11's
-    # cards have none, and the build_card_safe adapter drops
-    # on_chart by design. The replacement assertion: 11's
-    # cards on the board carry NO Chart TextButton.
+    # v12.11 re-home (was the v12.8 no-Chart-TextButton pin):
+    # the drawn card's affordances ARE its action zones —
+    # the exposed zone labels are the whole inventory, and
+    # no Chart action is among them (on_chart is still
+    # dropped at the build_card_safe adapter, as in 11).
     check("v12.8: cards carry no Chart affordance (11 had "
-          "none — on_chart is dropped at the adapter)",
-          not any(type(c).__name__ == "TextButton"
-                  and getattr(c, "content", "")
-                  == "Chart — see this market in the 3D panel"
-                  for c in walk(switcher.content)))
+          "none \u2014 on_chart is dropped at the adapter)",
+          list(app._CARD_ACTION_LABELS)
+          == ["COPY LABEL", "SLIP", "COLLAPSE"]
+          and not any(type(c).__name__ == "TextButton"
+                      and "Chart" in str(
+                          getattr(c, "content", ""))
+                      for c in walk(switcher.content)))
 
     # ---------- v12.1 feel / QoL ----------
     import inspect as _inspect
@@ -1562,11 +1421,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.10 version unified: README release line",
-          "12.10.0 (build 31)" in _readme)
-    check("v12.10 version unified: workflow build args",
-          '--build-version "12.10.0"' in _wf
-          and '--build-number "31"' in _wf)
+    check("v12.11 version unified: README release line",
+          "12.11.0 (build 32)" in _readme)
+    check("v12.11 version unified: workflow build args",
+          '--build-version "12.11.0"' in _wf
+          and '--build-number "32"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -1657,9 +1516,9 @@ def main():
               if type(c).__name__ == "Column"]
     cards_list3 = max(_lists, key=lambda c: sum(
         1 for x in getattr(c, "controls", [])
-        if type(x).__name__ == "Container"))
+        if type(x).__name__ == "GestureDetector"))
     _cards3 = [x for x in cards_list3.controls
-               if type(x).__name__ == "Container"]
+               if type(x).__name__ == "GestureDetector"]
     # v12.8 RETIRED: "v12.4.1 re-pin (was v12.1 entrance
     # gates): the first-8 entrance is OFFSET-ONLY..." — 11's
     # cards had no entrance at all, and the port gates
@@ -1679,8 +1538,9 @@ def main():
                   for c in _cards3))
     # v12.7.1: the render receipt seated beside cards_count is
     # written by that very render — it must name exactly the
-    # cards the drive appended (the Container children of the
-    # board's card list; headers are Columns, empties are Rows).
+    # cards the drive appended (the GestureDetector children
+    # of the board's card list; headers are Images, empties
+    # are Rows).
     _receipt3 = next(
         (c for c in walk(cards3)
          if type(c).__name__ == "Text"
@@ -2290,35 +2150,55 @@ def main():
     _n_nfl = sum(1 for m in _snap5["markets"]
                  if m.get("sport") == "nfl")
     _find_ct = sum(1 for c in walk(cards5)
-                   if any("Find it:" in t for t in texts(c))
-                   and type(c).__name__ == "Container")
+                   if type(c).__name__ == "GestureDetector")
     check("v12.4: sport-view drive shows only NFL cards",
           _find_ct == min(_n_nfl, app.CARD_PAGE),
           f"cards={_find_ct} nfl={_n_nfl}")
     # v12.4.3 armor: poison ONE sport's builds — the board
-    # must keep the other sport's real cards AND show the
-    # fallback card carrying the error on its face (the
-    # device blank-board failure mode, made impossible and
-    # self-reporting).
-    _orig_bmc = app.build_market_card
+    # must keep the other sport's real cards AND land the
+    # drawn fallback row for the poisoned sport (the device
+    # blank-board failure mode, made impossible and
+    # self-reporting). v12.11 re-home: the poison seam is
+    # the internal builder (_card_control); the fallback is
+    # asserted as a drawn image — a bare Image child of the
+    # card list whose bytes equal a direct fallback draw
+    # for some poisoned-sport market, decoding at row
+    # geometry — and real detector cards survive beside it.
+    _orig_bmc = app._card_control
 
     def _poison(mkt, verdict, rec, quotes, **kw):
         if mkt.get("sport") == "ncaaf":
             raise RuntimeError("probe-boom")
         return _orig_bmc(mkt, verdict, rec, quotes, **kw)
-    app.build_market_card = _poison
+    app._card_control = _poison
     try:
         _sv5.on_select(SimpleNamespace(
             control=SimpleNamespace(value="all")))
     finally:
-        app.build_market_card = _orig_bmc
-    _txt5b = texts(cards5)
+        app._card_control = _orig_bmc
+    _lists5b = [c for c in walk(cards5)
+                if type(c).__name__ == "Column"]
+    _clist5b = max(_lists5b, key=lambda c: sum(
+        1 for x in getattr(c, "controls", [])
+        if type(x).__name__ == "GestureDetector"))
+    _fb_expect = {
+        app._card_fallback_png(_m, _v,
+                               RuntimeError("probe-boom"))
+        for _m, _v in zip(_snap5["markets"],
+                          b5.run_slate(_snap5,
+                                       print_out=False))
+        if _m.get("sport") == "ncaaf"}
+    _fb_landed = [x for x in _clist5b.controls
+                  if type(x).__name__ == "Image"
+                  and getattr(x, "src", None) in _fb_expect]
     check("v12.4.3 armor: a raising card build cannot empty "
           "the board — fallback card prints the error, real "
           "cards survive",
-          any("card failed to build" in t
-              and "probe-boom" in t for t in _txt5b)
-          and any("Find it:" in t for t in _txt5b))
+          bool(_fb_landed)
+          and _PIL_Image.open(io.BytesIO(
+              _fb_landed[0].src)).size == (1170, 177)
+          and any(type(x).__name__ == "GestureDetector"
+                  for x in _clist5b.controls))
 
     # the serialization smoke gate's coverage, kept: the
     # golden startup view shrinks the boot tree (0 cards on
@@ -2361,14 +2241,16 @@ def main():
                         _hits5 += _set_hits(getattr(_c5, _f5.name))
                     except Exception:
                         pass
-    check("v12.8 re-pin (was v12.4, floor re-pinned in "
-          "v12.7): the full board tree carries no set-valued "
-          "control fields (smoke-gate coverage, kept) — the "
-          "seen floor stands at 300 (set in v12.7 when the "
-          "typographic card shrank the tree; 11's larger card "
-          "clears it with room); the gate's substance (zero "
-          "set-valued fields) is unchanged",
-          _seen5 > 300 and _hits5 == 0,
+    check("v12.11 re-pin (was v12.4, floor re-pinned in "
+          "v12.7 and kept in v12.8): the full board tree "
+          "carries no set-valued control fields (smoke-gate "
+          "coverage, kept) — the seen floor is re-pinned "
+          "to 80 in v12.11: an image card is two controls "
+          "(detector + image) where 11's widget card was "
+          "dozens, so the same fully-driven tree now walks "
+          "at 95; the gate's substance (zero set-valued "
+          "fields) is unchanged",
+          _seen5 > 80 and _hits5 == 0,
           f"seen={_seen5} hits={_hits5}")
 
     # the splash builder: emblem + wordmark + gold sweep, and
@@ -2416,14 +2298,15 @@ def main():
           and "page.update" not in _hw)
 
     # ---------- v12.6 motion (gold checks re-pinned in
-    # v12.8: cards are BetFi 11's — the gold lives in 11's
-    # gradient wash + verdict pill; view-level settles and
-    # the glow-owned pulse key stand) ----------
+    # v12.11: cards are drawn pictures — the gold lives in
+    # the drawing (stripe + wash on Board rows, border +
+    # wash on Finds tickets); view-level settles and the
+    # glow-owned pulse key stand) ----------
     # Fabricate GOLDEN BET cards on page5's board: the first
     # two markets the patched builder sees get an injected
     # GOLDEN BET verdict (the fixture pull has none). The
     # board is at Show=all / sport=all from the v12.4 drives.
-    _orig_bmc6 = app.build_market_card
+    _orig_bmc6 = app._card_control
     _orig_distill6 = app.distill_finds
     _gold_keys6 = []
     _gold_set6 = set()
@@ -2449,7 +2332,7 @@ def main():
         _rest = [t for t in _f if _mkey6(t[0]) not in _gold_set6]
         return _moved + _g, _rest, _fl, _c
 
-    app.build_market_card = _gold_bmc
+    app._card_control = _gold_bmc
     try:
         # pull-order sort for this drive: the accumulated
         # slate prices to many real goldens and the verdict
@@ -2469,47 +2352,38 @@ def main():
                        == "Price Slate")
         _price6.on_click(SimpleNamespace())
     finally:
-        app.build_market_card = _orig_bmc6
+        app._card_control = _orig_bmc6
     _lists6 = [c for c in walk(cards5)
                if type(c).__name__ == "Column"]
     _clist6 = max(_lists6, key=lambda c: sum(
         1 for x in getattr(c, "controls", [])
-        if type(x).__name__ == "Container"))
+        if type(x).__name__ == "GestureDetector"))
     _cards6 = [x for x in _clist6.controls
-               if type(x).__name__ == "Container"]
+               if type(x).__name__ == "GestureDetector"]
     _gcard6 = _cards6[0] if _cards6 else None
-    # v12.8 RETIRED: the v12.7 gold-span check, the v12.6
-    # golden-entrance (scale settle) check and the v12.6
-    # non-golden offset-entrance check — all described v12
-    # card constructions the Pilot has replaced. 11's golden
-    # construction is asserted instead, as coded in 68854ee.
-    _gpill6 = next(
-        (c for c in walk(_gcard6)
-         if type(c).__name__ == "Container"
-         and getattr(c, "bgcolor", None)
-         == app.VERDICT_BG["GOLDEN BET"]
-         and any(getattr(t, "value", None) == "GOLDEN BET"
-                 and getattr(t, "color", None) == "#FFD700"
-                 for t in walk(c)
-                 if type(t).__name__ == "Text")),
-        None) if _gcard6 is not None else None
-    check("v12.8: a golden card is 11's construction \u2014 the "
-          "gold gradient wash (#191405 -> CARD_BG), 11's depth "
-          "shadow, and the GOLDEN BET pill on its verdict tint "
-          "with gold text; no data tag, no entrance/bloom state",
-          _gcard6 is not None
-          and getattr(_gcard6, "gradient", None) is not None
-          and list(_gcard6.gradient.colors)
-              == ["#191405", app.CARD_BG]
-          and getattr(_gcard6, "shadow", None) is not None
-          and _gpill6 is not None
-          and getattr(_gcard6, "data", None) is None
-          and _gcard6.animate_scale is None
-          and _gcard6.animate_offset is None
-          and getattr(_gcard6, "opacity", 1) == 1)
+
+    def _stripe6(c):
+        return _PIL_Image.open(io.BytesIO(
+            c.content.src)).getpixel((4, 88))
+    _gold6 = next((c for c in _cards6
+                   if _stripe6(c) == (245, 196, 81)), None)
+    _gim6 = _PIL_Image.open(io.BytesIO(
+        _gold6.content.src)) if _gold6 is not None else None
+    _wash6 = _gim6.getpixel((600, 6)) if _gim6 else None
+    check("v12.11: a golden card is a drawn row \u2014 gold "
+          "stripe, gold wash across the top rows, no data "
+          "tag, no entrance/bloom state (re-homes the "
+          "v12.8 construction pin)",
+          _gold6 is not None
+          and _wash6 is not None
+          and _wash6 != app._rgb(app.CARD_BG)
+          and _wash6[0] > 30
+          and getattr(_gold6, "data", None) is None
+          and _gold6.animate_scale is None
+          and _gold6.animate_offset is None
+          and getattr(_gold6, "opacity", 1) == 1)
     _plain6 = next((c for c in _cards6
-                    if getattr(c, "gradient", None) is None),
-                   None)
+                    if _stripe6(c) != (245, 196, 81)), None)
     check("v12.8: non-golden cards carry no entrance state "
           "either (no scale, no offset animation)",
           _plain6 is not None
@@ -2525,7 +2399,7 @@ def main():
 
     # Finds: route the same two markets into the golden
     # loop — the pulse set must lead with the glow bar.
-    app.build_market_card = _gold_bmc
+    app._card_control = _gold_bmc
     app.distill_finds = _gold_distill
     try:
         _seg6 = next(c for c in walk(board5)
@@ -2533,7 +2407,7 @@ def main():
         _seg6.on_change(SimpleNamespace(
             control=SimpleNamespace(selected={"finds"})))
     finally:
-        app.build_market_card = _orig_bmc6
+        app._card_control = _orig_bmc6
         app.distill_finds = _orig_distill6
     _betfi6 = bsw5[0].content
     _tg6f = app._PULSE_TARGETS.get("golden") or []
@@ -2544,18 +2418,18 @@ def main():
           and _tg6f[0].height == 6
           and _tg6f[0].bgcolor == app.GOLD,
           f"targets={len(_tg6f)}")
+    def _gold_ticket6(c):
+        _im = _PIL_Image.open(io.BytesIO(c.content.src))
+        return _im.size == (1170, 408) \
+            and _im.getpixel((2, 204)) == (245, 196, 81) \
+            and _im.getpixel((600, 6)) != app._rgb(app.CARD_BG)
     _fcards6 = [c for c in walk(_betfi6)
-                if type(c).__name__ == "Container"
-                and getattr(c, "gradient", None) is not None
-                and list(c.gradient.colors)
-                == ["#191405", app.CARD_BG]]
-    check("v12.8: a Finds golden card is 11's construction "
-          "\u2014 gold gradient wash + the GOLDEN BET pill",
-          len(_fcards6) >= 1
-          and list(_fcards6[0].gradient.colors)
-              == ["#191405", app.CARD_BG]
-          and any(t == "GOLDEN BET"
-                  for t in texts(_fcards6[0])))
+                if type(c).__name__ == "GestureDetector"
+                and _gold_ticket6(c)]
+    check("v12.11: a Finds golden card is a drawn ticket "
+          "\u2014 gold border + gold wash on the ticket "
+          "(re-homes the v12.8 construction pin)",
+          len(_fcards6) >= 1)
     check("v12.6: the board segment switch settles the "
           "incoming segment view (scale + offset animations "
           "armed, two-update)",
@@ -2611,55 +2485,10 @@ def main():
     # the card entrance: no opacity assignment anywhere in
     # its body (source pin)
     _si = _src[_src.index("def _settle_in"):
-               _src.index("def build_market_card")]
+               _src.index("def build_card_safe")]
     check("v12.6: _settle_in never touches opacity "
           "(source pin — the load-bearing-visibility rule)",
           ".opacity" not in _si)
-
-    # ---------- v12.8: the card is BetFi 11's ----------
-    # Permanent guard: the shipped build_market_card + _tile
-    # + the card's private labels must AST-match the verbatim
-    # 68854ee extraction in harness_fixtures/ forever (the
-    # shipped card's one adapted token, _v11_SPORT_LABELS, is
-    # normalized back to SPORT_LABELS for the comparison, and
-    # the private labels' VALUE must equal 11's dict exactly).
-    import ast as _ast8
-
-    def _fn_dump8(_path, _name, _norm=None):
-        _tree = _ast8.parse(open(_path).read())
-        for _n in _tree.body:
-            if isinstance(_n, _ast8.FunctionDef) \
-                    and _n.name == _name:
-                if _norm:
-                    for _x in _ast8.walk(_n):
-                        if isinstance(_x, _ast8.Name) \
-                                and _x.id == _norm[0]:
-                            _x.id = _norm[1]
-                return _ast8.dump(_n)
-        return None
-
-    def _assign_dump8(_path, _name):
-        _tree = _ast8.parse(open(_path).read())
-        for _n in _tree.body:
-            if isinstance(_n, _ast8.Assign):
-                for _t in _n.targets:
-                    if isinstance(_t, _ast8.Name) \
-                            and _t.id == _name:
-                        return _ast8.dump(_n.value)
-        return None
-
-    _fix8 = os.path.join(HERE, "harness_fixtures",
-                         "v11_card_reference.py")
-    _main8 = os.path.join(HERE, "main.py")
-    check("v12.8: card code is BetFi 11's, byte-for-byte "
-          "(fixture)",
-          _fn_dump8(_main8, "build_market_card",
-                    _norm=("_v11_SPORT_LABELS", "SPORT_LABELS"))
-          == _fn_dump8(_fix8, "build_market_card")
-          and _fn_dump8(_main8, "_tile")
-          == _fn_dump8(_fix8, "_tile")
-          and _assign_dump8(_main8, "_v11_SPORT_LABELS")
-          == _assign_dump8(_fix8, "SPORT_LABELS"))
 
     # ---------- v12.7.1 one lock ----------
     # Every screen update is serialized through ONE module
@@ -2743,11 +2572,11 @@ def main():
                if type(c).__name__ == "Column"]
     _clist7 = max(_lists7, key=lambda c: sum(
         1 for x in getattr(c, "controls", [])
-        if type(x).__name__ == "Container"))
+        if type(x).__name__ == "GestureDetector"))
 
     def _card_count7():
         return sum(1 for x in _clist7.controls
-                   if type(x).__name__ == "Container")
+                   if type(x).__name__ == "GestureDetector")
     _expected7 = _card_count7()
 
     class _HammerCtrl:
@@ -2810,47 +2639,6 @@ def main():
           f"errors={_errors7!r} final={_card_count7()} "
           f"expected={_expected7}")
 
-    # ---------- v12.9 diagnostic ladder ----------
-    check("v12.9: ladder gate exists in source and "
-          "defaults off (build 31 retired the ladder to "
-          "opt-in)",
-          "DIAGNOSTIC_LADDER = os.environ.get(" in _src
-          and '"BETFI_DIAGNOSTIC", "0") == "1"' in _src
-          and "def _diag_card(" in _src
-          and "def _diag_render_block(" in _src)
-    check("v12.9: this harness runs flag-off (the gate "
-          "reads off)",
-          app.DIAGNOSTIC_LADDER is False)
-    _off_texts = []
-    for _c in page.controls:
-        _off_texts += texts(_c)
-    check("v12.9: flag off — no ladder anywhere on the "
-          "board (build 29 behavior)",
-          not any(_m in t for t in _off_texts
-                  for _m in ("DIAGNOSTIC LADDER", "TEST A",
-                             "TEST B", "TEST C", "TEST D1",
-                             "TEST E", "TEST F")),
-          f"sample={_off_texts[:4]!r}")
-    import subprocess as _sp
-    _runner_path = os.path.join(STORAGE, "ladder_runner.py")
-    with open(_runner_path, "w") as _rf:
-        _rf.write(_LADDER_RUNNER_SRC)
-    try:
-        _proc = _sp.run(
-            [sys.executable, _runner_path, HERE, MENU],
-            capture_output=True, text=True, timeout=240)
-        _ladder_ok = (_proc.returncode == 0
-                      and "LADDER-OK" in _proc.stdout)
-        _ladder_detail = (
-            _proc.stdout + _proc.stderr)[-600:]
-    except Exception as _e:
-        _ladder_ok = False
-        _ladder_detail = f"subprocess error: {_e!r}"
-    check("v12.9: flag-on boot seats the full ladder — A "
-          "initial tree, B tap-added, C worker-added, "
-          "D1-D3 render path, E image, F nested",
-          _ladder_ok, _ladder_detail)
-
     # ---------- v12.10 event-loop batched applier ----------
     check("v12.10: batched applier present — _run_apply + "
           "_dispatch_apply exist, jobs are dispatched via "
@@ -2900,11 +2688,11 @@ def main():
                 if type(c).__name__ == "Column"]
     _clist10 = max(_lists10, key=lambda c: sum(
         1 for x in getattr(c, "controls", [])
-        if type(x).__name__ == "Container"))
+        if type(x).__name__ == "GestureDetector"))
 
     def _card_count10():
         return sum(1 for x in _clist10.controls
-                   if type(x).__name__ == "Container")
+                   if type(x).__name__ == "GestureDetector")
     _before10 = page10.updates
     _price10.on_click(SimpleNamespace())
     _delta10 = page10.updates - _before10
@@ -2980,6 +2768,290 @@ def main():
           and _landed10b == [1],
           f"landed={_landed10} resets={_resets10} "
           f"mid-stream={_landed10b}")
+
+    # ---------- v12.11: the ImageBoard (the mix) ----------
+    # Board = Design C rows; Finds + Parse = Design B
+    # tickets. (f) armor is covered above by the re-homed
+    # v12.4.3 check (poisoned _card_control -> drawn
+    # fallback row, byte-matched, real cards survive).
+    # (a) the widget card system is gone from the source,
+    # pillow is pinned, the bundled fonts exist.
+    check("v12.11: widget card system deleted from source "
+          "(no card builder, no depth-tile helper, no "
+          "diagnostic ladder)",
+          "def build_market_card" not in _src
+          and "def _tile(" not in _src
+          and "DIAGNOSTIC_LADDER" not in _src
+          and "def _diag_" not in _src)
+    check("v12.11: pillow pinned in requirements and the "
+          "bundled DejaVu faces exist in assets/fonts",
+          "pillow==13.0.0" in _req
+          and all(os.path.exists(os.path.join(
+              HERE, "assets", "fonts", _ff)) for _ff in (
+                  "DejaVuSans.ttf", "DejaVuSans-Bold.ttf",
+                  "DejaVuSansMono.ttf",
+                  "DejaVuSansMono-Bold.ttf")))
+
+    # (b) renderer determinism + geometry + pixels, BOTH
+    # drawers, on one fixture market/verdict.
+    _pairs11 = [(m, v) for m, v in zip(
+        _rec["markets"], b5.run_slate(_rec, print_out=False))
+        if v.get("p") is not None
+        and m.get("price") is not None]
+    _m11, _v11 = _pairs11[0]
+    _e11 = app.market_edge_pts(_m11, _v11)
+    _c11a = app.draw_row_c(_m11, _v11, _e11)
+    _c11b = app.draw_row_c(_m11, _v11, _e11)
+    _cim11 = _PIL_Image.open(io.BytesIO(_c11a))
+    _b11a = app.draw_ticket_b(_m11, _v11, _e11)
+    _b11b = app.draw_ticket_b(_m11, _v11, _e11)
+    _bim11 = _PIL_Image.open(io.BytesIO(_b11a))
+    check("v12.11: Design C row is deterministic, exactly "
+          "1170x177, stripe pixel is the verdict color, "
+          "headline zone carries ink-bright pixels",
+          _c11a == _c11b and _cim11.size == (1170, 177)
+          and _cim11.getpixel((4, 88))
+          == app._card_accent_rgb(_v11)
+          and any(max(_px) > 200 for _px in
+                  _cim11.crop((42, 24, 540, 66)).getdata()))
+    check("v12.11: Design B ticket is deterministic, "
+          "exactly 1170x408, selection zone carries "
+          "ink-bright pixels",
+          _b11a == _b11b and _bim11.size == (1170, 408)
+          and any(max(_px) > 200 for _px in
+                  _bim11.crop((51, 84, 750, 150)).getdata()))
+    _gv11 = dict(_v11)
+    _gv11.update(verdict="GOLDEN BET", state="PRICED",
+                 p=0.62, grade="A")
+    _gc11 = _PIL_Image.open(io.BytesIO(
+        app.draw_row_c(_m11, _gv11, 5.0)))
+    _gb11 = _PIL_Image.open(io.BytesIO(
+        app.draw_ticket_b(_m11, _gv11, 5.0)))
+    _bg_rgb11 = app._rgb(app.CARD_BG)
+    check("v12.11: GOLDEN draws carry the gold — C: gold "
+          "stripe + wash; B: gold border + wash",
+          _gc11.getpixel((4, 88)) == (245, 196, 81)
+          and _gc11.getpixel((600, 6)) != _bg_rgb11
+          and _gc11.getpixel((600, 6))[0] > 30
+          and _gb11.getpixel((2, 204)) == (245, 196, 81)
+          and _gb11.getpixel((600, 6)) != _bg_rgb11
+          and _gb11.getpixel((600, 6))[0] > 30)
+    check("v12.11: skeletons draw in both silhouettes "
+          "(C row 1170x177, B ticket block 1170x408)",
+          _PIL_Image.open(io.BytesIO(
+              app.skeleton_cards()[0].src)).size
+          == (1170, 177)
+          and _PIL_Image.open(io.BytesIO(
+              app.skeleton_cards(2, "B")[0].src)).size
+          == (1170, 408))
+
+    # (c)+(d)+(e): one fresh boot drives the standard
+    # Price Slate path; every card on the Board byte-matches
+    # a direct Design C draw, every card on Finds a direct
+    # Design B draw; taps expand (byte-equal to direct
+    # expanded draws) and the SLIP zone routes to the
+    # Protected Slip panel.
+    app._CARD_DETAILS_OPEN.clear()
+    page11 = FakePage()
+    app.main(page11)
+    sw11 = page11.controls[1]
+    board11 = sw11.content
+    bsw11 = [c for c in walk(board11)
+             if type(c).__name__ == "AnimatedSwitcher"]
+    cards11 = bsw11[0].content
+    _show11 = next(c for c in walk(cards11)
+                   if type(c).__name__ == "Dropdown"
+                   and [o.key for o in c.options]
+                   == [k for k, _t in app.SHOW_MODES])
+    _show11.on_select(SimpleNamespace(
+        control=SimpleNamespace(value="all")))
+
+    def _btn_label11(c):
+        ct = getattr(c, "content", None)
+        if isinstance(ct, str):
+            return ct
+        return getattr(ct, "value", None)
+    _price11 = next(c for c in walk(cards11)
+                    if type(c).__name__ == "Button"
+                    and _btn_label11(c) == "Price Slate")
+    _price11.on_click(SimpleNamespace())
+    # The app's slate at this point in the run is the
+    # CURRENT last-pull file (earlier drives grow the
+    # accumulated snapshot) — the integration maps are
+    # built from the very record the app just priced.
+    _fresh11 = json.load(open(os.path.join(
+        STORAGE, "Bet_Finder-last-pull.json")))
+    _mkts11 = _fresh11["markets"]
+    _vrd11 = b5.run_slate(_fresh11, print_out=False)
+    _q11 = app.game_quotes(_mkts11)
+    _ctx11 = app.lane_contexts(_mkts11)
+    _cmap11 = {}
+    for _m, _v in zip(_mkts11, _vrd11):
+        _cmap11[app.draw_row_c(
+            _m, _v, app.market_edge_pts(_m, _v))] = (_m, _v)
+
+    def _board_dets11():
+        _ls = [c for c in walk(cards11)
+               if type(c).__name__ == "Column"]
+        _cl = max(_ls, key=lambda c: sum(
+            1 for x in getattr(c, "controls", [])
+            if type(x).__name__ == "GestureDetector"))
+        return [x for x in _cl.controls
+                if type(x).__name__ == "GestureDetector"]
+    _dets11 = _board_dets11()
+    _receipt11 = next(
+        (c for c in walk(cards11)
+         if type(c).__name__ == "Text"
+         and (getattr(c, "value", "") or "")
+         .startswith("Rendered:")), None)
+    check("v12.11: board integration — every Board card is "
+          "a GestureDetector whose image byte-matches a "
+          "direct Design C draw of the same inputs, and "
+          "the receipt names the count",
+          bool(_dets11)
+          and all(c.content.src in _cmap11 for c in _dets11)
+          and all(_PIL_Image.open(io.BytesIO(
+              c.content.src)).size == (1170, 177)
+              for c in _dets11)
+          and _receipt11 is not None
+          and _receipt11.value
+          == f"Rendered: {len(_dets11)} cards on this board",
+          f"dets={len(_dets11)} receipt="
+          f"{getattr(_receipt11, 'value', None)}")
+
+    def _tap11(det, x, y):
+        det.on_tap(SimpleNamespace(
+            control=det,
+            local_position=SimpleNamespace(x=x, y=y)))
+    # (d) C expansion: byte-equal to a direct expanded draw.
+    _det11 = _dets11[0]
+    _m11b, _v11b = _cmap11[_det11.content.src]
+    _tap11(_det11, 100, 10)
+    _dets11x = _board_dets11()
+    _exp_c11 = app._card_png_expanded(
+        _m11b, _v11b, _fresh11, _q11,
+        edge_pts=app.market_edge_pts(_m11b, _v11b),
+        lane_ctx=_ctx11)[0]
+    _xdet11 = next((c for c in _dets11x
+                    if c.content.src == _exp_c11), None)
+    check("v12.11: tapping a Board row expands it — the "
+          "replacement image byte-matches a direct expanded "
+          "draw and is taller than the row",
+          _xdet11 is not None
+          and app._card_key(_m11b) in app._CARD_DETAILS_OPEN
+          and _PIL_Image.open(io.BytesIO(
+              _xdet11.content.src)).size[1] > 177)
+    _tap11(_xdet11, 100, 10)
+    check("v12.11: tapping the expanded row's body "
+          "collapses it back to the collapsed draw",
+          app._card_key(_m11b) not in app._CARD_DETAILS_OPEN
+          and any(c.content.src == _det11.content.src
+                  for c in _board_dets11()))
+    app._CARD_DETAILS_OPEN.clear()
+
+    # Finds: segment over, then the same integration on B.
+    _seg11 = next(c for c in walk(board11)
+                  if type(c).__name__ == "SegmentedButton")
+    _seg11.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"finds"})))
+    _betfi11 = bsw11[0].content
+    _g11, _f11, _fl11, _c11 = app.distill_finds(
+        _mkts11, _vrd11)
+    _bmap11 = {}
+    for _m, _v, _e in _g11:
+        _bmap11[app.draw_ticket_b(_m, _v, _e)] = (_m, _v, _e, None)
+    for _i, (_m, _v, _e) in enumerate(_f11[:app.CARD_PAGE], start=1):
+        _bmap11[app.draw_ticket_b(_m, _v, _e)] = (_m, _v, _e, _i)
+    for _m, _v, _e in _fl11:
+        _bmap11[app.draw_ticket_b(_m, _v, _e)] = (_m, _v, _e, None)
+
+    def _finds_dets11():
+        return [c for c in walk(_betfi11)
+                if type(c).__name__ == "GestureDetector"]
+    _fdets11 = _finds_dets11()
+    check("v12.11: finds integration — every Finds card "
+          "byte-matches a direct Design B draw and decodes "
+          "at ticket geometry",
+          bool(_fdets11)
+          and all(c.content.src in _bmap11 for c in _fdets11)
+          and all(_PIL_Image.open(io.BytesIO(
+              c.content.src)).size == (1170, 408)
+              for c in _fdets11),
+          f"finds dets={len(_fdets11)}")
+    # (d) B expansion: byte-equal to a direct expanded
+    # ticket draw, taller than the ticket.
+    _fdet11 = _fdets11[0]
+    _fm11, _fv11, _fe11, _fr11 = _bmap11[_fdet11.content.src]
+    _tap11(_fdet11, 100, 10)
+    _exp_b11 = app._card_png_expanded(
+        _fm11, _fv11, _fresh11, _q11, rank=_fr11,
+        edge_pts=_fe11, lane_ctx=_ctx11, design="B")[0]
+    _fxdet11 = next((c for c in _finds_dets11()
+                     if c.content.src == _exp_b11), None)
+    check("v12.11: tapping a Finds ticket expands it — "
+          "the replacement image byte-matches a direct "
+          "expanded ticket draw and is taller than the "
+          "ticket",
+          _fxdet11 is not None
+          and app._card_key(_fm11) in app._CARD_DETAILS_OPEN
+          and _PIL_Image.open(io.BytesIO(
+              _fxdet11.content.src)).size[1] > 408)
+    # (e) the SLIP zone on the expanded ticket routes to
+    # the Slip view, whose Protected Slip panel populates
+    # through the app's own path; the card stays expanded.
+    _tap11(_fxdet11, 195, _fxdet11.content.height - 10)
+    _all11 = []
+    for _r in page11.controls:
+        _all11 += texts(_r)
+    check("v12.11: the expanded ticket's SLIP zone opens "
+          "the Slip view and the Protected Slip panel "
+          "populates (its header prints); the card itself "
+          "stays expanded",
+          any("PROTECTED SLIP — PLACEMENT-READY" in t
+              for t in _all11)
+          and app._card_key(_fm11) in app._CARD_DETAILS_OPEN)
+    app._CARD_DETAILS_OPEN.clear()
+    page11.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=0)))
+
+    # Parse surface: a pasted bet that matches the pull
+    # lands as a Design B ticket.
+    page11.navigation_bar.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected_index=1)))
+    _slip11 = sw11.content
+    _pf11 = next(c for c in walk(_slip11)
+                 if type(c).__name__ == "TextField")
+    _pb11 = next(c for c in walk(_slip11)
+                 if type(c).__name__ == "Button"
+                 and _btn_label11(c) == "Parse")
+    _pdet11 = None
+    for _m, _v in zip(_mkts11, _vrd11):
+        if _m.get("sport") != "nfl" \
+                or _m.get("market") != "spread" \
+                or _m.get("line") is None \
+                or float(_m["line"]) >= 0 \
+                or _m.get("price") is None:
+            continue
+        _pf11.value = (
+            f"{app.team_name(_m, _m.get('side') or 'home')} "
+            f"{float(_m['line']):+g} "
+            f"({int(_m['price']):+d})")
+        _pb11.on_click(SimpleNamespace())
+        _pd = [c for c in walk(_slip11)
+               if type(c).__name__ == "GestureDetector"]
+        if _pd:
+            _pdet11 = _pd[0]
+            break
+    check("v12.11: the Parse match card is a Design B "
+          "ticket (1170x408 draw)",
+          _pdet11 is not None
+          and _PIL_Image.open(io.BytesIO(
+              _pdet11.content.src)).size == (1170, 408)
+          and _pdet11.content.src in {
+              app.draw_ticket_b(_m, _v,
+                                app.market_edge_pts(_m, _v))
+              for _m, _v in zip(_mkts11, _vrd11)},
+          f"parse det={_pdet11 is not None}")
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

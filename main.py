@@ -114,6 +114,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import io
 import json
 import os
 import re
@@ -147,6 +148,19 @@ try:
     import flet_audio as _flet_audio
 except Exception:  # extension absent -> sound layer off, silently
     _flet_audio = None
+
+# v12.11: the ImageBoard's drawing engine. Pillow is pinned in
+# requirements.txt; the import is still guarded — if it is
+# somehow absent on a device build, build_card_safe degrades
+# to a minimal text control instead of crashing the board.
+try:
+    from PIL import Image as _PILImage
+    from PIL import ImageDraw as _PILDraw
+    from PIL import ImageFont as _PILFont
+    _PIL_OK = True
+except Exception:  # pragma: no cover - device-build guard
+    _PILImage = _PILDraw = _PILFont = None
+    _PIL_OK = False
 
 SOUND_VOLUME = 0.30   # hard cap: no Audio control ever sits above
 SOUND_FILES = {"tick": "assets/sounds/tick.wav",
@@ -339,24 +353,9 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.10.0"
-BUILD_NUMBER = 31
+APP_VERSION = "12.11.0"
+BUILD_NUMBER = 32
 DISPLAY_NAME = "BetFi Xii"
-# v12.9 DIAGNOSTIC LADDER gate (build 30 is a diagnostic
-# build): on the Pilot's phone, build 28's cards paint as
-# full-height EMPTY containers — the gradient and the box
-# render at full size, no child content ever paints — while
-# two real clients render the same code fully. The failure
-# lives at a layer no headless check can see, so this build
-# seats a ladder of minimal test cards on the board, one per
-# add-path (initial tree / tap / worker thread / the render
-# path / extra nesting / image content), and ONE device
-# screenshot bisected it — only the tap-added rung ever
-# painted. Build 31 retires the ladder to opt-in: default
-# OFF; BETFI_DIAGNOSTIC=1 re-arms it (the harness runs
-# flag-off except its dedicated ladder boot).
-DIAGNOSTIC_LADDER = os.environ.get(
-    "BETFI_DIAGNOSTIC", "0") == "1"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
 # user starts the first pull, so the loop idles until the
@@ -707,79 +706,6 @@ def stop_pulse(key):
 _SPLASH_PARTS = {}
 
 
-def _diag_border():
-    # A real card's edge grammar: a heavy accent left edge
-    # over the hairline border on the other three sides.
-    return ft.Border(
-        left=ft.BorderSide(5, ACCENT),
-        top=ft.BorderSide(1, BORDER),
-        right=ft.BorderSide(1, BORDER),
-        bottom=ft.BorderSide(1, BORDER))
-
-
-def _diag_card(label, note):
-    """One diagnostic ladder rung (v12.9): a real card's shape
-    grammar — Container > Column > texts + a pill — carrying
-    zero engine data, so its paint (or absence) on device
-    indicts the delivery layer, never the content."""
-    return ft.Container(
-        bgcolor=CARD_BG, border=_diag_border(),
-        border_radius=12, padding=12,
-        content=ft.Column(spacing=6, controls=[
-            ft.Text(f"TEST {label}", size=20,
-                    weight=ft.FontWeight.BOLD, color=INK),
-            ft.Text(note, size=12, color=DIM),
-            ft.Container(
-                content=ft.Text("PILL", size=11,
-                                color="#FFFFFF"),
-                bgcolor="#7C3AED", padding=6,
-                border_radius=8)]))
-
-
-def _diag_image_card():
-    """TEST E: an image (the splash emblem's own asset
-    reference, src="assets/icon.png" as build_splash loads
-    it) over a text line — image content is the one card
-    ingredient no text rung exercises."""
-    return ft.Container(
-        bgcolor=CARD_BG, border=_diag_border(),
-        border_radius=12, padding=12,
-        content=ft.Column(spacing=6, controls=[
-            ft.Image(src="assets/icon.png",
-                     width=96, height=96,
-                     fit=ft.BoxFit.COVER),
-            ft.Text("TEST E — image above, text below",
-                    size=12, color=INK)]))
-
-
-def _diag_nested_card():
-    """TEST F: a ladder card wrapped in three extra
-    Container > Column levels — if depth is what the phone's
-    client drops, F fails while its shallow siblings paint."""
-    inner = _diag_card(
-        "F", "Nested three levels deeper than a normal card.")
-    for _ in range(3):
-        inner = ft.Container(
-            padding=4, content=ft.Column([inner]))
-    return inner
-
-
-def _diag_render_block():
-    """The render-path rungs, prepended by render_cards in
-    order: D1–D3 (the standard path, three times — one card
-    painting proves little about a list), TEST F (depth),
-    TEST E (image). Real cards render after the ladder."""
-    return [
-        _diag_card("D1", "Added by render_cards, the "
-                         "standard path."),
-        _diag_card("D2", "Added by render_cards, the "
-                         "standard path."),
-        _diag_card("D3", "Added by render_cards, the "
-                         "standard path."),
-        _diag_nested_card(),
-        _diag_image_card()]
-
-
 def build_splash():
     """The startup splash (9a; artist MOTION §1.1, staged up in
     v12.4 — "more pop"): the app emblem (assets/icon.png) at a
@@ -911,11 +837,12 @@ SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
                 "lacrosse": "Lacrosse", "snooker": "Snooker",
                 "table-tennis": "Table Tennis"}
 
-# v12.8: BetFi 11's SPORT_LABELS, private to the ported v11
-# card. The standing SPORT_LABELS above grew extra sports in
-# v12 (R2 labels for the wider menu tree) and other surfaces
-# read it; the v11 card must keep 11's exact lookup, so its
-# one labels read goes through this private copy instead.
+# BetFi 11's SPORT_LABELS, kept for the card's event line.
+# The standing SPORT_LABELS above grew extra sports in v12
+# (R2 labels for the wider menu tree) and other surfaces
+# read it; the card (11's, now the ImageBoard's row) keeps
+# 11's exact lookup for its league label, so its one labels
+# read goes through this private copy instead.
 _v11_SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
                 "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer"}
 SPORT_ICONS = {"nfl": ft.Icons.SPORTS_FOOTBALL,
@@ -2149,37 +2076,25 @@ def market_names(mkt: dict) -> list:
 # screen.
 
 
-def skeleton_card() -> ft.Container:
-    # ICE shimmer (9e; artist §3.4): panelXray blocks + an
-    # ice-gradient sheen layer whose opacity the shimmer pulse
-    # sweeps (1200 ms sweep + 300 ms flat, peak alpha 12%, all
-    # blocks in phase on one clock). Flet gradients cannot
-    # translate without a rebuild, so the sweep is expressed as
-    # the sheen layer's opacity envelope — no per-frame layout.
-    bar = lambda w, h, c=XRAY_FILL: ft.Container(  # noqa: E731
-        width=w, height=h, bgcolor=c, border_radius=6)
-    sheen = ft.Container(
-        gradient=ft.LinearGradient(
-            begin=ft.Alignment(-1, 0), end=ft.Alignment(1, 0),
-            colors=["#007DE0FF", "#1F7DE0FF", "#007DE0FF"]),
-        opacity=0.0, border_radius=14,
-        animate_opacity=ft.Animation(
-            120, ft.AnimationCurve.EASE_IN_OUT))
-    if len(_PULSE_TARGETS["shimmer"]) < 4:
-        _PULSE_TARGETS["shimmer"].append(sheen)
-    return ft.Container(
-        bgcolor=CARD_BG, border_radius=14, padding=12,
-        border=_border_all(1, HAIRLINE),
-        content=ft.Stack(controls=[
-            ft.Column(spacing=8, controls=[
-                bar(150, 16), bar(230, 20), bar(190, 12),
-                bar(120, 26), bar(260, 12)]),
-            sheen]))
+def skeleton_card(shape="C"):
+    # v12.11: drawn, like every card surface now — gray bars
+    # on CARD_BG at the surface's own ImageBoard geometry
+    # (shape "C": the board row; shape "B": the finds
+    # ticket), no text. The old widget skeleton's ICE-shimmer
+    # sheen layer was a card-internal pulse target; it is
+    # gone with the widget card system (the shimmer pulse
+    # now has no targets and start_pulse degrades to a
+    # no-op, as designed).
+    h_dp = _TICKET_DP_H if shape == "B" else _CARD_DP_H
+    if not _PIL_OK:
+        return ft.Container(bgcolor=CARD_BG, border_radius=14,
+                            height=h_dp)
+    return ft.Image(src=_skeleton_png(shape), width=_CARD_DP_W,
+                    height=h_dp, fit=ft.BoxFit.FILL)
 
 
-def skeleton_cards(n: int = 3) -> list:
-    _PULSE_TARGETS["shimmer"] = []
-    return [skeleton_card() for _ in range(n)]
+def skeleton_cards(n: int = 3, shape: str = "C") -> list:
+    return [skeleton_card(shape) for _ in range(n)]
 
 # ------------------------------------------------------------------
 # Shared display pieces: lines, tiles, pills, chips, skeletons
@@ -2216,20 +2131,6 @@ def plain_note(text):
 def _border_all(width: float, color: str) -> ft.Border:
     side = ft.BorderSide(width, color)
     return ft.Border(top=side, right=side, bottom=side, left=side)
-
-
-def _tile(title: str, gloss: str, body_lines: list) -> ft.ExpansionTile:
-    """A depth tile: the engine's section name, a one-line plain
-    gloss under it (language report S4 — gloss, don't rename), then
-    the engine's lines."""
-    controls = [_line(gloss, 11, DIM)]
-    controls += [_line(t) for t in body_lines]
-    return ft.ExpansionTile(
-        title=ft.Text(title, size=12, color=ACCENT,
-                      weight=ft.FontWeight.BOLD),
-        controls=[ft.Container(
-            padding=8,
-            content=ft.Column(spacing=2, controls=controls))])
 
 
 def verdict_pill(term: str, unpriced: bool = False) -> ft.Container:
@@ -2429,23 +2330,15 @@ def lane_contexts(markets: list) -> dict:
 
 
 # ------------------------------------------------------------------
-# Card rendering — one builder shared by the Cards screen, the
-# BetFi finds feed and the Parse match block (a find IS a card,
-# face + collapsible depth). Anatomy order is fixed (design
-# report §2): matchup → meta → record → odds → hero probability
-# row → grade row + calibration chip → verdict + stance pills →
-# stamp / note → depth tiles. (v12.8: this is BetFi 11's own
-# header, restored with its card — see the v12.8 note at
-# build_market_card below.)
+# Shared display pieces + the card-expansion state.
 
-# Card v2 (v12.5): which cards currently show their depth
-# sections inline. Keyed by FanDuel market id when the menu
-# carried one, else (sport, away, home, name) — the toggle
-# state survives re-renders because it lives here, not on
-# the (rebuilt) controls.
-# v12.8: the ported v11 card has no details toggle, so this
-# machinery is unused by cards now; it is left in place (the
-# build_card_safe adapter accepts and ignores on_toggle).
+# Which cards currently show their depth: the ImageBoard's
+# expansion state (born as Card v2's details toggle in
+# v12.5, dormant under the v11 port, live again in v12.11).
+# Keyed by FanDuel market id when the menu carried one,
+# else (sport, away, home, market, side, player, line) —
+# the state survives re-renders because it lives here, not
+# on the (rebuilt) controls.
 _CARD_DETAILS_OPEN = set()
 
 
@@ -2480,19 +2373,177 @@ def _settle_in(page, ctrl, scale_from=0.99, dur=220,
         page.update()
 
 
-# v12.8: THE CARD IS BETFI 11'S, VERBATIM — build_market_card
-# below is 68854ee's function byte-for-byte (Pilot's order:
-# "Coded as it is in 11"), with exactly one token adapted:
-# its SPORT_LABELS read goes through _v11_SPORT_LABELS (see
-# there). Its depth is 11's four ExpansionTiles via _tile
-# (restored verbatim above); it takes no on_chart/on_toggle
-# — build_card_safe below is the adapter at that seam. The
-# harness fixture pin (harness_fixtures/v11_card_reference.py)
-# fails forever if this function's logic drifts from 11's.
-def build_market_card(mkt: dict, verdict: dict, rec: dict,
-                      quotes_by_game: dict, rank: int | None = None,
-                      edge_pts: float | None = None,
-                      lane_ctx: dict | None = None) -> ft.Container:
+# ------------------------------------------------------------------
+# v12.11: THE IMAGEBOARD — cards are drawn pictures. The widget
+# card system (BetFi 11's card builder + its depth tiles, ported
+# verbatim in v12.8) is DELETED: across builds 20–31 its content
+# never painted on the Pilot's phone — containers and gradients
+# rendered at full height, children never did, in every design,
+# thread and packaging tried. A card is now ONE PNG drawn with
+# Pillow, in the two designs the Pilot picked from the rendered
+# demos (the mix): Design C odds-board rows on the Board,
+# Design B tickets on the finds feed and the Slip parse
+# result. Stripe/headline/columns (C) or event/selection/odds
+# box (B) and the depth all reach the phone as a single image,
+# the one content type with no descendant tree for the client
+# to drop. Tapping a card swaps in its expanded drawing (the
+# depth sections as drawn text + an action bar); tap position
+# comes from the GestureDetector TapEvent's local_position
+# (verified in the installed flet 1.0.4 package), so one
+# detector carries every action as a zone.
+#
+# The depth strings are the deleted tiles' strings, factored
+# into _depth_sections BEFORE the builder was removed — the
+# words did not change, only their medium.
+
+_CARD_W = 1170          # canvas px — 390 dp at the 3x draw scale
+_CARD_H = 177           # Design C collapsed row px — 59 dp
+_TICKET_H = 408         # Design B collapsed ticket px — 136 dp
+_CARD_DP_W = 390
+_CARD_DP_H = 59
+_TICKET_DP_H = 136
+_CARD_FONT_FILES = {
+    "regular": "DejaVuSans.ttf",
+    "bold": "DejaVuSans-Bold.ttf",
+    "mono": "DejaVuSansMono.ttf",
+    "mono_bold": "DejaVuSansMono-Bold.ttf"}
+_CARD_FONT_FALLBACKS = {
+    "regular": "/system/fonts/Roboto-Regular.ttf",
+    "bold": "/system/fonts/Roboto-Bold.ttf",
+    "mono": "/system/fonts/RobotoMono-Regular.ttf",
+    "mono_bold": "/system/fonts/RobotoMono-Bold.ttf"}
+_FONT_CACHE = {}
+_CARD_ACTION_LABELS = ("COPY LABEL", "SLIP", "COLLAPSE")
+_ACTION_BAR_PX = 84     # the expanded action bar's height, px
+_CARD_HOOKS = {"refresh": None, "slip": None}
+_RENDER_STAMPS = {}     # per-card "card rendered" stamp, cached
+                        # so a card's provenance line — and its
+                        # PNG bytes — are stable across draws
+
+
+def bind_card_hooks(refresh=None, slip=None):
+    """main() binds the app's own navigation here (the
+    bind_clipboard pattern): refresh re-shows the current
+    view (a card tap toggles expansion by re-rendering
+    through the normal path); slip opens the Slip view,
+    whose Protected Slip panel is the app's slip surface."""
+    if refresh is not None:
+        _CARD_HOOKS["refresh"] = refresh
+    if slip is not None:
+        _CARD_HOOKS["slip"] = slip
+
+
+def _card_key(mkt):
+    mid = mkt.get("fd_market_id")
+    if mid:
+        return (mkt.get("sport"), mid)
+    return (mkt.get("sport"), mkt.get("away"), mkt.get("home"),
+            mkt.get("market"), mkt.get("side"),
+            mkt.get("player"), mkt.get("line"))
+
+
+def _render_stamp(key):
+    stamp = _RENDER_STAMPS.get(key)
+    if stamp is None:
+        stamp = datetime.now().astimezone().isoformat(
+            timespec="seconds")
+        _RENDER_STAMPS[key] = stamp
+    return stamp
+
+
+def _rgb(hex_color):
+    h = (hex_color or "#000000").lstrip("#")
+    if len(h) == 8:            # AARRGGBB — alpha dropped
+        h = h[2:]
+    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+
+_CARD_BG_RGB = _rgb(CARD_BG)
+_GOLD_RGB = _rgb(GOLD)
+_INK_RGB = _rgb(INK)
+_DIM_RGB = _rgb(DIM)
+_FAINT_RGB = _rgb(FAINT)
+_BORDER_RGB = _rgb(BORDER)
+_ACCENT_RGB = _rgb(ACCENT)
+_WARN_RGB = _rgb(WARN)
+_BAD_RGB = _rgb(BAD)
+
+
+def _font(kind, size):
+    """Font ladder: the bundled DejaVu faces (assets/fonts)
+    first, then Android's Roboto, then Pillow's built-in
+    default — a card must draw on any device. Cached per
+    (kind, size)."""
+    key = (kind, size)
+    fnt = _FONT_CACHE.get(key)
+    if fnt is not None:
+        return fnt
+    fnt = None
+    path = os.path.join(APP_DIR, "assets", "fonts",
+                        _CARD_FONT_FILES[kind])
+    if not os.path.exists(path):
+        path = _CARD_FONT_FALLBACKS.get(kind, "")
+    if path and os.path.exists(path):
+        try:
+            fnt = _PILFont.truetype(path, size)
+        except Exception:
+            fnt = None
+    if fnt is None:
+        try:
+            fnt = _PILFont.load_default(size)
+        except Exception:
+            fnt = _PILFont.load_default()
+    _FONT_CACHE[key] = fnt
+    return fnt
+
+
+def _textw(d, text, fnt):
+    return d.textlength(text, font=fnt)
+
+
+def _trunc(d, text, fnt, maxw):
+    if _textw(d, text, fnt) <= maxw:
+        return text
+    while text and _textw(d, text + "…", fnt) > maxw:
+        text = text[:-1]
+    return text.rstrip() + "…"
+
+
+def _fit(d, text, kind, size, maxw, floor=22):
+    """Shrink-to-fit (the demo's fit): step the size down
+    until the text fits its pixel budget."""
+    while size > floor and \
+            _textw(d, text, _font(kind, size)) > maxw:
+        size -= 2
+    return _font(kind, size)
+
+
+def _wrap_text(d, text, fnt, maxw):
+    words = str(text).split()
+    lines, cur = [], ""
+    for wd in words:
+        nxt = f"{cur} {wd}".strip()
+        if cur and _textw(d, nxt, fnt) > maxw:
+            lines.append(cur)
+            cur = wd
+        else:
+            cur = nxt
+    if cur:
+        lines.append(cur)
+    return lines or [""]
+
+
+def _png_bytes(img):
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def _card_facts(mkt, verdict, lane_ctx=None):
+    """The card's shared inputs — the deleted builder's head,
+    factored once: lane record / phi / calibration from the
+    render's precomputed lane context when present, else
+    straight from the engine."""
     lane = market_lane(mkt)
     if lane_ctx is not None and lane in lane_ctx:
         (w, l, rec_src, phi, phi_state, uncal, cal_tag) = \
@@ -2503,13 +2554,34 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         uncal = b5.lane_uncalibrated(lane)
         cal_tag = verdict.get("cal_tag") or \
             b5.calibration_tag(lane, b5.load_scorecard())
-    p = verdict.get("p")
-    grade = verdict.get("grade")
-    term, vreason = card_verdict(verdict)
-    state = verdict.get("state") or ""
-    stance = verdict.get("stance")
     if verdict.get("cal_tag"):
         cal_tag = verdict["cal_tag"]
+    term, vreason = card_verdict(verdict)
+    return {"lane": lane, "w": w, "l": l, "rec_src": rec_src,
+            "phi": phi, "phi_state": phi_state, "uncal": uncal,
+            "cal_tag": cal_tag, "p": verdict.get("p"),
+            "grade": verdict.get("grade"), "term": term,
+            "vreason": vreason,
+            "state": verdict.get("state") or "",
+            "stance": verdict.get("stance")}
+
+
+def _depth_sections(mkt, verdict, rec, quotes_by_game,
+                    lane_ctx=None, edge_pts=None):
+    """The card's depth, as data: [(title, [gloss, *lines])]
+    — the exact strings the deleted widget tiles carried
+    (PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE), gloss
+    first in each list, factored out of the old builder
+    before it was removed. The expanded drawing prints
+    these; nothing else invents card depth text."""
+    f = _card_facts(mkt, verdict, lane_ctx)
+    w, l = f["w"], f["l"]
+    rec_src, phi, phi_state = f["rec_src"], f["phi"], \
+        f["phi_state"]
+    uncal, cal_tag = f["uncal"], f["cal_tag"]
+    p, state, stance = f["p"], f["state"], f["stance"]
+    term, vreason = f["term"], f["vreason"]
+
     key = (mkt.get("sport"), mkt.get("away"), mkt.get("home"))
     quote = quotes_by_game.get(key)
     if quote and any(quote.get(k) is not None for k in
@@ -2519,101 +2591,6 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
     else:
         coh_lines = ["insufficient quotes in this pull to audit"]
 
-    face = []
-    if rank is not None:
-        face.append(_line(
-            f"FIND #{rank}"
-            + (f" · edge {edge_pts:+.1f} pts"
-               if edge_pts is not None else ""),
-            12, ACCENT, True))
-    # F1 identity block — the bet leads, the game follows:
-    # line 1 the FanDuel market name (the player on props),
-    # line 2 the selection in plain words with its price,
-    # line 3 the matchup + start time + league, then the
-    # FanDuel navigation path and the slip-label copy button.
-    name = bet_name(mkt, verdict)
-    face.append(ft.Text(name["headline"], size=17, color=INK,
-                        weight=ft.FontWeight.BOLD))
-    sel_row = [ft.Text(name["selection"], size=15, color=INK,
-                       weight=ft.FontWeight.BOLD)]
-    if mkt.get("price") is not None:
-        price = int(mkt["price"])
-        if mkt.get("sport") == "soccer":
-            # world readers price in decimal: decimal first,
-            # American in parentheses (language report W4)
-            price_txt = (f"odds "
-                         f"{b5.american_to_decimal(price):.2f} "
-                         f"({price:+d})")
-        else:
-            price_txt = f"odds {price:+d}"
-        sel_row.append(ft.Text(price_txt, size=12, color=DIM))
-    face.append(ft.Row(spacing=8, controls=sel_row))
-    meta_bits = [name["matchup"]]
-    _dt = _market_dt(mkt)
-    if _dt is not None:
-        meta_bits.append(_dt.strftime("%a %b %d · %I:%M %p")
-                         .replace(" 0", " "))
-    meta_bits.append(_v11_SPORT_LABELS.get(
-        mkt.get("sport"), (mkt.get("sport") or "?").upper()))
-    face.append(_line(" · ".join(meta_bits), 11, DIM))
-    face.append(ft.Row(
-        spacing=4, vertical_alignment=ft.CrossAxisAlignment.CENTER,
-        controls=[
-            ft.Text("Find it: ", size=11, color=FAINT,
-                    weight=ft.FontWeight.BOLD),
-            ft.Text(name["fd_path"], size=11, color=DIM),
-            ft.IconButton(
-                icon=ft.Icons.CONTENT_COPY, icon_size=15,
-                icon_color=ACCENT, width=34, height=34,
-                tooltip="Copy the exact slip label",
-                on_click=lambda e, lbl=name["slip_label"]:
-                _copy_label(e, lbl))]))
-    face.append(_line(f"Win {w} · Lose {l}   ({lane} lane record)",
-                      11, DIM))
-    # hero row: probability left (promoted), edge right, colored
-    hero = [ft.Text(
-        "Probability UNPRICED" if p is None else
-        f"Probability {p * 100:.1f}%",
-        size=20, color=WARN if p is None else INK,
-        weight=ft.FontWeight.BOLD)]
-    if p is not None and edge_pts is not None:
-        hero.append(ft.Text(
-            f"{edge_pts:+.1f} pts", size=14,
-            color=EDGE_POS if edge_pts > 0 else
-            EDGE_NEG if edge_pts < 0 else DIM,
-            weight=ft.FontWeight.BOLD))
-    face.append(ft.Row(spacing=8,
-                       alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                       controls=hero))
-    # grade row: grade stays colored TEXT (never a pill), the
-    # state beside it, the calibration chip right-aligned
-    grade_row = [
-        ft.Text(f"Grade {grade}" if grade else "Grade —",
-                size=16, color=GRADE_COLORS.get(grade or "", FAINT),
-                weight=ft.FontWeight.BOLD),
-        ft.Text(state, size=12,
-                color=DIM if state == "PRICED" else WARN,
-                weight=ft.FontWeight.BOLD)]
-    chip = cal_chip(cal_tag)
-    if chip is not None:
-        grade_row.append(ft.Container(expand=True))
-        grade_row.append(chip)
-    face.append(ft.Row(spacing=8, controls=grade_row))
-    # pill row: verdict first, stance beside it — never a stance
-    # without a verdict
-    pills = [verdict_pill(term, unpriced=(state == "UNPRICED"))]
-    sp = stance_pill(stance)
-    if sp is not None:
-        pills.append(sp)
-    face.append(ft.Row(spacing=8, controls=pills))
-    if uncal:
-        # the engine's stamp, verbatim on the face
-        face.append(_line(uncal, 11, WARN, True))
-    if verdict.get("note"):
-        face.append(_line(verdict["note"], 10, FAINT))
-
-    # the engine's verdict + its named reason lead the collapsible
-    # depth — first line, verbatim
     anatomy = []
     if vreason:
         anatomy.append(f"{term} — {vreason}")
@@ -2621,18 +2598,19 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
         anatomy.append(f"verdict: {term}")
     anatomy.append(f"state: {state}")
     if stance:
-        anatomy.append(f"stance: {stance} — the shape of the bet "
-                       f"(Terms); the verdict above decides")
+        anatomy.append(f"stance: {stance} — the shape of the "
+                       f"bet (Terms); the verdict above decides")
     anatomy.append(f"calibration tag: {cal_tag or '—'}")
     if p is not None:
-        anatomy.append(f"model probability (after calibration — "
-                       f"see Terms: phi): {p * 100:.1f}%")
+        anatomy.append(f"model probability (after calibration "
+                       f"— see Terms: phi): {p * 100:.1f}%")
     if mkt.get("price") is not None:
-        anatomy.append(f"pulled price: {int(mkt['price']):+d} "
-                       f"(implied "
-                       f"{b5.implied_prob(mkt['price']) * 100:.1f}%)"
-                       f" · decimal odds "
-                       f"{b5.american_to_decimal(int(mkt['price'])):.2f}")
+        anatomy.append(
+            f"pulled price: {int(mkt['price']):+d} "
+            f"(implied "
+            f"{b5.implied_prob(mkt['price']) * 100:.1f}%)"
+            f" · decimal odds "
+            f"{b5.american_to_decimal(int(mkt['price'])):.2f}")
     if edge_pts is not None:
         anatomy.append(f"edge: {edge_pts:+.1f} pts (model P - "
                        f"implied P at the pulled price)")
@@ -2646,12 +2624,14 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
 
     phi_params = ({k: v for k, v in phi.items() if k != "kind"}
                   if isinstance(phi, dict) else {})
-    scale = [f"phi: {phi.get('kind', '?') if isinstance(phi, dict) else '?'}"
-             f" [{phi_state}]"
-             + (f" params {phi_params}" if phi_params else ""),
-             f"lane record: {w}-{l} ({rec_src})",
-             f"calibration tag: {cal_tag or '—'}"
-             + (f" — {uncal}" if uncal else "")]
+    scale = [
+        f"phi: "
+        f"{phi.get('kind', '?') if isinstance(phi, dict) else '?'}"
+        f" [{phi_state}]"
+        + (f" params {phi_params}" if phi_params else ""),
+        f"lane record: {w}-{l} ({rec_src})",
+        f"calibration tag: {cal_tag or '—'}"
+        + (f" — {uncal}" if uncal else "")]
 
     stamp_text, _degraded = stamp_of(rec)
     provenance = [f"menu: {stamp_text}",
@@ -2664,123 +2644,578 @@ def build_market_card(mkt: dict, verdict: dict, rec: dict,
                           f"{mkt['fd_event_id']}")
     if mkt.get("fd_market_id"):
         provenance.append(f"FanDuel market id: "
-                            f"{mkt['fd_market_id']}")
+                          f"{mkt['fd_market_id']}")
     provenance.append(f"card rendered: "
-                      f"{datetime.now().astimezone().isoformat(timespec='seconds')}")
+                      f"{_render_stamp(_card_key(mkt))}")
 
-    stripe_color = UNPRICED_BORDER if state == "UNPRICED" else \
-        VERDICT_BG.get(term, BORDER)
-    gradient = None
+    return [
+        ("PRICE ANATOMY", ["where the probability came from"]
+         + anatomy),
+        ("SCALE",
+         ["phi — the fitted map that adjusts this lane's raw "
+          "probabilities toward what its record has earned"]
+         + scale),
+        ("COHERENCE",
+         ["do this game's prices agree with each other?"
+          if mkt.get("sport") != "soccer" else
+          "do this match's prices agree with each other?"]
+         + coh_lines),
+        ("PROVENANCE",
+         ["where every number came from, and when"]
+         + provenance)]
+
+
+def _card_accent_rgb(verdict):
+    term, _r = card_verdict(verdict)
+    if (verdict.get("state") or "") == "UNPRICED":
+        return _rgb(UNPRICED_BORDER)
     if term == "GOLDEN BET":
-        # the only gradient on a card: a restrained gold wash
-        # over the standing card surface (F3 depth pass)
-        gradient = ft.LinearGradient(
-            begin=ft.Alignment(0, -1), end=ft.Alignment(0, 1),
-            colors=["#191405", CARD_BG])
-    return ft.Container(
-        bgcolor=CARD_BG, gradient=gradient, border_radius=10,
-        padding=12,
-        shadow=ft.BoxShadow(blur_radius=14, spread_radius=0,
-                            color="#00000066",
-                            offset=ft.Offset(0, 4)),
-        border=ft.Border(
-            left=ft.BorderSide(3, stripe_color),
-            top=ft.BorderSide(1, BORDER),
-            right=ft.BorderSide(1, BORDER),
-            bottom=ft.BorderSide(1, BORDER)),
-        content=ft.Column(spacing=6, controls=face + [
-            _tile("PRICE ANATOMY", "where the probability came from",
-                  anatomy),
-            _tile("SCALE",
-                  "phi — the fitted map that adjusts this lane's "
-                  "raw probabilities toward what its record has "
-                  "earned", scale),
-            _tile("COHERENCE",
-                  "do this game's prices agree with each other?"
-                  if mkt.get("sport") != "soccer" else
-                  "do this match's prices agree with each other?",
-                  coh_lines),
-            _tile("PROVENANCE",
-                  "where every number came from, and when",
-                  provenance),
-        ]))
+        return _GOLD_RGB
+    return _rgb(VERDICT_COLORS.get(term or "", DIM))
 
 
-def _fallback_card(mkt: dict, verdict: dict, err: Exception):
-    """The armored stand-in (v12.4.3): when build_market_card
-    raises on a real market, the board shows THIS instead of
-    nothing — the bet's identity in plain text (every field
-    guarded on its own) and the failure itself printed on the
-    card, so a device screenshot is a complete bug report.
-    No gradient, no shadow play, no Stack, no icons: if this
-    card cannot render, nothing can."""
+def _row_texts(mkt, verdict, edge_pts=None):
+    """The collapsed row's strings (Design C): the headline
+    is the SELECTION — what you'd tap on FanDuel — with the
+    market title after the em dash (bet_name's fields, the
+    names the widget face led with); the event line is
+    matchup · start · league, the same meta the face built;
+    the ODDS column is the face's price logic shortened to
+    its column (soccer: decimal first; else American)."""
+    name = bet_name(mkt, verdict)
+    bits = [name["matchup"]]
+    _dt = _market_dt(mkt)
+    if _dt is not None:
+        bits.append(_dt.strftime("%a %b %d · %I:%M %p")
+                    .replace(" 0", " "))
+    bits.append(_v11_SPORT_LABELS.get(
+        mkt.get("sport"), (mkt.get("sport") or "?").upper()))
+    p = verdict.get("p")
+    if mkt.get("price") is None:
+        odds = "—"
+    elif mkt.get("sport") == "soccer":
+        odds = f"{b5.american_to_decimal(int(mkt['price'])):.2f}"
+    else:
+        odds = f"{int(mkt['price']):+d}"
+    return {"name": name,
+            "headline": f"{name['selection']} — "
+                        f"{name['market']}",
+            "event": " · ".join(bits),
+            "model": f"{p * 100:.0f}%" if p is not None else "—",
+            "odds": odds,
+            "edge": (f"{edge_pts:+.1f}"
+                     if edge_pts is not None else "—"),
+            "grade": verdict.get("grade") or "—"}
+
+
+def _paint_row(img, mkt, verdict, edge_pts, y0=0):
+    """Paint the Design C collapsed row onto img at vertical
+    offset y0 (the expanded image reuses it verbatim on top).
+    Geometry is the demo's card_c (780x118 at 2x) at 3x."""
+    d = _PILDraw.Draw(img)
+    term, _vreason = card_verdict(verdict)
+    accent = _card_accent_rgb(verdict)
+    if term == "GOLDEN BET":
+        # design A's golden treatment: a faint gold wash
+        # fading down from the row's top edge
+        for i in range(60):
+            a = int(36 * (1 - i / 60)) / 255.0
+            blended = tuple(
+                int(_CARD_BG_RGB[c] * (1 - a) + _GOLD_RGB[c] * a)
+                for c in range(3))
+            d.line([(0, y0 + i), (_CARD_W, y0 + i)], fill=blended)
+    d.rounded_rectangle([0, y0, _CARD_W - 1, y0 + _CARD_H - 1],
+                        radius=24, outline=_BORDER_RGB, width=3)
+    d.rounded_rectangle([0, y0 + 27, 12, y0 + _CARD_H - 27],
+                        radius=6, fill=accent)
+    texts = _row_texts(mkt, verdict, edge_pts)
+    hf = _fit(d, texts["headline"], "bold", 40, 495)
+    d.text((42, y0 + 24), _trunc(d, texts["headline"], hf, 495),
+           font=hf, fill=_INK_RGB)
+    d.text((42, y0 + 84),
+           _trunc(d, texts["event"], _font("regular", 28), 495),
+           font=_font("regular", 28), fill=_FAINT_RGB)
+    d.text((42, y0 + 126),
+           _trunc(d, term or "", _font("bold", 28), 400),
+           font=_font("bold", 28), fill=accent)
+    edge_col = _DIM_RGB
+    if edge_pts is not None and edge_pts > 0:
+        edge_col = _rgb(EDGE_POS)
+    elif edge_pts is not None and edge_pts < 0:
+        edge_col = _rgb(EDGE_NEG)
+    vf = _font("mono_bold", 39)
+    lf = _font("regular", 22)
+    for x, lab, val, col in (
+            (702, "MODEL", texts["model"], _INK_RGB),
+            (876, "ODDS", texts["odds"], _INK_RGB),
+            (1035, "EDGE", texts["edge"], edge_col),
+            (1134, "GRADE", texts["grade"], accent)):
+        d.text((x - _textw(d, val, vf), y0 + 33), val,
+               font=vf, fill=col)
+        d.text((x - _textw(d, lab, lf), y0 + 87), lab,
+               font=lf, fill=_FAINT_RGB)
+
+
+def _card_png_collapsed(mkt, verdict, edge_pts=None):
+    img = _PILImage.new("RGB", (_CARD_W, _CARD_H), _CARD_BG_RGB)
+    _paint_row(img, mkt, verdict, edge_pts)
+    return _png_bytes(img)
+
+
+# The two collapsed drawers, named as the Pilot picked them:
+# draw_row_c feeds the Board, draw_ticket_b the finds feed
+# and the Slip parse result.
+draw_row_c = _card_png_collapsed
+
+
+def _ticket_texts(mkt, verdict, edge_pts=None):
+    """The ticket's strings (Design B): the event line is
+    matchup · league · start; the huge line is the SELECTION
+    (bet_name semantics — what you'd tap on FanDuel); the
+    market title + stance sit under it; the odds box value
+    is the row's price logic (soccer: decimal first; else
+    American); the tag is the verdict term; the bottom
+    strip carries MODEL / EDGE / GRADE."""
+    name = bet_name(mkt, verdict)
+    row = _row_texts(mkt, verdict, edge_pts)
+    bits = [name["matchup"],
+            _v11_SPORT_LABELS.get(
+                mkt.get("sport"),
+                (mkt.get("sport") or "?").upper())]
+    _dt = _market_dt(mkt)
+    if _dt is not None:
+        bits.append(_dt.strftime("%a %b %d · %I:%M %p")
+                    .replace(" 0", " "))
+    stance = verdict.get("stance")
+    p = verdict.get("p")
+    strip = (f"MODEL {p * 100:.1f}%" if p is not None
+             else "MODEL —")
+    strip += (f" · EDGE {edge_pts:+.1f} PTS"
+              if edge_pts is not None else " · EDGE —")
+    strip += f" · GRADE {verdict.get('grade') or '—'}"
+    return {"name": name, "event": " · ".join(bits),
+            "selection": name["selection"],
+            "market_line": name["market"] + (
+                f"  ·  {stance}" if stance else ""),
+            "odds": row["odds"],
+            "tag": card_verdict(verdict)[0] or "",
+            "strip": strip}
+
+
+def _paint_ticket(img, mkt, verdict, edge_pts, y0=0):
+    """Paint the Design B ticket onto img at vertical
+    offset y0 (the expanded ticket reuses it verbatim on
+    top). Geometry is the demo's card_b (780x272 at 2x)
+    at 3x. GOLDEN tickets get the gold wash + gold border
+    treatment (design A's golden grammar, as on the row)."""
+    d = _PILDraw.Draw(img)
+    term, _vreason = card_verdict(verdict)
+    accent = _card_accent_rgb(verdict)
+    golden = term == "GOLDEN BET"
+    if golden:
+        for i in range(90):
+            a = int(36 * (1 - i / 90)) / 255.0
+            blended = tuple(
+                int(_CARD_BG_RGB[c] * (1 - a) + _GOLD_RGB[c] * a)
+                for c in range(3))
+            d.line([(0, y0 + i), (_CARD_W, y0 + i)], fill=blended)
+    d.rounded_rectangle(
+        [2, y0 + 2, _CARD_W - 3, y0 + _TICKET_H - 3], radius=36,
+        outline=_GOLD_RGB if golden else _BORDER_RGB, width=3)
+    texts = _ticket_texts(mkt, verdict, edge_pts)
+    x = 51
+    ef = _fit(d, texts["event"], "regular", 32, 1074)
+    d.text((x, y0 + 33), _trunc(d, texts["event"], ef, 1074),
+           font=ef, fill=_DIM_RGB)
+    sf = _fit(d, texts["selection"], "bold", 60, 705)
+    d.text((x, y0 + 84), _trunc(d, texts["selection"], sf, 705),
+           font=sf, fill=_INK_RGB)
+    d.text((x, y0 + 162),
+           _trunc(d, texts["market_line"],
+                  _font("regular", 34), 705),
+           font=_font("regular", 34), fill=_DIM_RGB)
+    # the FanDuel odds box, right: raised surface, the price
+    # huge, the book's name under it
+    bx0, by0, bx1, by1 = 813, y0 + 78, 1125, y0 + 237
+    d.rounded_rectangle([bx0, by0, bx1, by1], radius=24,
+                        fill=_rgb(RAISED), outline=_BORDER_RGB,
+                        width=3)
+    of = _font("mono_bold", 69)
+    d.text((bx0 + (312 - _textw(d, texts["odds"], of)) / 2,
+            by0 + 21), texts["odds"], font=of, fill=_INK_RGB)
+    lf2 = _font("regular", 26)
+    d.text((bx0 + (312 - _textw(d, "FANDUEL", lf2)) / 2,
+            by0 + 108), "FANDUEL", font=lf2, fill=_FAINT_RGB)
+    d.line([(x, y0 + 264), (_CARD_W - 45, y0 + 264)],
+           fill=_BORDER_RGB, width=3)
+    # the verdict tag: a filled pill in the verdict color —
+    # accent text on the accent tinted over the card surface
+    tf = _font("bold", 33)
+    tw = _textw(d, texts["tag"], tf)
+    tag_fill = tuple(
+        int(_CARD_BG_RGB[c] * (1 - 40 / 255.0)
+            + accent[c] * (40 / 255.0)) for c in range(3))
+    d.rounded_rectangle([x, y0 + 288, x + tw + 39, y0 + 345],
+                        radius=15, fill=tag_fill,
+                        outline=accent, width=3)
+    d.text((x + 20, y0 + 298), texts["tag"], font=tf,
+           fill=accent)
+    nf = _fit(d, texts["strip"], "mono_bold", 32, 1074)
+    d.text((x, y0 + 360), texts["strip"], font=nf,
+           fill=_INK_RGB)
+
+
+def draw_ticket_b(mkt, verdict, edge_pts=None):
+    """Design B collapsed: one ticket PNG (1170x408)."""
+    img = _PILImage.new("RGB", (_CARD_W, _TICKET_H),
+                        _CARD_BG_RGB)
+    _paint_ticket(img, mkt, verdict, edge_pts)
+    return _png_bytes(img)
+
+
+def _expanded_items(mkt, verdict, rec, quotes_by_game,
+                    rank=None, edge_pts=None, lane_ctx=None):
+    """The expanded card's text plan, in draw order:
+    [(kind, text)] — the face lines the collapsed row
+    compresses (find rank, lane record, the engine's
+    uncalibrated stamp and note, the FanDuel path), then the
+    four depth sections, then the action bar marker. The
+    drawer and the line plan both read this list, so what
+    the harness reads is what the phone shows."""
+    f = _card_facts(mkt, verdict, lane_ctx)
+    name = bet_name(mkt, verdict)
+    items = []
+    if rank is not None:
+        items.append(("extra",
+                      f"FIND #{rank}"
+                      + (f" · edge {edge_pts:+.1f} pts"
+                         if edge_pts is not None else "")))
+    items.append(("line",
+                  f"Win {f['w']} · Lose {f['l']}   "
+                  f"({f['lane']} lane record)"))
+    if f["uncal"]:
+        items.append(("warn", f["uncal"]))
+    if verdict.get("note"):
+        items.append(("note", verdict["note"]))
+    items.append(("fd", f"Find it: {name['fd_path']}"))
+    for title, lines in _depth_sections(
+            mkt, verdict, rec, quotes_by_game,
+            lane_ctx=lane_ctx, edge_pts=edge_pts):
+        items.append(("title", title))
+        items.append(("gloss", lines[0]))
+        for ln in lines[1:]:
+            items.append(("body", ln))
+    items.append(("actions", ""))
+    return items
+
+
+# expanded text styles: kind -> (font kind, size, color, line px)
+_EXP_STYLE = {
+    "extra": ("bold", 30, _ACCENT_RGB, 44),
+    "line": ("regular", 30, _DIM_RGB, 42),
+    "warn": ("bold", 28, _WARN_RGB, 40),
+    "note": ("regular", 26, _FAINT_RGB, 38),
+    "fd": ("regular", 28, _DIM_RGB, 40),
+    "title": ("bold", 36, _ACCENT_RGB, 54),
+    "gloss": ("regular", 28, _FAINT_RGB, 40),
+    "body": ("regular", 30, _DIM_RGB, 42)}
+
+
+def _card_png_expanded(mkt, verdict, rec, quotes_by_game,
+                       rank=None, edge_pts=None, lane_ctx=None,
+                       design="C"):
+    """The expanded drawing: the collapsed face on top
+    (the Design C row or the Design B ticket, per surface),
+    the depth below as drawn text, the action bar last.
+    Returns (png_bytes, height_px)."""
+    items = _expanded_items(mkt, verdict, rec, quotes_by_game,
+                            rank=rank, edge_pts=edge_pts,
+                            lane_ctx=lane_ctx)
+    face_h = _TICKET_H if design == "B" else _CARD_H
+    scratch = _PILDraw.Draw(_PILImage.new("RGB", (8, 8)))
+    height = face_h + 18
+    for kind, text in items:
+        if kind == "actions":
+            height += 20 + _ACTION_BAR_PX + 24
+            break
+        fk, size, _c, lh = _EXP_STYLE[kind]
+        height += lh * len(_wrap_text(
+            scratch, text, _font(fk, size), _CARD_W - 84))
+        if kind == "title":
+            height += 16
+    img = _PILImage.new("RGB", (_CARD_W, height), _CARD_BG_RGB)
+    # the expanded frame first — the face paints over its
+    # top segment with its own border (gold on GOLDEN), so
+    # the face's border treatment stays clean
+    _PILDraw.Draw(img).rounded_rectangle(
+        [0, 0, _CARD_W - 1, height - 1], radius=24,
+        outline=_BORDER_RGB, width=3)
+    if design == "B":
+        _paint_ticket(img, mkt, verdict, edge_pts)
+    else:
+        _paint_row(img, mkt, verdict, edge_pts)
+    d = _PILDraw.Draw(img)
+    y = face_h + 18
+    for kind, text in items:
+        if kind == "actions":
+            y += 20
+            d.rounded_rectangle(
+                [0, y, _CARD_W - 1, y + _ACTION_BAR_PX],
+                radius=16, fill=_rgb(RAISED))
+            lf = _font("bold", 30)
+            third = _CARD_W // 3
+            for i, lab in enumerate(_CARD_ACTION_LABELS):
+                d.text((third * i
+                        + (third - _textw(d, lab, lf)) / 2,
+                        y + (_ACTION_BAR_PX - 30) / 2), lab,
+                       font=lf, fill=_INK_RGB)
+            y += _ACTION_BAR_PX + 24
+            break
+        fk, size, color, lh = _EXP_STYLE[kind]
+        fnt = _font(fk, size)
+        for ln in _wrap_text(d, text, fnt, _CARD_W - 84):
+            d.text((42, y), ln, font=fnt, fill=color)
+            y += lh
+        if kind == "title":
+            y += 16
+    return _png_bytes(img), height
+
+
+def _card_line_plan(mkt, verdict, rec, quotes_by_game,
+                    rank=None, edge_pts=None, lane_ctx=None,
+                    design="C"):
+    """The expanded card's text lines in draw order (the
+    face's lines first, the action labels last) — the
+    readable form of the drawing; the harness pins card
+    content against this now that no widget tree exists."""
+    if design == "B":
+        tt = _ticket_texts(mkt, verdict, edge_pts)
+        plan = [tt["event"], tt["selection"],
+                tt["market_line"], tt["tag"]]
+    else:
+        texts = _row_texts(mkt, verdict, edge_pts)
+        plan = [texts["headline"], texts["event"],
+                card_verdict(verdict)[0] or ""]
+    plan += [text for kind, text in _expanded_items(
+        mkt, verdict, rec, quotes_by_game, rank=rank,
+        edge_pts=edge_pts, lane_ctx=lane_ctx)
+        if kind != "actions"]
+    plan += list(_CARD_ACTION_LABELS)
+    return plan
+
+
+def _skeleton_png(shape="C"):
+    """A drawn skeleton in the surface's own silhouette:
+    shape "C" is the board's row (1170x177), shape "B" the
+    finds ticket block (1170x408) — gray bars on CARD_BG,
+    no text."""
+    xray = _rgb(XRAY_FILL)
+    if shape == "B":
+        img = _PILImage.new("RGB", (_CARD_W, _TICKET_H),
+                            _CARD_BG_RGB)
+        d = _PILDraw.Draw(img)
+        d.rounded_rectangle([2, 2, _CARD_W - 3, _TICKET_H - 3],
+                            radius=36, outline=_BORDER_RGB,
+                            width=3)
+        for (x, y, w, h) in ((51, 33, 600, 36),
+                             (51, 90, 660, 64),
+                             (51, 168, 420, 30),
+                             (51, 288, 240, 57),
+                             (51, 360, 800, 32)):
+            d.rounded_rectangle([x, y, x + w, y + h], radius=8,
+                                fill=xray)
+        d.rounded_rectangle([813, 78, 1125, 237], radius=24,
+                            fill=xray)
+        return _png_bytes(img)
+    img = _PILImage.new("RGB", (_CARD_W, _CARD_H), _CARD_BG_RGB)
+    d = _PILDraw.Draw(img)
+    d.rounded_rectangle([0, 0, _CARD_W - 1, _CARD_H - 1],
+                        radius=24, outline=_BORDER_RGB, width=3)
+    for (x, y, w, h) in ((42, 28, 540, 44), (42, 88, 780, 34),
+                         (900, 28, 228, 44), (42, 134, 330, 24)):
+        d.rounded_rectangle([x, y, x + w, y + h], radius=8,
+                            fill=xray)
+    return _png_bytes(img)
+
+
+def _header_image(text, color_hex):
+    """A group header inside a dynamic list (the board's
+    league/date groups, the finds sections), drawn like the
+    cards: a short wide PNG — the section title (count
+    included by the caller) in the section's color on the
+    raised surface, accent rule at the left, no tap. Headers
+    outside the dynamic lists stay widgets."""
+    if not _PIL_OK:
+        return section_header(text, color_hex)
+    img = _PILImage.new("RGB", (_CARD_W, 87), _rgb(PAGE_BG))
+    d = _PILDraw.Draw(img)
+    d.rounded_rectangle([0, 0, _CARD_W - 1, 86], radius=18,
+                        fill=_rgb(RAISED))
+    d.rounded_rectangle([24, 18, 33, 69], radius=4,
+                        fill=_rgb(color_hex))
+    fnt = _font("bold", 42)
+    d.text((57, 22), _trunc(d, text, fnt, _CARD_W - 99),
+           font=fnt, fill=_rgb(color_hex))
+    return ft.Image(src=_png_bytes(img), width=_CARD_DP_W,
+                    height=29, fit=ft.BoxFit.FILL)
+
+
+def _card_fallback_png(mkt, verdict, err, design="C"):
+    """The drawn fallback (armor kept from v12.4.3): the
+    bet's identity + the failure itself, drawn on the
+    surface's own silhouette (the row on the Board, the
+    ticket block on finds/parse) — a screenshot of a
+    failure stays a complete bug report. Deterministic in
+    (market, verdict, error type/message, design) so the
+    harness can byte-match it."""
+    h = _TICKET_H if design == "B" else _CARD_H
+    img = _PILImage.new("RGB", (_CARD_W, h), _CARD_BG_RGB)
+    d = _PILDraw.Draw(img)
+    d.rounded_rectangle([0, 0, _CARD_W - 1, h - 1],
+                        radius=24, outline=_WARN_RGB, width=3)
+    d.rounded_rectangle([0, 27, 12, h - 27], radius=6,
+                        fill=_BAD_RGB)
     try:
         nm = bet_name(mkt, verdict)
-        head, sel = nm["headline"], nm["selection"]
+        head = f"{nm['selection']} — {nm['market']}"
+        match = nm["matchup"]
     except Exception:
         head = (f"{mkt.get('away') or '?'} @ "
                 f"{mkt.get('home') or '?'}")
-        sel = str(mkt.get("name") or mkt.get("market")
-                  or "market")
-    lines = [
-        ft.Text(head, size=16, color=INK,
-                weight=ft.FontWeight.BOLD),
-        ft.Text(sel, size=14, color=INK)]
-    try:
-        if mkt.get("price") is not None:
-            lines.append(ft.Text(
-                f"odds {int(mkt['price']):+d}", size=12,
-                color=DIM))
-    except Exception:
-        pass
-    try:
-        term, _r = card_verdict(verdict)
-        if term:
-            lines.append(ft.Text(term, size=13, color=GOLD,
-                                 weight=ft.FontWeight.BOLD))
-    except Exception:
-        pass
-    tb = traceback.extract_tb(err.__traceback__)
-    where = tb[-1].name if tb else "?"
-    lines.append(ft.Text(
-        f"card failed to build — {type(err).__name__}: {err} "
-        f"(in {where})", size=11, color=WARN))
-    return ft.Container(
-        bgcolor=CARD_BG, border=_border_all(1, WARN),
-        border_radius=14, padding=12,
-        content=ft.Column(spacing=6, controls=lines))
+        match = str(mkt.get("name") or mkt.get("market")
+                    or "market")
+    hf = _font("bold", 36)
+    d.text((42, 22), _trunc(d, head, hf, _CARD_W - 84),
+           font=hf, fill=_INK_RGB)
+    d.text((42, 74),
+           _trunc(d, match, _font("regular", 28), _CARD_W - 84),
+           font=_font("regular", 28), fill=_DIM_RGB)
+    msg = f"card failed to draw — {type(err).__name__}: {err}"
+    y = 116
+    for ln in _wrap_text(d, msg, _font("regular", 26),
+                         _CARD_W - 84)[:2]:
+        d.text((42, y), ln, font=_font("regular", 26),
+               fill=_WARN_RGB)
+        y += 34
+    return _png_bytes(img)
+
+
+def _card_control(mkt, verdict, rec, quotes_by_game,
+                  rank=None, edge_pts=None, lane_ctx=None,
+                  design="C"):
+    """One card = one drawn image in a GestureDetector.
+    Collapsed: the surface's face (the Design C row on the
+    Board; the Design B ticket on finds/parse). Expanded
+    (the market's key sits in _CARD_DETAILS_OPEN — one
+    state shared by both designs; each surface draws its
+    own face on top): face + depth + action bar.
+
+    Tap zones read the TapEvent's local_position (dp, origin
+    at the control's top-left — flet 1.0.4's TapEvent):
+    a collapsed card expands anywhere; an expanded card
+    collapses on a body tap, and its action bar's thirds are
+    COPY LABEL / SLIP / COLLAPSE — the deleted card's
+    affordances in drawn form: the slip-label copy button;
+    the Protected Slip (which lives on the Slip view and
+    builds itself there — the zone routes through the app's
+    own navigation, the same path the bottom nav takes);
+    the depth tiles' open state, now the COLLAPSE zone."""
+    key = _card_key(mkt)
+    name = bet_name(mkt, verdict)
+    expanded = key in _CARD_DETAILS_OPEN
+    if expanded:
+        png, height_px = _card_png_expanded(
+            mkt, verdict, rec, quotes_by_game, rank=rank,
+            edge_pts=edge_pts, lane_ctx=lane_ctx, design=design)
+    elif design == "B":
+        png = draw_ticket_b(mkt, verdict, edge_pts)
+        height_px = _TICKET_H
+    else:
+        png = _card_png_collapsed(mkt, verdict, edge_pts)
+        height_px = _CARD_H
+    height_dp = height_px / 3
+    bar_top_dp = (height_px - 24 - _ACTION_BAR_PX) / 3 \
+        if expanded else None
+
+    def _on_tap(e, _key=key, _expanded=expanded,
+                _bar_top=bar_top_dp,
+                _label=name["slip_label"]):
+        pos = getattr(e, "local_position", None)
+        x = getattr(pos, "x", None)
+        y = getattr(pos, "y", None)
+        if _expanded:
+            if y is not None and _bar_top is not None \
+                    and y >= _bar_top:
+                if x is not None and x < _CARD_DP_W / 3:
+                    _copy_label(e, _label)
+                    return
+                if x is not None and x < 2 * _CARD_DP_W / 3:
+                    hook = _CARD_HOOKS.get("slip")
+                    if hook is not None:
+                        hook()
+                    return
+            _CARD_DETAILS_OPEN.discard(_key)
+        else:
+            _CARD_DETAILS_OPEN.add(_key)
+        hook = _CARD_HOOKS.get("refresh")
+        if hook is not None:
+            hook()
+
+    return ft.GestureDetector(
+        content=ft.Image(src=png, width=_CARD_DP_W,
+                         height=height_dp, fit=ft.BoxFit.FILL),
+        on_tap=_on_tap)
 
 
 def build_card_safe(mkt: dict, verdict: dict, rec: dict,
                     quotes_by_game: dict, **kw):
-    """build_market_card with armor (v12.4.3): one market's
-    build failure can never empty the board again — the render
-    loops call THIS, never the raw builder. On device
-    (2026-10-25, builds 20–22) the board counted markets
-    correctly while their cards never appeared; the render
-    loop set the count BEFORE building and had no per-card
-    guard, so a single raising market killed the whole list
-    silently. The fallback card carries the error on its
-    face; the board survives regardless.
+    """The render loops' only door to a card (armor kept
+    from v12.4.3: one market's failure can never empty the
+    board — the count is set from the slate, and a card that
+    fails to draw lands as the drawn fallback row carrying
+    the error on its face).
 
-    v12.8 adapter: the builder behind this wrapper is BetFi
-    11's, and 11's signature takes only (mkt, verdict, rec,
-    quotes, rank, edge_pts, lane_ctx). The v12 call sites pass
-    on_chart / on_toggle as well — those are accepted here and
-    intentionally NOT forwarded (11's cards had neither a
-    Chart affordance nor a details toggle; its depth lives in
-    its own ExpansionTiles). Only the three arguments 11
-    takes are passed on."""
+    v12.11: the card behind the door is a drawn image (see
+    _card_control). The surface picks the design: design="B"
+    (the ticket) on the finds feed and the Slip parse
+    result, Design C (the odds-board row) everywhere else —
+    the default. on_chart / on_toggle are still accepted
+    and intentionally ignored, as they were under the old
+    adapter — the drawn card's depth is its expansion and
+    it carries no Chart affordance. With Pillow itself
+    absent the card degrades to a minimal text control —
+    build_card_safe never raises."""
+    design = kw.get("design", "C")
+    if not _PIL_OK:
+        try:
+            nm = bet_name(mkt, verdict)
+            label = f"{nm['selection']} — {nm['market']}"
+        except Exception:
+            label = "market card"
+        return ft.Text(
+            f"{label} — image renderer unavailable "
+            f"(Pillow missing)", size=12, color=WARN)
     try:
-        return build_market_card(
+        return _card_control(
             mkt, verdict, rec, quotes_by_game,
             rank=kw.get("rank"), edge_pts=kw.get("edge_pts"),
-            lane_ctx=kw.get("lane_ctx"))
+            lane_ctx=kw.get("lane_ctx"), design=design)
     except Exception as err:
-        return _fallback_card(mkt, verdict, err)
+        try:
+            return ft.Image(
+                src=_card_fallback_png(mkt, verdict, err,
+                                       design=design),
+                width=_CARD_DP_W,
+                height=(_TICKET_DP_H if design == "B"
+                        else _CARD_DP_H),
+                fit=ft.BoxFit.FILL)
+        except Exception:
+            return ft.Text(
+                f"card failed to draw — "
+                f"{type(err).__name__}: {err}",
+                size=11, color=WARN)
 
 
-# ------------------------------------------------------------------
 # Bet_Finder — the finds feed distillation
 
 
@@ -4096,14 +4531,6 @@ def main(page: ft.Page):
                 render_betfi()
             else:
                 render_cards()
-            # v12.9 ladder TEST C: the first time the board
-            # is shown with the flag on, arm the worker that
-            # appends its card ~3 s later (once per session).
-            if DIAGNOSTIC_LADDER and not state.get(
-                    "diag_c_fired"):
-                state["diag_c_fired"] = True
-                threading.Thread(target=_diag_worker_c,
-                                 daemon=True).start()
             # v12.6 segment transition: the incoming segment
             # settles in (two-update, scale/offset only).
             _settle_in(page, board_switcher.content)
@@ -4206,44 +4633,6 @@ def main(page: ft.Page):
     pull_age_ctrl = ft.Text("", size=11, color=DIM,
                             font_family=NUM_FONT)
     filter_chip_row = ft.Row(spacing=8, wrap=True, controls=[])
-
-    # v12.9 diagnostic ladder (flag-gated; build 29 behavior
-    # when off): TEST A's status line, TEST B's tap handler
-    # and TEST C's worker. A itself is static view structure
-    # seated at assembly; B appends to cards_list on the
-    # event thread; C appends from a background thread ~3 s
-    # after the board is first shown. Every ladder mutation
-    # rides the one lock, like every other screen update.
-    if DIAGNOSTIC_LADDER:
-        diag_status = ft.Text(
-            "ladder armed — B is tap-added, C arrives by "
-            "worker in ~3s", size=11, color=DIM)
-
-        def _diag_add_b(_e):
-            with _UPDATE_LOCK:
-                cards_list.controls.append(_diag_card(
-                    "B", "Added by your tap, on the event "
-                         "thread."))
-                diag_status.value = (
-                    "TEST B added by tap · "
-                    + time.strftime("%H:%M:%S"))
-                page.update()
-
-        def _diag_worker_c():
-            try:
-                time.sleep(3)
-                with _UPDATE_LOCK:
-                    cards_list.controls.append(_diag_card(
-                        "C", "Added by a background worker "
-                             "thread."))
-                    diag_status.value = (
-                        "TEST C added by worker · "
-                        + time.strftime("%H:%M:%S"))
-                    page.update()
-            except Exception:
-                pass
-    else:
-        diag_status = None
 
     # v12.4: the board's two filter dropdowns — the switch
     # wall's replacements. Built once here and seated in the
@@ -4572,9 +4961,6 @@ def main(page: ft.Page):
                     pull_age_ctrl.value = ""
                     filter_chip_row.controls = []
                     cards_count.value = ""
-                    if DIAGNOSTIC_LADDER:
-                        cards_list.controls = (
-                            _diag_render_block())
                     cards_list.controls.append(empty_full(
                         ft.Icons.CLOUD_OFF, "No pull yet",
                         "Tap Pull — until a live pull lands, "
@@ -4619,11 +5005,6 @@ def main(page: ft.Page):
             else:
                 _count_text = f"{len(entries)} markets"
             ordered = []
-            if DIAGNOSTIC_LADDER:
-                # v12.9 ladder: the render-path rungs ride
-                # every render, ahead of whatever the render
-                # itself seats (real cards included).
-                ordered.extend(_diag_render_block())
             if state.get("league_filter"):
                 # arrived from the 3D panel (Coverage /
                 # Registry): the filter is named, and one
@@ -4666,15 +5047,16 @@ def main(page: ft.Page):
                             1 for e in shown
                             if resolve_date_label(e[0])
                             == label)
-                        ordered.append(
-                            date_header(label, n_day))
+                        ordered.append(_header_image(
+                            f"{label} · {n_day} markets", INK))
                 elif grouped and mkt.get("sport") != last_sport:
                     last_sport = mkt.get("sport")
                     n_sport = sum(
                         1 for e in shown
                         if e[0].get("sport") == last_sport)
-                    ordered.append(
-                        sport_header(last_sport, n_sport))
+                    ordered.append(_header_image(
+                        f"{SPORT_LABELS.get(last_sport, (last_sport or '—').upper())}"
+                        f" · {n_sport} markets", INK))
                 _card = build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, on_chart=_card_chart,
@@ -4695,8 +5077,8 @@ def main(page: ft.Page):
                     "Paging is display only — every market "
                     "was priced by the same pricing pass.",
                     size=10, color=FAINT))
-            # v12.8: cards are placed EXACTLY as BetFi 11
-            # built them — 11 had no card entrance, so
+            # v12.11: cards are placed as drawn images —
+            # no card entrance exists to replay, so
             # _animate_cards stays gated OFF for card
             # children (the flag is still popped so it
             # cannot pile up). View-level settles
@@ -5187,7 +5569,7 @@ def main(page: ft.Page):
                 parse_result.controls.append(build_card_safe(
                     mkt, verdict, rec, game_quotes(markets),
                     edge_pts=market_edge_pts(mkt, verdict),
-                    lane_ctx=lane_contexts(markets),
+                    lane_ctx=lane_contexts(markets), design="B",
                     on_chart=_card_chart,
                     on_toggle=lambda: on_parse(None)))
                 parse_result.controls.append(_kelly_block(
@@ -6004,7 +6386,7 @@ def main(page: ft.Page):
             golden, finds, flagged, counter = distill_finds(
                 markets, verdicts)
             ordered = []
-            ordered.append(section_header("GOLDEN BETS", GOLD))
+            ordered.append(_header_image("GOLDEN BETS", GOLD))
             _glow = None
             if golden:
                 # the GOLDEN warm pulse (2800 ms) breathes
@@ -6029,9 +6411,10 @@ def main(page: ft.Page):
             for mkt, verdict, edge in golden:
                 ordered.append(build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
-                    lane_ctx=ctx, on_chart=_card_chart,
+                    lane_ctx=ctx, design="B",
+                    on_chart=_card_chart,
                     on_toggle=render_betfi))
-            ordered.append(section_header(
+            ordered.append(_header_image(
                 f"FINDS — verdict ladder, then edge "
                 f"({len(finds)})", ACCENT))
             if not finds:
@@ -6044,7 +6427,7 @@ def main(page: ft.Page):
                     finds[:CARD_PAGE], start=1):
                 ordered.append(build_card_safe(
                     mkt, verdict, rec, quotes, rank=i,
-                    edge_pts=edge, lane_ctx=ctx,
+                    edge_pts=edge, lane_ctx=ctx, design="B",
                     on_chart=_card_chart,
                     on_toggle=render_betfi))
             if len(finds) > CARD_PAGE:
@@ -6054,14 +6437,14 @@ def main(page: ft.Page):
                     f"holds the full list.",
                     size=11, color=FAINT))
             if flagged:
-                ordered.append(section_header(
+                ordered.append(_header_image(
                     f"PRICE CONFLICT — two prices for the same "
                     f"event disagree inside this pull "
                     f"({len(flagged)})", WARN))
                 for mkt, verdict, edge in flagged:
                     ordered.append(build_card_safe(
                         mkt, verdict, rec, quotes,
-                        edge_pts=edge, lane_ctx=ctx,
+                        edge_pts=edge, lane_ctx=ctx, design="B",
                         on_chart=_card_chart,
                         on_toggle=render_betfi))
             counter_lines = []
@@ -6876,6 +7259,15 @@ def main(page: ft.Page):
     except Exception:
         pass
     bind_clipboard(clipboard)
+    # v12.11: the ImageBoard's tap routing — expansion
+    # re-renders through the current view's normal path; the
+    # SLIP zone opens the Slip view (whose Protected Slip
+    # panel builds itself on arrival, exactly as a bottom-nav
+    # tap there does). The lambdas resolve show/state at call
+    # time; both are live before any tap can land.
+    bind_card_hooks(
+        refresh=lambda: show(state["view"]),
+        slip=lambda: show("slip"))
     stage_status = ft.Text("", size=12, color=DIM)
 
     def on_open_instrument(inst):
@@ -7412,20 +7804,6 @@ def main(page: ft.Page):
                 search_field,
                 filter_chip_row])),
         cards_list]
-    if DIAGNOSTIC_LADDER:
-        # v12.9 ladder TEST A: static view structure seated
-        # between the band and cards_list at assembly — built
-        # once in the initial tree, never replaced by renders.
-        _board_controls[1:1] = [
-            ft.Text("DIAGNOSTIC LADDER — screenshot this "
-                    "whole board", size=14,
-                    weight=ft.FontWeight.BOLD, color=WARN),
-            _diag_card("A", "Built once at startup, never "
-                            "replaced. If you can read this, "
-                            "initial-tree cards paint."),
-            diag_status,
-            ft.Button("Add TEST B card",
-                      on_click=_diag_add_b)]
     cards_view.controls = _board_controls
     board_view.controls = [
         screen_title("Board",

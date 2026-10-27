@@ -7,9 +7,19 @@ name: Build BetFi Xii APK
 # to main.
 #
 # App release v12 (2026-10-24) — BetFi Xii:
-# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.10.0,
-#   build 31; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
+# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.11.0,
+#   build 32; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
 #   artifact betfi-xii-apk.
+# - BUILD 32 IMAGEBOARD CHANGE (2026-10-27): the widget card
+#   system is deleted — every card is ONE PNG drawn with
+#   Pillow (Design C odds-board rows on the Board, Design B
+#   tickets on Finds and Parse; a tap expands to the drawn
+#   depth + action bar), and group headers inside the
+#   dynamic lists are drawn header images. Pillow is
+#   pinned in requirements.txt for the renderer. Packaging
+#   is build 29's universal APK, unchanged; the build-31
+#   event-loop batched applier still streams the (now
+#   image) controls.
 # - BUILD 31 RENDER CHANGE (2026-10-27): the board and the
 #   finds no longer ship one bulk patch from a worker thread
 #   (plus a deferred re-ship). Renders are computed up front
@@ -126,7 +136,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.10.0" --build-number "31"
+        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.11.0" --build-number "32"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
