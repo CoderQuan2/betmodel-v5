@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.26.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 47)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.27.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 48)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -790,6 +790,23 @@ def main():
           and any("NBL (Australia)" in m
                   for m in _nbl_cov["missing"]),
           f"{_wn_chk['note']} || {_nbl_chk['note']}")
+    # Layer agreement on competition-scoped aliases (Build O
+    # audit flag on Build D): the Fortaleza FC fixture prices in
+    # the checker via SOCCER_SCOPED_NAME_ALIASES, so coverage
+    # must count it capable too — not "teams split".
+    _fz = {"sport": "soccer", "home": "Fortaleza FC",
+           "away": "Deportivo Cali", "market": "moneyline",
+           "side": "home", "price": -110,
+           "competition": "Colombian Primera A"}
+    _fz_chk = b5.run_checker(_fz, _ctxv)
+    _fz_cov = next(c for c in b5.universal_coverage([_fz])
+                   if c["sport"] == "soccer")
+    check("R4 layer agreement: scoped-alias fixture (Fortaleza "
+          "FC, Colombian Primera A) prices in BOTH layers",
+          _fz_chk["state"] == "PRICED"
+          and _fz_cov["priced_capable"] == 1
+          and _fz_cov["missing"] == [],
+          f"{_fz_chk['state']} || {_fz_cov['missing']}")
     # R4 MLB alignment: checker state == coverage priced_capable
     # on codes, full names, a spread, and an NPB fixture — the
     # shared mlb_lane_gate/mlb_membership make them agree.
@@ -1443,10 +1460,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.26.0 (build 47)" in _readme)
+          "12.27.0 (build 48)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.26.0"' in _wf
-          and '--build-number "47"' in _wf)
+          '--build-version "12.27.0"' in _wf
+          and '--build-number "48"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

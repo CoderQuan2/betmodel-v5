@@ -1,0 +1,73 @@
+{
+ "sport": "argentina-lnb",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T22:45:11+00:00",
+ "source": "RealGM international league schedule pages (Argentinian Liga A; basketball.realgm.com league 58; cached 2026-10-27T22:45:11+00:00; data/cache/argentina_lnb_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1004": 1766.8,
+  "1068": 1498.1,
+  "1069": 1532.3,
+  "1071": 1684.7,
+  "1238": 1270.0,
+  "143": 1484.3,
+  "148": 1564.6,
+  "1684": 1519.1,
+  "1712": 1616.5,
+  "1713": 1423.9,
+  "1892": 1259.8,
+  "204": 1620.9,
+  "2153": 1439.9,
+  "2209": 1500.3,
+  "2435": 1575.2,
+  "245": 1616.3,
+  "2474": 1499.5,
+  "2475": 1382.6,
+  "2554": 1502.6,
+  "2639": 1273.1,
+  "301": 1391.0,
+  "523": 1604.9,
+  "524": 1473.7
+ },
+ "margin_map": {
+  "a": 1.242,
+  "b": 0.028,
+  "sd": 12.44,
+  "n": 1140
+ },
+ "backtest": {
+  "brier": 0.2234,
+  "naive_brier": 0.2368,
+  "naive_home_brier": 0.2368,
+  "n": 1140,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "143": "Asociacion Deportiva Atenas",
+  "148": "Obras Sanitarias",
+  "204": "Boca Juniors",
+  "245": "Penarol",
+  "301": "San Martin Corrientes",
+  "523": "Regatas Corrientes",
+  "524": "Lanus",
+  "1004": "Quimsa",
+  "1068": "La Union de Formosa",
+  "1069": "Ciclista Olimpico",
+  "1071": "Gimnasia Indalo",
+  "1238": "Atletico Argentino de Junin",
+  "1684": "Ferrocarril Oeste Buenos Aires",
+  "1712": "Instituto Atletico Central Cordoba",
+  "1713": "San Lorenzo de Almagro",
+  "1892": "Comunicaciones Mercedes",
+  "2153": "Club Athletico Platense",
+  "2209": "Racing de Chivilcoy",
+  "2435": "Obera Tenis Club",
+  "2474": "Riachuelo de la Rioja",
+  "2475": "Union de Sante Fe",
+  "2554": "Independiente de Oliva",
+  "2639": "Zarate Basket"
+ }
+}

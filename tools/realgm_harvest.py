@@ -161,7 +161,12 @@ KNOWN_LABELS = ("Spanish ACB", "Italian Lega Basket Serie A",
                 "Italian Cup", "Turkish Cup", "Euroleague",
                 "Eurocup", "Basketball Champions League Europe",
                 "Basketball Champions League",
-                "FIBA Europe Cup", "EuroCup")
+                "FIBA Europe Cup", "EuroCup",
+                # Build O additions (labels verified by fetch
+                # on each league's schedule pages 2026-10-27)
+                "Chinese CBA", "Israeli BSL", "Brazilian NBB",
+                "Argentinian Liga A", "Polish OBL",
+                "Super League Basketball")
 
 
 def harvest(cfg):
@@ -374,7 +379,9 @@ def fit(games, cfg, fetched_at):
     sd = statistics.pstdev([x["margin"] - (a + b * x["diff"])
                             for x in recs])
     return {"sport": cfg["sport"],
-            "season": "2023-24 to 2026-27 regular seasons",
+            "season": cfg.get(
+                "season_label",
+                "2023-24 to 2026-27 regular seasons"),
             "fitted_at": datetime.now().astimezone().isoformat(
                 timespec="seconds"),
             "source": f"RealGM international league schedule "

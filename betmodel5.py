@@ -1212,6 +1212,377 @@ def resolve_italian_serie_a_team(query, ratings=None):
     return None
 
 
+# Build O: FanDuel files China CBA fixtures under the
+# Basketball page too (competition "China - CBA"). The lane
+# (data/v5-china-cba.json, tools/fit_china_cba.py) keys on
+# RealGM team ids, glossed in the fit file's "teams" map.
+# FanDuel's name forms come first (the saved slate's four
+# clubs plus the OTHER_COMPETITION_TEAMS CBA roster, which
+# names all 20); the source-side RealGM forms ride along as
+# aliases. Every id verified as a key of the shipped
+# v5-china-cba fit.
+FD_CHINA_CBA_TEAM_CODES = {
+    "Guangdong Southern Tigers": "14",
+    "Guangdong Dongguan": "14", "Shanghai Sharks": "76",
+    "Shanghai Dongfang": "76", "Ningbo Rockets": "86",
+    "Shenzhen Aviators": "93", "Shenzhen": "93",
+    "Shandong Heroes": "165", "Shandong": "165",
+    "Beijing Ducks": "287", "Beijing Shougang": "287",
+    "Liaoning Flying Leopards": "288", "Liaoning": "288",
+    "Zhejiang Guangsha Lions": "289",
+    "Zhejiang Guangsha": "289", "Fujian Sturgeons": "290",
+    "Fujian": "290", "Zhejiang Golden Bulls": "371",
+    "Zhejiang Chouzhou": "371",
+    "Jilin Northeast Tigers": "372", "Jilin Northeast": "372",
+    "Jiangsu Dragons": "412", "Jiangsu Kendia": "412",
+    "Shanxi Loongs": "638", "Shanxi Zhongyu": "638",
+    "Guangzhou Loong Lions": "739", "Qingdao Eagles": "740",
+    "Qingdao": "740", "Tianjin Pioneers": "741",
+    "Tianjin Ronggang": "741",
+    "Xinjiang Flying Tigers": "742",
+    "Xinjiang Guanghui": "742",
+    "Sichuan Blue Whales": "1470",
+    "Nanjing Monkey Kings": "1623",
+    "Nanjing Tongxi Monkey King": "1623",
+    "Beijing Royal Fighters": "1624",
+    "Beijing BeiKong": "1624",
+}
+
+
+def _names_china_cba(competition):
+    """True when a market's FanDuel competition string names
+    the China CBA ("China - CBA" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard pattern):
+    no other competition on the page shares the string."""
+    return str(competition or "").strip().lower() == \
+        "china - cba"
+
+
+def resolve_china_cba_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the China
+    CBA fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_china_cba()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_CHINA_CBA_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build O: FanDuel files Israel BSL fixtures under the
+# Basketball page too (competition "Israel - BSL"). The
+# lane (data/v5-israel-bsl.json, tools/fit_israel_bsl.py)
+# keys on RealGM team ids, glossed in the fit file's
+# "teams" map. FanDuel's name forms come first (verified
+# against the saved slate: "Maccabi Ironi Ramat Gan",
+# "Ironi Kiryat ATA" — RealGM's "Elitzur Kiryat Ata", the
+# one Kiryat Ata club in the league, its fixture stream
+# the BSL's; "Hapoel Galil Elyon" — RealGM's "Hapoel
+# Upper Galilee Safed", the only Upper Galilee club in
+# the BSL, playing the slate's league-mates in the
+# cached fixture stream); the source-side RealGM forms
+# ride along as aliases. Every id verified as a key of
+# the shipped v5-israel-bsl fit.
+FD_ISRAEL_BSL_TEAM_CODES = {
+    "Maccabi Tel Aviv": "4", "Maccabi Tel-Aviv": "4",
+    "Maccabi FOX Tel Aviv": "4",
+    "Hapoel Galil Gilboa": "36",
+    "Hapoel Jerusalem": "185",
+    "Hapoel Bank Yahav Jerusalem": "185",
+    "Elitzur Netanya": "440", "Hapoel Eilat": "508",
+    "Hapoel Tel Aviv": "509", "Hapoel Tel-Aviv": "509",
+    "Maccabi Rishon Lezion": "547",
+    "Maccabi Ironi Ramat Gan": "636",
+    "Ironi Ramat Gan": "636", "Maccabi Ashdod": "664",
+    "Hapoel Holon": "665", "Hapoel Unet Holon": "665",
+    "Bnei Herzliya Basket": "666", "Bnei Herzliya": "666",
+    "Bnei Herzelia": "666", "Ironi Nes Ziona": "1402",
+    "Hapoel Afula": "1545", "Hapoel Beer Sheva": "1991",
+    "Ironi Kiryat ATA": "2343", "Ironi Kiryat Ata": "2343",
+    "Elitzur Kiryat Ata": "2343", "Hapoel Haifa": "2415",
+    "Hapoel Galil Elyon": "2462",
+    "Hapoel Upper Galilee Safed": "2462",
+    "Maccabi Raanana": "2758", "Hapoel HaEmek": "2778",
+}
+
+
+def _names_israel_bsl(competition):
+    """True when a market's FanDuel competition string names
+    the Israel BSL ("Israel - BSL" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard
+    pattern)."""
+    return str(competition or "").strip().lower() == \
+        "israel - bsl"
+
+
+def resolve_israel_bsl_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the Israel
+    BSL fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_israel_bsl()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_ISRAEL_BSL_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build O: FanDuel files Brazil NBB fixtures under the
+# Basketball page too (competition "Brazilian NBB"). The
+# lane (data/v5-brazil-nbb.json, tools/fit_brazil_nbb.py)
+# keys on RealGM team ids, glossed in the fit file's
+# "teams" map. FanDuel's name forms come first (verified
+# against the saved slate: "Sesi SP/Franca BC" is Sesi
+# Franca, RealGM's "Franca"; "Unifacisa" is RealGM's
+# "Unifacisa Paraiba"; "Corinthians" is RealGM id 2027 —
+# NOT id 283 "Uniao Corinthians", a different club, kept
+# under its own full name); the source-side RealGM forms
+# ride along as aliases. Every id verified as a key of
+# the shipped v5-brazil-nbb fit.
+FD_BRAZIL_NBB_TEAM_CODES = {
+    "Bauru": "69", "Vasco da Gama": "77",
+    "Sao Jose Unimed Vinac": "92", "Minas": "209",
+    "Pinheiros Sky": "211", "Sesi SP/Franca BC": "282",
+    "Franca": "282", "Uniao Corinthians": "283",
+    "Flamengo": "408", "Paulistano": "554",
+    "Rio Claro Basquete": "562",
+    "Uniceub-BRB-Brasilia": "941", "Mogi das Cruzes": "1288",
+    "Basquete Cearense": "1289",
+    "Caxias Do Sul Basquetetriches": "1711",
+    "Botafogo F.R.": "1884", "Corinthians": "2027",
+    "Pato Basquete": "2135", "Unifacisa": "2136",
+    "Unifacisa Paraiba": "2136", "Sao Paulo FC": "2139",
+    "Osasco Basquete": "2204", "Cerrado Basquete": "2252",
+    "Cruzeiro": "2784",
+}
+
+
+def _names_brazil_nbb(competition):
+    """True when a market's FanDuel competition string names
+    the Brazil NBB ("Brazilian NBB" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard
+    pattern)."""
+    return str(competition or "").strip().lower() == \
+        "brazilian nbb"
+
+
+def resolve_brazil_nbb_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the Brazil
+    NBB fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_brazil_nbb()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_BRAZIL_NBB_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build O: FanDuel files Argentina LNB fixtures under the
+# Basketball page too (competition "Argentina - LNB").
+# The lane (data/v5-argentina-lnb.json,
+# tools/fit_argentina_lnb.py) keys on RealGM team ids,
+# glossed in the fit file's "teams" map. FanDuel's name
+# forms come first (verified against the saved slate:
+# "Club Atletico Lanus" is RealGM's "Lanus";
+# "Asosiacion Atletica Quimsa" — FanDuel's spelling — is
+# RealGM's "Quimsa"); the source-side RealGM forms ride
+# along as aliases. Every id verified as a key of the
+# shipped v5-argentina-lnb fit.
+FD_ARGENTINA_LNB_TEAM_CODES = {
+    "Asociacion Deportiva Atenas": "143",
+    "Obras Sanitarias": "148", "Boca Juniors": "204",
+    "Penarol": "245", "San Martin Corrientes": "301",
+    "Regatas Corrientes": "523",
+    "Club Atletico Lanus": "524", "Lanus": "524",
+    "Asosiacion Atletica Quimsa": "1004", "Quimsa": "1004",
+    "La Union de Formosa": "1068",
+    "Ciclista Olimpico": "1069", "Gimnasia Indalo": "1071",
+    "Atletico Argentino de Junin": "1238",
+    "Ferrocarril Oeste Buenos Aires": "1684",
+    "Instituto Atletico Central Cordoba": "1712",
+    "San Lorenzo de Almagro": "1713",
+    "Comunicaciones Mercedes": "1892",
+    "Club Athletico Platense": "2153",
+    "Racing de Chivilcoy": "2209",
+    "Obera Tenis Club": "2435",
+    "Riachuelo de la Rioja": "2474",
+    "Union de Sante Fe": "2475",
+    "Independiente de Oliva": "2554",
+    "Zarate Basket": "2639",
+}
+
+
+def _names_argentina_lnb(competition):
+    """True when a market's FanDuel competition string
+    names the Argentina LNB ("Argentina - LNB" on the
+    saved slate). An EXACT match, never a prefix (the
+    EuroCup guard pattern) — France's LNB Pro A is a
+    different competition string and never reaches
+    here."""
+    return str(competition or "").strip().lower() == \
+        "argentina - lnb"
+
+
+def resolve_argentina_lnb_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the
+    Argentina LNB fit's club id, or None. `ratings`
+    defaults to the shipped fit's ratings
+    (resolve_greece_a1_team's contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_argentina_lnb()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_ARGENTINA_LNB_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build O: FanDuel files Polish PLK fixtures under the
+# Basketball page too (competition "Polish PLK"). The
+# lane (data/v5-polish-plk.json, tools/fit_polish_plk.py)
+# keys on RealGM team ids, glossed in the fit file's
+# "teams" map (RealGM files the league as the "Polish
+# OBL", its sponsored name). FanDuel's name forms come
+# first (verified against the saved slate: "Dabrowa
+# Gornicza" is RealGM's "MKS Dabrowa Gornicza"); the
+# source-side RealGM forms ride along as aliases. Every
+# id verified as a key of the shipped v5-polish-plk fit.
+FD_POLISH_PLK_TEAM_CODES = {
+    "King Szczecin": "270", "Trefl Sopot": "274",
+    "Icon Sea Czarni Slupsk": "472",
+    "Krajowa Grupa Spozywcza Arka Gdynia": "497",
+    "Anwil Wloclawek": "737", "Zastal Zielona Gora": "744",
+    "WKS Slask Wroclaw": "745", "Dziki Warszawa": "1097",
+    "Enea Abramczyk Astoria Bydgoszcz": "1098",
+    "Arriva Polski Cukier Torun": "1602",
+    "Start Lublin": "1603", "Dabrowa Gornicza": "1605",
+    "MKS Dabrowa Gornicza": "1605",
+    "Stal Ostrow Wielkopolski": "1687",
+    "Miasto Szkla Krosno": "1756", "Legia Warszawa": "1858",
+    "GTK Gliwice": "1885", "PGE Spojnia Stargard": "1983",
+    "Rawlplug Sokol Lancut": "2541",
+    "Gornik Zamek Ksiaz Walbrzych": "2701",
+}
+
+
+def _names_polish_plk(competition):
+    """True when a market's FanDuel competition string names
+    the Polish PLK ("Polish PLK" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard
+    pattern)."""
+    return str(competition or "").strip().lower() == \
+        "polish plk"
+
+
+def resolve_polish_plk_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the Polish
+    PLK fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_polish_plk()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_POLISH_PLK_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
+# Build O: FanDuel files British SLB fixtures under the
+# Basketball page too (competition "British SLB"). The
+# lane (data/v5-british-slb.json, tools/fit_british_slb.py)
+# keys on RealGM team ids, glossed in the fit file's
+# "teams" map (RealGM files the league as "Super League
+# Basketball", its name since 2024-25). FanDuel's name
+# forms come first (verified against the saved slate and
+# the OTHER_COMPETITION_TEAMS British roster: "Cheshire
+# Phoenix", "Surrey 89ers" — RealGM's glosses are
+# identical); the source-side RealGM forms ride along as
+# aliases. Every id verified as a key of the shipped
+# v5-british-slb fit.
+FD_BRITISH_SLB_TEAM_CODES = {
+    "Cheshire Phoenix": "953", "Caledonia Gladiators": "955",
+    "Leicester Riders": "957", "London Lions": "959",
+    "Newcastle Eagles": "960", "Sheffield Sharks": "962",
+    "Bristol Flyers": "1526", "Surrey 89ers": "2787",
+    "Manchester Basketball": "2788",
+    "Liverpool Basketball": "2848",
+}
+
+
+def _names_british_slb(competition):
+    """True when a market's FanDuel competition string names
+    the British SLB ("British SLB" on the saved slate). An
+    EXACT match, never a prefix (the EuroCup guard
+    pattern)."""
+    return str(competition or "").strip().lower() == \
+        "british slb"
+
+
+def resolve_british_slb_team(query, ratings=None):
+    """Full FanDuel name (or a bare RealGM id) -> the British
+    SLB fit's club id, or None. `ratings` defaults to the
+    shipped fit's ratings (resolve_greece_a1_team's
+    contract, one lane over)."""
+    if query is None:
+        return None
+    if ratings is None:
+        fit = load_british_slb()
+        ratings = (fit or {}).get("ratings") or {}
+    q = str(query).strip()
+    if q in ratings:
+        return q
+    if q.upper() in ratings:
+        return q.upper()
+    for name, code in FD_BRITISH_SLB_TEAM_CODES.items():
+        if name.lower() == q.lower() and code in ratings:
+            return code
+    return None
+
+
 def resolve_nfl_team(query, ratings=None):
     """Full FanDuel name (or a bare code) -> the NFL lane's code,
     via FD_NFL_TEAM_CODES (defined with the menu stack; resolved
@@ -3298,6 +3669,18 @@ SPANISH_ACB_FIT_PATH = os.path.join(DATA, "v5-spanish-acb.json")
 TURKISH_BSL_FIT_PATH = os.path.join(DATA, "v5-turkish-bsl.json")
 ITALIAN_SERIE_A_FIT_PATH = os.path.join(
     DATA, "v5-italian-serie-a.json")
+CHINA_CBA_FIT_PATH = os.path.join(
+    DATA, "v5-china-cba.json")
+ISRAEL_BSL_FIT_PATH = os.path.join(
+    DATA, "v5-israel-bsl.json")
+BRAZIL_NBB_FIT_PATH = os.path.join(
+    DATA, "v5-brazil-nbb.json")
+ARGENTINA_LNB_FIT_PATH = os.path.join(
+    DATA, "v5-argentina-lnb.json")
+POLISH_PLK_FIT_PATH = os.path.join(
+    DATA, "v5-polish-plk.json")
+BRITISH_SLB_FIT_PATH = os.path.join(
+    DATA, "v5-british-slb.json")
 MLB_FIT_PATH = os.path.join(DATA, "v5-mlb.json")
 TENNIS_FIT_PATH = os.path.join(DATA, "v5-tennis.json")
 MMA_FIT_PATH = os.path.join(DATA, "v5-mma.json")
@@ -3617,6 +4000,120 @@ def italian_serie_a_lane_gate(fit):
         return (f"Italian Serie A lane FAILED-EXAM — "
                 f"walk-forward Brier {bt.get('brier')} did not "
                 f"beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
+    return None
+
+
+def load_china_cba():
+    return _load_json_cached(CHINA_CBA_FIT_PATH)
+
+
+def china_cba_lane_gate(fit):
+    """The China CBA lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "China CBA fit not run (tools/fit_china_cba.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"China CBA lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did "
+                f"not beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
+    return None
+
+
+def load_israel_bsl():
+    return _load_json_cached(ISRAEL_BSL_FIT_PATH)
+
+
+def israel_bsl_lane_gate(fit):
+    """The Israel BSL lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "Israel BSL fit not run (tools/fit_israel_bsl.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Israel BSL lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did "
+                f"not beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
+    return None
+
+
+def load_brazil_nbb():
+    return _load_json_cached(BRAZIL_NBB_FIT_PATH)
+
+
+def brazil_nbb_lane_gate(fit):
+    """The Brazil NBB lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "Brazil NBB fit not run (tools/fit_brazil_nbb.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Brazil NBB lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did "
+                f"not beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
+    return None
+
+
+def load_argentina_lnb():
+    return _load_json_cached(ARGENTINA_LNB_FIT_PATH)
+
+
+def argentina_lnb_lane_gate(fit):
+    """The Argentina LNB lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "Argentina LNB fit not run (tools/fit_argentina_lnb.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Argentina LNB lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did "
+                f"not beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
+    return None
+
+
+def load_polish_plk():
+    return _load_json_cached(POLISH_PLK_FIT_PATH)
+
+
+def polish_plk_lane_gate(fit):
+    """The Polish PLK lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "Polish PLK fit not run (tools/fit_polish_plk.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"Polish PLK lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did "
+                f"not beat the naive baseline "
+                f"{bt.get('naive_brier')}, n={bt.get('n')}; "
+                f"lane does not price until a refit passes")
+    return None
+
+
+def load_british_slb():
+    return _load_json_cached(BRITISH_SLB_FIT_PATH)
+
+
+def british_slb_lane_gate(fit):
+    """The British SLB lane's gate stamp, or None when the
+    lane may price (the greece_a1_lane_gate pattern)."""
+    if fit is None:
+        return "British SLB fit not run (tools/fit_british_slb.py)"
+    bt = fit.get("backtest") or {}
+    if not _exam_passed(bt):
+        return (f"British SLB lane FAILED-EXAM — "
+                f"walk-forward Brier {bt.get('brier')} did "
+                f"not beat the naive baseline "
                 f"{bt.get('naive_brier')}, n={bt.get('n')}; "
                 f"lane does not price until a refit passes")
     return None
@@ -4665,6 +5162,378 @@ def italian_serie_a_price(home, away, kind, side="home",
          "fragile": True}
 
 
+def china_cba_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted China CBA
+    lane — wnba_probs' body on the China CBA fit. None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_china_cba_team(home, R)
+    away = resolve_china_cba_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def china_cba_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The China CBA lane's answer for a fixture FanDuel
+    files under "nba" (Build O). Returns None when the
+    market's COMPETITION does not name the China CBA
+    ("China - CBA") or the market form is outside this
+    lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info)
+    or (None, reason), engine_price's own shapes, gated
+    by china_cba_lane_gate.
+
+    The discriminator is the competition field, NEVER
+    the team set: these clubs also play other
+    competitions, and a fixture filed under its own
+    competition must not route here."""
+    if not _names_china_cba(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_china_cba()
+    gate = china_cba_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = china_cba_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the China CBA fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"China CBA Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward "
+                       f"Brier {bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"China CBA margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def israel_bsl_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Israel BSL
+    lane — wnba_probs' body on the Israel BSL fit. None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_israel_bsl_team(home, R)
+    away = resolve_israel_bsl_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def israel_bsl_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The Israel BSL lane's answer for a fixture FanDuel
+    files under "nba" (Build O). Returns None when the
+    market's COMPETITION does not name the Israel BSL
+    ("Israel - BSL") or the market form is outside this
+    lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info)
+    or (None, reason), engine_price's own shapes, gated
+    by israel_bsl_lane_gate.
+
+    The discriminator is the competition field, NEVER
+    the team set: these clubs also play other
+    competitions, and a fixture filed under its own
+    competition must not route here."""
+    if not _names_israel_bsl(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_israel_bsl()
+    gate = israel_bsl_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = israel_bsl_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the Israel BSL fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Israel BSL Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward "
+                       f"Brier {bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Israel BSL margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def brazil_nbb_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Brazil NBB
+    lane — wnba_probs' body on the Brazil NBB fit. None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_brazil_nbb_team(home, R)
+    away = resolve_brazil_nbb_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def brazil_nbb_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The Brazil NBB lane's answer for a fixture FanDuel
+    files under "nba" (Build O). Returns None when the
+    market's COMPETITION does not name the Brazil NBB
+    ("Brazilian NBB") or the market form is outside this
+    lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info)
+    or (None, reason), engine_price's own shapes, gated
+    by brazil_nbb_lane_gate.
+
+    The discriminator is the competition field, NEVER
+    the team set: these clubs also play other
+    competitions, and a fixture filed under its own
+    competition must not route here."""
+    if not _names_brazil_nbb(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_brazil_nbb()
+    gate = brazil_nbb_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = brazil_nbb_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the Brazil NBB fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Brazil NBB Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward "
+                       f"Brier {bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Brazil NBB margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def argentina_lnb_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Argentina LNB
+    lane — wnba_probs' body on the Argentina LNB fit. None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_argentina_lnb_team(home, R)
+    away = resolve_argentina_lnb_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def argentina_lnb_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The Argentina LNB lane's answer for a fixture FanDuel
+    files under "nba" (Build O). Returns None when the
+    market's COMPETITION does not name the Argentina LNB
+    ("Argentina - LNB") or the market form is outside this
+    lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info)
+    or (None, reason), engine_price's own shapes, gated
+    by argentina_lnb_lane_gate.
+
+    The discriminator is the competition field, NEVER
+    the team set: these clubs also play other
+    competitions, and a fixture filed under its own
+    competition must not route here."""
+    if not _names_argentina_lnb(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_argentina_lnb()
+    gate = argentina_lnb_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = argentina_lnb_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the Argentina LNB fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Argentina LNB Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward "
+                       f"Brier {bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Argentina LNB margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def polish_plk_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted Polish PLK
+    lane — wnba_probs' body on the Polish PLK fit. None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_polish_plk_team(home, R)
+    away = resolve_polish_plk_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def polish_plk_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The Polish PLK lane's answer for a fixture FanDuel
+    files under "nba" (Build O). Returns None when the
+    market's COMPETITION does not name the Polish PLK
+    ("Polish PLK") or the market form is outside this
+    lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info)
+    or (None, reason), engine_price's own shapes, gated
+    by polish_plk_lane_gate.
+
+    The discriminator is the competition field, NEVER
+    the team set: these clubs also play other
+    competitions, and a fixture filed under its own
+    competition must not route here."""
+    if not _names_polish_plk(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_polish_plk()
+    gate = polish_plk_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = polish_plk_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the Polish PLK fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"Polish PLK Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward "
+                       f"Brier {bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"Polish PLK margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
+def british_slb_probs(fit, home, away):
+    """(p_home, margin_mu, margin_sd) from the fitted British SLB
+    lane — wnba_probs' body on the British SLB fit. None when a
+    name misses the fit."""
+    R = fit["ratings"]
+    home = resolve_british_slb_team(home, R)
+    away = resolve_british_slb_team(away, R)
+    if home is None or away is None:
+        return None
+    hfa = (fit.get("params") or {}).get("hfa_elo", 100)
+    d = R[home] + hfa - R[away]
+    p = 1 / (1 + 10 ** (-d / 400))
+    mm = fit["margin_map"]
+    return p, mm["a"] + mm["b"] * d, mm["sd"]
+
+
+def british_slb_price(home, away, kind, side="home",
+                          line=None, competition=None):
+    """The British SLB lane's answer for a fixture FanDuel
+    files under "nba" (Build O). Returns None when the
+    market's COMPETITION does not name the British SLB
+    ("British SLB") or the market form is outside this
+    lane (moneyline / spread / alt-spread only — totals
+    keep their own route). Otherwise the lane's (p, info)
+    or (None, reason), engine_price's own shapes, gated
+    by british_slb_lane_gate.
+
+    The discriminator is the competition field, NEVER
+    the team set: these clubs also play other
+    competitions, and a fixture filed under its own
+    competition must not route here."""
+    if not _names_british_slb(competition):
+        return None
+    if kind not in ("moneyline", "spread", "alt-spread"):
+        return None
+    fit = load_british_slb()
+    gate = british_slb_lane_gate(fit)
+    if gate:
+        return None, gate
+    pr = british_slb_probs(fit, home, away)
+    if pr is None:
+        return None, \
+            f"team not in the British SLB fit ({home}/{away})"
+    p_home, mu, sd = pr
+    bt = fit.get("backtest") or {}
+    if kind == "moneyline":
+        return (p_home if side == "home" else 1 - p_home), \
+            {"detail": f"British SLB Elo lane (fit "
+                       f"{fit['fitted_at']}; walk-forward "
+                       f"Brier {bt.get('brier')} vs naive "
+                       f"{bt.get('naive_brier')}, "
+                       f"n={bt.get('n')})"}
+    s = line if side == "home" else -line
+    p_cover_home = 1 - norm_cdf((-s - mu) / sd)
+    return (p_cover_home if side == "home"
+            else 1 - p_cover_home), \
+        {"detail": f"British SLB margin map N({mu:+.1f}, "
+                   f"{sd:.1f}) (in-sample map — FRAGILE "
+                   f"lineage)",
+         "fragile": True}
+
+
 # ---------------------------------------------------------------- hockey
 # Build M: the foreign leagues FanDuel files under the
 # "nhl" page (AHL + nine European leagues on the saved
@@ -5314,6 +6183,28 @@ SOCCER_NAME_ALIASES = {
     # Peru (FanDuel full names -> ESPN per.1 fit names)
     "universitario de deportes": "universitario",
     "juan pablo ii college": "juan pablo ii",
+    # Peru (Build O audit): FanDuel's "Cesar Vallejo
+    # Moquegua" is the fit's "Deportivo Moquegua" — proven
+    # by fixture, not resemblance: ESPN's per.1 scoreboard
+    # for the slate's pull day (2026-10-25) carries
+    # "Alianza Lima at Deportivo Moquegua", the slate's
+    # exact fixture; Universidad Cesar Vallejo is a
+    # different club (Trujillo; Liga 2 in 2026) and is not
+    # in the fit at all. The alias is on FanDuel's full
+    # display string only.
+    "cesar vallejo moquegua": "deportivo moquegua",
+    # Chile (chi.1, Build O audit): FanDuel's "Univ
+    # Catolica (Chile)" is the fit's "Universidad
+    # Catolica" — proven by fixture: ESPN's chi.1
+    # scoreboard for the slate's pull day (2026-10-25)
+    # carries "Universidad Catolica at Union La Calera",
+    # the slate's exact fixture. The full display string
+    # carries FanDuel's own "(Chile)" disambiguator, so
+    # the alias can never name Ecuador's Universidad
+    # Catolica: a bare "Universidad Catolica" query is
+    # untouched, and the fixture's other side (La Calera)
+    # sits only in the Chilean fit.
+    "univ catolica chile": "universidad catolica",
     # England (E1 short forms)
     "sheffield wednesday": "sheffield weds",
     "stoke city": "stoke", "swansea city": "swansea",
@@ -5329,6 +6220,16 @@ SOCCER_NAME_ALIASES = {
     "sporting braga": "sp braga", "sc braga": "sp braga",
     "braga": "sp braga",
     "sl benfica": "benfica", "vitoria guimaraes": "guimaraes",
+    # Portugal (Build O audit): FanDuel's "CD Nacional
+    # Funchal" is the Primeira fit's "Nacional" (C.D.
+    # Nacional of Funchal, Madeira) — proven by fixture:
+    # ESPN's por.1 scoreboard for the slate's pull day
+    # (2026-10-25) carries "Braga at C.D. Nacional", the
+    # slate's exact fixture, and "Nacional" is the only
+    # Nacional key the Portuguese fit holds. The alias is
+    # on the full display name; a bare "Nacional" query is
+    # untouched.
+    "cd nacional funchal": "nacional",
     "olympiacos": "olympiakos", "aek": "aek athens",
     "ofi": "ofi crete",
     "heart of midlothian": "hearts",
@@ -5407,6 +6308,15 @@ SOCCER_NAME_ALIASES = {
     "club atletico mitre": "mitre santiago del estero",
     "club gimnasia y tiro": "gimnasia y tiro salta",
     "godoy cruz": "godoy cruz antonio tomba",
+    # Primera Nacional (Build O audit): FanDuel's "Club
+    # Atletico Racing de Cordoba" is the nacional-b fit's
+    # "Racing (Cordoba)" — proven by fixture: ESPN's arg.2
+    # scoreboard for the slate's pull day (2026-10-25)
+    # carries "All Boys at Racing (Cordoba)", the slate's
+    # exact fixture; the fit holds exactly one Racing in
+    # this league (Avellaneda's Racing Club is keyed
+    # separately, in the top-flight fit).
+    "club atletico racing de cordoba": "racing cordoba",
     # Round 2 leagues (FanDuel -> ESPN fit names, verified
     # against each fit's own key list; one club each)
     # Paraguay (par.1)
@@ -5420,6 +6330,14 @@ SOCCER_NAME_ALIASES = {
     # source — Academia de Balompie Boliviano
     "academia de balompie boliviano": "abb",
     "club independiente petrolero": "independiente petrolero",
+    # Bolivia (bol.1, Build O audit): FanDuel's "CDT Real
+    # Oruro" is the fit's "Real Oruro" (Club Deportivo Totora
+    # Real Oruro) — proven by fixture, not resemblance: ESPN's
+    # bol.1 scoreboard for the slate's pull day (2026-10-25)
+    # carries "Real Oruro at Always Ready", the slate's exact
+    # fixture, and the fit holds exactly one Oruro league
+    # club under that name (GV San Jose is keyed separately).
+    "cdt real oruro": "real oruro",
     # USL Championship (usa.usl.1)
     "sporting club jacksonville": "sporting jax",
     "orange county blues": "orange county sc",
@@ -6615,6 +7533,17 @@ def universal_coverage(markets, data_dir=None):
         if sport == "soccer":
             fit, _k = soccer_fit_for(mkt.get("home"),
                                      mkt.get("away"))
+            if fit is None:
+                # Mirror the checker's competition-scoped retry
+                # (SOCCER_SCOPED_NAME_ALIASES): without it this
+                # layer called a fixture the checker prices
+                # "teams split across league fits" (the Build O
+                # audit flag on Build D's Fortaleza lane).
+                scoped = _soccer_scoped_names(
+                    mkt.get("home"), mkt.get("away"),
+                    mkt.get("competition"))
+                if scoped is not None:
+                    fit, _k = soccer_fit_for(*scoped)
             if fit is not None:
                 return None
             reason = soccer_missing_reason(mkt.get("home"),
@@ -7098,6 +8027,108 @@ def universal_coverage(markets, data_dir=None):
                         is not None:
                     continue
                 return f"team not in the Italian Serie A fit: {t}"
+            if sport == "nba" and _names_china_cba(
+                    mkt.get("competition")):
+                # Build O: the China CBA lane prices
+                # its own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (china_cba_lane_gate /
+                # resolve_china_cba_team).
+                # Competition-keyed.
+                chinacbafit = load_china_cba()
+                gate = china_cba_lane_gate(chinacbafit)
+                if gate:
+                    return gate
+                if resolve_china_cba_team(
+                        t, (chinacbafit or {}).get("ratings")
+                        or {}) is not None:
+                    continue
+                return f"team not in the China CBA fit: {t}"
+            if sport == "nba" and _names_israel_bsl(
+                    mkt.get("competition")):
+                # Build O: the Israel BSL lane prices
+                # its own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (israel_bsl_lane_gate /
+                # resolve_israel_bsl_team).
+                # Competition-keyed.
+                israelbslfit = load_israel_bsl()
+                gate = israel_bsl_lane_gate(israelbslfit)
+                if gate:
+                    return gate
+                if resolve_israel_bsl_team(
+                        t, (israelbslfit or {}).get("ratings")
+                        or {}) is not None:
+                    continue
+                return f"team not in the Israel BSL fit: {t}"
+            if sport == "nba" and _names_brazil_nbb(
+                    mkt.get("competition")):
+                # Build O: the Brazil NBB lane prices
+                # its own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (brazil_nbb_lane_gate /
+                # resolve_brazil_nbb_team).
+                # Competition-keyed.
+                brazilnbbfit = load_brazil_nbb()
+                gate = brazil_nbb_lane_gate(brazilnbbfit)
+                if gate:
+                    return gate
+                if resolve_brazil_nbb_team(
+                        t, (brazilnbbfit or {}).get("ratings")
+                        or {}) is not None:
+                    continue
+                return f"team not in the Brazil NBB fit: {t}"
+            if sport == "nba" and _names_argentina_lnb(
+                    mkt.get("competition")):
+                # Build O: the Argentina LNB lane prices
+                # its own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (argentina_lnb_lane_gate /
+                # resolve_argentina_lnb_team).
+                # Competition-keyed.
+                argentinalnbfit = load_argentina_lnb()
+                gate = argentina_lnb_lane_gate(argentinalnbfit)
+                if gate:
+                    return gate
+                if resolve_argentina_lnb_team(
+                        t, (argentinalnbfit or {}).get("ratings")
+                        or {}) is not None:
+                    continue
+                return f"team not in the Argentina LNB fit: {t}"
+            if sport == "nba" and _names_polish_plk(
+                    mkt.get("competition")):
+                # Build O: the Polish PLK lane prices
+                # its own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (polish_plk_lane_gate /
+                # resolve_polish_plk_team).
+                # Competition-keyed.
+                polishplkfit = load_polish_plk()
+                gate = polish_plk_lane_gate(polishplkfit)
+                if gate:
+                    return gate
+                if resolve_polish_plk_team(
+                        t, (polishplkfit or {}).get("ratings")
+                        or {}) is not None:
+                    continue
+                return f"team not in the Polish PLK fit: {t}"
+            if sport == "nba" and _names_british_slb(
+                    mkt.get("competition")):
+                # Build O: the British SLB lane prices
+                # its own fixtures — coverage reads the
+                # same gate + resolver the checker prices
+                # through (british_slb_lane_gate /
+                # resolve_british_slb_team).
+                # Competition-keyed.
+                britishslbfit = load_british_slb()
+                gate = british_slb_lane_gate(britishslbfit)
+                if gate:
+                    return gate
+                if resolve_british_slb_team(
+                        t, (britishslbfit or {}).get("ratings")
+                        or {}) is not None:
+                    continue
+                return f"team not in the British SLB fit: {t}"
             comp = OTHER_COMPETITION_TEAMS.get(t)
             if comp == "WNBA" and sport == "nba":
                 # Build I: the WNBA lane prices its own
@@ -7341,9 +8372,14 @@ SPORT_FIT_NOTES = {
            "Spanish ACB, Turkish BSL and Italian Serie A off "
            "their own — v5-german-bbl.json / "
            "v5-spanish-acb.json / v5-turkish-bsl.json / "
-           "v5-italian-serie-a.json, Build L; other "
-           "competitions on that page — CBA/B.League/LNB — "
-           "are not the NBA fit)",
+           "v5-italian-serie-a.json, Build L; the China "
+           "CBA, Israel BSL, Brazil NBB, Argentina LNB, "
+           "Polish PLK and British SLB off their own — "
+           "v5-china-cba.json / v5-israel-bsl.json / "
+           "v5-brazil-nbb.json / v5-argentina-lnb.json / "
+           "v5-polish-plk.json / v5-british-slb.json, "
+           "Build O; other competitions on that page — "
+           "B.League/LNB Pro A — are not the NBA fit)",
     "nhl": "NHL Elo, moneyline (Ice Hockey page; the "
            "AHL and the European leagues on that page "
            "price off their own Build M fits — v5-ahl / "
@@ -7941,6 +8977,48 @@ def engine_price(sport, kind, home, away, side="home", line=None,
                                         line, competition)
             if ipr is not None:
                 return ipr
+            # Build O: a China CBA fixture routes to the
+            # China CBA lane (exam-gated through
+            # china_cba_lane_gate), competition-keyed.
+            cba_pr = china_cba_price(home, away, kind, side, line,
+                                  competition)
+            if cba_pr is not None:
+                return cba_pr
+            # Build O: a Israel BSL fixture routes to the
+            # Israel BSL lane (exam-gated through
+            # israel_bsl_lane_gate), competition-keyed.
+            isb_pr = israel_bsl_price(home, away, kind, side, line,
+                                  competition)
+            if isb_pr is not None:
+                return isb_pr
+            # Build O: a Brazil NBB fixture routes to the
+            # Brazil NBB lane (exam-gated through
+            # brazil_nbb_lane_gate), competition-keyed.
+            nbb_pr = brazil_nbb_price(home, away, kind, side, line,
+                                  competition)
+            if nbb_pr is not None:
+                return nbb_pr
+            # Build O: a Argentina LNB fixture routes to the
+            # Argentina LNB lane (exam-gated through
+            # argentina_lnb_lane_gate), competition-keyed.
+            lnb_pr = argentina_lnb_price(home, away, kind, side, line,
+                                  competition)
+            if lnb_pr is not None:
+                return lnb_pr
+            # Build O: a Polish PLK fixture routes to the
+            # Polish PLK lane (exam-gated through
+            # polish_plk_lane_gate), competition-keyed.
+            plk_pr = polish_plk_price(home, away, kind, side, line,
+                                  competition)
+            if plk_pr is not None:
+                return plk_pr
+            # Build O: a British SLB fixture routes to the
+            # British SLB lane (exam-gated through
+            # british_slb_lane_gate), competition-keyed.
+            slb_pr = british_slb_price(home, away, kind, side, line,
+                                  competition)
+            if slb_pr is not None:
+                return slb_pr
             # R4: name the real competition when FanDuel filed
             # a WNBA / NBL / CBA fixture under the NBA page —
             # the same stamp coverage prints (one helper).

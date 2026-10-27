@@ -1,0 +1,65 @@
+{
+ "sport": "israel-bsl",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T22:44:17+00:00",
+ "source": "RealGM international league schedule pages (Israeli BSL; basketball.realgm.com league 11; cached 2026-10-27T22:44:17+00:00; data/cache/israel_bsl_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1402": 1430.2,
+  "1545": 1383.9,
+  "185": 1808.0,
+  "1991": 1350.6,
+  "2343": 1354.2,
+  "2415": 1220.3,
+  "2462": 1369.5,
+  "2758": 1352.1,
+  "2778": 1508.8,
+  "36": 1531.9,
+  "4": 1895.2,
+  "440": 1318.9,
+  "508": 1430.4,
+  "509": 1852.5,
+  "547": 1492.9,
+  "636": 1518.5,
+  "664": 1472.5,
+  "665": 1545.5,
+  "666": 1664.1
+ },
+ "margin_map": {
+  "a": -2.186,
+  "b": 0.0342,
+  "sd": 12.8,
+  "n": 541
+ },
+ "backtest": {
+  "brier": 0.2068,
+  "naive_brier": 0.2474,
+  "naive_home_brier": 0.2474,
+  "n": 541,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "4": "Maccabi FOX Tel Aviv",
+  "36": "Hapoel Galil Gilboa",
+  "185": "Hapoel Bank Yahav Jerusalem",
+  "440": "Elitzur Netanya",
+  "508": "Hapoel Eilat",
+  "509": "Hapoel Tel Aviv",
+  "547": "Maccabi Rishon Lezion",
+  "636": "Ironi Ramat Gan",
+  "664": "Maccabi Ashdod",
+  "665": "Hapoel Unet Holon",
+  "666": "Bnei Herzelia",
+  "1402": "Ironi Nes Ziona",
+  "1545": "Hapoel Afula",
+  "1991": "Hapoel Beer Sheva",
+  "2343": "Elitzur Kiryat Ata",
+  "2415": "Hapoel Haifa",
+  "2462": "Hapoel Upper Galilee Safed",
+  "2758": "Maccabi Raanana",
+  "2778": "Hapoel HaEmek"
+ }
+}
