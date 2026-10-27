@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.18.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 39)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.19.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 40)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -739,10 +739,19 @@ def main():
     _gp, _gi = b5.engine_price(
         "rugby-league", "moneyline", "Australia", "Fiji",
         side="home", competition="World Cup - Men")
-    check("R4 rugby league: international lane ships "
-          "FAILED-EXAM with its numbers (does not price)",
+    check("R4 rugby league: international men's lane ships "
+          "FAILED-EXAM with attempt 2's numbers (does not "
+          "price)",
           _gp is None and "FAILED-EXAM" in _gi
-          and "0.2392" in _gi and "0.2308" in _gi, f"{_gi}")
+          and "0.2332" in _gi and "192" in _gi, f"{_gi}")
+    _fp, _fi = b5.engine_price(
+        "rugby-league", "moneyline", "Australia", "New Zealand",
+        side="home", competition="World Cup - Women")
+    check("R4 rugby league: international women's lane prices "
+          "off the passed refit (attempt 2: Brier 0.2327 vs "
+          "naive 0.2363, n=111)",
+          _fp is not None and 0 < _fp < 1
+          and "intl_f" in _fi.get("detail", ""), f"p={_fp}")
     _bp, _bi = b5.engine_price("boxing", "moneyline", "Alvarez",
                                "Mbilli", side="home")
     check("R4 boxing: named source terminal (BoxRec gated), "
@@ -1432,10 +1441,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.18.0 (build 39)" in _readme)
+          "12.19.0 (build 40)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.18.0"' in _wf
-          and '--build-number "39"' in _wf)
+          '--build-version "12.19.0"' in _wf
+          and '--build-number "40"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

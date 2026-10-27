@@ -33,6 +33,26 @@ in either code's head-to-head markets here).
 
 Usage: fit_rugby.py [out_path] (default ../data/v5-rugby.json)
 Pages are cached under /tmp/guy4 (re-runs offline).
+
+BUILD G (2026-10-27) — rugby-league attempt 2, PRE-REGISTERED in
+priceg-preregistration.md before the exam ran. The league lanes'
+attempt 1 (the model above) FAILED-EXAM in both sexes (intl_m
+0.2392 vs naive 0.2308, n=189; intl_f 0.2377 vs 0.2354, n=110).
+Attempt 2 is SPORT_CLOSERS' named closer — recency/squad
+weighting — and nothing else: the base learner is unchanged
+(sequential Elo, start 1500, no home edge, same naive, same
+walk-forward protocol, bar unmoved), with exactly two declared
+mechanisms:
+  (R) recency decay: before each match, each team's stored
+      rating regresses toward 1500 by 0.85^(years since that
+      team's previous pool match), persistently;
+  (S) squad-establishedness K: a team updates with K=40 while
+      it has played fewer than 10 prior pool matches, else
+      K=20 (expected scores from pre-match ratings, as before).
+One attempt per lane; the fit file records both attempts.
+The union NPC lane is NOT refit by this build: main() carries
+its block verbatim from the existing output file, so a passing
+lane cannot be moved by a same-week Wikipedia edit.
 """
 import json
 import os
@@ -43,6 +63,11 @@ from datetime import datetime, timezone
 
 K = 20.0
 START = 1500.0
+# Build G attempt-2 constants (pre-registered; see the module
+# docstring and priceg-preregistration.md).
+DECAY = 0.85        # (R) rating retention per year of absence
+PROV_K = 40.0       # (S) K while a squad is unestablished
+PROV_GAMES = 10     # (S) matches before a squad is established
 UA = {"User-Agent": "Mozilla/5.0 (BetFi research)"}
 CACHE = "/tmp/guy4"
 CUTOFF = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -240,34 +265,139 @@ def run_elo(matches, with_margin=False):
     return out
 
 
+# ---------------- attempt 2 (Build G, pre-registered) ----------
+
+def run_elo_attempt2(matches):
+    """Attempt-2 league model: attempt 1's sequential Elo plus
+    (R) per-team recency decay toward START between a team's
+    matches and (S) per-team provisional K while a squad has
+    played < PROV_GAMES pool matches. Naive baseline and the
+    Brier accounting are attempt 1's, verbatim."""
+    elo, wins, games, last_year = {}, {}, {}, {}
+    brier = naive_brier = 0.0
+    n = correct = 0
+
+    def wr(t):
+        return (wins.get(t, 0) + 2.0) / (games.get(t, 0) + 4.0)
+
+    for m in matches:
+        h, a = m["home"], m["away"]
+        year = m["seq_year"]
+        margin = m["hs"] - m["as"]
+        # (R) decay each side's stored rating for its absence
+        for t in (h, a):
+            if t in last_year and year > last_year[t]:
+                elo[t] = START + (elo.get(t, START) - START) \
+                    * DECAY ** (year - last_year[t])
+        rh, ra = elo.get(h, START), elo.get(a, START)
+        p = elo_p(rh, ra)
+        pn = wr(h) / (wr(h) + wr(a))
+        if margin != 0:
+            y = 1.0 if margin > 0 else 0.0
+            brier += (p - y) ** 2
+            naive_brier += (pn - y) ** 2
+            n += 1
+            if (p >= 0.5) == (y == 1.0):
+                correct += 1
+        # (S) each team updates with its own establishedness K
+        y01 = 1.0 if margin > 0 else (0.0 if margin < 0 else 0.5)
+        kh = PROV_K if games.get(h, 0) < PROV_GAMES else K
+        ka = PROV_K if games.get(a, 0) < PROV_GAMES else K
+        elo[h] = rh + kh * (y01 - p)
+        elo[a] = ra + ka * ((1 - y01) - (1 - p))
+        if margin > 0:
+            wins[h] = wins.get(h, 0) + 1
+        elif margin < 0:
+            wins[a] = wins.get(a, 0) + 1
+        games[h] = games.get(h, 0) + 1
+        games[a] = games.get(a, 0) + 1
+        last_year[h] = year
+        last_year[a] = year
+    return {"ratings": {t: round(r, 2) for t, r in elo.items()},
+            "games": games,
+            "backtest": {
+                "n": n,
+                "brier": round(brier / n, 4) if n else None,
+                "naive_brier": round(naive_brier / n, 4) if n
+                else None,
+                "accuracy": round(correct / n, 4) if n else None}}
+
+
 def main():
     out_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "..",
         "data", "v5-rugby.json")
+    # The prior fit file is the record of attempt 1 (and the
+    # carrier for the union block — see the docstring).
+    prior = {}
+    if os.path.exists(out_path):
+        with open(out_path, encoding="utf-8") as f:
+            prior = json.load(f)
     fit = {"fitted_at": datetime.now(timezone.utc).isoformat(),
-           "model": (f"sequential Elo K={K:g}, start {START:g}, "
-                     "no home edge (NPC home edge sits in the "
-                     "margin map's intercept)"),
+           "model": (
+               "league lanes: attempt 2 (Build G, pre-registered) "
+               f"— sequential Elo start {START:g}, base "
+               f"K={K:g}, recency decay {DECAY:g}^years-absent "
+               f"toward {START:g}, provisional K={PROV_K:g} "
+               f"while a squad has < {PROV_GAMES} pool matches, "
+               "no home edge; union npc: attempt 1 — sequential "
+               f"Elo K={K:g}, start {START:g}, no home edge (NPC "
+               "home edge sits in the margin map's intercept), "
+               "carried unchanged from the prior fit"),
            "league": {}, "union": {}}
     men = rl_matches("senior-international-matches", RL_YEARS)
     women = rl_matches("women-s-internationals", RL_YEARS)
-    fit["league"]["intl_m"] = run_elo(men)
-    fit["league"]["intl_m"]["n_matches"] = len(men)
+    a2_model = (
+        "sequential Elo, start 1500; recency decay 0.85^years "
+        "since the team's previous pool match toward 1500; "
+        "provisional K=40 while a squad has <10 prior pool "
+        "matches, else K=20")
+    for lane, matches in (("intl_m", men), ("intl_f", women)):
+        blk = run_elo_attempt2(matches)
+        blk["n_matches"] = len(matches)
+        blk["source"] = ((prior.get("league") or {})
+                         .get(lane) or {}).get("source")
+        a1 = (((prior.get("league") or {}).get(lane) or {})
+              .get("backtest")) or {}
+        bt = blk["backtest"]
+        blk["attempts"] = [
+            {"attempt": 1,
+             "model": (f"sequential Elo, K={K:g}, start "
+                       f"{START:g}, no home edge"),
+             "window": "RLP pull 2026-10-24 (2020-2026 "
+                       "effective)",
+             "brier": a1.get("brier"),
+             "naive_brier": a1.get("naive_brier"),
+             "n": a1.get("n"),
+             "result": ("PASSED" if a1.get("brier") is not None
+                        and a1.get("naive_brier") is not None
+                        and a1["brier"] < a1["naive_brier"]
+                        else "FAILED-EXAM")},
+            {"attempt": 2, "model": a2_model,
+             "window": "RLP pull 2026-10-27, refreshed "
+                       "(2020-2026 effective)",
+             "brier": bt.get("brier"),
+             "naive_brier": bt.get("naive_brier"),
+             "n": bt.get("n"),
+             "result": ("PASSED" if bt.get("brier") is not None
+                        and bt.get("naive_brier") is not None
+                        and bt["brier"] < bt["naive_brier"]
+                        else "FAILED-EXAM")}]
+        fit["league"][lane] = blk
     fit["league"]["intl_m"]["source"] = (
         "Rugby League Project (rugbyleagueproject.org) "
         "senior-international-matches-<year> summary pages, "
         "2016-2026")
-    fit["league"]["intl_f"] = run_elo(women)
-    fit["league"]["intl_f"]["n_matches"] = len(women)
     fit["league"]["intl_f"]["source"] = (
         "Rugby League Project (rugbyleagueproject.org) "
         "women-s-internationals-<year> summary pages, 2016-2026")
-    npc = npc_matches(NPC_YEARS)
-    fit["union"]["npc"] = run_elo(npc, with_margin=True)
-    fit["union"]["npc"]["n_matches"] = len(npc)
-    fit["union"]["npc"]["source"] = (
-        "Wikipedia 'YYYY Bunnings NPC' season articles "
-        "(rugbybox templates), 2021-2026, via the Wikipedia API")
+    # Union NPC: carried verbatim from the prior fit (Build G
+    # scope is the league lanes; a passing lane is not refit
+    # from a live page inside another lane's build).
+    fit["union"] = prior.get("union") or {}
+    if not fit["union"]:
+        raise SystemExit("no union block in the prior fit to "
+                         "carry — refusing to drop the NPC lane")
     for code, lanes in (("league", fit["league"]),
                         ("union", fit["union"])):
         for name, blk in lanes.items():
