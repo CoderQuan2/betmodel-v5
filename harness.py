@@ -30,6 +30,10 @@ sys.path.insert(0, HERE)
 
 STORAGE = tempfile.mkdtemp(prefix="betfixii-harness-")
 os.environ["FLET_APP_STORAGE_DATA"] = STORAGE
+# v12.9: the harness exercises the app exactly as build 29 —
+# the diagnostic ladder is gated OFF for every check below
+# (the flag-on boot has its own subprocess check at the end).
+os.environ["BETFI_DIAGNOSTIC"] = "0"
 MENU = os.path.join(HERE, "data", "menu-fanduel-20261019-1232.json")
 with open(MENU) as f:
     _rec = json.load(f)
@@ -124,14 +128,140 @@ def texts(ctrl):
     return out
 
 
+_LADDER_RUNNER_SRC = '''
+import asyncio
+import json
+import os
+import sys
+import tempfile
+import time
+from types import SimpleNamespace
+
+HERE = sys.argv[1]
+MENU = sys.argv[2]
+sys.path.insert(0, HERE)
+
+STORAGE = tempfile.mkdtemp(prefix="betfixii-ladder-")
+os.environ["FLET_APP_STORAGE_DATA"] = STORAGE
+os.environ["BETFI_DIAGNOSTIC"] = "1"
+with open(MENU) as f:
+    _rec = json.load(f)
+with open(os.path.join(STORAGE, "Bet_Finder-last-pull.json"),
+          "w") as f:
+    json.dump(_rec, f)
+
+
+class FakePage:
+    # The harness probe-page convention, copied: run_thread
+    # inline (workers complete synchronously), run_task
+    # closes coroutines.
+    def __init__(self):
+        self.controls = []
+        self.overlay = []
+        self.navigation_bar = None
+        self.services = []
+        self.title = None
+        self.bgcolor = None
+        self.theme_mode = None
+        self.padding = None
+        self.spacing = None
+        self.scroll = None
+        self.updates = 0
+
+    def add(self, *controls):
+        self.controls.extend(controls)
+
+    def update(self, *args, **kwargs):
+        self.updates += 1
+
+    def run_thread(self, fn, *args, **kwargs):
+        return fn(*args, **kwargs)
+
+    def run_task(self, fn, *args, **kwargs):
+        out = fn(*args, **kwargs)
+        if asyncio.iscoroutine(out):
+            out.close()
+        return None
+
+
+def walk(ctrl, depth=0):
+    yield ctrl
+    if depth > 40:
+        return
+    for attr in ("controls", "content"):
+        v = getattr(ctrl, attr, None)
+        if isinstance(v, (list, tuple)):
+            for c in v:
+                yield from walk(c, depth + 1)
+        elif v is not None and not isinstance(
+                v, (str, int, float, bool)):
+            yield from walk(v, depth + 1)
+
+
+def all_texts(page):
+    out = []
+    for root in page.controls:
+        for c in walk(root):
+            if type(c).__name__ == "Text":
+                s = getattr(c, "value", None) or ""
+                if s:
+                    out.append(s)
+    return out
+
+
+def has(page, needle):
+    return any(needle in t for t in all_texts(page))
+
+
+def main():
+    import main as app
+    assert app.DIAGNOSTIC_LADDER is True, "gate not on"
+    page = FakePage()
+    app.main(page)
+    # A rides the initial tree; D1-D3, F and E are seated by
+    # the boot render (the boot worker runs inline on the
+    # fake page and renders the seeded slate).
+    for needle in ("DIAGNOSTIC LADDER", "TEST A", "TEST D1",
+                   "TEST D2", "TEST D3", "TEST F", "TEST E"):
+        assert has(page, needle), f"missing {needle}"
+    print("LADDER A/D/E/F OK")
+    # B: tap the ladder button, on the event thread.
+    btn = None
+    for root in page.controls:
+        for c in walk(root):
+            if type(c).__name__ == "Button" and \\
+                    getattr(c, "content", None) == \\
+                    "Add TEST B card":
+                btn = c
+    assert btn is not None, "B button not found"
+    btn.on_click(SimpleNamespace(control=btn))
+    assert has(page, "TEST B"), "TEST B missing after tap"
+    print("LADDER B OK")
+    # C: the worker lands ~3 s after the board first shows.
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        if has(page, "TEST C"):
+            break
+        time.sleep(0.25)
+    assert has(page, "TEST C"), "TEST C never arrived"
+    print("LADDER C OK")
+    print("LADDER-OK")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+'''
+
+
 def main():
     import flet as ft
     import main as app
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.8.1", app.APP_VERSION == "12.8.1")
-    check("BUILD_NUMBER is 29", app.BUILD_NUMBER == 29)
+    check("APP_VERSION is 12.9.0", app.APP_VERSION == "12.9.0")
+    check("BUILD_NUMBER is 30", app.BUILD_NUMBER == 30)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1362,11 +1492,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.8 version unified: README release line",
-          "12.8.1 (build 29)" in _readme)
-    check("v12.8 version unified: workflow build args",
-          '--build-version "12.8.1"' in _wf
-          and '--build-number "29"' in _wf)
+    check("v12.9 version unified: README release line",
+          "12.9.0 (build 30)" in _readme)
+    check("v12.9 version unified: workflow build args",
+          '--build-version "12.9.0"' in _wf
+          and '--build-number "30"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2609,6 +2739,46 @@ def main():
           and _hammer.updates > 0,
           f"errors={_errors7!r} final={_card_count7()} "
           f"expected={_expected7}")
+
+    # ---------- v12.9 diagnostic ladder ----------
+    check("v12.9: ladder gate exists in source and "
+          "defaults on",
+          "DIAGNOSTIC_LADDER = os.environ.get(" in _src
+          and '"BETFI_DIAGNOSTIC", "1") == "1"' in _src
+          and "def _diag_card(" in _src
+          and "def _diag_render_block(" in _src)
+    check("v12.9: this harness runs flag-off (the gate "
+          "reads off)",
+          app.DIAGNOSTIC_LADDER is False)
+    _off_texts = []
+    for _c in page.controls:
+        _off_texts += texts(_c)
+    check("v12.9: flag off — no ladder anywhere on the "
+          "board (build 29 behavior)",
+          not any(_m in t for t in _off_texts
+                  for _m in ("DIAGNOSTIC LADDER", "TEST A",
+                             "TEST B", "TEST C", "TEST D1",
+                             "TEST E", "TEST F")),
+          f"sample={_off_texts[:4]!r}")
+    import subprocess as _sp
+    _runner_path = os.path.join(STORAGE, "ladder_runner.py")
+    with open(_runner_path, "w") as _rf:
+        _rf.write(_LADDER_RUNNER_SRC)
+    try:
+        _proc = _sp.run(
+            [sys.executable, _runner_path, HERE, MENU],
+            capture_output=True, text=True, timeout=240)
+        _ladder_ok = (_proc.returncode == 0
+                      and "LADDER-OK" in _proc.stdout)
+        _ladder_detail = (
+            _proc.stdout + _proc.stderr)[-600:]
+    except Exception as _e:
+        _ladder_ok = False
+        _ladder_detail = f"subprocess error: {_e!r}"
+    check("v12.9: flag-on boot seats the full ladder — A "
+          "initial tree, B tap-added, C worker-added, "
+          "D1-D3 render path, E image, F nested",
+          _ladder_ok, _ladder_detail)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "

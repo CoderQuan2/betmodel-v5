@@ -7,9 +7,15 @@ name: Build BetFi Xii APK
 # to main.
 #
 # App release v12 (2026-10-24) — BetFi Xii:
-# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.8.1,
-#   build 29; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
+# - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.9.0,
+#   build 30; staged files BetFi-Xii.apk + BetFi-Xii-debug.apk;
 #   artifact betfi-xii-apk.
+# - BUILD 30 IS A DIAGNOSTIC BUILD (2026-10-27): the app code
+#   is build 29's plus the diagnostic ladder on the board
+#   (BETFI_DIAGNOSTIC, default on) — minimal test cards seated
+#   through every add-path so one device screenshot bisects
+#   the card-rendering failure layer. Packaging is build 29's
+#   universal APK, unchanged.
 # - BUILD 29 PACKAGING CHANGE (2026-10-27): the release build no
 #   longer uses --split-per-abi — it produces ONE universal APK,
 #   exactly as every build up to 11.0.2 did. Reason: --split-per-abi
@@ -110,7 +116,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.8.1" --build-number "29"
+        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "12.9.0" --build-number "30"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |

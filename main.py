@@ -338,9 +338,23 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.8.1"
-BUILD_NUMBER = 29
+APP_VERSION = "12.9.0"
+BUILD_NUMBER = 30
 DISPLAY_NAME = "BetFi Xii"
+# v12.9 DIAGNOSTIC LADDER gate (build 30 is a diagnostic
+# build): on the Pilot's phone, build 28's cards paint as
+# full-height EMPTY containers — the gradient and the box
+# render at full size, no child content ever paints — while
+# two real clients render the same code fully. The failure
+# lives at a layer no headless check can see, so this build
+# seats a ladder of minimal test cards on the board, one per
+# add-path (initial tree / tap / worker thread / the render
+# path / extra nesting / image content), and ONE device
+# screenshot bisects the failing layer. Default ON — the
+# shipped APK sets no env; BETFI_DIAGNOSTIC=0 restores
+# build 29's behavior exactly (the harness runs flag-off).
+DIAGNOSTIC_LADDER = os.environ.get(
+    "BETFI_DIAGNOSTIC", "1") == "1"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
 # user starts the first pull, so the loop idles until the
@@ -618,6 +632,79 @@ def stop_pulse(key):
 
 
 _SPLASH_PARTS = {}
+
+
+def _diag_border():
+    # A real card's edge grammar: a heavy accent left edge
+    # over the hairline border on the other three sides.
+    return ft.Border(
+        left=ft.BorderSide(5, ACCENT),
+        top=ft.BorderSide(1, BORDER),
+        right=ft.BorderSide(1, BORDER),
+        bottom=ft.BorderSide(1, BORDER))
+
+
+def _diag_card(label, note):
+    """One diagnostic ladder rung (v12.9): a real card's shape
+    grammar — Container > Column > texts + a pill — carrying
+    zero engine data, so its paint (or absence) on device
+    indicts the delivery layer, never the content."""
+    return ft.Container(
+        bgcolor=CARD_BG, border=_diag_border(),
+        border_radius=12, padding=12,
+        content=ft.Column(spacing=6, controls=[
+            ft.Text(f"TEST {label}", size=20,
+                    weight=ft.FontWeight.BOLD, color=INK),
+            ft.Text(note, size=12, color=DIM),
+            ft.Container(
+                content=ft.Text("PILL", size=11,
+                                color="#FFFFFF"),
+                bgcolor="#7C3AED", padding=6,
+                border_radius=8)]))
+
+
+def _diag_image_card():
+    """TEST E: an image (the splash emblem's own asset
+    reference, src="assets/icon.png" as build_splash loads
+    it) over a text line — image content is the one card
+    ingredient no text rung exercises."""
+    return ft.Container(
+        bgcolor=CARD_BG, border=_diag_border(),
+        border_radius=12, padding=12,
+        content=ft.Column(spacing=6, controls=[
+            ft.Image(src="assets/icon.png",
+                     width=96, height=96,
+                     fit=ft.BoxFit.COVER),
+            ft.Text("TEST E — image above, text below",
+                    size=12, color=INK)]))
+
+
+def _diag_nested_card():
+    """TEST F: a ladder card wrapped in three extra
+    Container > Column levels — if depth is what the phone's
+    client drops, F fails while its shallow siblings paint."""
+    inner = _diag_card(
+        "F", "Nested three levels deeper than a normal card.")
+    for _ in range(3):
+        inner = ft.Container(
+            padding=4, content=ft.Column([inner]))
+    return inner
+
+
+def _diag_render_block():
+    """The render-path rungs, prepended by render_cards in
+    order: D1–D3 (the standard path, three times — one card
+    painting proves little about a list), TEST F (depth),
+    TEST E (image). Real cards render after the ladder."""
+    return [
+        _diag_card("D1", "Added by render_cards, the "
+                         "standard path."),
+        _diag_card("D2", "Added by render_cards, the "
+                         "standard path."),
+        _diag_card("D3", "Added by render_cards, the "
+                         "standard path."),
+        _diag_nested_card(),
+        _diag_image_card()]
 
 
 def build_splash():
@@ -3935,6 +4022,14 @@ def main(page: ft.Page):
                 render_betfi()
             else:
                 render_cards()
+            # v12.9 ladder TEST C: the first time the board
+            # is shown with the flag on, arm the worker that
+            # appends its card ~3 s later (once per session).
+            if DIAGNOSTIC_LADDER and not state.get(
+                    "diag_c_fired"):
+                state["diag_c_fired"] = True
+                threading.Thread(target=_diag_worker_c,
+                                 daemon=True).start()
             # v12.6 segment transition: the incoming segment
             # settles in (two-update, scale/offset only).
             _settle_in(page, board_switcher.content)
@@ -4037,6 +4132,44 @@ def main(page: ft.Page):
     pull_age_ctrl = ft.Text("", size=11, color=DIM,
                             font_family=NUM_FONT)
     filter_chip_row = ft.Row(spacing=8, wrap=True, controls=[])
+
+    # v12.9 diagnostic ladder (flag-gated; build 29 behavior
+    # when off): TEST A's status line, TEST B's tap handler
+    # and TEST C's worker. A itself is static view structure
+    # seated at assembly; B appends to cards_list on the
+    # event thread; C appends from a background thread ~3 s
+    # after the board is first shown. Every ladder mutation
+    # rides the one lock, like every other screen update.
+    if DIAGNOSTIC_LADDER:
+        diag_status = ft.Text(
+            "ladder armed — B is tap-added, C arrives by "
+            "worker in ~3s", size=11, color=DIM)
+
+        def _diag_add_b(_e):
+            with _UPDATE_LOCK:
+                cards_list.controls.append(_diag_card(
+                    "B", "Added by your tap, on the event "
+                         "thread."))
+                diag_status.value = (
+                    "TEST B added by tap · "
+                    + time.strftime("%H:%M:%S"))
+                page.update()
+
+        def _diag_worker_c():
+            try:
+                time.sleep(3)
+                with _UPDATE_LOCK:
+                    cards_list.controls.append(_diag_card(
+                        "C", "Added by a background worker "
+                             "thread."))
+                    diag_status.value = (
+                        "TEST C added by worker · "
+                        + time.strftime("%H:%M:%S"))
+                    page.update()
+            except Exception:
+                pass
+    else:
+        diag_status = None
 
     # v12.4: the board's two filter dropdowns — the switch
     # wall's replacements. Built once here and seated in the
@@ -4345,6 +4478,12 @@ def main(page: ft.Page):
         global _REASSERT_PENDING
         with _UPDATE_LOCK:
             cards_list.controls = []
+            if DIAGNOSTIC_LADDER:
+                # v12.9 ladder: the render-path rungs ride
+                # every render, ahead of whatever the render
+                # itself seats (real cards included).
+                cards_list.controls.extend(
+                    _diag_render_block())
             rec = state["slate"]
             _sync_sport_view_dd()
             if not rec:
@@ -4357,6 +4496,10 @@ def main(page: ft.Page):
                     ft.Icons.CLOUD_OFF, "No pull yet",
                     "Tap Pull — until a live pull lands, every "
                     "market is UNVERIFIED, never assumed.")]
+                if DIAGNOSTIC_LADDER:
+                    cards_list.controls = (
+                        _diag_render_block()
+                        + cards_list.controls)
                 page.update()
                 return
             entries = sorted_entries()
@@ -7068,7 +7211,7 @@ def main(page: ft.Page):
     # in the wash): the v12.3 sport chooser + scoped Pull /
     # Pull all actions, pull age, status, sort, search and
     # the clear-filters chip row.
-    cards_view.controls = [
+    _board_controls = [
         ft.Container(
             gradient=BOARD_HEADER_GRADIENT, border_radius=12,
             border=ft.Border(bottom=ft.BorderSide(1, HAIRLINE)),
@@ -7107,6 +7250,21 @@ def main(page: ft.Page):
                 search_field,
                 filter_chip_row])),
         cards_list]
+    if DIAGNOSTIC_LADDER:
+        # v12.9 ladder TEST A: static view structure seated
+        # between the band and cards_list at assembly — built
+        # once in the initial tree, never replaced by renders.
+        _board_controls[1:1] = [
+            ft.Text("DIAGNOSTIC LADDER — screenshot this "
+                    "whole board", size=14,
+                    weight=ft.FontWeight.BOLD, color=WARN),
+            _diag_card("A", "Built once at startup, never "
+                            "replaced. If you can read this, "
+                            "initial-tree cards paint."),
+            diag_status,
+            ft.Button("Add TEST B card",
+                      on_click=_diag_add_b)]
+    cards_view.controls = _board_controls
     board_view.controls = [
         screen_title("Board",
                      "Every checked market on the current pull."),
