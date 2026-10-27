@@ -3344,13 +3344,27 @@ def tennis_probs(fit, home, away):
                   f"({home}/{away})")
 
 
+# FanDuel prints some fighters under a different name form
+# than the source CSV the fit was built from (a respaced
+# Korean given name, a full first name for a shortened one,
+# a dropped hyphen). Explicit aliases: the canonical
+# resolver fires one only when its target is itself a fit
+# key; each target below is verified present in v5-mma.json.
+MMA_FIGHTER_ALIASES = {
+    "Jung Young Lee": "JeongYeong Lee",
+    "Joseph Kropschot": "Joe Kropschot",
+    "Jean Paul Lebosnoyani": "Jean-Paul Lebosnoyani",
+}
+
+
 def resolve_mma_fighter(query, elo):
     """FanDuel name -> the MMA fit's fighter key (the source
     CSV's 'Firstname Lastname' form), via the canonical
-    resolver (exact -> token forms -> unique substring)."""
+    resolver (exact -> explicit alias -> prefix/substring),
+    then the token-form fallback below."""
     if query is None or not elo:
         return None
-    hit = _resolve_or_none(elo, query)
+    hit = _resolve_or_none(elo, query, MMA_FIGHTER_ALIASES)
     if hit:
         return hit
     q = sorted(_norm_name(query).split())
