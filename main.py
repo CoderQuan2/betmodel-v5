@@ -353,8 +353,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.28.0"
-BUILD_NUMBER = 49
+APP_VERSION = "12.29.0"
+BUILD_NUMBER = 50
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -847,18 +847,24 @@ UNPRICED_BG = "#1F2937"
 UNPRICED_FG = "#9CA3AF"
 UNPRICED_BORDER = "#4B5563"
 
-SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
-                "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer",
+SPORT_LABELS = {"nfl": "American football",
+                "ncaaf": "College football", "nba": "Basketball",
+                "nhl": "Hockey", "mlb": "Baseball", "soccer": "Soccer",
+                # Category names are the SPORT's name, not a
+                # league's (Pilot order 2026-10-27): the NFL is a
+                # league; the sport is American football. League
+                # and competition names keep their own names in
+                # the league surfaces (league_label, _LEAGUE_TITLES).
                 # R2: the rest of FanDuel's menu tree, pulled
                 # since engine v5.4 (fix-guy) — labels only;
                 # these stamp UNPRICED until fitted.
                 "tennis": "Tennis", "mma": "MMA", "golf": "Golf",
                 "boxing": "Boxing", "cricket": "Cricket",
-                "darts": "Darts", "motorsport": "Motor Sport",
-                "rugby-union": "Rugby Union",
-                "rugby-league": "Rugby League",
+                "darts": "Darts", "motorsport": "Motorsport",
+                "rugby-union": "Rugby union",
+                "rugby-league": "Rugby league",
                 "lacrosse": "Lacrosse", "snooker": "Snooker",
-                "table-tennis": "Table Tennis"}
+                "table-tennis": "Table tennis"}
 
 # BetFi 11's SPORT_LABELS, kept for the card's event line.
 # The standing SPORT_LABELS above grew extra sports in v12
@@ -866,8 +872,10 @@ SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
 # read it; the card (11's, now the ImageBoard's row) keeps
 # 11's exact lookup for its league label, so its one labels
 # read goes through this private copy instead.
-_v11_SPORT_LABELS = {"nfl": "NFL", "ncaaf": "NCAAF", "nba": "NBA",
-                "nhl": "NHL", "mlb": "MLB", "soccer": "Soccer"}
+_v11_SPORT_LABELS = {"nfl": "American football",
+                     "ncaaf": "College football", "nba": "Basketball",
+                     "nhl": "Hockey", "mlb": "Baseball",
+                     "soccer": "Soccer"}
 SPORT_ICONS = {"nfl": ft.Icons.SPORTS_FOOTBALL,
                "ncaaf": ft.Icons.SPORTS_FOOTBALL,
                "nba": ft.Icons.SPORTS_BASKETBALL,
@@ -903,6 +911,8 @@ SORT_MODES = [("verdict", "Bets first — verdict ladder"),
 SHOW_MODES = [("all", "All markets"),
               ("priced", "Priced only"),
               ("golden", "Golden bets"),
+              ("silver", "Silver bets"),
+              ("steel", "Steel bets"),
               ("quick", "Quick bets (≤2h)"),
               ("nodnb", "No do-not-bets")]
 # The startup defaults (v12.4; Show amended v12.12): nothing
@@ -2626,6 +2636,8 @@ def _depth_sections(mkt, verdict, rec, quotes_by_game,
         anatomy.append(f"{term} — {vreason}")
     elif term:
         anatomy.append(f"verdict: {term}")
+    if verdict.get("metal"):
+        anatomy.append(f"metal tier: {verdict['metal']}")
     anatomy.append(f"state: {state}")
     if stance:
         anatomy.append(f"stance: {stance} — the shape of the "
@@ -4873,6 +4885,10 @@ def main(page: ft.Page):
                 continue
             if show == "golden" and \
                     card_verdict(v)[0] != "GOLDEN BET":
+                continue
+            if show == "silver" and v.get("metal") != "SILVER":
+                continue
+            if show == "steel" and v.get("metal") != "STEEL":
                 continue
             if show == "nodnb" and \
                     card_verdict(v)[0] == "DO NOT BET":

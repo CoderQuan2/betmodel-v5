@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.28.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 49)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.29.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 50)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -231,7 +231,7 @@ def main():
           nm["slip_label"].startswith("Over 249.5 passing yards")
           and "(-114)" in nm["slip_label"])
     check("F1: FanDuel path is a navigation path",
-          nm["fd_path"].startswith("FanDuel → NFL")
+          nm["fd_path"].startswith("FanDuel → American football")
           and "Player Props" in nm["fd_path"])
     nm_ml = app.bet_name(ml)
     check("F1: a moneyline leads with the market name",
@@ -1460,10 +1460,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.28.0 (build 49)" in _readme)
+          "12.29.0 (build 50)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.28.0"' in _wf
-          and '--build-number "49"' in _wf)
+          '--build-version "12.29.0"' in _wf
+          and '--build-number "50"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2005,6 +2005,53 @@ def main():
           and app.auto_pull_sport("all", None) == "nfl"
           and "auto_pull_sport(state.get(\"sport_view\")"
           in _src)
+    # v12.29: the metal categories + sport category names.
+    _gold_kw = dict(priced=True, grade="A", phi_edge_pts=5.0,
+                    raw_edge_pts=7.0, pess_edge_pts=3.5,
+                    cal_state="CALIBRATED", benched=False,
+                    killed=False, fragile=False,
+                    bias_favours=False, record_less=False,
+                    coherence_flags=[], mechanism="soft-market")
+    _gv, _gr = b5.verdict_ladder(**_gold_kw)
+    _sv, _sr = b5.verdict_ladder(**{**_gold_kw,
+                                    "record_less": True,
+                                    "pess_edge_pts": 12.0})
+    check("v12.29: GOLDEN is the ladder's GOLDEN BET exactly; "
+          "a record-less lane at +12.0 is STEEL, never golden",
+          _gv == "GOLDEN BET"
+          and b5.metal_for_verdict(_gv) == "GOLDEN"
+          and _sv == "RISK BET (BET)"
+          and b5.metal_for_verdict(_sv) == "STEEL"
+          and b5.metal_for_verdict("BET HERE") == "SILVER"
+          and b5.metal_for_verdict("RISK BET (DO NOT BET)")
+          is None
+          and b5.metal_for_verdict("DO NOT BET") is None
+          and b5.metal_for_verdict(None) is None)
+    check("v12.29: every verdict dict carries its metal "
+          "(stamped centrally in _verdict)",
+          b5._verdict({}, "PRICED",
+                      verdict="GOLDEN BET")["metal"] == "GOLDEN"
+          and b5._verdict({}, "PRICED",
+                          verdict="BET HERE")["metal"]
+          == "SILVER"
+          and b5._verdict({}, "UNPRICED")["metal"] is None)
+    check("v12.29: categories are named for the sport, not "
+          "the league (American football / Hockey / "
+          "Basketball), on the board labels and the card's "
+          "own label copy alike",
+          app.SPORT_LABELS["nfl"] == "American football"
+          and app.SPORT_LABELS["ncaaf"] == "College football"
+          and app.SPORT_LABELS["nba"] == "Basketball"
+          and app.SPORT_LABELS["nhl"] == "Hockey"
+          and app.SPORT_LABELS["mlb"] == "Baseball"
+          and app._v11_SPORT_LABELS["nfl"]
+          == "American football"
+          and app._v11_SPORT_LABELS["nhl"] == "Hockey")
+    check("v12.29: Silver and Steel are board Show filters "
+          "beside Golden, in ladder order",
+          [k for k, _t in app.SHOW_MODES]
+          == ["all", "priced", "golden", "silver", "steel",
+              "quick", "nodnb"])
 
     # drive the chooser + Pull end to end on stubs: the
     # saved snapshot must show ONLY nba refreshed.
@@ -2052,7 +2099,7 @@ def main():
               and not any("dataEntries" in (p or {})
                           for _e, p in _fetch_calls)
               and app.load_chosen_sport() == "nba"
-              and any("Pulled NBA" in t
+              and any("Pulled Basketball" in t
                       for t in texts(board4)))
         check("v12.3: the background harvest follows the "
               "scoped pull — the saved slate carries the "
@@ -2184,9 +2231,10 @@ def main():
     _sv5 = next(d for d in _dds5
                 if [o.key for o in d.options] == _exp5)
     check("v12.4: the board's Show dropdown carries exactly "
-          "the five views, in order, with their labels",
+          "the seven views, in order, with their labels",
           [o.key for o in _show5.options]
-          == ["all", "priced", "golden", "quick", "nodnb"]
+          == ["all", "priced", "golden", "silver", "steel",
+              "quick", "nodnb"]
           and [o.text for o in _show5.options]
           == [t for _k, t in app.SHOW_MODES])
     check("v12.4: the Board shows dropdown is All sports + "

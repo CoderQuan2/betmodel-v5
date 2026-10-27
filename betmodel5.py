@@ -3208,6 +3208,25 @@ VERDICT_LADDER = ["GOLDEN BET", "BET HERE", "RISK BET (BET)",
 GOLDEN_BET, BET_HERE, RISK_BET_YES, RISK_BET_NO, DO_NOT_BET = \
     VERDICT_LADDER
 
+# The metal categories (Pilot order 2026-10-27): a display tier
+# DERIVED from the ladder's verdict — it moves no bar and opens
+# no gate. GOLDEN is the GOLDEN BET verdict exactly as the
+# ladder computes it (A-band grade, pessimistic-end edge >=
+# +2.0, a named mechanism, zero soft conditions outstanding);
+# SILVER is a clean BET HERE; STEEL is a RISK BET the ladder
+# still says bet (exactly one soft condition standing). The
+# two do-not-bet verdicts carry no metal: gold is for the
+# golden, and the tiers below it are named, not blurred.
+METAL_TIERS = {GOLDEN_BET: "GOLDEN", BET_HERE: "SILVER",
+               RISK_BET_YES: "STEEL"}
+
+
+def metal_for_verdict(verdict):
+    """Verdict -> metal tier (GOLDEN / SILVER / STEEL) or None.
+    The single derivation every surface reads, stamped onto the
+    verdict dict centrally in _verdict."""
+    return METAL_TIERS.get(verdict)
+
 
 def verdict_rank(verdict):
     """BetFi ordering: ladder position (the feed ranks by this
@@ -9984,6 +10003,10 @@ def _verdict(mkt, state, p=None, grade=None, verdict=None,
             "grade": grade, "verdict": verdict,
             "verdict_reason": verdict_reason, "note": note,
             "detail": detail,
+            # The metal category, derived from the verdict at
+            # this one assembly point (see METAL_TIERS): every
+            # verdict dict in the system carries it.
+            "metal": metal_for_verdict(verdict),
             # v5.2: stamped centrally by run_slate on priced
             # verdicts — the displayed calibration tag and the
             # bet's stance. None on UNPRICED / ungraded verdicts.
