@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.29.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 50)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.30.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 51)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1125,6 +1125,64 @@ def main():
     check("Xii charts: priced + unpriced render from a pull",
           any("EDGE DISTRIBUTION" in t for t in _ct)
           and any("PRICED vs UNPRICED" in t for t in _ct))
+    # v12.30 3D hardening: the chart builders survive hostile
+    # pulls at both zoom bounds without raising
+    def _charts_survive(es, z):
+        try:
+            return bool(app.build_xii_charts(
+                es, zoom=z, on_tap=lambda d: None,
+                on_point=lambda p: None))
+        except Exception:
+            return False
+    _hostile = [
+        [],
+        [(m, {"state": "UNPRICED", "p": None, "grade": None},
+          None) for m, _v, _e in _entries],
+        [({"sport": "soccer", "market": "moneyline",
+           "side": "home", "home": "A", "away": "B",
+           "price": 35000},
+          {"state": "PRICED", "p": 0.47, "grade": "C"}, 46.7)],
+        [({}, {"state": "PRICED", "p": None}, 1.0)]]
+    check("3D charts: hostile pulls build at zoom 0.5 and 6.0",
+          all(_charts_survive(es, z) for es in _hostile
+              for z in (0.5, 6.0)))
+    # v12.30: every bundled instrument carries the on-page
+    # error guard, so a device-side script fault prints itself
+    # instead of leaving a silent blank page
+    check("3D instruments: all bundled, all carry the error "
+          "guard",
+          all(os.path.isfile(os.path.join(
+                  app.INSTRUMENTS_DIR, i["file"]))
+              and "__betfiShowError" in open(os.path.join(
+                  app.INSTRUMENTS_DIR, i["file"])).read()
+              for i in app.INSTRUMENTS))
+    # v12.30: a cached instrument server on a dead port is
+    # revived, not handed out forever
+    import socket as _sock
+    _probe = _sock.socket()
+    _probe.bind(("127.0.0.1", 0))
+    _dead_port = _probe.getsockname()[1]
+    _probe.close()
+    _saved_srv = dict(app._instrument_server)
+    app._instrument_server["httpd"] = object()
+    app._instrument_server["port"] = _dead_port
+    _revived = app.ensure_instrument_server()
+    _alive = False
+    if _revived is not None:
+        try:
+            with _sock.create_connection(("127.0.0.1", _revived),
+                                         timeout=1.0):
+                _alive = True
+        except OSError:
+            _alive = False
+    if app._instrument_server["httpd"] is not None:
+        try:
+            app._instrument_server["httpd"].shutdown()
+        except Exception:
+            pass
+    app._instrument_server.update(_saved_srv)
+    check("3D instruments: dead cached server port revives",
+          _alive and _revived != _dead_port)
     check("Xii ICE: splash + pulse + button-weight constants",
           app.PULSE_PERIODS["dot"] == 2.0
           and app.PULSE_PERIODS["golden"] == 2.8
@@ -1460,10 +1518,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.29.0 (build 50)" in _readme)
+          "12.30.0 (build 51)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.29.0"' in _wf
-          and '--build-number "50"' in _wf)
+          '--build-version "12.30.0"' in _wf
+          and '--build-number "51"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

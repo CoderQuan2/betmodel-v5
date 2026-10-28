@@ -1,3 +1,27 @@
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
 <div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;">
 <div style="font-weight:600;font-size:15px;margin-bottom:2px;">The space, alive — return × time × volatility, thickness = volume</div>
 <div style="color:var(--hatch-widget-muted);font-size:12px;margin-bottom:8px;">Each path’s thickness swells with that day’s trading volume. The cloud around the paths is the same volume made visible — it billows widest on big-range days. Drag to orbit.</div>

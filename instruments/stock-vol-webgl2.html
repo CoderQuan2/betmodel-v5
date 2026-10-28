@@ -1,6 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Volatility Space — Raw WebGL2 Rebuild</title>

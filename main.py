@@ -353,8 +353,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.29.0"
-BUILD_NUMBER = 50
+APP_VERSION = "12.30.0"
+BUILD_NUMBER = 51
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -1254,7 +1254,22 @@ def ensure_instrument_server() -> int | None:
     or no port in 8791–8800 binds."""
     with _instrument_lock:
         if _instrument_server["httpd"] is not None:
-            return _instrument_server["port"]
+            # v12.30: a cached server whose socket no longer
+            # answers is not a server — clear it and rebind
+            # below instead of handing out a dead port forever
+            try:
+                import socket
+                with socket.create_connection(
+                        ("127.0.0.1", _instrument_server["port"]),
+                        timeout=0.25):
+                    return _instrument_server["port"]
+            except OSError:
+                try:
+                    _instrument_server["httpd"].shutdown()
+                except Exception:
+                    pass
+                _instrument_server["httpd"] = None
+                _instrument_server["port"] = None
         if not os.path.isdir(INSTRUMENTS_DIR):
             return None
         try:

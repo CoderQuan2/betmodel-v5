@@ -1,1 +1,25 @@
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
 <div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;"><div style="font-weight:600;font-size:15px;margin-bottom:2px;">CRM (Salesforce) — the one that kept running</div><div style="color:var(--hatch-widget-muted);font-size:12px;margin-bottom:6px;">Daily closes, mid-June → Oct 16, 2026.</div><svg width="100%" viewBox="0 0 640 240" role="img" aria-label="CRM price path"><polyline points="44,186 51,190 58,202 64,207 71,210 78,204 85,206 91,210 98,196 105,197 112,199 118,188 125,183 132,184 139,177 146,182 152,189 159,188 166,174 173,180 179,181 186,172 193,175 200,170 206,176 213,188 220,198 227,187 233,170 240,157 247,145 254,158 261,152 267,149 274,141 281,137 288,148 294,138 301,130 308,130 315,137 321,123 328,132 335,141 342,132 349,115 355,116 362,110 369,110 376,116 382,116 389,37 396,30 403,28 409,27 416,29 423,16 430,25 437,42 443,50 450,52 457,44 464,24 470,31 477,40 484,53 491,61 497,64 504,69 511,62 518,60 524,68 531,79 538,82 545,75 552,63 558,66 565,75 572,83 579,84 585,78 592,76 599,68 606,61 612,64 619,46 626,56" fill="none" stroke="#e07b39" stroke-width="2.2"/><line x1="44" y1="210" x2="626" y2="210" stroke="var(--hatch-widget-border)" stroke-dasharray="3 4"/><text x="38" y="214" font-size="10" text-anchor="end" fill="var(--hatch-widget-muted)">$150</text><line x1="44" y1="125" x2="626" y2="125" stroke="var(--hatch-widget-border)" stroke-dasharray="3 4"/><text x="38" y="129" font-size="10" text-anchor="end" fill="var(--hatch-widget-muted)">$200</text><line x1="44" y1="40" x2="626" y2="40" stroke="var(--hatch-widget-border)" stroke-dasharray="3 4"/><text x="38" y="44" font-size="10" text-anchor="end" fill="var(--hatch-widget-muted)">$250</text><circle cx="58" cy="202" r="4" fill="#e07b39"/><text x="58" y="228" font-size="11.5" font-weight="700" text-anchor="middle" fill="var(--hatch-widget-text)">Jun 17: $155</text><circle cx="335" cy="141" r="4" fill="#e07b39"/><text x="335" y="131" font-size="11.5" font-weight="700" text-anchor="middle" fill="var(--hatch-widget-text)">Aug 17: $191</text><circle cx="423" cy="16" r="4" fill="#e07b39"/><text x="423" y="6" font-size="11.5" font-weight="700" text-anchor="middle" fill="var(--hatch-widget-text)">Sep 3 peak: $264</text><circle cx="626" cy="56" r="4" fill="#e07b39"/><text x="626" y="44" font-size="11.5" font-weight="700" text-anchor="middle" fill="var(--hatch-widget-text)">Oct 16: $241</text></svg></div>

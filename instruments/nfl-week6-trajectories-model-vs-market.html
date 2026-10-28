@@ -1,3 +1,27 @@
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
 <div style="box-sizing:border-box;font-family:inherit;color:var(--hatch-widget-text);padding:4px 2px;">
 <div style="font-weight:700;font-size:17px;">Week 6 Sunday trajectories — market → model → truth</div>
 <div style="color:var(--hatch-widget-muted);font-size:12px;margin:4px 0 10px;">Each game's journey in win-probability space. Grey dot: the market's spread-implied P(home win), sitting on the agreement diagonal. Coloured dot: where the provisional NFL lane priced it (vertical step = the disagreement). The curve then runs to the truth corner — (1,1) home won, (0,0) away won. <b style="color:#3fb950">Green</b> = the lane's Brier beat the market's in that game; <b style="color:#e5534b">red</b> = the market's did. Gold dashed ring = audit flag (gap ≥ 4 pts). Finals: ESPN, Sun Oct 18, 2026. Slate line: model Brier <b>0.304</b> vs market <b>0.270</b> · winner picks 3/11 · cover leans 6/10 · margin MAE model 6.6 beat market 7.1 — on a Sunday when 8 of 11 road teams won.</div>
