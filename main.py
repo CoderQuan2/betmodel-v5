@@ -353,8 +353,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.30.0"
-BUILD_NUMBER = 51
+APP_VERSION = "12.31.0"
+BUILD_NUMBER = 52
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -1800,6 +1800,86 @@ def market_edge_pts(mkt: dict, verdict: dict) -> float | None:
     return (p - b5.implied_prob(price)) * 100
 
 
+# ------------------------------------------------------------------
+# Build-52 display mathematics (the BET NOW indicator + THE
+# MATHEMATICS depth section). The locked formula sheet is the
+# task-force audit's FORMULAS.md; every displayed number
+# recomputes from two primitives — the verdict's p and the
+# FanDuel price. The verdict's p is the engine's FINAL
+# probability: the raw model probability run through the lane's
+# fitted calibration map (phi), then ensemble-blended toward the
+# market's own implied/no-vig number (FORMULAS §7). It is never
+# the raw model probability, and the percentages inside the
+# verdict's detail text name the phi-stage number — a different
+# number whenever the blend is active — so nothing here reads
+# them. Implied probability and decimal odds reuse the engine's
+# own functions (§§1-2, identical to the sheet); fair odds (§3)
+# and EV per unit (§5) use the sheet's formulas exactly.
+
+
+def _fair_american(p):
+    """Fair ("true") American odds for probability p
+    (FORMULAS §3): p >= 0.5 -> -100p/(1-p) (favourite);
+    p < 0.5 -> +100(1-p)/p (underdog). None at the degenerate
+    ends (p <= 0 or p >= 1), where no finite fair price
+    exists."""
+    if p is None or p <= 0.0 or p >= 1.0:
+        return None
+    if p >= 0.5:
+        return -100.0 * p / (1.0 - p)
+    return 100.0 * (1.0 - p) / p
+
+
+def _fair_text(p) -> str:
+    """The fair price as printed American odds (nearest
+    point — the engine's own decimal_to_american rounds the
+    same way), or the honest dash at a degenerate end."""
+    f = _fair_american(p)
+    return f"{f:+.0f}" if f is not None else "—"
+
+
+def _parse_bankroll(raw):
+    """The app's bankroll text -> float or None: the same
+    parse the Slip's Kelly block uses (blank or invalid ->
+    None, and stakes then print as fractions only)."""
+    try:
+        return float(raw or "") or None
+    except (TypeError, ValueError):
+        return None
+
+
+_AFFIRMATIVE_RUNGS = ("GOLDEN BET", "BET HERE",
+                      "RISK BET (BET)")
+
+
+def bet_now(verdict) -> bool:
+    """The BET NOW condition: this bet survives the verdict
+    ladder's OWN pessimistic-end test — the ladder basis
+    (FORMULAS §8): pess edge = (p_pess - q) * 100 on the
+    band's low end, NOT the Kelly advisory's half-edge basis
+    (q + half the headline edge), which is positive for every
+    positive-headline-edge market including the ladder's own
+    do-not-bets (on the reference slate, all 491 of them).
+
+    The engine stamps the basis onto the verdict when it can
+    (bet_now / pess_edge_pts) — the stamps win when present.
+    On this engine build the stamps are absent and the
+    ladder's low end is not recoverable from (p, price) alone
+    (§8), so the fallback reads the ladder's own outcome: an
+    affirmative rung (GOLDEN BET / BET HERE / RISK BET (BET))
+    is reachable only with the pessimistic edge > 0 and no
+    hard condition standing (verdict_ladder), and every
+    do-not-bet rung stays dark."""
+    bn = verdict.get("bet_now")
+    if bn is not None:
+        return bool(bn)
+    pe = verdict.get("pess_edge_pts")
+    if pe is not None:
+        return pe > 0
+    term, _reason = card_verdict(verdict)
+    return term in _AFFIRMATIVE_RUNGS
+
+
 def card_verdict(verdict: dict) -> tuple[str, str | None]:
     """(term, reason) exactly as the engine issued them. The app
     prints whichever the bundled engine issued — it never
@@ -2621,14 +2701,101 @@ def _card_facts(mkt, verdict, lane_ctx=None):
             "stance": verdict.get("stance")}
 
 
+def _mathematics_lines(mkt, verdict, f, edge_pts, bankroll):
+    """THE MATHEMATICS (build 52): one card's proof chain, as
+    printed depth lines — the engine's final probability
+    against FanDuel's price, the ladder-basis pessimistic end,
+    and the position (the engine's Kelly advisory, shown
+    as-is). Bases are named on the lines themselves: the
+    pessimistic end here is the VERDICT LADDER's (§8), the
+    stake's sizing basis is kelly_advice's own (§9) and its
+    reason lines print verbatim. No defended probability at
+    a pulled price -> one honest line, never invented
+    numbers."""
+    p, price = f["p"], mkt.get("price")
+    if p is None:
+        return ["no mathematics to show — this market carries "
+                "no probability the system can defend "
+                f"({f['state'] or 'UNPRICED'}), so there is no "
+                "projection to prove and no position to size."]
+    if price is None:
+        return ["no mathematics to show — the engine priced a "
+                "probability for this market, but no FanDuel "
+                "price rides with it, so there is no price to "
+                "prove the projection against and no position "
+                "to size."]
+    price = int(price)
+    q = b5.implied_prob(price)
+    dec = b5.american_to_decimal(price)
+    edge = edge_pts if edge_pts is not None else (p - q) * 100
+    lines = [
+        f"win probability (engine final): {p * 100:.1f}%",
+        "the engine's final probability — calibration-mapped "
+        "(phi) and blended toward the market's own number; "
+        "not the raw model probability",
+        f"FanDuel odds: {price:+d} — implied probability "
+        f"{q * 100:.1f}% (decimal {dec:.2f})",
+        f"true odds at the engine's number: {_fair_text(p)} "
+        f"— the fair price, where this bet breaks even"]
+    pe = verdict.get("pess_edge_pts")
+    if pe is not None:
+        p_pess = q + pe / 100.0
+        lines += [
+            f"pessimistic probability (verdict ladder's "
+            f"basis): {p_pess * 100:.1f}% — the band's low "
+            f"end the ladder grades survival on",
+            f"pessimistic edge: {pe:+.1f} pts · true odds "
+            f"at the pessimistic end: {_fair_text(p_pess)} · "
+            f"EV at the pessimistic end: "
+            f"{p_pess * dec - 1.0:+.3f} per unit"]
+    else:
+        lines.append(
+            "pessimistic end (verdict ladder's basis): the "
+            "ladder's low-end number is not carried on this "
+            "verdict — the ladder applied it itself, and its "
+            "outcome is the rung in the proof below")
+    lines.append(
+        f"proof: engine {p * 100:.1f}% vs implied "
+        f"{q * 100:.1f}% → edge {edge:+.1f} pts → EV "
+        f"{p * dec - 1.0:+.3f} per unit → verdict {f['term']}"
+        + (f" · grade {f['grade']}" if f["grade"] else ""))
+    adv = b5.kelly_advice(p, price, bankroll=bankroll,
+                          cal_tag=f["cal_tag"])
+    lines.append("position — Kelly advisory (the engine's "
+                 "kelly_advice: quarter-Kelly range under a "
+                 "5% hard cap; advice only — the app never "
+                 "places a bet)")
+    if adv["state"] == "UNPRICED":
+        lines.append(adv["reasons"][0])
+    else:
+        stake = (f"advised stake: "
+                 f"{adv['stake_frac'] * 100:.2f}%–"
+                 f"{adv['stake_frac_hi'] * 100:.2f}% of "
+                 f"bankroll ({adv['stake_units']:.1f}u–"
+                 f"{adv['stake_units_hi']:.1f}u)")
+        if adv["stake_dollars"] is not None:
+            stake += (f" = ${adv['stake_dollars']:,.0f}–"
+                      f"${adv['stake_dollars_hi']:,.0f} on a "
+                      f"${bankroll:,.0f} bankroll")
+        else:
+            stake += (" — no bankroll set in the app, so "
+                      "the stake prints as a fraction of "
+                      "bankroll only")
+        lines.append(stake)
+        lines.extend(adv["reasons"])
+    return lines
+
+
 def _depth_sections(mkt, verdict, rec, quotes_by_game,
-                    lane_ctx=None, edge_pts=None):
+                    lane_ctx=None, edge_pts=None, bankroll=None):
     """The card's depth, as data: [(title, [gloss, *lines])]
     — the exact strings the deleted widget tiles carried
     (PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE), gloss
     first in each list, factored out of the old builder
-    before it was removed. The expanded drawing prints
-    these; nothing else invents card depth text."""
+    before it was removed. Build 52 adds THE MATHEMATICS
+    (the projection's proof chain + the Kelly-advisory
+    position) after PRICE ANATOMY. The expanded drawing
+    prints these; nothing else invents card depth text."""
     f = _card_facts(mkt, verdict, lane_ctx)
     w, l = f["w"], f["l"]
     rec_src, phi, phi_state = f["rec_src"], f["phi"], \
@@ -2708,6 +2875,12 @@ def _depth_sections(mkt, verdict, rec, quotes_by_game,
     return [
         ("PRICE ANATOMY", ["where the probability came from"]
          + anatomy),
+        ("THE MATHEMATICS",
+         ["the projection proved with its own numbers — "
+          "probability against price, the ladder's "
+          "pessimistic end, the position"]
+         + _mathematics_lines(mkt, verdict, f, edge_pts,
+                              bankroll)),
         ("SCALE",
          ["phi — the fitted map that adjusts this lane's raw "
           "probabilities toward what its record has earned"]
@@ -2931,7 +3104,8 @@ def draw_ticket_b(mkt, verdict, edge_pts=None):
 
 
 def _expanded_items(mkt, verdict, rec, quotes_by_game,
-                    rank=None, edge_pts=None, lane_ctx=None):
+                    rank=None, edge_pts=None, lane_ctx=None,
+                    bankroll=None):
     """The expanded card's text plan, in draw order:
     [(kind, text)] — the face lines the collapsed row
     compresses (find rank, lane record, the engine's
@@ -2957,7 +3131,8 @@ def _expanded_items(mkt, verdict, rec, quotes_by_game,
     items.append(("fd", f"Find it: {name['fd_path']}"))
     for title, lines in _depth_sections(
             mkt, verdict, rec, quotes_by_game,
-            lane_ctx=lane_ctx, edge_pts=edge_pts):
+            lane_ctx=lane_ctx, edge_pts=edge_pts,
+            bankroll=bankroll):
         items.append(("title", title))
         items.append(("gloss", lines[0]))
         for ln in lines[1:]:
@@ -2980,14 +3155,14 @@ _EXP_STYLE = {
 
 def _card_png_expanded(mkt, verdict, rec, quotes_by_game,
                        rank=None, edge_pts=None, lane_ctx=None,
-                       design="C"):
+                       design="C", bankroll=None):
     """The expanded drawing: the collapsed face on top
     (the Design C row or the Design B ticket, per surface),
     the depth below as drawn text, the action bar last.
     Returns (png_bytes, height_px)."""
     items = _expanded_items(mkt, verdict, rec, quotes_by_game,
                             rank=rank, edge_pts=edge_pts,
-                            lane_ctx=lane_ctx)
+                            lane_ctx=lane_ctx, bankroll=bankroll)
     face_h = _TICKET_H if design == "B" else _CARD_H
     scratch = _PILDraw.Draw(_PILImage.new("RGB", (8, 8)))
     height = face_h + 18
@@ -3040,7 +3215,7 @@ def _card_png_expanded(mkt, verdict, rec, quotes_by_game,
 
 def _card_line_plan(mkt, verdict, rec, quotes_by_game,
                     rank=None, edge_pts=None, lane_ctx=None,
-                    design="C"):
+                    design="C", bankroll=None):
     """The expanded card's text lines in draw order (the
     face's lines first, the action labels last) — the
     readable form of the drawing; the harness pins card
@@ -3055,7 +3230,7 @@ def _card_line_plan(mkt, verdict, rec, quotes_by_game,
                 card_verdict(verdict)[0] or ""]
     plan += [text for kind, text in _expanded_items(
         mkt, verdict, rec, quotes_by_game, rank=rank,
-        edge_pts=edge_pts, lane_ctx=lane_ctx)
+        edge_pts=edge_pts, lane_ctx=lane_ctx, bankroll=bankroll)
         if kind != "actions"]
     plan += list(_CARD_ACTION_LABELS)
     return plan
@@ -3157,9 +3332,55 @@ def _card_fallback_png(mkt, verdict, err, design="C"):
     return _png_bytes(img)
 
 
+def _bet_now_chip():
+    """The BET NOW indicator (build 52): a native control
+    mounted at the TOP of an expanded card whose bet survives
+    the verdict ladder's pessimistic-end test (bet_now()) —
+    the render loops place it directly above the card (see
+    bet_now_chip_for); the card control itself stays the
+    bare GestureDetector every surface enumerates.
+
+    STATIC glow, deliberately: the pulse keys are owned —
+    the golden key's target list is assigned wholesale by
+    its two owners' render finishes (the Finds glow bar and
+    the Protected Slip glow bar), and no registration
+    lifecycle exists that an expansion chip could join
+    without racing those assignments or the 3-target tick
+    cap — so the chip carries the standing static ICE_GLOW
+    and no new timer or thread exists for it.
+
+    Accent (cyan) treatment, not gold: the design law
+    reserves gold to GOLDEN surfaces (GOLD is "GOLDEN only —
+    nowhere else"), while cyan is the glow "wherever the
+    model sees something real" — a priced bet the ladder's
+    own test survives."""
+    return ft.Container(
+        width=_CARD_DP_W, padding=10, bgcolor=CYAN_DEEP,
+        border=_border_all(1.5, ACCENT), border_radius=10,
+        shadow=ICE_GLOW,
+        content=ft.Text(
+            "● BET NOW — model projects this bet to beat "
+            "its price", size=13, color=ACCENT,
+            weight=ft.FontWeight.BOLD))
+
+
+def bet_now_chip_for(mkt, verdict):
+    """The BET NOW indicator control for one card, or None:
+    it mounts only while the card is expanded (its key sits
+    in _CARD_DETAILS_OPEN) and its bet survives the ladder's
+    pessimistic-end test. Render loops append it directly
+    before the card control, so it rides at the top of the
+    expansion and leaves the tree with the collapse
+    re-render — no registration, no lifecycle of its own."""
+    if _card_key(mkt) in _CARD_DETAILS_OPEN \
+            and bet_now(verdict):
+        return _bet_now_chip()
+    return None
+
+
 def _card_control(mkt, verdict, rec, quotes_by_game,
                   rank=None, edge_pts=None, lane_ctx=None,
-                  design="C"):
+                  design="C", bankroll=None):
     """One card = one drawn image in a GestureDetector.
     Collapsed: the surface's face (the Design C row on the
     Board; the Design B ticket on finds/parse). Expanded
@@ -3183,7 +3404,8 @@ def _card_control(mkt, verdict, rec, quotes_by_game,
     if expanded:
         png, height_px = _card_png_expanded(
             mkt, verdict, rec, quotes_by_game, rank=rank,
-            edge_pts=edge_pts, lane_ctx=lane_ctx, design=design)
+            edge_pts=edge_pts, lane_ctx=lane_ctx, design=design,
+            bankroll=bankroll)
     elif design == "B":
         png = draw_ticket_b(mkt, verdict, edge_pts)
         height_px = _TICKET_H
@@ -3256,7 +3478,8 @@ def build_card_safe(mkt: dict, verdict: dict, rec: dict,
         return _card_control(
             mkt, verdict, rec, quotes_by_game,
             rank=kw.get("rank"), edge_pts=kw.get("edge_pts"),
-            lane_ctx=kw.get("lane_ctx"), design=design)
+            lane_ctx=kw.get("lane_ctx"), design=design,
+            bankroll=kw.get("bankroll"))
     except Exception as err:
         try:
             return ft.Image(
@@ -5122,7 +5345,12 @@ def main(page: ft.Page):
                 _card = build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, on_chart=_card_chart,
-                    on_toggle=render_cards)
+                    on_toggle=render_cards,
+                    bankroll=_parse_bankroll(
+                        state.get("bankroll")))
+                _chip = bet_now_chip_for(mkt, verdict)
+                if _chip is not None:
+                    ordered.append(_chip)
                 ordered.append(_card)
                 _n_rendered += 1
             if not shown:
@@ -5636,12 +5864,17 @@ def main(page: ft.Page):
                 mkt, verdict = found
                 parse_result.controls.append(section_header(
                     "MATCH IN THE LAST PULL", ACCENT))
+                _chip = bet_now_chip_for(mkt, verdict)
+                if _chip is not None:
+                    parse_result.controls.append(_chip)
                 parse_result.controls.append(build_card_safe(
                     mkt, verdict, rec, game_quotes(markets),
                     edge_pts=market_edge_pts(mkt, verdict),
                     lane_ctx=lane_contexts(markets), design="B",
                     on_chart=_card_chart,
-                    on_toggle=lambda: on_parse(None)))
+                    on_toggle=lambda: on_parse(None),
+                    bankroll=_parse_bankroll(
+                        state.get("bankroll"))))
                 parse_result.controls.append(_kelly_block(
                     verdict.get("p"), mkt.get("price"),
                     lane=market_lane(mkt),
@@ -6479,11 +6712,16 @@ def main(page: ft.Page):
                     "don't drop just 'cause the panel empty.",
                     size=11, color=DIM))
             for mkt, verdict, edge in golden:
+                _chip = bet_now_chip_for(mkt, verdict)
+                if _chip is not None:
+                    ordered.append(_chip)
                 ordered.append(build_card_safe(
                     mkt, verdict, rec, quotes, edge_pts=edge,
                     lane_ctx=ctx, design="B",
                     on_chart=_card_chart,
-                    on_toggle=render_betfi))
+                    on_toggle=render_betfi,
+                    bankroll=_parse_bankroll(
+                        state.get("bankroll"))))
             ordered.append(_header_image(
                 f"FINDS — verdict ladder, then edge "
                 f"({len(finds)})", ACCENT))
@@ -6495,11 +6733,16 @@ def main(page: ft.Page):
                     size=12, color=DIM, height=1.35))
             for i, (mkt, verdict, edge) in enumerate(
                     finds[:CARD_PAGE], start=1):
+                _chip = bet_now_chip_for(mkt, verdict)
+                if _chip is not None:
+                    ordered.append(_chip)
                 ordered.append(build_card_safe(
                     mkt, verdict, rec, quotes, rank=i,
                     edge_pts=edge, lane_ctx=ctx, design="B",
                     on_chart=_card_chart,
-                    on_toggle=render_betfi))
+                    on_toggle=render_betfi,
+                    bankroll=_parse_bankroll(
+                        state.get("bankroll"))))
             if len(finds) > CARD_PAGE:
                 ordered.append(ft.Text(
                     f"+{len(finds) - CARD_PAGE} more finds past "
@@ -6512,11 +6755,16 @@ def main(page: ft.Page):
                     f"event disagree inside this pull "
                     f"({len(flagged)})", WARN))
                 for mkt, verdict, edge in flagged:
+                    _chip = bet_now_chip_for(mkt, verdict)
+                    if _chip is not None:
+                        ordered.append(_chip)
                     ordered.append(build_card_safe(
                         mkt, verdict, rec, quotes,
                         edge_pts=edge, lane_ctx=ctx, design="B",
                         on_chart=_card_chart,
-                        on_toggle=render_betfi))
+                        on_toggle=render_betfi,
+                        bankroll=_parse_bankroll(
+                            state.get("bankroll"))))
             counter_lines = []
             for _m, v, e in counter:
                 _nm = bet_name(_m, v)

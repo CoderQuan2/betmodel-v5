@@ -9996,8 +9996,72 @@ def register(name):
     return deco
 
 
+def _fair_american(p):
+    """The American price at which a side with true probability
+    p breaks even — the model's fair odds (its \"true odds\")."""
+    if p >= 0.5:
+        return -100.0 * p / (1.0 - p)
+    return 100.0 * (1.0 - p) / p
+
+
+def projection_math(p, p_pess, price):
+    """The projection mathematics stamped on every verdict dict
+    (build 52, Pilot order — the BET NOW build): the market's
+    implied probability, the model's fair (true) odds at its
+    headline probability and at its pessimistic counterpart,
+    the expected value per unit staked at both, and the bet_now
+    stamp — True exactly when the edge survives at the
+    pessimistic end (pessimistic-end edge > 0 points), computed
+    from the same pessimistic probability the checker handed
+    the verdict ladder. Display mathematics only: derived
+    solely from the verdict's own p, its pessimistic
+    counterpart and the market price; it moves no rung, no
+    grade and no gate. The pessimistic probability and the
+    ladder's pessimistic edge are stamped themselves
+    (p_pess, pess_edge_pts) — the edge is the ladder's own
+    survival margin, not a display-side recomputation. Any
+    missing input (unpriced, no book price, no pessimistic
+    counterpart) stamps None fields and bet_now False — never
+    a partial invention."""
+    proj = {"implied_prob": None, "fair_odds": None,
+            "fair_odds_pess": None, "ev_per_unit": None,
+            "ev_pess": None, "p_pess": None,
+            "pess_edge_pts": None, "bet_now": False}
+    if p is None or p_pess is None or price is None:
+        return proj
+    imp = implied_prob(price)
+    dec = american_to_decimal(price)
+    proj["implied_prob"] = imp
+    proj["ev_per_unit"] = p * dec - 1.0
+    proj["ev_pess"] = p_pess * dec - 1.0
+    if 0.0 < p < 1.0:
+        proj["fair_odds"] = _fair_american(p)
+    if 0.0 < p_pess < 1.0:
+        proj["fair_odds_pess"] = _fair_american(p_pess)
+    # The ladder's own pessimistic edge, in points — the exact
+    # value _grade_and_gate computed for this verdict and handed
+    # verdict_ladder as pess_edge_pts ((p_pess - implied) * 100,
+    # same inputs, same arithmetic), stamped rather than
+    # recomputed a second way. bet_now is that edge's sign, on
+    # the ladder basis — not the headline edge, and not the
+    # Kelly advisory's half-edge convention (FORMULAS.md §8/§9).
+    proj["p_pess"] = p_pess
+    proj["pess_edge_pts"] = (p_pess - imp) * 100.0
+    proj["bet_now"] = proj["pess_edge_pts"] > 0.0
+    return proj
+
+
 def _verdict(mkt, state, p=None, grade=None, verdict=None,
-             verdict_reason=None, note="", detail=""):
+             verdict_reason=None, note="", detail="",
+             p_pess=None, price=None):
+    # Build 52: the projection mathematics, stamped centrally
+    # at this one assembly point (see projection_math) from the
+    # verdict's own probability, the pessimistic counterpart the
+    # checker handed the ladder (p_pess=), and the market price
+    # — mkt's own, unless price= overrides it (the parlay's
+    # combined odds live on its priced twin, not on mkt).
+    _proj = projection_math(
+        p, p_pess, mkt.get("price") if price is None else price)
     return {"market": mkt.get("market"), "sport": mkt.get("sport"),
             "desc": _mkt_desc(mkt), "state": state, "p": p,
             "grade": grade, "verdict": verdict,
@@ -10007,6 +10071,11 @@ def _verdict(mkt, state, p=None, grade=None, verdict=None,
             # this one assembly point (see METAL_TIERS): every
             # verdict dict in the system carries it.
             "metal": metal_for_verdict(verdict),
+            # Build 52: the projection mathematics (see
+            # projection_math) — implied probability, fair odds
+            # at the headline and pessimistic probabilities, EV
+            # per unit at both, and the bet_now stamp.
+            **_proj,
             # v5.2: stamped centrally by run_slate on priced
             # verdicts — the displayed calibration tag and the
             # bet's stance. None on UNPRICED / ungraded verdicts.
@@ -10137,6 +10206,7 @@ def _straight(mkt, ctx, kind):
         if fails:
             note += f" | gate: {'; '.join(fails)}"
     return _verdict(mkt, "PRICED", p=p_final, grade=grade,
+                    p_pess=min(p_final, p),
                     verdict=verdict, verdict_reason=verdict_reason, note=note,
                     detail=f"raw {p * 100:.1f}% -> phi {p_phi * 100:.1f}% "
                            f"[{phi_state}]")
@@ -10239,6 +10309,7 @@ def _chk_player_props(mkt, ctx):
         if fails:
             note += f" | gate: {'; '.join(fails)}"
     return _verdict(mkt, "PRICED", p=band["price_p"], grade=grade,
+                    p_pess=band["band"][0],
                     verdict=verdict, verdict_reason=verdict_reason, note=note)
 
 
@@ -10263,7 +10334,7 @@ def _chk_team_props(mkt, ctx):
                                  float(mkt["line"]))
         p = p_over if mkt.get("side", "over") == "over" else 1 - p_over
         grade, _, verdict, verdict_reason, _ = _grade_and_gate(mkt, p, p, p, ctx)
-        return _verdict(mkt, "PRICED", p=p, grade=grade,
+        return _verdict(mkt, "PRICED", p=p, grade=grade, p_pess=p,
                         verdict=verdict, verdict_reason=verdict_reason,
                         note=f"{team} team goals off the Poisson grid")
     if mkt.get("sport") in TEAMTOTALS_LANES:
@@ -10279,7 +10350,7 @@ def _chk_team_props(mkt, ctx):
         note = info["detail"]
         if grade is not None:
             note += f" | grade {grade}"
-        return _verdict(mkt, "PRICED", p=p, grade=grade,
+        return _verdict(mkt, "PRICED", p=p, grade=grade, p_pess=p,
                         verdict=verdict,
                         verdict_reason=verdict_reason, note=note)
     return _verdict(mkt, "UNPRICED",
@@ -10433,7 +10504,7 @@ def _chk_futures(mkt, ctx):
         if mkt.get("price") is not None:
             grade, _tags, verdict, verdict_reason, _fails = \
                 _grade_and_gate(mkt, p, p, p, ctx)
-        return _verdict(mkt, "PRICED", p=p, grade=grade,
+        return _verdict(mkt, "PRICED", p=p, grade=grade, p_pess=p,
                         verdict=verdict,
                         verdict_reason=verdict_reason,
                         note=detail, detail=detail)
@@ -10474,6 +10545,7 @@ def _chk_parlay(mkt, ctx):
     note = ("joint P = product of leg probabilities (assumes the "
             "legs are independent — same-game legs rarely are)")
     grade = verdict = verdict_reason = None
+    pess_stamp = price_stamp = None
     if all(leg.get("price") is not None for leg in mkt["legs"]):
         dec_prod = 1.0
         for leg in mkt["legs"]:
@@ -10488,7 +10560,9 @@ def _chk_parlay(mkt, ctx):
             idx = max(LADDER.index(grade), LADDER.index(weakest))
             grade = LADDER[idx]
         note += f" | combined odds {mkt2['price']:+d} from the legs"
+        pess_stamp, price_stamp = joint_pess, mkt2["price"]
     return _verdict(mkt, "PRICED", p=joint, grade=grade,
+                    p_pess=pess_stamp, price=price_stamp,
                     verdict=verdict, verdict_reason=verdict_reason, note=note)
 
 
@@ -10596,7 +10670,7 @@ def _chk_correct_score(mkt, ctx):
                         note="score must be given as 'H-A'")
     p = grid["matrix"][h][a]
     grade, _, verdict, verdict_reason, _ = _grade_and_gate(mkt, p, p, p, ctx)
-    return _verdict(mkt, "PRICED", p=p, grade=grade, verdict=verdict, verdict_reason=verdict_reason,
+    return _verdict(mkt, "PRICED", p=p, grade=grade, p_pess=p, verdict=verdict, verdict_reason=verdict_reason,
                     note="exact cell of the Poisson grid")
 
 
@@ -10609,7 +10683,7 @@ def _chk_dnb(mkt, ctx):
     p_win = grid["p_home"] if side == "home" else grid["p_away"]
     grade, _, verdict, verdict_reason, _ = _grade_and_gate(mkt, p_win, p_win, p_win,
                                             ctx)
-    return _verdict(mkt, "PRICED", p=p_win, grade=grade,
+    return _verdict(mkt, "PRICED", p=p_win, grade=grade, p_pess=p_win,
                     verdict=verdict, verdict_reason=verdict_reason,
                     note=f"P(win) off the grid; P(draw/push) "
                          f"{grid['p_draw'] * 100:.1f}% — grading on "
@@ -10625,7 +10699,7 @@ def _chk_btts(mkt, ctx):
     p = grid["p_btts"] if mkt.get("side", "yes") == "yes" \
         else 1 - grid["p_btts"]
     grade, _, verdict, verdict_reason, _ = _grade_and_gate(mkt, p, p, p, ctx)
-    return _verdict(mkt, "PRICED", p=p, grade=grade, verdict=verdict, verdict_reason=verdict_reason,
+    return _verdict(mkt, "PRICED", p=p, grade=grade, p_pess=p, verdict=verdict, verdict_reason=verdict_reason,
                     note="both-teams-to-score off the Poisson grid")
 
 
@@ -10646,7 +10720,7 @@ def _chk_double_chance(mkt, ctx):
                              f"rather than guessed")
     p = combos[combo]
     grade, _, verdict, verdict_reason, _ = _grade_and_gate(mkt, p, p, p, ctx)
-    return _verdict(mkt, "PRICED", p=p, grade=grade, verdict=verdict, verdict_reason=verdict_reason,
+    return _verdict(mkt, "PRICED", p=p, grade=grade, p_pess=p, verdict=verdict, verdict_reason=verdict_reason,
                     note="double chance = the grid's 1X2 sums, exact")
 
 

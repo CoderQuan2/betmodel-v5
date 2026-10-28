@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.30.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 51)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.31.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 52)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -398,12 +398,31 @@ def main():
         _m0, _v0, _rec, app.game_quotes(_rec["markets"]),
         edge_pts=app.market_edge_pts(_m0, _v0),
         lane_ctx=app.lane_contexts(_rec["markets"]))
-    check("v12.11: card depth is the four sections "
-          "(PRICE ANATOMY / SCALE / COHERENCE / PROVENANCE)",
+    check("v12.31: card depth is the five sections "
+          "(PRICE ANATOMY / THE MATHEMATICS / SCALE / "
+          "COHERENCE / PROVENANCE)",
           [t for t, _ls in _secs0]
-          == ["PRICE ANATOMY", "SCALE", "COHERENCE",
-              "PROVENANCE"],
+          == ["PRICE ANATOMY", "THE MATHEMATICS", "SCALE",
+              "COHERENCE", "PROVENANCE"],
           f"sections={[t for t, _ls in _secs0]}")
+    # v12.31 (build 52): the mathematics section carries the
+    # engine's stamped projection — fair odds, the ladder-basis
+    # pessimistic edge, and the proof chain — and the BET NOW
+    # predicate keys on the engine's ladder-basis stamp
+    _math_secs = dict(_secs0).get("THE MATHEMATICS", [])
+    check("v12.31 mathematics: stamped projection prints "
+          "(fair odds + ladder-basis pessimistic edge + proof)",
+          any("true odds" in ln for ln in _math_secs)
+          and any("proof:" in ln for ln in _math_secs)
+          and (_v0.get("pess_edge_pts") is None
+               or any("pessimistic" in ln for ln in _math_secs)))
+    check("v12.31 bet-now: verdict stamps agree with the "
+          "ladder basis and the app predicate follows them",
+          all((v.get("bet_now") is None
+               or v["bet_now"] == (v.get("pess_edge_pts") is not None
+                                   and v["pess_edge_pts"] > 0))
+              for v in b5.run_slate(_rec))
+          and app.bet_now(_v0) == bool(_v0.get("bet_now")))
     check("v12.8: 11's anatomy leads with the verdict line "
           "and carries state + calibration tag",
           any(ln.startswith("state:")
@@ -1518,10 +1537,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.30.0 (build 51)" in _readme)
+          "12.31.0 (build 52)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.30.0"' in _wf
-          and '--build-number "51"' in _wf)
+          '--build-version "12.31.0"' in _wf
+          and '--build-number "52"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
