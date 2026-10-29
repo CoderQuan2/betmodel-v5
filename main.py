@@ -6274,7 +6274,7 @@ def main(page: ft.Page):
                                 ft.IconButton(
                                     icon=ft.Icons.CLOSE, icon_size=16,
                                     icon_color=FAINT, width=40,
-                                    height=40,
+                                    height=40, tooltip="Remove leg",
                                     on_click=lambda _e, i=i:
                                     on_remove_leg(i))])))
             else:
@@ -6607,6 +6607,7 @@ def main(page: ft.Page):
     def _sub_header(title, subtitle=""):
         return ft.Row(spacing=8, controls=[
             ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color=ACCENT,
+                          tooltip="Go back",
                           on_click=lambda _e: show("more")),
             screen_title(title, subtitle)])
 
