@@ -1,0 +1,3 @@
+## 2024-10-30 - Tooltips for icon-only buttons
+**Learning:** In Flet applications, the `tooltip` property on `ft.IconButton` serves as the accessible name (ARIA label equivalent) for screen readers. Icon-only buttons lacking a tooltip are inaccessible to screen reader users because they provide no context about their function.
+**Action:** Always provide a descriptive `tooltip` attribute when creating an `ft.IconButton` that does not include accompanying text, ensuring the interface remains accessible.
