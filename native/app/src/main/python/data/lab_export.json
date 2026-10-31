@@ -1,0 +1,127 @@
+{
+ "format": "lab-export/1",
+ "exported_at": "2026-10-21T09:16:56-04:00",
+ "room_rule": "Ships populated. If this file is absent the app prints 'record not bundled' \u2014 never an empty record dressed as 0-0.",
+ "engine_data_files": [
+  "scorecard.json",
+  "v5-lane-history.json",
+  "v5-phi.json",
+  "v5-nba.json",
+  "v5-soccer.json",
+  "ratings_cfb.json",
+  "ratings_nhl.json",
+  "recal_params.json",
+  "cfb_games_2026.json",
+  "nhl_games_2026-27.json",
+  "nfl-week6-pricing.json",
+  "menu-fanduel-20261019-1232.json",
+  "legs-2026-10-17.json",
+  "state-dal-gb-pregame.json",
+  "state-tennessee-live.json",
+  "state-tennessee-q3.json",
+  "cache/gamelog_4685401.json",
+  "cache/gamelog_4921108.json",
+  "cache/gamelog_5121169.json"
+ ],
+ "scorecard_entries": [
+  {
+   "lane": "cover",
+   "event": "Texas -11.5 vs Florida (NCAAF, 2026-10-17)",
+   "raw_edge_pts": 12.4,
+   "mechanism": "model-structural",
+   "market_novig_p": 0.5,
+   "model_p": 0.648,
+   "result": "market_right",
+   "clv": null,
+   "priced_at": "2026-10-17T12:29:00-04:00",
+   "note": "v1.1-B cover lane claim as graded by v3.1 (model 64.8% vs implied 52.4% at -110/-110, no-vig 50.0%). Lane bias on file: over-predicts favourite margins. RESOLVED 2026-10-17: Florida won 27-24 outright. Cover claim WRONG; the market was right."
+  },
+  {
+   "lane": "ml",
+   "event": "Tennessee ML vs Alabama (NCAAF, 2026-10-17)",
+   "raw_edge_pts": 24.3,
+   "mechanism": "model-structural",
+   "market_novig_p": 0.27,
+   "model_p": 0.525,
+   "result": "Tennessee 26, Alabama 10 (final, 2026-10-17). Model 52.5% vs market no-vig ~27%: model right, market wrong.",
+   "clv": null,
+   "priced_at": "2026-10-17T12:20:00-04:00",
+   "note": "betmodel v1 Elo: Tennessee 52.5% vs market +255 (implied 28.2%; two-sided no-vig vs Alabama -320 = 27.0%). Logged in data/live-board-2026-10-17-1346.md as the widest model-vs-market gap of the day.",
+   "outcome": "model_right"
+  },
+  {
+   "lane": "live",
+   "event": "Florida ML at Texas (Pilot Book live bet, 2026-10-17)",
+   "raw_edge_pts": 27.2,
+   "mechanism": "live-repricing-lag",
+   "market_novig_p": 0.164,
+   "model_p": 0.451,
+   "result": "model_right",
+   "clv": null,
+   "priced_at": "2026-10-17T14:05:00-04:00",
+   "note": "Pilot's read, placed ~14:05 ET at +460 (implied 17.9%; no-vig 16.4% vs Texas -1000 from the 13:46 board). model_p is the v4 Live Matrix price of the Q3 5:28 tied-17-17 state (regression R3a) \u2014 the first logged state at/after the tying score; the bet itself was struck at halftime, Florida down 7. RESOLVED 2026-10-17: Florida won 27-24. The Pilot read (and Live Matrix 45.1%) beat the market no-vig 16.4%. Ticket paid +$69 on $15."
+  }
+ ],
+ "lane_history": {
+  "nfl-ml": {
+   "wins": 3,
+   "losses": 8,
+   "n": 11,
+   "brier_model": 0.3041,
+   "brier_market": 0.2698,
+   "source": "results/weekend-compile-2026-10-17-18.md \u00a71-\u00a72 (graded by betmodel5 R4)"
+  }
+ },
+ "sealed_cards": [
+  {
+   "date": "2026-10-17",
+   "name": "Clean Saturday Slate",
+   "record": "3-3",
+   "net_units": -0.42,
+   "roi_pct": -7.0,
+   "clv": "not captured",
+   "source": "results/sealed-card-2026-10-17.md"
+  }
+ ],
+ "screened_not_sealed": 4,
+ "pilot_book": [
+  {
+   "date": "2026-10-17",
+   "ticket": "Florida ML +460",
+   "stake": 15,
+   "returned": 84,
+   "net": 69,
+   "result": "WON"
+  },
+  {
+   "date": "2026-10-17",
+   "ticket": "Notre Dame\u2013BYU same-game parlay",
+   "stake": 5,
+   "returned": 0,
+   "net": -5,
+   "result": "LOST"
+  },
+  {
+   "date": "2026-10-18",
+   "ticket": "DAL@GB SGP +994 (Under 51.5 + Lloyd Q1 TD)",
+   "stake": 5,
+   "result": "PENDING",
+   "note": "result not recorded in the lab"
+  },
+  {
+   "date": "2026-10-18",
+   "ticket": "Tucker Kraft last TD +1100",
+   "stake": 2,
+   "result": "PENDING",
+   "note": "result not recorded in the lab"
+  }
+ ],
+ "pilot_book_closed_line": {
+  "as_of": "2026-10-17",
+  "staked": 20,
+  "returned": 84,
+  "net": 64
+ },
+ "kill_ledger_items": 8,
+ "governor_note": "all lanes INSUFFICIENT DATA (window 25) at export"
+}

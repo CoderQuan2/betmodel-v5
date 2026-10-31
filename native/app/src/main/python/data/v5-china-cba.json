@@ -1,0 +1,67 @@
+{
+ "sport": "china-cba",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T22:43:54+00:00",
+ "source": "RealGM international league schedule pages (Chinese CBA; basketball.realgm.com league 40; cached 2026-10-27T22:43:54+00:00; data/cache/china_cba_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "14": 1661.6,
+  "1470": 981.8,
+  "1623": 1322.2,
+  "1624": 1527.8,
+  "165": 1558.8,
+  "287": 1812.5,
+  "288": 1574.9,
+  "289": 1705.5,
+  "290": 1400.6,
+  "371": 1677.8,
+  "372": 1308.8,
+  "412": 1223.4,
+  "638": 1644.4,
+  "739": 1486.5,
+  "740": 1557.9,
+  "741": 1301.4,
+  "742": 1366.4,
+  "76": 1919.2,
+  "86": 1336.8,
+  "93": 1631.8
+ },
+ "margin_map": {
+  "a": 0.457,
+  "b": 0.0349,
+  "sd": 13.12,
+  "n": 1189
+ },
+ "backtest": {
+  "brier": 0.1766,
+  "naive_brier": 0.237,
+  "naive_home_brier": 0.237,
+  "n": 1189,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "14": "Guangdong Dongguan",
+  "76": "Shanghai Dongfang",
+  "86": "Ningbo Rockets",
+  "93": "Shenzhen",
+  "165": "Shandong",
+  "287": "Beijing Shougang",
+  "288": "Liaoning",
+  "289": "Zhejiang Guangsha",
+  "290": "Fujian",
+  "371": "Zhejiang Chouzhou",
+  "372": "Jilin Northeast",
+  "412": "Jiangsu Kendia",
+  "638": "Shanxi Zhongyu",
+  "739": "Guangzhou Loong Lions",
+  "740": "Qingdao",
+  "741": "Tianjin Ronggang",
+  "742": "Xinjiang Guanghui",
+  "1470": "Sichuan Blue Whales",
+  "1623": "Nanjing Tongxi Monkey King",
+  "1624": "Beijing BeiKong"
+ }
+}

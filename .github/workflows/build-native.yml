@@ -1,0 +1,50 @@
+name: build-native
+
+# BetFi Xii native (Jetpack Compose + Chaquopy) — separate from the
+# Flet pipeline (build-apk.yml), which remains the shipping build
+# until native parity + the Pilot's device verdict (see
+# native/PROGRAM.md). This workflow only assembles a debug APK.
+#
+# There is NO Gradle wrapper in the repo yet: the VM that authors
+# this project has no JDK, and a wrapper jar must never be faked.
+# Gradle is pinned here instead; the wrapper-commit follow-up is in
+# native/README.md.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "native/**"
+      - ".github/workflows/build-native.yml"
+
+jobs:
+  assemble-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          # VERIFY: floor for AGP 9.4 / Gradle 9. If the build asks
+          # for a newer JDK, raise this and record it in
+          # native/BUILD-LOG.md.
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          # VERIFY: pairing for the AGP pin in native/build.gradle.kts.
+          gradle-version: "9.7.1"
+
+      - name: Assemble debug APK
+        working-directory: native
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: betfi-xii-native-debug
+          path: native/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error

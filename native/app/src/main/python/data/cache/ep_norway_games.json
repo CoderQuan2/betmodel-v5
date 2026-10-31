@@ -1,0 +1,5796 @@
+{
+ "fetched_at": "2026-10-27T22:12:32+00:00",
+ "source": "Elite Prospects league scores pages (public mirror)",
+ "report": [
+  "2023-2024: RS closed: 225 games, 10 teams, all pairs at 5 (listed 260)",
+  "2024-2025: RS closed: 225 games, 10 teams, all pairs at 5 (listed 263)",
+  "2025-2026: RS closed: 225 games, 10 teams, all pairs at 5 (listed 266)",
+  "2026-2027: partial season, 48 games taken as listed"
+ ],
+ "games": [
+  {
+   "date": "2023-09-15",
+   "home": "Stavanger Oilers",
+   "away": "Ringerike",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-15",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-16",
+   "home": "Comet Halden",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-17",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-19",
+   "home": "Lillehammer",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-21",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-21",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-21",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-21",
+   "home": "Comet Halden",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-21",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "Comet Halden",
+   "away": "Stjernen Hockey",
+   "hs": 0,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "Sparta Sarpsborg",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-23",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-26",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-28",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-09-28",
+   "home": "Storhamar",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-28",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-09-29",
+   "home": "Sparta Sarpsborg",
+   "away": "Comet Halden",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "Ringerike",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-09-30",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "Comet Halden",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-01",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "Frisk Asker",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "Storhamar",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-07",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Ringerike",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-08",
+   "home": "Comet Halden",
+   "away": "Stavanger Oilers",
+   "hs": 0,
+   "as": 10,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-12",
+   "home": "V\u00e5lerenga",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-12",
+   "home": "Lillehammer",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-12",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "Ringerike",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-14",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-15",
+   "home": "L\u00f8renskog",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-19",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-19",
+   "home": "Ringerike",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-19",
+   "home": "Comet Halden",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-19",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "Comet Halden",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-10-21",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-22",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 10,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "Comet Halden",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2023-10-26",
+   "home": "Ringerike",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-10-28",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "V\u00e5lerenga",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-10-29",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "Ringerike",
+   "away": "Frisk Asker",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "Comet Halden",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "Stjernen Hockey",
+   "away": "Ringerike",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-04",
+   "home": "Comet Halden",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-05",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-07",
+   "home": "V\u00e5lerenga",
+   "away": "Comet Halden",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-14",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-16",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-16",
+   "home": "Comet Halden",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-11-16",
+   "home": "Ringerike",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-16",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-18",
+   "home": "Ringerike",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-19",
+   "home": "Comet Halden",
+   "away": "L\u00f8renskog",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "L\u00f8renskog",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "Frisk Asker",
+   "away": "Comet Halden",
+   "hs": 16,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-11-23",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-25",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-11-26",
+   "home": "Ringerike",
+   "away": "Comet Halden",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-30",
+   "home": "Comet Halden",
+   "away": "Stjernen Hockey",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-11-30",
+   "home": "Ringerike",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2023-11-30",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-11-30",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 11,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "Sparta Sarpsborg",
+   "away": "Comet Halden",
+   "hs": 10,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "Storhamar",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-02",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-07",
+   "home": "Ringerike",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-07",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-07",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-07",
+   "home": "Comet Halden",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2023-12-07",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 7,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "Frisk Asker",
+   "away": "Ringerike",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "Storhamar",
+   "away": "Comet Halden",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-09",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "Stavanger Oilers",
+   "away": "Comet Halden",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "Ringerike",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Lillehammer",
+   "away": "Ringerike",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2023-12-21",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-22",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Stavanger Oilers",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "L\u00f8renskog",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2023-12-28",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Ringerike",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Comet Halden",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2023-12-30",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "Ringerike",
+   "away": "Comet Halden",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-04",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "Stjernen Hockey",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-06",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 10,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-07",
+   "home": "Ringerike",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-11",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-11",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-11",
+   "home": "Comet Halden",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-11",
+   "home": "Ringerike",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-11",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "V\u00e5lerenga",
+   "away": "Ringerike",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-13",
+   "home": "Lillehammer",
+   "away": "Comet Halden",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-14",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 7,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "Ringerike",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "Comet Halden",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-18",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "Stavanger Oilers",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-20",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-21",
+   "home": "Stjernen Hockey",
+   "away": "Ringerike",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-01-25",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-25",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-25",
+   "home": "Ringerike",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-25",
+   "home": "Comet Halden",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-25",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-01-27",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "L\u00f8renskog",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-28",
+   "home": "Frisk Asker",
+   "away": "Comet Halden",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-01",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-01",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-01",
+   "home": "Ringerike",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-01",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "Comet Halden",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "Ringerike",
+   "away": "Sparta Sarpsborg",
+   "hs": 0,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-02-03",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-04",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "Storhamar",
+   "away": "Ringerike",
+   "hs": 9,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-15",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-16",
+   "home": "Sparta Sarpsborg",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-17",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Ringerike",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "Comet Halden",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-18",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-22",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-22",
+   "home": "Frisk Asker",
+   "away": "Ringerike",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-22",
+   "home": "Storhamar",
+   "away": "Comet Halden",
+   "hs": 10,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-22",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-22",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "Ringerike",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-02-24",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "Comet Halden",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-25",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-27",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "V\u00e5lerenga",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "Lillehammer",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-02-29",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-02",
+   "home": "Frisk Asker",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-03",
+   "home": "L\u00f8renskog",
+   "away": "Ringerike",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-07",
+   "home": "Stjernen Hockey",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-03-07",
+   "home": "Sparta Sarpsborg",
+   "away": "Ringerike",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-03-07",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 6,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-03-07",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-03-07",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-03-09",
+   "home": "Comet Halden",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-03-09",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 9,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-03-09",
+   "home": "Ringerike",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-03-09",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-03-09",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-13",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-14",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-14",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-15",
+   "home": "Comet Halden",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "Stavanger Oilers",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "Narvik Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-19",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Comet Halden",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Frisk Asker",
+   "away": "Narvik Hockey",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-21",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-09-22",
+   "home": "Storhamar",
+   "away": "Narvik Hockey",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-26",
+   "home": "Comet Halden",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 12,
+   "final": true
+  },
+  {
+   "date": "2024-09-26",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-26",
+   "home": "Narvik Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-26",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-26",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "Sparta Sarpsborg",
+   "away": "Comet Halden",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-09-28",
+   "home": "Narvik Hockey",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Narvik Hockey",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-09-29",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-03",
+   "home": "Comet Halden",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-10-03",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-03",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-03",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-03",
+   "home": "L\u00f8renskog",
+   "away": "Narvik Hockey",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "Comet Halden",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-05",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-10",
+   "home": "Lillehammer",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-10",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-10",
+   "home": "Sparta Sarpsborg",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-10",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "Comet Halden",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "Narvik Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-12",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "Frisk Asker",
+   "away": "Comet Halden",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "Narvik Hockey",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Comet Halden",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Stjernen Hockey",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-10-19",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "V\u00e5lerenga",
+   "away": "Comet Halden",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-24",
+   "home": "Narvik Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 10,
+   "final": true
+  },
+  {
+   "date": "2024-10-24",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-24",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-25",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-10-26",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Comet Halden",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-10-27",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Comet Halden",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Narvik Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-01",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-02",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "L\u00f8renskog",
+   "away": "Comet Halden",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-03",
+   "home": "Narvik Hockey",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 11,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-09",
+   "home": "Comet Halden",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-09",
+   "home": "Frisk Asker",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "V\u00e5lerenga",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-11-14",
+   "home": "Comet Halden",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "Stjernen Hockey",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "Stavanger Oilers",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-16",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Storhamar",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Narvik Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-19",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "V\u00e5lerenga",
+   "away": "Narvik Hockey",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-21",
+   "home": "Comet Halden",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "Lillehammer",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "Narvik Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2024-11-23",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-11-26",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "Comet Halden",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "L\u00f8renskog",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "Comet Halden",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-11-30",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "L\u00f8renskog",
+   "away": "Comet Halden",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Narvik Hockey",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-05",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "Narvik Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-07",
+   "home": "Comet Halden",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-08",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-17",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-19",
+   "home": "Comet Halden",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2024-12-19",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-19",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2024-12-19",
+   "home": "Narvik Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-19",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "Storhamar",
+   "away": "Comet Halden",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-21",
+   "home": "Frisk Asker",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Comet Halden",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-28",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Narvik Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "Frisk Asker",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2024-12-30",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "Comet Halden",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "Stavanger Oilers",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-04",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "Stavanger Oilers",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "Narvik Hockey",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-09",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "Comet Halden",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "Narvik Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-11",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "Comet Halden",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 11,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "Stjernen Hockey",
+   "away": "Comet Halden",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "Sparta Sarpsborg",
+   "away": "Narvik Hockey",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "V\u00e5lerenga",
+   "away": "Comet Halden",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Stjernen Hockey",
+   "away": "Narvik Hockey",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-18",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "Sparta Sarpsborg",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-23",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-01-23",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-23",
+   "home": "Narvik Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-25",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Comet Halden",
+   "away": "L\u00f8renskog",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-26",
+   "home": "Lillehammer",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Narvik Hockey",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-30",
+   "home": "Storhamar",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-01-30",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-01-30",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-01-30",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Sparta Sarpsborg",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Narvik Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-01",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-12",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Comet Halden",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 10,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Stjernen Hockey",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-14",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-15",
+   "home": "Narvik Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Lillehammer",
+   "away": "Comet Halden",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-16",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-02-20",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-20",
+   "home": "Sparta Sarpsborg",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-20",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-02-20",
+   "home": "Comet Halden",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-02-20",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "Storhamar",
+   "away": "Comet Halden",
+   "hs": 11,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "Lillehammer",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-22",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-02-25",
+   "home": "Narvik Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "L\u00f8renskog",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-02-27",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "Narvik Hockey",
+   "away": "Comet Halden",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-03-01",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-11",
+   "home": "Nidaros Hockey",
+   "away": "Narvik Hockey",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 8,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "Lillehammer",
+   "away": "Nidaros Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "Narvik Hockey",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-13",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "Stavanger Oilers",
+   "away": "Narvik Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "Nidaros Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-18",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "Narvik Hockey",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "L\u00f8renskog",
+   "away": "Nidaros Hockey",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-20",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-25",
+   "home": "Narvik Hockey",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-25",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-25",
+   "home": "Nidaros Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-25",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 8,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-25",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "Sparta Sarpsborg",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "Stjernen Hockey",
+   "away": "Nidaros Hockey",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-27",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Sparta Sarpsborg",
+   "away": "Narvik Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "Narvik Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "Nidaros Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "Nidaros Hockey",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "V\u00e5lerenga",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-04",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-06",
+   "home": "Lillehammer",
+   "away": "Narvik Hockey",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "Narvik Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "Storhamar",
+   "away": "Nidaros Hockey",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-09",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-11",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "V\u00e5lerenga",
+   "away": "Nidaros Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "Stjernen Hockey",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "Narvik Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "Sparta Sarpsborg",
+   "away": "Nidaros Hockey",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-18",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Sparta Sarpsborg",
+   "away": "Nidaros Hockey",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "Narvik Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 0,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "Nidaros Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-23",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Frisk Asker",
+   "away": "Nidaros Hockey",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-25",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Narvik Hockey",
+   "away": "Nidaros Hockey",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "Storhamar",
+   "away": "Narvik Hockey",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-01",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Nidaros Hockey",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "Narvik Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-13",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-13",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-13",
+   "home": "Narvik Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-13",
+   "home": "Stavanger Oilers",
+   "away": "Nidaros Hockey",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "Frisk Asker",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-15",
+   "home": "Nidaros Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-20",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-20",
+   "home": "L\u00f8renskog",
+   "away": "Narvik Hockey",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-20",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-20",
+   "home": "Nidaros Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Narvik Hockey",
+   "away": "Nidaros Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-22",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "Nidaros Hockey",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "Lillehammer",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "Sparta Sarpsborg",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-27",
+   "home": "Narvik Hockey",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-27",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-27",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-27",
+   "home": "Storhamar",
+   "away": "Nidaros Hockey",
+   "hs": 9,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-27",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "Lillehammer",
+   "away": "Sparta Sarpsborg",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "L\u00f8renskog",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "Nidaros Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-29",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-01",
+   "home": "V\u00e5lerenga",
+   "away": "Narvik Hockey",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "Lillehammer",
+   "away": "Nidaros Hockey",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "Narvik Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "Stjernen Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "L\u00f8renskog",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "Storhamar",
+   "away": "Lillehammer",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "Narvik Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "Nidaros Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-06",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "Nidaros Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-16",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "Lillehammer",
+   "away": "Narvik Hockey",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "Stjernen Hockey",
+   "away": "Nidaros Hockey",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-18",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "Stavanger Oilers",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "Nidaros Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-20",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Frisk Asker",
+   "away": "Sparta Sarpsborg",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Narvik Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Nidaros Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Storhamar",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Stjernen Hockey",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "V\u00e5lerenga",
+   "away": "Nidaros Hockey",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Nidaros Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Frisk Asker",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "Nidaros Hockey",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "Stavanger Oilers",
+   "away": "Narvik Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-08",
+   "home": "V\u00e5lerenga",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "L\u00f8renskog",
+   "away": "Narvik Hockey",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-10",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "Stavanger Oilers",
+   "away": "Sparta Sarpsborg",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "Frisk Asker",
+   "away": "Narvik Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "L\u00f8renskog",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-15",
+   "home": "Nidaros Hockey",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Narvik Hockey",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "V\u00e5lerenga",
+   "away": "L\u00f8renskog",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-17",
+   "home": "Nidaros Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-19",
+   "home": "Stavanger Oilers",
+   "away": "Nidaros Hockey",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-22",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-22",
+   "home": "L\u00f8renskog",
+   "away": "Sparta Sarpsborg",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-22",
+   "home": "Storhamar",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-22",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "Nidaros Hockey",
+   "away": "Narvik Hockey",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "Sparta Sarpsborg",
+   "away": "Stjernen Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-24",
+   "home": "V\u00e5lerenga",
+   "away": "Storhamar",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Frisk Asker",
+   "away": "Nidaros Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Narvik Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Sparta Sarpsborg",
+   "away": "Frisk Asker",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Lillehammer",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "L\u00f8renskog",
+   "away": "Nidaros Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "V\u00e5lerenga",
+   "away": "Stjernen Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "Stjernen Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "L\u00f8renskog",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-31",
+   "home": "Narvik Hockey",
+   "away": "Nidaros Hockey",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-09",
+   "home": "Stavanger Oilers",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-10",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-12",
+   "home": "Stavanger Oilers",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-12",
+   "home": "Sparta Sarpsborg",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-12",
+   "home": "Narvik Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-12",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-12",
+   "home": "V\u00e5lerenga",
+   "away": "Nidaros Hockey",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-14",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-14",
+   "home": "Narvik Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-14",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-15",
+   "home": "Frisk Asker",
+   "away": "L\u00f8renskog",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Frisk Asker",
+   "away": "Nidaros Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "L\u00f8renskog",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Storhamar",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-19",
+   "home": "Sparta Sarpsborg",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "Sparta Sarpsborg",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "Stavanger Oilers",
+   "away": "Narvik Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "Nidaros Hockey",
+   "away": "Storhamar",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-21",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Narvik Hockey",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Storhamar",
+   "away": "Sparta Sarpsborg",
+   "hs": 8,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "Stjernen Hockey",
+   "away": "Nidaros Hockey",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "L\u00f8renskog",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "Nidaros Hockey",
+   "away": "Lillehammer",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "L\u00f8renskog",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "V\u00e5lerenga",
+   "away": "Narvik Hockey",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "Sparta Sarpsborg",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "Frisk Asker",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "Lillehammer",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "Stjernen Hockey",
+   "away": "L\u00f8renskog",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "Narvik Hockey",
+   "away": "Sparta Sarpsborg",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-28",
+   "home": "Stavanger Oilers",
+   "away": "Nidaros Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-16",
+   "home": "V\u00e5lerenga",
+   "away": "Stavanger Oilers",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-17",
+   "home": "Narvik Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-09-17",
+   "home": "Lillehammer",
+   "away": "Ringerike",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-17",
+   "home": "Storhamar",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Ringerike",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Stjernen Hockey",
+   "away": "Lillehammer",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Stavanger Oilers",
+   "away": "Nidaros Hockey",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-19",
+   "home": "Frisk Asker",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-24",
+   "home": "Stjernen Hockey",
+   "away": "Stavanger Oilers",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-24",
+   "home": "Frisk Asker",
+   "away": "Narvik Hockey",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-24",
+   "home": "Lillehammer",
+   "away": "Nidaros Hockey",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-24",
+   "home": "Storhamar",
+   "away": "Ringerike",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "Nidaros Hockey",
+   "away": "Frisk Asker",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "V\u00e5lerenga",
+   "away": "Narvik Hockey",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "Ringerike",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-26",
+   "home": "Stavanger Oilers",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-01",
+   "home": "Stavanger Oilers",
+   "away": "Ringerike",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-01",
+   "home": "Nidaros Hockey",
+   "away": "Storhamar",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-01",
+   "home": "Frisk Asker",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-01",
+   "home": "Stjernen Hockey",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "Ringerike",
+   "away": "Nidaros Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "Storhamar",
+   "away": "V\u00e5lerenga",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "Narvik Hockey",
+   "away": "Lillehammer",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-03",
+   "home": "Stjernen Hockey",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-08",
+   "home": "V\u00e5lerenga",
+   "away": "Nidaros Hockey",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-08",
+   "home": "Lillehammer",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-08",
+   "home": "Stavanger Oilers",
+   "away": "Narvik Hockey",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "Nidaros Hockey",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "V\u00e5lerenga",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "Frisk Asker",
+   "away": "Ringerike",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "Storhamar",
+   "away": "Stavanger Oilers",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-15",
+   "home": "Stavanger Oilers",
+   "away": "Stjernen Hockey",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-15",
+   "home": "Lillehammer",
+   "away": "Frisk Asker",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-15",
+   "home": "Ringerike",
+   "away": "V\u00e5lerenga",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Narvik Hockey",
+   "away": "Ringerike",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Nidaros Hockey",
+   "away": "Lillehammer",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Frisk Asker",
+   "away": "Stavanger Oilers",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-17",
+   "home": "Storhamar",
+   "away": "Stjernen Hockey",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "Ringerike",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-22",
+   "home": "Nidaros Hockey",
+   "away": "Ringerike",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-22",
+   "home": "Lillehammer",
+   "away": "Stavanger Oilers",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-22",
+   "home": "Stjernen Hockey",
+   "away": "Narvik Hockey",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-22",
+   "home": "V\u00e5lerenga",
+   "away": "Frisk Asker",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "Nidaros Hockey",
+   "away": "Stjernen Hockey",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "Ringerike",
+   "away": "Frisk Asker",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "Lillehammer",
+   "away": "Storhamar",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-24",
+   "home": "Stavanger Oilers",
+   "away": "V\u00e5lerenga",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "Narvik Hockey",
+   "away": "Storhamar",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  }
+ ]
+}

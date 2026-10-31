@@ -1,0 +1,55 @@
+{
+ "sport": "liiga",
+ "season": "2022-23 to 2026-27 regular seasons (runkosarja)",
+ "fitted_at": "2026-10-27T22:07:15+00:00",
+ "source": "liiga.fi official API v2 (cached 2026-10-27T22:07:15+00:00; data/cache/liiga_games_2023-27.json)",
+ "params": {
+  "K": 8.0,
+  "hfa_elo": 32.0
+ },
+ "ratings": {
+  "HIFK": 1506.4,
+  "HPK": 1454.5,
+  "Ilves": 1587.7,
+  "JYP": 1529.9,
+  "Jokerit": 1473.5,
+  "Jukurit": 1452.6,
+  "K-Espoo": 1475.8,
+  "KalPa": 1531.5,
+  "KooKoo": 1513.5,
+  "K\u00e4rp\u00e4t": 1467.2,
+  "Lukko": 1588.6,
+  "Pelicans": 1491.0,
+  "SaiPa": 1554.5,
+  "Sport": 1357.1,
+  "TPS": 1461.1,
+  "Tappara": 1554.5,
+  "\u00c4ss\u00e4t": 1500.7
+ },
+ "games": {
+  "HIFK": 256,
+  "HPK": 257,
+  "Ilves": 257,
+  "JYP": 254,
+  "Jokerit": 16,
+  "Jukurit": 258,
+  "K-Espoo": 137,
+  "KalPa": 256,
+  "KooKoo": 257,
+  "K\u00e4rp\u00e4t": 258,
+  "Lukko": 257,
+  "Pelicans": 254,
+  "SaiPa": 256,
+  "Sport": 257,
+  "TPS": 257,
+  "Tappara": 256,
+  "\u00c4ss\u00e4t": 257
+ },
+ "backtest": {
+  "brier": 0.2392,
+  "naive_brier": 0.2466,
+  "naive_home_brier": 0.2466,
+  "n": 2000,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo, NHL-lane protocol)"
+ }
+}

@@ -1,0 +1,389 @@
+{
+ "pulled_at": "2026-10-25T15:16:19-04:00",
+ "source": "FanDuel sbapi (Michigan) live pull",
+ "verified": true,
+ "markets": [
+  {
+   "sport": "ncaaf",
+   "home": "Toronto Argonauts",
+   "away": "Winnipeg Blue Bombers",
+   "fd_event_id": 36236119,
+   "fd_market_id": "726.193847572",
+   "market_time": "2026-10-31T17:00:00.000Z",
+   "competition": "Canada - CFL - Matches",
+   "fd_competition_id": 12488538,
+   "market": "spread",
+   "side": "home",
+   "line": -1.5,
+   "price": -120
+  },
+  {
+   "sport": "ncaaf",
+   "home": "Toronto Argonauts",
+   "away": "Winnipeg Blue Bombers",
+   "fd_event_id": 36236119,
+   "fd_market_id": "726.193847572",
+   "market_time": "2026-10-31T17:00:00.000Z",
+   "competition": "Canada - CFL - Matches",
+   "fd_competition_id": 12488538,
+   "market": "spread",
+   "side": "away",
+   "line": 1.5,
+   "price": -102
+  },
+  {
+   "sport": "ncaaf",
+   "home": "NC State",
+   "away": "California",
+   "fd_event_id": 36236575,
+   "fd_market_id": "726.193863243",
+   "market_time": "2026-10-31T16:00:00.000Z",
+   "competition": "NCAA Football Games",
+   "fd_competition_id": 12529073,
+   "market": "moneyline",
+   "side": "home",
+   "price": -280
+  },
+  {
+   "sport": "ncaaf",
+   "home": "Middle Tennessee",
+   "away": "Kennesaw State",
+   "fd_event_id": 36226339,
+   "fd_market_id": "726.193449832",
+   "market_time": "2026-10-28T23:00:00.000Z",
+   "competition": "NCAA Football Games",
+   "fd_competition_id": 12529073,
+   "market": "moneyline",
+   "side": "home",
+   "price": -160
+  },
+  {
+   "sport": "ncaaf",
+   "home": "Georgia",
+   "away": "Florida",
+   "fd_event_id": 36222786,
+   "fd_market_id": "726.193241029",
+   "market_time": "2026-10-31T19:30:00.000Z",
+   "competition": "NCAA Football Games",
+   "fd_competition_id": 12529073,
+   "market": "spread",
+   "side": "away",
+   "line": 10.5,
+   "price": -105
+  },
+  {
+   "sport": "ncaaf",
+   "home": "Duke",
+   "away": "Boston College",
+   "fd_event_id": 36236573,
+   "fd_market_id": "726.193862753",
+   "market_time": "2026-10-31T16:00:00.000Z",
+   "competition": "NCAA Football Games",
+   "fd_competition_id": 12529073,
+   "market": "totals",
+   "side": "over",
+   "line": 46.5,
+   "price": -114
+  },
+  {
+   "sport": "nba",
+   "home": "Saga Ballooners",
+   "away": "Alvark Tokyo",
+   "fd_event_id": 36229953,
+   "fd_market_id": "726.193937323",
+   "market_time": "2026-10-26T10:05:00.000Z",
+   "competition": "Japan - B.League",
+   "fd_competition_id": 10543803,
+   "market": "spread",
+   "side": "home",
+   "line": 19.5,
+   "price": -106
+  },
+  {
+   "sport": "nba",
+   "home": "Ningbo Rockets",
+   "away": "Jilin Northeast Tigers",
+   "fd_event_id": 36238312,
+   "fd_market_id": "726.193920684",
+   "market_time": "2026-10-26T11:35:00.000Z",
+   "competition": "China - CBA",
+   "fd_competition_id": 11555430,
+   "market": "moneyline",
+   "side": "away",
+   "price": -235
+  },
+  {
+   "sport": "nba",
+   "home": "Oklahoma City Thunder",
+   "away": "Los Angeles Clippers",
+   "fd_event_id": 36229338,
+   "fd_market_id": "726.193589677",
+   "market_time": "2026-10-25T23:10:00.000Z",
+   "competition": "NBA",
+   "fd_competition_id": 10547864,
+   "market": "spread",
+   "side": "away",
+   "line": 15.5,
+   "price": -104
+  },
+  {
+   "sport": "nba",
+   "home": "Hapoel Tel-Aviv",
+   "away": "Anadolu Efes SK",
+   "fd_event_id": 36219883,
+   "fd_market_id": "726.193052657",
+   "market_time": "2026-10-28T18:00:00.000Z",
+   "competition": "Euroleague Men's",
+   "fd_competition_id": 10534437,
+   "market": "moneyline",
+   "side": "away",
+   "price": 250
+  },
+  {
+   "sport": "nba",
+   "home": "Yokohama B-Corsairs",
+   "away": "Hiroshima Dragonflies",
+   "fd_event_id": 36229958,
+   "fd_market_id": "726.193940844",
+   "market_time": "2026-10-26T10:05:00.000Z",
+   "competition": "Japan - B.League",
+   "fd_competition_id": 10543803,
+   "market": "moneyline",
+   "side": "home",
+   "price": 300
+  },
+  {
+   "sport": "nba",
+   "home": "Maccabi Ironi Ramat Gan",
+   "away": "Ironi Kiryat ATA",
+   "fd_event_id": 36235457,
+   "fd_market_id": "726.193819893",
+   "market_time": "2026-10-26T17:50:00.000Z",
+   "competition": "Israel - BSL",
+   "fd_competition_id": 10553477,
+   "market": "moneyline",
+   "side": "home",
+   "price": -186
+  },
+  {
+   "sport": "nhl",
+   "home": "Chicago Blackhawks",
+   "away": "Florida Panthers",
+   "fd_event_id": 36230568,
+   "fd_market_id": "726.193643813",
+   "market_time": "2026-10-25T19:10:00.000Z",
+   "competition": "NHL",
+   "fd_competition_id": 12550521,
+   "market": "moneyline",
+   "side": "away",
+   "price": -215
+  },
+  {
+   "sport": "soccer",
+   "home": "New York City",
+   "away": "Atlanta Utd",
+   "fd_event_id": 36236201,
+   "fd_market_id": "726.193850453",
+   "market_time": "2026-10-28T23:30:00.000Z",
+   "competition": "US MLS",
+   "fd_competition_id": 141,
+   "market": "moneyline",
+   "side": "home",
+   "price": -130
+  },
+  {
+   "sport": "soccer",
+   "home": "Vancouver Whitecaps",
+   "away": "San Diego FC",
+   "fd_event_id": 36236590,
+   "fd_market_id": "726.193864261",
+   "market_time": "2026-10-29T02:30:00.000Z",
+   "competition": "US MLS",
+   "fd_competition_id": 141,
+   "market": "moneyline",
+   "side": "home",
+   "price": -270
+  },
+  {
+   "sport": "soccer",
+   "home": "Az Alkmaar",
+   "away": "FC Twente",
+   "fd_event_id": 36180401,
+   "fd_market_id": "726.191215578",
+   "market_time": "2026-10-25T19:01:00.000Z",
+   "competition": "Dutch Eredivisie",
+   "fd_competition_id": 9404054,
+   "market": "moneyline",
+   "side": "draw",
+   "price": 240
+  },
+  {
+   "sport": "soccer",
+   "home": "Aris",
+   "away": "Atromitos",
+   "fd_event_id": 36179785,
+   "fd_market_id": "726.191196606",
+   "market_time": "2026-10-25T17:34:50.000Z",
+   "competition": "Greek Super League",
+   "fd_competition_id": 67,
+   "market": "moneyline",
+   "side": "draw",
+   "price": 12500
+  },
+  {
+   "sport": "soccer",
+   "home": "Hapoel Petach Tikva",
+   "away": "Beitar Jerusalem",
+   "fd_event_id": 36215109,
+   "fd_market_id": "726.192781352",
+   "market_time": "2026-10-25T18:15:46.000Z",
+   "competition": "Israeli Premier League",
+   "fd_competition_id": 822165,
+   "market": "moneyline",
+   "side": "draw",
+   "price": 650
+  },
+  {
+   "sport": "soccer",
+   "home": "Le Havre",
+   "away": "Paris St-G",
+   "fd_event_id": 36211774,
+   "fd_market_id": "726.192620934",
+   "market_time": "2026-10-30T18:00:00.000Z",
+   "competition": "French Ligue 1",
+   "fd_competition_id": 55,
+   "market": "moneyline",
+   "side": "home",
+   "price": 850
+  },
+  {
+   "sport": "tennis",
+   "home": "Xinyu Wang",
+   "away": "Alycia Parks",
+   "fd_event_id": 36237710,
+   "fd_market_id": "726.193919890",
+   "market_time": "2026-10-26T01:30:00.000Z",
+   "competition": "WTA Tokyo 2026",
+   "fd_competition_id": 12840346,
+   "market": "moneyline",
+   "side": "away",
+   "price": 178
+  },
+  {
+   "sport": "tennis",
+   "home": "Antonia Ruzic",
+   "away": "Claire Liu",
+   "fd_event_id": 36232135,
+   "fd_market_id": "726.193746815",
+   "market_time": "2026-10-27T04:00:00.000Z",
+   "competition": "WTA Guangzhou 2026",
+   "fd_competition_id": 12840393,
+   "market": "moneyline",
+   "side": "away",
+   "price": -130
+  },
+  {
+   "sport": "tennis",
+   "home": "Eikeri/Gleason",
+   "away": "Muhammad/Zhang",
+   "fd_event_id": 36231912,
+   "fd_market_id": "726.193852453",
+   "market_time": "2026-10-27T03:00:00.000Z",
+   "competition": "WTA Tokyo 2026",
+   "fd_competition_id": 12840346,
+   "market": "moneyline",
+   "side": "away",
+   "price": -135
+  },
+  {
+   "sport": "boxing",
+   "home": "Diego Pacheco",
+   "away": "Darius Fulghum",
+   "fd_event_id": 36148038,
+   "fd_market_id": "726.189844219",
+   "market_time": "2026-11-15T04:00:00.000Z",
+   "competition": "Boxing Matches",
+   "fd_competition_id": 10817625,
+   "market": "moneyline",
+   "side": "away",
+   "price": 510
+  },
+  {
+   "sport": "boxing",
+   "home": "Jhon Orobio",
+   "away": "Hendri Cedeno",
+   "fd_event_id": 36159682,
+   "fd_market_id": "726.190303561",
+   "market_time": "2026-11-13T03:00:00.000Z",
+   "competition": "Boxing Matches",
+   "fd_competition_id": 10817625,
+   "market": "moneyline",
+   "side": "away",
+   "price": 500
+  },
+  {
+   "sport": "lacrosse",
+   "home": "National Lacrosse League",
+   "away": "NLL Cup Winner 2026-27",
+   "fd_event_id": 31864056,
+   "fd_market_id": "726.189389621",
+   "market_time": "2027-05-23T16:00:00.000Z",
+   "competition": "National Lacrosse League",
+   "fd_competition_id": 12535239,
+   "market": "futures",
+   "side": "home",
+   "price": null,
+   "runners_n": 12,
+   "runners": [
+    {
+     "name": "Toronto Rock",
+     "price": 600
+    },
+    {
+     "name": "Vancouver Warriors",
+     "price": 650
+    },
+    {
+     "name": "Colorado Mammoth",
+     "price": 700
+    },
+    {
+     "name": "Saskatchewan Rush",
+     "price": 700
+    },
+    {
+     "name": "San Diego Seals",
+     "price": 800
+    },
+    {
+     "name": "Buffalo Bandits",
+     "price": 850
+    },
+    {
+     "name": "Georgia Swarm",
+     "price": 850
+    },
+    {
+     "name": "Halifax Thunderbirds",
+     "price": 1100
+    },
+    {
+     "name": "Las Vegas Desert Dogs",
+     "price": 1100
+    },
+    {
+     "name": "Rochester Knighthawks",
+     "price": 1400
+    },
+    {
+     "name": "Calgary Roughnecks",
+     "price": 1800
+    },
+    {
+     "name": "Oshawa FireWolves",
+     "price": 1800
+    }
+   ]
+  }
+ ]
+}

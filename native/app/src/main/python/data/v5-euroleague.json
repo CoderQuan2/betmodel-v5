@@ -1,0 +1,47 @@
+{
+ "sport": "euroleague",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T21:04:15+00:00",
+ "source": "EuroLeague official API v2 season game lists (cached 2026-10-27T21:04:15+00:00; data/cache/euroleague_games_2023-26.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "ASV": 1270.3,
+  "BAR": 1544.3,
+  "BAS": 1343.7,
+  "BER": 1126.8,
+  "BES": 1489.9,
+  "DUB": 1555.4,
+  "HTA": 1610.6,
+  "IST": 1484.5,
+  "MAD": 1660.2,
+  "MCO": 1588.3,
+  "MIL": 1328.9,
+  "MUN": 1446.2,
+  "OLY": 1755.3,
+  "PAM": 1652.1,
+  "PAN": 1634.1,
+  "PAR": 1516.5,
+  "PRS": 1443.0,
+  "RED": 1583.8,
+  "TEL": 1385.6,
+  "ULK": 1639.9,
+  "VIR": 1377.2,
+  "ZAL": 1563.8
+ },
+ "margin_map": {
+  "a": 0.92,
+  "b": 0.0251,
+  "sd": 11.83,
+  "n": 1064
+ },
+ "backtest": {
+  "brier": 0.221,
+  "naive_brier": 0.2339,
+  "naive_home_brier": 0.2339,
+  "n": 1064,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ }
+}

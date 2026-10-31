@@ -1,0 +1,6097 @@
+{
+ "fetched_at": "2026-10-27T21:19:12+00:00",
+ "source": "EuroLeague Basketball official API v2 season game lists (EuroCup, competition U)",
+ "errors": 0,
+ "games": [
+  {
+   "date": "2023-10-03",
+   "home": "PRS",
+   "away": "WOL",
+   "home_name": "Paris Basketball",
+   "away_name": "Wolves Vilnius",
+   "hs": 105,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "ULM",
+   "away": "TRN",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 80,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-10-03",
+   "home": "HTA",
+   "away": "LJU",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 100,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2023-10-04",
+   "home": "LLI",
+   "away": "VNC",
+   "home_name": "London Lions",
+   "away_name": "Umana Reyer Venice",
+   "hs": 76,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2023-10-04",
+   "home": "JOV",
+   "away": "BES",
+   "home_name": "Joventut Badalona",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 62,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2023-10-04",
+   "home": "ARI",
+   "away": "CAN",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 66,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2023-10-04",
+   "home": "BUD",
+   "away": "LKB",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 76,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2023-10-04",
+   "home": "CLU",
+   "away": "TTK",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 80,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2023-10-04",
+   "home": "PMT",
+   "away": "HAM",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 97,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2023-10-05",
+   "home": "BOU",
+   "away": "WRO",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "Slask Wroclaw",
+   "hs": 90,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "TRN",
+   "away": "BOU",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 72,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "HAM",
+   "away": "LLI",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "London Lions",
+   "hs": 94,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "BES",
+   "away": "PMT",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 92,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-10-10",
+   "home": "LKB",
+   "away": "ARI",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 84,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2023-10-11",
+   "home": "CAN",
+   "away": "ULM",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "ratiopharm Ulm",
+   "hs": 111,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2023-10-11",
+   "home": "WRO",
+   "away": "CLU",
+   "home_name": "Slask Wroclaw",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 67,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-10-11",
+   "home": "VNC",
+   "away": "PRS",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Paris Basketball",
+   "hs": 75,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2023-10-11",
+   "home": "TTK",
+   "away": "BUD",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 79,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2023-10-11",
+   "home": "LJU",
+   "away": "JOV",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Joventut Badalona",
+   "hs": 87,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "VNC",
+   "away": "HTA",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 81,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "ULM",
+   "away": "LKB",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 99,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "BOU",
+   "away": "CLU",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 92,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2023-10-17",
+   "home": "BUD",
+   "away": "WRO",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Slask Wroclaw",
+   "hs": 103,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "JOV",
+   "away": "WOL",
+   "home_name": "Joventut Badalona",
+   "away_name": "Wolves Vilnius",
+   "hs": 107,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "TRN",
+   "away": "CAN",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 73,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "HAM",
+   "away": "PRS",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Paris Basketball",
+   "hs": 69,
+   "as": 105,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "ARI",
+   "away": "TTK",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 68,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "BES",
+   "away": "LJU",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 73,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2023-10-18",
+   "home": "PMT",
+   "away": "LLI",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "London Lions",
+   "hs": 87,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "LLI",
+   "away": "PRS",
+   "home_name": "London Lions",
+   "away_name": "Paris Basketball",
+   "hs": 102,
+   "as": 106,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "VNC",
+   "away": "JOV",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Joventut Badalona",
+   "hs": 79,
+   "as": 64,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "HAM",
+   "away": "HTA",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 72,
+   "as": 111,
+   "final": true
+  },
+  {
+   "date": "2023-10-24",
+   "home": "WOL",
+   "away": "BES",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 90,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "CAN",
+   "away": "BOU",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 84,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "WRO",
+   "away": "ARI",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 63,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "TTK",
+   "away": "ULM",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "ratiopharm Ulm",
+   "hs": 78,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "LJU",
+   "away": "PMT",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 83,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "CLU",
+   "away": "BUD",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 89,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2023-10-25",
+   "home": "LKB",
+   "away": "TRN",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 92,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "JOV",
+   "away": "HAM",
+   "home_name": "Joventut Badalona",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 108,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "TRN",
+   "away": "TTK",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 101,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2023-10-31",
+   "home": "LJU",
+   "away": "WOL",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Wolves Vilnius",
+   "hs": 78,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "CAN",
+   "away": "LKB",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 88,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "ULM",
+   "away": "WRO",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Slask Wroclaw",
+   "hs": 108,
+   "as": 103,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "BOU",
+   "away": "BUD",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 78,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "ARI",
+   "away": "CLU",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 59,
+   "as": 61,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "BES",
+   "away": "VNC",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Umana Reyer Venice",
+   "hs": 74,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2023-11-01",
+   "home": "PMT",
+   "away": "PRS",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Paris Basketball",
+   "hs": 79,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2023-11-02",
+   "home": "LLI",
+   "away": "HTA",
+   "home_name": "London Lions",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 90,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2023-11-07",
+   "home": "VNC",
+   "away": "LJU",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 95,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2023-11-07",
+   "home": "LKB",
+   "away": "BOU",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 100,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "PRS",
+   "away": "HTA",
+   "home_name": "Paris Basketball",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 114,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "JOV",
+   "away": "LLI",
+   "home_name": "Joventut Badalona",
+   "away_name": "London Lions",
+   "hs": 76,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "WRO",
+   "away": "TRN",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 75,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "BUD",
+   "away": "ARI",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 63,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "CLU",
+   "away": "ULM",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "ratiopharm Ulm",
+   "hs": 86,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "TTK",
+   "away": "CAN",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 69,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "BES",
+   "away": "HAM",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 90,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2023-11-08",
+   "home": "WOL",
+   "away": "PMT",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 85,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2023-11-14",
+   "home": "JOV",
+   "away": "PRS",
+   "home_name": "Joventut Badalona",
+   "away_name": "Paris Basketball",
+   "hs": 94,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2023-11-14",
+   "home": "ULM",
+   "away": "BUD",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 84,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2023-11-14",
+   "home": "BOU",
+   "away": "ARI",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 72,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2023-11-14",
+   "home": "LKB",
+   "away": "TTK",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 93,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2023-11-14",
+   "home": "PMT",
+   "away": "HTA",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 98,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2023-11-15",
+   "home": "CAN",
+   "away": "WRO",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Slask Wroclaw",
+   "hs": 81,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2023-11-15",
+   "home": "TRN",
+   "away": "CLU",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 60,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2023-11-15",
+   "home": "LJU",
+   "away": "HAM",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 83,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2023-11-15",
+   "home": "WOL",
+   "away": "VNC",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Umana Reyer Venice",
+   "hs": 77,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2023-11-15",
+   "home": "BES",
+   "away": "LLI",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "London Lions",
+   "hs": 80,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "PRS",
+   "away": "BES",
+   "home_name": "Paris Basketball",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 63,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "BOU",
+   "away": "TTK",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 86,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "HAM",
+   "away": "WOL",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Wolves Vilnius",
+   "hs": 71,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "BUD",
+   "away": "TRN",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 98,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2023-11-21",
+   "home": "CLU",
+   "away": "CAN",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 70,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2023-11-22",
+   "home": "LLI",
+   "away": "LJU",
+   "home_name": "London Lions",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 101,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2023-11-22",
+   "home": "ARI",
+   "away": "ULM",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "ratiopharm Ulm",
+   "hs": 88,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2023-11-22",
+   "home": "HTA",
+   "away": "JOV",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Joventut Badalona",
+   "hs": 103,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2023-11-22",
+   "home": "WRO",
+   "away": "LKB",
+   "home_name": "Slask Wroclaw",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 71,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2023-11-22",
+   "home": "PMT",
+   "away": "VNC",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Umana Reyer Venice",
+   "hs": 89,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "VNC",
+   "away": "HAM",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 94,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "TTK",
+   "away": "WRO",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Slask Wroclaw",
+   "hs": 71,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2023-11-28",
+   "home": "WOL",
+   "away": "LLI",
+   "home_name": "Wolves Vilnius",
+   "away_name": "London Lions",
+   "hs": 87,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "CAN",
+   "away": "BUD",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 97,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "JOV",
+   "away": "PMT",
+   "home_name": "Joventut Badalona",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 79,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "TRN",
+   "away": "ARI",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 69,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "ULM",
+   "away": "BOU",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 84,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "HTA",
+   "away": "BES",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 81,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "LJU",
+   "away": "PRS",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Paris Basketball",
+   "hs": 77,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2023-11-29",
+   "home": "CLU",
+   "away": "LKB",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 120,
+   "as": 111,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "WRO",
+   "away": "BOU",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 63,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "VNC",
+   "away": "LLI",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "London Lions",
+   "hs": 91,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "HAM",
+   "away": "PMT",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 83,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2023-12-05",
+   "home": "TTK",
+   "away": "CLU",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 95,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2023-12-06",
+   "home": "CAN",
+   "away": "ARI",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 93,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2023-12-06",
+   "home": "TRN",
+   "away": "ULM",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "ratiopharm Ulm",
+   "hs": 83,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2023-12-06",
+   "home": "LJU",
+   "away": "HTA",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 80,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2023-12-06",
+   "home": "LKB",
+   "away": "BUD",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 81,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2023-12-06",
+   "home": "BES",
+   "away": "JOV",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Joventut Badalona",
+   "hs": 81,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2023-12-06",
+   "home": "WOL",
+   "away": "PRS",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Paris Basketball",
+   "hs": 79,
+   "as": 110,
+   "final": true
+  },
+  {
+   "date": "2023-12-12",
+   "home": "PRS",
+   "away": "VNC",
+   "home_name": "Paris Basketball",
+   "away_name": "Umana Reyer Venice",
+   "hs": 100,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-12-12",
+   "home": "ARI",
+   "away": "LKB",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 69,
+   "as": 60,
+   "final": true
+  },
+  {
+   "date": "2023-12-12",
+   "home": "ULM",
+   "away": "CAN",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 103,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2023-12-12",
+   "home": "CLU",
+   "away": "WRO",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Slask Wroclaw",
+   "hs": 80,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2023-12-12",
+   "home": "WOL",
+   "away": "HTA",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 81,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2023-12-13",
+   "home": "LLI",
+   "away": "HAM",
+   "home_name": "London Lions",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 81,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2023-12-13",
+   "home": "JOV",
+   "away": "LJU",
+   "home_name": "Joventut Badalona",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 83,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2023-12-13",
+   "home": "BUD",
+   "away": "TTK",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 73,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2023-12-13",
+   "home": "BOU",
+   "away": "TRN",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 79,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2023-12-13",
+   "home": "PMT",
+   "away": "BES",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 89,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "CAN",
+   "away": "TRN",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 76,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "LJU",
+   "away": "BES",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 83,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "LKB",
+   "away": "ULM",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "ratiopharm Ulm",
+   "hs": 94,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "TTK",
+   "away": "ARI",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 85,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2023-12-19",
+   "home": "CLU",
+   "away": "BOU",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 89,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2023-12-20",
+   "home": "PRS",
+   "away": "HAM",
+   "home_name": "Paris Basketball",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 120,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2023-12-20",
+   "home": "LLI",
+   "away": "PMT",
+   "home_name": "London Lions",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 89,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2023-12-20",
+   "home": "WRO",
+   "away": "BUD",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 79,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2023-12-20",
+   "home": "HTA",
+   "away": "VNC",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Umana Reyer Venice",
+   "hs": 100,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2023-12-20",
+   "home": "WOL",
+   "away": "JOV",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Joventut Badalona",
+   "hs": 79,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "PRS",
+   "away": "LLI",
+   "home_name": "Paris Basketball",
+   "away_name": "London Lions",
+   "hs": 94,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "JOV",
+   "away": "VNC",
+   "home_name": "Joventut Badalona",
+   "away_name": "Umana Reyer Venice",
+   "hs": 89,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "ULM",
+   "away": "TTK",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 79,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2023-12-26",
+   "home": "BOU",
+   "away": "CAN",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 92,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2023-12-27",
+   "home": "TRN",
+   "away": "LKB",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 76,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2023-12-27",
+   "home": "BUD",
+   "away": "CLU",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 77,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2023-12-27",
+   "home": "ARI",
+   "away": "WRO",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Slask Wroclaw",
+   "hs": 93,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2023-12-27",
+   "home": "HTA",
+   "away": "HAM",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 118,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2023-12-27",
+   "home": "BES",
+   "away": "WOL",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Wolves Vilnius",
+   "hs": 72,
+   "as": 59,
+   "final": true
+  },
+  {
+   "date": "2023-12-27",
+   "home": "PMT",
+   "away": "LJU",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 105,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-01-03",
+   "home": "HTA",
+   "away": "WOL",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Wolves Vilnius",
+   "hs": 89,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "HTA",
+   "away": "LLI",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "London Lions",
+   "hs": 96,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-01-09",
+   "home": "WOL",
+   "away": "LJU",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 91,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "PRS",
+   "away": "PMT",
+   "home_name": "Paris Basketball",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 93,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "WRO",
+   "away": "ULM",
+   "home_name": "Slask Wroclaw",
+   "away_name": "ratiopharm Ulm",
+   "hs": 100,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "VNC",
+   "away": "BES",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 106,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "HAM",
+   "away": "JOV",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Joventut Badalona",
+   "hs": 90,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "BUD",
+   "away": "BOU",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 78,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "LKB",
+   "away": "CAN",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 84,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "TTK",
+   "away": "TRN",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 78,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2024-01-10",
+   "home": "CLU",
+   "away": "ARI",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 90,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2024-01-16",
+   "home": "TRN",
+   "away": "WRO",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Slask Wroclaw",
+   "hs": 85,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "CAN",
+   "away": "TTK",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 73,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "LLI",
+   "away": "JOV",
+   "home_name": "London Lions",
+   "away_name": "Joventut Badalona",
+   "hs": 80,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "ULM",
+   "away": "CLU",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 81,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "BOU",
+   "away": "LKB",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 104,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "HAM",
+   "away": "BES",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 83,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "ARI",
+   "away": "BUD",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 76,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "HTA",
+   "away": "PRS",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Paris Basketball",
+   "hs": 86,
+   "as": 104,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "LJU",
+   "away": "VNC",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Umana Reyer Venice",
+   "hs": 93,
+   "as": 104,
+   "final": true
+  },
+  {
+   "date": "2024-01-17",
+   "home": "PMT",
+   "away": "WOL",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Wolves Vilnius",
+   "hs": 91,
+   "as": 64,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "PRS",
+   "away": "JOV",
+   "home_name": "Paris Basketball",
+   "away_name": "Joventut Badalona",
+   "hs": 89,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "BUD",
+   "away": "ULM",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "ratiopharm Ulm",
+   "hs": 80,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2024-01-23",
+   "home": "CLU",
+   "away": "TRN",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 88,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "LLI",
+   "away": "BES",
+   "home_name": "London Lions",
+   "away_name": "Besiktas Emlakjet Istanbul",
+   "hs": 93,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "WRO",
+   "away": "CAN",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 68,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "VNC",
+   "away": "WOL",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Wolves Vilnius",
+   "hs": 57,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "HAM",
+   "away": "LJU",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 83,
+   "as": 114,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "ARI",
+   "away": "BOU",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 68,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "HTA",
+   "away": "PMT",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 105,
+   "as": 113,
+   "final": true
+  },
+  {
+   "date": "2024-01-24",
+   "home": "TTK",
+   "away": "LKB",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 88,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "JOV",
+   "away": "HTA",
+   "home_name": "Joventut Badalona",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 85,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "VNC",
+   "away": "PMT",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Prometey Slobozhanske",
+   "hs": 108,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "LKB",
+   "away": "WRO",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Slask Wroclaw",
+   "hs": 91,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "BES",
+   "away": "PRS",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Paris Basketball",
+   "hs": 72,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2024-01-30",
+   "home": "WOL",
+   "away": "HAM",
+   "home_name": "Wolves Vilnius",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 94,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2024-01-31",
+   "home": "CAN",
+   "away": "CLU",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 111,
+   "as": 113,
+   "final": true
+  },
+  {
+   "date": "2024-01-31",
+   "home": "TRN",
+   "away": "BUD",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 78,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2024-01-31",
+   "home": "ULM",
+   "away": "ARI",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 66,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2024-01-31",
+   "home": "LJU",
+   "away": "LLI",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "London Lions",
+   "hs": 85,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2024-01-31",
+   "home": "TTK",
+   "away": "BOU",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Mincidelice JL Bourg en Bresse",
+   "hs": 64,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2024-02-06",
+   "home": "WRO",
+   "away": "TTK",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 70,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2024-02-06",
+   "home": "BOU",
+   "away": "ULM",
+   "home_name": "Mincidelice JL Bourg en Bresse",
+   "away_name": "ratiopharm Ulm",
+   "hs": 81,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2024-02-06",
+   "home": "HAM",
+   "away": "VNC",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Umana Reyer Venice",
+   "hs": 83,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "PRS",
+   "away": "LJU",
+   "home_name": "Paris Basketball",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 119,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "LLI",
+   "away": "WOL",
+   "home_name": "London Lions",
+   "away_name": "Wolves Vilnius",
+   "hs": 80,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "BUD",
+   "away": "CAN",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 90,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "ARI",
+   "away": "TRN",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 84,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "BES",
+   "away": "HTA",
+   "home_name": "Besiktas Emlakjet Istanbul",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 73,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "LKB",
+   "away": "CLU",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 92,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2024-02-07",
+   "home": "PMT",
+   "away": "JOV",
+   "home_name": "Prometey Slobozhanske",
+   "away_name": "Joventut Badalona",
+   "hs": 94,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "CAN",
+   "away": "TRN",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 84,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "JOV",
+   "away": "HTA",
+   "home_name": "Joventut Badalona",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 78,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "HAM",
+   "away": "BOU",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 80,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-09-24",
+   "home": "TTK",
+   "away": "LKB",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 72,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2024-09-25",
+   "home": "VNC",
+   "away": "ARI",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 95,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2024-09-25",
+   "home": "JER",
+   "away": "PAM",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Valencia Basket",
+   "hs": 64,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-09-25",
+   "home": "BES",
+   "away": "BUD",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 94,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2024-09-25",
+   "home": "TSO",
+   "away": "ULM",
+   "home_name": "Trefl Sopot",
+   "away_name": "ratiopharm Ulm",
+   "hs": 93,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2024-09-25",
+   "home": "CLU",
+   "away": "LJU",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 86,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2024-09-25",
+   "home": "WOL",
+   "away": "BAH",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 69,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "LJU",
+   "away": "VNC",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Umana Reyer Venice",
+   "hs": 87,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "HTA",
+   "away": "WOL",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 89,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "ULM",
+   "away": "JOV",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Joventut Badalona",
+   "hs": 87,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "LKB",
+   "away": "JER",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 74,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2024-10-01",
+   "home": "BAH",
+   "away": "BES",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 87,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "PAM",
+   "away": "HAM",
+   "home_name": "Valencia Basket",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 105,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "TRN",
+   "away": "TSO",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Trefl Sopot",
+   "hs": 84,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "BOU",
+   "away": "CLU",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 84,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "ARI",
+   "away": "TTK",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 63,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2024-10-02",
+   "home": "BUD",
+   "away": "CAN",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 86,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "VNC",
+   "away": "BOU",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 66,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "BES",
+   "away": "HTA",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 87,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "TTK",
+   "away": "LJU",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 78,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "LKB",
+   "away": "ARI",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 74,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2024-10-08",
+   "home": "WOL",
+   "away": "ULM",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "ratiopharm Ulm",
+   "hs": 76,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2024-10-09",
+   "home": "CAN",
+   "away": "BAH",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 66,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2024-10-09",
+   "home": "TRN",
+   "away": "BUD",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 64,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2024-10-09",
+   "home": "JER",
+   "away": "HAM",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 89,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2024-10-09",
+   "home": "TSO",
+   "away": "JOV",
+   "home_name": "Trefl Sopot",
+   "away_name": "Joventut Badalona",
+   "hs": 73,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-09",
+   "home": "CLU",
+   "away": "PAM",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Valencia Basket",
+   "hs": 96,
+   "as": 105,
+   "final": true
+  },
+  {
+   "date": "2024-10-14",
+   "home": "BES",
+   "away": "ULM",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "ratiopharm Ulm",
+   "hs": 107,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "HAM",
+   "away": "CLU",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 67,
+   "as": 103,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "BOU",
+   "away": "TTK",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 67,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "HTA",
+   "away": "CAN",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 79,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2024-10-15",
+   "home": "LJU",
+   "away": "LKB",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 76,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2024-10-16",
+   "home": "JOV",
+   "away": "WOL",
+   "home_name": "Joventut Badalona",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 63,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2024-10-16",
+   "home": "ARI",
+   "away": "JER",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 68,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-16",
+   "home": "BUD",
+   "away": "TSO",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Trefl Sopot",
+   "hs": 92,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-10-16",
+   "home": "BAH",
+   "away": "TRN",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 110,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2024-10-17",
+   "home": "PAM",
+   "away": "VNC",
+   "home_name": "Valencia Basket",
+   "away_name": "Umana Reyer Venice",
+   "hs": 105,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "CAN",
+   "away": "ULM",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "ratiopharm Ulm",
+   "hs": 125,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "VNC",
+   "away": "HAM",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 80,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "TSO",
+   "away": "WOL",
+   "home_name": "Trefl Sopot",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 92,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "BES",
+   "away": "JOV",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Joventut Badalona",
+   "hs": 82,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2024-10-22",
+   "home": "LKB",
+   "away": "BOU",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 84,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "TRN",
+   "away": "HTA",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 79,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "BUD",
+   "away": "BAH",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 75,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "ARI",
+   "away": "LJU",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 75,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "TTK",
+   "away": "PAM",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Valencia Basket",
+   "hs": 87,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2024-10-23",
+   "home": "JER",
+   "away": "CLU",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 73,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "JOV",
+   "away": "CAN",
+   "home_name": "Joventut Badalona",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 76,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "HAM",
+   "away": "TTK",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 89,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2024-10-29",
+   "home": "WOL",
+   "away": "BES",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 93,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "BOU",
+   "away": "ARI",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 88,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "ULM",
+   "away": "TRN",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 84,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "HTA",
+   "away": "BUD",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 92,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "LJU",
+   "away": "JER",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 83,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "CLU",
+   "away": "VNC",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Umana Reyer Venice",
+   "hs": 86,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-10-30",
+   "home": "BAH",
+   "away": "TSO",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Trefl Sopot",
+   "hs": 79,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "BAH",
+   "away": "HTA",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 90,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "TRN",
+   "away": "JOV",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Joventut Badalona",
+   "hs": 87,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2024-11-05",
+   "home": "TSO",
+   "away": "BES",
+   "home_name": "Trefl Sopot",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 79,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "CAN",
+   "away": "WOL",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 66,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "BUD",
+   "away": "ULM",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "ratiopharm Ulm",
+   "hs": 105,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "ARI",
+   "away": "PAM",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Valencia Basket",
+   "hs": 59,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "JER",
+   "away": "VNC",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Umana Reyer Venice",
+   "hs": 94,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "LJU",
+   "away": "BOU",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 83,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "LKB",
+   "away": "HAM",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 91,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2024-11-06",
+   "home": "TTK",
+   "away": "CLU",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 99,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "PAM",
+   "away": "LJU",
+   "home_name": "Valencia Basket",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 109,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "HAM",
+   "away": "ARI",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 93,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "TSO",
+   "away": "HTA",
+   "home_name": "Trefl Sopot",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 64,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2024-11-12",
+   "home": "WOL",
+   "away": "TRN",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 88,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "JOV",
+   "away": "BUD",
+   "home_name": "Joventut Badalona",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 78,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "VNC",
+   "away": "TTK",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 75,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "JER",
+   "away": "BOU",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 86,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "ULM",
+   "away": "BAH",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 72,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "CLU",
+   "away": "LKB",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 100,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2024-11-13",
+   "home": "BES",
+   "away": "CAN",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 74,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "CAN",
+   "away": "TSO",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Trefl Sopot",
+   "hs": 84,
+   "as": 58,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "TRN",
+   "away": "BES",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 68,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "BOU",
+   "away": "PAM",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Valencia Basket",
+   "hs": 96,
+   "as": 107,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "TTK",
+   "away": "JER",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 77,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "HTA",
+   "away": "ULM",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "ratiopharm Ulm",
+   "hs": 80,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "LJU",
+   "away": "HAM",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 95,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "CLU",
+   "away": "ARI",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 87,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "LKB",
+   "away": "VNC",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Umana Reyer Venice",
+   "hs": 93,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-11-28",
+   "home": "BAH",
+   "away": "JOV",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Joventut Badalona",
+   "hs": 89,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2024-11-29",
+   "home": "BUD",
+   "away": "WOL",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 104,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "TRN",
+   "away": "CAN",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 70,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "ULM",
+   "away": "TSO",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Trefl Sopot",
+   "hs": 83,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2024-12-03",
+   "home": "LJU",
+   "away": "CLU",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 103,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "PAM",
+   "away": "JER",
+   "home_name": "Valencia Basket",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 96,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "BOU",
+   "away": "HAM",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 93,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "ARI",
+   "away": "VNC",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Umana Reyer Venice",
+   "hs": 74,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "BUD",
+   "away": "BES",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 88,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "HTA",
+   "away": "JOV",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Joventut Badalona",
+   "hs": 95,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "LKB",
+   "away": "TTK",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 93,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2024-12-04",
+   "home": "BAH",
+   "away": "WOL",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 84,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "HAM",
+   "away": "PAM",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Valencia Basket",
+   "hs": 78,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2024-12-10",
+   "home": "TSO",
+   "away": "TRN",
+   "home_name": "Trefl Sopot",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 70,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "CAN",
+   "away": "BUD",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 82,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "JOV",
+   "away": "ULM",
+   "home_name": "Joventut Badalona",
+   "away_name": "ratiopharm Ulm",
+   "hs": 88,
+   "as": 102,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "VNC",
+   "away": "LJU",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 75,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "JER",
+   "away": "LKB",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 87,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "BES",
+   "away": "BAH",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 89,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "CLU",
+   "away": "BOU",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 89,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "TTK",
+   "away": "ARI",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 87,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2024-12-11",
+   "home": "WOL",
+   "away": "HTA",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 104,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2024-12-17",
+   "home": "HAM",
+   "away": "JER",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 82,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-12-17",
+   "home": "ARI",
+   "away": "LKB",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 81,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2024-12-17",
+   "home": "BAH",
+   "away": "CAN",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 73,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "BOU",
+   "away": "VNC",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Umana Reyer Venice",
+   "hs": 99,
+   "as": 102,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "PAM",
+   "away": "CLU",
+   "home_name": "Valencia Basket",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 108,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "JOV",
+   "away": "TSO",
+   "home_name": "Joventut Badalona",
+   "away_name": "Trefl Sopot",
+   "hs": 92,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "HTA",
+   "away": "BES",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 109,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "ULM",
+   "away": "WOL",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 114,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "LJU",
+   "away": "TTK",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 74,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2024-12-18",
+   "home": "BUD",
+   "away": "TRN",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 110,
+   "as": 108,
+   "final": true
+  },
+  {
+   "date": "2024-12-20",
+   "home": "PAM",
+   "away": "LKB",
+   "home_name": "Valencia Basket",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 106,
+   "as": 107,
+   "final": true
+  },
+  {
+   "date": "2024-12-26",
+   "home": "ULM",
+   "away": "BES",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 104,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "CAN",
+   "away": "HTA",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 64,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "VNC",
+   "away": "PAM",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Valencia Basket",
+   "hs": 81,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "JER",
+   "away": "ARI",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 90,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-01-02",
+   "home": "TSO",
+   "away": "BUD",
+   "home_name": "Trefl Sopot",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 69,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "TRN",
+   "away": "BAH",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 69,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "CLU",
+   "away": "HAM",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 104,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "WOL",
+   "away": "JOV",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Joventut Badalona",
+   "hs": 91,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2025-01-03",
+   "home": "TTK",
+   "away": "BOU",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 98,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "PAM",
+   "away": "TTK",
+   "home_name": "Valencia Basket",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 116,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "BOU",
+   "away": "LKB",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 79,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "HTA",
+   "away": "TRN",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 89,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2025-01-07",
+   "home": "ULM",
+   "away": "CAN",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 76,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "HAM",
+   "away": "VNC",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Umana Reyer Venice",
+   "hs": 77,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "JOV",
+   "away": "BES",
+   "home_name": "Joventut Badalona",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 93,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "LJU",
+   "away": "ARI",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 98,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "CLU",
+   "away": "JER",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 79,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "WOL",
+   "away": "TSO",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Trefl Sopot",
+   "hs": 74,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2025-01-08",
+   "home": "BAH",
+   "away": "BUD",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 95,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "TRN",
+   "away": "ULM",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "ratiopharm Ulm",
+   "hs": 86,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "JER",
+   "away": "LJU",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 70,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "LKB",
+   "away": "PAM",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Valencia Basket",
+   "hs": 91,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-01-14",
+   "home": "BES",
+   "away": "WOL",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 79,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "CAN",
+   "away": "JOV",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Joventut Badalona",
+   "hs": 77,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "VNC",
+   "away": "CLU",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 77,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "ARI",
+   "away": "BOU",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 51,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "BUD",
+   "away": "HTA",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 84,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "TSO",
+   "away": "BAH",
+   "home_name": "Trefl Sopot",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 76,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-01-15",
+   "home": "TTK",
+   "away": "HAM",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 77,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2025-01-16",
+   "home": "LKB",
+   "away": "LJU",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 78,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "JOV",
+   "away": "TRN",
+   "home_name": "Joventut Badalona",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 86,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "HAM",
+   "away": "LKB",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 84,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2025-01-21",
+   "home": "CLU",
+   "away": "TTK",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 94,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "VNC",
+   "away": "JER",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 76,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "PAM",
+   "away": "ARI",
+   "home_name": "Valencia Basket",
+   "away_name": "Aris Midea Thessaloniki",
+   "hs": 106,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "BOU",
+   "away": "LJU",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 87,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "ULM",
+   "away": "BUD",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 82,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "BES",
+   "away": "TSO",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Trefl Sopot",
+   "hs": 87,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "HTA",
+   "away": "BAH",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 84,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2025-01-22",
+   "home": "WOL",
+   "away": "CAN",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 88,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "TRN",
+   "away": "WOL",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Wolves Twinsbet Vilnius",
+   "hs": 70,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "LJU",
+   "away": "PAM",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Valencia Basket",
+   "hs": 66,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-01-28",
+   "home": "BAH",
+   "away": "ULM",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "ratiopharm Ulm",
+   "hs": 85,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "CAN",
+   "away": "BES",
+   "home_name": "Dreamland Gran Canaria",
+   "away_name": "Besiktas Fibabanka Istanbul",
+   "hs": 90,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "BOU",
+   "away": "JER",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Hapoel Bank Yahav Jerusalem",
+   "hs": 67,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "ARI",
+   "away": "HAM",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 88,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "BUD",
+   "away": "JOV",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Joventut Badalona",
+   "hs": 107,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "LKB",
+   "away": "CLU",
+   "home_name": "7Bet-Lietkabelis Panevezys",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 92,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "HTA",
+   "away": "TSO",
+   "home_name": "Hapoel Shlomo Tel Aviv",
+   "away_name": "Trefl Sopot",
+   "hs": 91,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-01-29",
+   "home": "TTK",
+   "away": "VNC",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Umana Reyer Venice",
+   "hs": 84,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-02-04",
+   "home": "VNC",
+   "away": "LKB",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "7Bet-Lietkabelis Panevezys",
+   "hs": 91,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2025-02-04",
+   "home": "TSO",
+   "away": "CAN",
+   "home_name": "Trefl Sopot",
+   "away_name": "Dreamland Gran Canaria",
+   "hs": 73,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "PAM",
+   "away": "BOU",
+   "home_name": "Valencia Basket",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 100,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "JOV",
+   "away": "BAH",
+   "home_name": "Joventut Badalona",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 69,
+   "as": 56,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "HAM",
+   "away": "LJU",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 80,
+   "as": 62,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "JER",
+   "away": "TTK",
+   "home_name": "Hapoel Bank Yahav Jerusalem",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 76,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "ARI",
+   "away": "CLU",
+   "home_name": "Aris Midea Thessaloniki",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 74,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "ULM",
+   "away": "HTA",
+   "home_name": "ratiopharm Ulm",
+   "away_name": "Hapoel Shlomo Tel Aviv",
+   "hs": 90,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "WOL",
+   "away": "BUD",
+   "home_name": "Wolves Twinsbet Vilnius",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 91,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2025-02-05",
+   "home": "BES",
+   "away": "TRN",
+   "home_name": "Besiktas Fibabanka Istanbul",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 79,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "VNC",
+   "away": "ARI",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 81,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "HAM",
+   "away": "JER",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 85,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "WRO",
+   "away": "KLA",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 95,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "TTK",
+   "away": "ULM",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "ratiopharm ulm",
+   "hs": 93,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "TRN",
+   "away": "BOU",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 48,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "NIO",
+   "away": "NIN",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "NINERS Chemnitz",
+   "hs": 89,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "LJU",
+   "away": "MAN",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "BAXI Manresa",
+   "hs": 76,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "LKB",
+   "away": "BES",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 85,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "CLU",
+   "away": "BAH",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 90,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2025-10-02",
+   "home": "LLI",
+   "away": "BUD",
+   "home_name": "London Lions",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 59,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-10-07",
+   "home": "ULM",
+   "away": "NIO",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 103,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-10-07",
+   "home": "BES",
+   "away": "LLI",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "London Lions",
+   "hs": 99,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2025-10-07",
+   "home": "KLA",
+   "away": "CLU",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 102,
+   "as": 107,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "MAN",
+   "away": "WRO",
+   "home_name": "BAXI Manresa",
+   "away_name": "Slask Wroclaw",
+   "hs": 74,
+   "as": 62,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "BUD",
+   "away": "TRN",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 96,
+   "as": 107,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "JER",
+   "away": "LJU",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 84,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "BOU",
+   "away": "TTK",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 88,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "NIN",
+   "away": "LKB",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 86,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "ARI",
+   "away": "HAM",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 98,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2025-10-08",
+   "home": "BAH",
+   "away": "VNC",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Umana Reyer Venice",
+   "hs": 93,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2025-10-14",
+   "home": "HAM",
+   "away": "BAH",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 85,
+   "as": 106,
+   "final": true
+  },
+  {
+   "date": "2025-10-14",
+   "home": "LJU",
+   "away": "ARI",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 80,
+   "as": 59,
+   "final": true
+  },
+  {
+   "date": "2025-10-14",
+   "home": "TTK",
+   "away": "BUD",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 79,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-10-15",
+   "home": "MAN",
+   "away": "JER",
+   "home_name": "BAXI Manresa",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 101,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2025-10-15",
+   "home": "VNC",
+   "away": "KLA",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 89,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2025-10-15",
+   "home": "BES",
+   "away": "NIN",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "NINERS Chemnitz",
+   "hs": 93,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2025-10-15",
+   "home": "WRO",
+   "away": "CLU",
+   "home_name": "Slask Wroclaw",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 94,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-10-15",
+   "home": "NIO",
+   "away": "BOU",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 56,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2025-10-15",
+   "home": "LKB",
+   "away": "ULM",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "ratiopharm ulm",
+   "hs": 94,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2025-10-16",
+   "home": "LLI",
+   "away": "TRN",
+   "home_name": "London Lions",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 87,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "JER",
+   "away": "WRO",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Slask Wroclaw",
+   "hs": 86,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "ULM",
+   "away": "BES",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 99,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "ARI",
+   "away": "MAN",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "BAXI Manresa",
+   "hs": 79,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "KLA",
+   "away": "HAM",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 97,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "TRN",
+   "away": "TTK",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 60,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "BOU",
+   "away": "LKB",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 93,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "BUD",
+   "away": "NIO",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 91,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "NIN",
+   "away": "LLI",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "London Lions",
+   "hs": 67,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "CLU",
+   "away": "VNC",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Umana Reyer Venice",
+   "hs": 103,
+   "as": 102,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "BAH",
+   "away": "LJU",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 92,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "JER",
+   "away": "ARI",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 103,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "HAM",
+   "away": "CLU",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 76,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "NIO",
+   "away": "TRN",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 87,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "MAN",
+   "away": "BAH",
+   "home_name": "BAXI Manresa",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 67,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "LLI",
+   "away": "TTK",
+   "home_name": "London Lions",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 77,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "LJU",
+   "away": "KLA",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 91,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "NIN",
+   "away": "ULM",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "ratiopharm ulm",
+   "hs": 89,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "WRO",
+   "away": "VNC",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Umana Reyer Venice",
+   "hs": 92,
+   "as": 104,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "LKB",
+   "away": "BUD",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 91,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "BES",
+   "away": "BOU",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 90,
+   "as": 60,
+   "final": true
+  },
+  {
+   "date": "2025-11-04",
+   "home": "TRN",
+   "away": "LKB",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 78,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2025-11-04",
+   "home": "BOU",
+   "away": "NIN",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "NINERS Chemnitz",
+   "hs": 85,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2025-11-04",
+   "home": "BUD",
+   "away": "BES",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 82,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2025-11-04",
+   "home": "TTK",
+   "away": "NIO",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 95,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2025-11-05",
+   "home": "VNC",
+   "away": "HAM",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 90,
+   "as": 55,
+   "final": true
+  },
+  {
+   "date": "2025-11-05",
+   "home": "ULM",
+   "away": "LLI",
+   "home_name": "ratiopharm ulm",
+   "away_name": "London Lions",
+   "hs": 87,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-11-05",
+   "home": "ARI",
+   "away": "WRO",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Slask Wroclaw",
+   "hs": 85,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2025-11-05",
+   "home": "CLU",
+   "away": "LJU",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 87,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-11-05",
+   "home": "KLA",
+   "away": "MAN",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "BAXI Manresa",
+   "hs": 100,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2025-11-05",
+   "home": "BAH",
+   "away": "JER",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 82,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "JER",
+   "away": "KLA",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 110,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "ULM",
+   "away": "BOU",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 64,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "ARI",
+   "away": "BAH",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 76,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "WRO",
+   "away": "HAM",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 92,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "LLI",
+   "away": "NIO",
+   "home_name": "London Lions",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 97,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "NIN",
+   "away": "BUD",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 71,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "LKB",
+   "away": "TTK",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 74,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "LJU",
+   "away": "VNC",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Umana Reyer Venice",
+   "hs": 93,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "BES",
+   "away": "TRN",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 97,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "CLU",
+   "away": "MAN",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "BAXI Manresa",
+   "hs": 110,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "TRN",
+   "away": "NIN",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "NINERS Chemnitz",
+   "hs": 94,
+   "as": 105,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "BUD",
+   "away": "ULM",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "ratiopharm ulm",
+   "hs": 101,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "WRO",
+   "away": "BAH",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 99,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "CLU",
+   "away": "JER",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 89,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "KLA",
+   "away": "ARI",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 87,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "LLI",
+   "away": "BOU",
+   "home_name": "London Lions",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 68,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "VNC",
+   "away": "MAN",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "BAXI Manresa",
+   "hs": 97,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "NIO",
+   "away": "LKB",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 72,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "LJU",
+   "away": "HAM",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 93,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "TTK",
+   "away": "BES",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 84,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "JER",
+   "away": "VNC",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Umana Reyer Venice",
+   "hs": 98,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "ULM",
+   "away": "TRN",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 87,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "NIN",
+   "away": "TTK",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 63,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "LKB",
+   "away": "LLI",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "London Lions",
+   "hs": 61,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "ARI",
+   "away": "CLU",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 88,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "LJU",
+   "away": "WRO",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Slask Wroclaw",
+   "hs": 108,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "BAH",
+   "away": "KLA",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 85,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "MAN",
+   "away": "HAM",
+   "home_name": "BAXI Manresa",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 99,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "BOU",
+   "away": "BUD",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 88,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "BES",
+   "away": "NIO",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 101,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "BOU",
+   "away": "TRN",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 73,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "NIN",
+   "away": "NIO",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 73,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "JER",
+   "away": "HAM",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 86,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "BES",
+   "away": "LKB",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 94,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "MAN",
+   "away": "LJU",
+   "home_name": "BAXI Manresa",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 99,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "ULM",
+   "away": "TTK",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 53,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "BUD",
+   "away": "LLI",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "London Lions",
+   "hs": 94,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "ARI",
+   "away": "VNC",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Umana Reyer Venice",
+   "hs": 90,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "KLA",
+   "away": "WRO",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Slask Wroclaw",
+   "hs": 103,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2025-12-10",
+   "home": "BAH",
+   "away": "CLU",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 84,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2025-12-16",
+   "home": "TRN",
+   "away": "BUD",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 91,
+   "as": 90,
+   "final": true
+  },
+  {
+   "date": "2025-12-16",
+   "home": "LJU",
+   "away": "JER",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 81,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2025-12-16",
+   "home": "LKB",
+   "away": "NIN",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "NINERS Chemnitz",
+   "hs": 79,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "LLI",
+   "away": "BES",
+   "home_name": "London Lions",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 98,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "VNC",
+   "away": "BAH",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 94,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "HAM",
+   "away": "ARI",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 89,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "WRO",
+   "away": "MAN",
+   "home_name": "Slask Wroclaw",
+   "away_name": "BAXI Manresa",
+   "hs": 90,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "NIO",
+   "away": "ULM",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "ratiopharm ulm",
+   "hs": 69,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "TTK",
+   "away": "BOU",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 76,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "CLU",
+   "away": "KLA",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 118,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2025-12-23",
+   "home": "NIN",
+   "away": "BES",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 97,
+   "as": 95,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "TRN",
+   "away": "LLI",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "London Lions",
+   "hs": 85,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "ARI",
+   "away": "LJU",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 60,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "BUD",
+   "away": "TTK",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 91,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "JER",
+   "away": "MAN",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "BAXI Manresa",
+   "hs": 105,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "BOU",
+   "away": "NIO",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 81,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "CLU",
+   "away": "WRO",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Slask Wroclaw",
+   "hs": 94,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "BAH",
+   "away": "HAM",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 105,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "ULM",
+   "away": "LKB",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 79,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "KLA",
+   "away": "VNC",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Umana Reyer Venice",
+   "hs": 103,
+   "as": 118,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "LJU",
+   "away": "BAH",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 59,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "MAN",
+   "away": "ARI",
+   "home_name": "BAXI Manresa",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 113,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "BES",
+   "away": "ULM",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "ratiopharm ulm",
+   "hs": 97,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "LLI",
+   "away": "NIN",
+   "home_name": "London Lions",
+   "away_name": "NINERS Chemnitz",
+   "hs": 70,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "VNC",
+   "away": "CLU",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 90,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "HAM",
+   "away": "KLA",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 94,
+   "as": 98,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "WRO",
+   "away": "JER",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 72,
+   "as": 115,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "NIO",
+   "away": "BUD",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 97,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "LKB",
+   "away": "BOU",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 73,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2026-01-07",
+   "home": "TTK",
+   "away": "TRN",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 92,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "TRN",
+   "away": "NIO",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 88,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "KLA",
+   "away": "LJU",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 85,
+   "as": 104,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "CLU",
+   "away": "HAM",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Veolia Towers Hamburg",
+   "hs": 103,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "BAH",
+   "away": "MAN",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "BAXI Manresa",
+   "hs": 92,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "VNC",
+   "away": "WRO",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Slask Wroclaw",
+   "hs": 103,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "BOU",
+   "away": "BES",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 99,
+   "as": 103,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "ULM",
+   "away": "NIN",
+   "home_name": "ratiopharm ulm",
+   "away_name": "NINERS Chemnitz",
+   "hs": 88,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "BUD",
+   "away": "LKB",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 95,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "ARI",
+   "away": "JER",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 77,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "TTK",
+   "away": "LLI",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "London Lions",
+   "hs": 88,
+   "as": 63,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "NIN",
+   "away": "BOU",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 88,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "JER",
+   "away": "BAH",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 82,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "WRO",
+   "away": "ARI",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 107,
+   "as": 113,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "LJU",
+   "away": "CLU",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 86,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "MAN",
+   "away": "KLA",
+   "home_name": "BAXI Manresa",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 97,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "LLI",
+   "away": "ULM",
+   "home_name": "London Lions",
+   "away_name": "ratiopharm ulm",
+   "hs": 72,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "HAM",
+   "away": "VNC",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Umana Reyer Venice",
+   "hs": 95,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "NIO",
+   "away": "TTK",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 61,
+   "as": 106,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "LKB",
+   "away": "TRN",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 93,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "BES",
+   "away": "BUD",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 96,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "TRN",
+   "away": "BES",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 87,
+   "as": 74,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "BUD",
+   "away": "NIN",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "NINERS Chemnitz",
+   "hs": 97,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "TTK",
+   "away": "LKB",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 85,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "MAN",
+   "away": "CLU",
+   "home_name": "BAXI Manresa",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 101,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "VNC",
+   "away": "LJU",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 86,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "BOU",
+   "away": "ULM",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "ratiopharm ulm",
+   "hs": 97,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "HAM",
+   "away": "WRO",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Slask Wroclaw",
+   "hs": 99,
+   "as": 96,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "NIO",
+   "away": "LLI",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "London Lions",
+   "hs": 79,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "KLA",
+   "away": "JER",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 98,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "BAH",
+   "away": "ARI",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 81,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2026-02-03",
+   "home": "ULM",
+   "away": "BUD",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 90,
+   "as": 103,
+   "final": true
+  },
+  {
+   "date": "2026-02-03",
+   "home": "BAH",
+   "away": "WRO",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Slask Wroclaw",
+   "hs": 80,
+   "as": 82,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "MAN",
+   "away": "VNC",
+   "home_name": "BAXI Manresa",
+   "away_name": "Umana Reyer Venice",
+   "hs": 75,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "ARI",
+   "away": "KLA",
+   "home_name": "Aris Thessaloniki Betsson",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 83,
+   "as": 64,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "BOU",
+   "away": "LLI",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "London Lions",
+   "hs": 86,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "NIN",
+   "away": "TRN",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 81,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "JER",
+   "away": "CLU",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 114,
+   "as": 104,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "LKB",
+   "away": "NIO",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "Panionios Cosmorama Travel Athens",
+   "hs": 89,
+   "as": 62,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "BES",
+   "away": "TTK",
+   "home_name": "Besiktas GAIN Istanbul",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 91,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2026-02-05",
+   "home": "HAM",
+   "away": "LJU",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 74,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2026-02-10",
+   "home": "TRN",
+   "away": "ULM",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "ratiopharm ulm",
+   "hs": 76,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2026-02-10",
+   "home": "WRO",
+   "away": "LJU",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 81,
+   "as": 114,
+   "final": true
+  },
+  {
+   "date": "2026-02-10",
+   "home": "NIO",
+   "away": "BES",
+   "home_name": "Panionios Cosmorama Travel Athens",
+   "away_name": "Besiktas GAIN Istanbul",
+   "hs": 74,
+   "as": 114,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "LLI",
+   "away": "LKB",
+   "home_name": "London Lions",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 58,
+   "as": 66,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "VNC",
+   "away": "JER",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 83,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "HAM",
+   "away": "MAN",
+   "home_name": "Veolia Towers Hamburg",
+   "away_name": "BAXI Manresa",
+   "hs": 94,
+   "as": 116,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "BUD",
+   "away": "BOU",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 96,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "KLA",
+   "away": "BAH",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 86,
+   "as": 91,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "TTK",
+   "away": "NIN",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "NINERS Chemnitz",
+   "hs": 79,
+   "as": 62,
+   "final": true
+  },
+  {
+   "date": "2026-02-11",
+   "home": "CLU",
+   "away": "ARI",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Aris Thessaloniki Betsson",
+   "hs": 111,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "VNC",
+   "away": "FRA",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Skyliners Frankfurt",
+   "hs": 104,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "LEM",
+   "away": "ARI",
+   "home_name": "Le Mans Sarthe Basket",
+   "away_name": "Aris Thessaloniki",
+   "hs": 74,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "BUR",
+   "away": "NIN",
+   "home_name": "Tofas Bursa",
+   "away_name": "NINERS Chemnitz",
+   "hs": 82,
+   "as": 69,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "JER",
+   "away": "RTK",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Rostock Seawolves",
+   "hs": 94,
+   "as": 73,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "KLA",
+   "away": "TRN",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 73,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "MRO",
+   "away": "CLU",
+   "home_name": "Maxima Roma",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 89,
+   "as": 55,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "TNF",
+   "away": "TTK",
+   "home_name": "La Laguna Tenerife",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 82,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "BGS",
+   "away": "LJU",
+   "home_name": "Recoletas Salud San Pablo Burgos",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 85,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "NAP",
+   "away": "BOU",
+   "home_name": "Napoli Basketball",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 84,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "ULM",
+   "away": "BLK",
+   "home_name": "ratiopharm ulm",
+   "away_name": "Balkan Botevgrad",
+   "hs": 98,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "WRO",
+   "away": "BUD",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 75,
+   "as": 99,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "PAO",
+   "away": "MAN",
+   "home_name": "PAOK Thessaloniki",
+   "away_name": "Kids&Us Manresa",
+   "hs": 93,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "LKB",
+   "away": "BOS",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "BOSNA BH Telecom Sarajevo",
+   "hs": 75,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "BAH",
+   "away": "BCR",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Roma Basketball",
+   "hs": 91,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "RIG",
+   "away": "TRT",
+   "home_name": "Riga Zelli",
+   "away_name": "Baglietto Derthona Tortona",
+   "hs": 86,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "SIA",
+   "away": "LLI",
+   "home_name": "Siauliai Basketball",
+   "away_name": "London Lions",
+   "hs": 74,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "LLI",
+   "away": "TNF",
+   "home_name": "London Lions",
+   "away_name": "La Laguna Tenerife",
+   "hs": 89,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "TRN",
+   "away": "WRO",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Slask Wroclaw",
+   "hs": 81,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "RTK",
+   "away": "RIG",
+   "home_name": "Rostock Seawolves",
+   "away_name": "Riga Zelli",
+   "hs": 87,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "BOS",
+   "away": "PAO",
+   "home_name": "BOSNA BH Telecom Sarajevo",
+   "away_name": "PAOK Thessaloniki",
+   "hs": 72,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "BOU",
+   "away": "BUR",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Tofas Bursa",
+   "hs": 82,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "FRA",
+   "away": "SIA",
+   "home_name": "Skyliners Frankfurt",
+   "away_name": "Siauliai Basketball",
+   "hs": 79,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "BUD",
+   "away": "NAP",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Napoli Basketball",
+   "hs": 75,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "TTK",
+   "away": "MRO",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Maxima Roma",
+   "hs": 92,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2026-10-06",
+   "home": "LJU",
+   "away": "JER",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 64,
+   "as": 75,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "MAN",
+   "away": "ULM",
+   "home_name": "Kids&Us Manresa",
+   "away_name": "ratiopharm ulm",
+   "hs": 101,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "BCR",
+   "away": "LKB",
+   "home_name": "Roma Basketball",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 92,
+   "as": 87,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "TRT",
+   "away": "LEM",
+   "home_name": "Baglietto Derthona Tortona",
+   "away_name": "Le Mans Sarthe Basket",
+   "hs": 89,
+   "as": 83,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "NIN",
+   "away": "KLA",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 93,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "ARI",
+   "away": "BGS",
+   "home_name": "Aris Thessaloniki",
+   "away_name": "Recoletas Salud San Pablo Burgos",
+   "hs": 93,
+   "as": 80,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "BLK",
+   "away": "BAH",
+   "home_name": "Balkan Botevgrad",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 61,
+   "as": 100,
+   "final": true
+  },
+  {
+   "date": "2026-10-07",
+   "home": "CLU",
+   "away": "VNC",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "Umana Reyer Venice",
+   "hs": 98,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2026-10-13",
+   "home": "BCR",
+   "away": "BLK",
+   "home_name": "Roma Basketball",
+   "away_name": "Balkan Botevgrad",
+   "hs": 77,
+   "as": 72,
+   "final": true
+  },
+  {
+   "date": "2026-10-13",
+   "home": "TRN",
+   "away": "NIN",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "NINERS Chemnitz",
+   "hs": 80,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2026-10-13",
+   "home": "BAH",
+   "away": "MAN",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "Kids&Us Manresa",
+   "hs": 100,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2026-10-13",
+   "home": "LKB",
+   "away": "PAO",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "PAOK Thessaloniki",
+   "hs": 95,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2026-10-13",
+   "home": "KLA",
+   "away": "BOU",
+   "home_name": "Neptunas Klaipeda",
+   "away_name": "Cosea JL Bourg-en-Bresse",
+   "hs": 93,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "VNC",
+   "away": "TTK",
+   "home_name": "Umana Reyer Venice",
+   "away_name": "Turk Telekom Ankara",
+   "hs": 75,
+   "as": 65,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "TNF",
+   "away": "MRO",
+   "home_name": "La Laguna Tenerife",
+   "away_name": "Maxima Roma",
+   "hs": 96,
+   "as": 71,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "BGS",
+   "away": "JER",
+   "home_name": "Recoletas Salud San Pablo Burgos",
+   "away_name": "Hapoel Midtown Jerusalem",
+   "hs": 84,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "LEM",
+   "away": "RTK",
+   "home_name": "Le Mans Sarthe Basket",
+   "away_name": "Rostock Seawolves",
+   "hs": 82,
+   "as": 70,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "BUR",
+   "away": "BUD",
+   "home_name": "Tofas Bursa",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 90,
+   "as": 85,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "WRO",
+   "away": "NAP",
+   "home_name": "Slask Wroclaw",
+   "away_name": "Napoli Basketball",
+   "hs": 82,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "ARI",
+   "away": "TRT",
+   "home_name": "Aris Thessaloniki",
+   "away_name": "Baglietto Derthona Tortona",
+   "hs": 88,
+   "as": 68,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "ULM",
+   "away": "BOS",
+   "home_name": "ratiopharm ulm",
+   "away_name": "BOSNA BH Telecom Sarajevo",
+   "hs": 102,
+   "as": 93,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "RIG",
+   "away": "LJU",
+   "home_name": "Riga Zelli",
+   "away_name": "Cedevita Olimpija Ljubljana",
+   "hs": 89,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2026-10-14",
+   "home": "SIA",
+   "away": "CLU",
+   "home_name": "Siauliai Basketball",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 75,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2026-10-15",
+   "home": "LLI",
+   "away": "FRA",
+   "home_name": "London Lions",
+   "away_name": "Skyliners Frankfurt",
+   "hs": 76,
+   "as": 81,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "MAN",
+   "away": "BCR",
+   "home_name": "Kids&Us Manresa",
+   "away_name": "Roma Basketball",
+   "hs": 108,
+   "as": 88,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "RTK",
+   "away": "ARI",
+   "home_name": "Rostock Seawolves",
+   "away_name": "Aris Thessaloniki",
+   "hs": 79,
+   "as": 110,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "BUD",
+   "away": "KLA",
+   "home_name": "Buducnost VOLI Podgorica",
+   "away_name": "Neptunas Klaipeda",
+   "hs": 104,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "TTK",
+   "away": "SIA",
+   "home_name": "Turk Telekom Ankara",
+   "away_name": "Siauliai Basketball",
+   "hs": 84,
+   "as": 94,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "BLK",
+   "away": "LKB",
+   "home_name": "Balkan Botevgrad",
+   "away_name": "Lietkabelis Panevezys",
+   "hs": 57,
+   "as": 64,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "MRO",
+   "away": "VNC",
+   "home_name": "Maxima Roma",
+   "away_name": "Umana Reyer Venice",
+   "hs": 90,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "NAP",
+   "away": "BUR",
+   "home_name": "Napoli Basketball",
+   "away_name": "Tofas Bursa",
+   "hs": 105,
+   "as": 101,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "JER",
+   "away": "RIG",
+   "home_name": "Hapoel Midtown Jerusalem",
+   "away_name": "Riga Zelli",
+   "hs": 100,
+   "as": 64,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "BOS",
+   "away": "BAH",
+   "home_name": "BOSNA BH Telecom Sarajevo",
+   "away_name": "Bahcesehir College Istanbul",
+   "hs": 86,
+   "as": 77,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "BOU",
+   "away": "TRN",
+   "home_name": "Cosea JL Bourg-en-Bresse",
+   "away_name": "Dolomiti Energia Trento",
+   "hs": 90,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "FRA",
+   "away": "TNF",
+   "home_name": "Skyliners Frankfurt",
+   "away_name": "La Laguna Tenerife",
+   "hs": 94,
+   "as": 104,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "PAO",
+   "away": "ULM",
+   "home_name": "PAOK Thessaloniki",
+   "away_name": "ratiopharm ulm",
+   "hs": 87,
+   "as": 78,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "NIN",
+   "away": "WRO",
+   "home_name": "NINERS Chemnitz",
+   "away_name": "Slask Wroclaw",
+   "hs": 95,
+   "as": 67,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "TRT",
+   "away": "BGS",
+   "home_name": "Baglietto Derthona Tortona",
+   "away_name": "Recoletas Salud San Pablo Burgos",
+   "hs": 89,
+   "as": 79,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "LJU",
+   "away": "LEM",
+   "home_name": "Cedevita Olimpija Ljubljana",
+   "away_name": "Le Mans Sarthe Basket",
+   "hs": 66,
+   "as": 84,
+   "final": true
+  },
+  {
+   "date": "2026-10-21",
+   "home": "CLU",
+   "away": "LLI",
+   "home_name": "U-BT Cluj-Napoca",
+   "away_name": "London Lions",
+   "hs": 72,
+   "as": 89,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "TRN",
+   "away": "BUD",
+   "home_name": "Dolomiti Energia Trento",
+   "away_name": "Buducnost VOLI Podgorica",
+   "hs": 94,
+   "as": 92,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "FRA",
+   "away": "CLU",
+   "home_name": "Skyliners Frankfurt",
+   "away_name": "U-BT Cluj-Napoca",
+   "hs": 113,
+   "as": 97,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "BLK",
+   "away": "MAN",
+   "home_name": "Balkan Botevgrad",
+   "away_name": "Kids&Us Manresa",
+   "hs": 65,
+   "as": 76,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "LKB",
+   "away": "ULM",
+   "home_name": "Lietkabelis Panevezys",
+   "away_name": "ratiopharm ulm",
+   "hs": 68,
+   "as": 86,
+   "final": true
+  },
+  {
+   "date": "2026-10-27",
+   "home": "BAH",
+   "away": "PAO",
+   "home_name": "Bahcesehir College Istanbul",
+   "away_name": "PAOK Thessaloniki",
+   "hs": 84,
+   "as": 81,
+   "final": true
+  }
+ ]
+}

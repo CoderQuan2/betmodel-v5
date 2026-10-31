@@ -1,0 +1,162 @@
+{
+ "lane": "nfl-ml",
+ "fitted_at": "2026-10-20T20:25:27+00:00",
+ "train": {
+  "weeks": [
+   3,
+   4,
+   5
+  ],
+  "n_pairs": 47,
+  "protocol": "walk-forward, nfl_lane.elo_run (train weeks < w, predict week w)"
+ },
+ "candidates": {
+  "identity": {
+   "kind": "identity"
+  },
+  "lin": {
+   "kind": "lin",
+   "a": 1.0
+  },
+  "iso": {
+   "kind": "iso",
+   "blocks": [
+    [
+     0.4125,
+     0.0
+    ],
+    [
+     0.4508,
+     0.0
+    ],
+    [
+     0.4691,
+     0.2857
+    ],
+    [
+     0.5213,
+     0.3333
+    ],
+    [
+     0.5482,
+     0.5
+    ],
+    [
+     0.5762,
+     0.5714
+    ],
+    [
+     0.6448,
+     0.6667
+    ],
+    [
+     0.6886,
+     1.0
+    ],
+    [
+     0.7045,
+     1.0
+    ],
+    [
+     0.7169,
+     1.0
+    ],
+    [
+     0.7519,
+     1.0
+    ]
+   ]
+  }
+ },
+ "cv_brier": {
+  "identity": 0.2346,
+  "lin": 0.2378,
+  "iso": 0.2575
+ },
+ "selected": "identity",
+ "os_test": {
+  "slate": "NFL Week 6, 11 graded games (compile \u00a71/\u00a72)",
+  "briers": {
+   "raw_identity": 0.3041,
+   "market": 0.2698,
+   "v4_shrunk_0.30": 0.2776,
+   "phi": {
+    "identity": 0.3041,
+    "lin": 0.3041,
+    "iso": 0.2986
+   },
+   "ensemble_phi": 0.2831
+  },
+  "benchmark_v4_shrunk": 0.278
+ },
+ "status": "UNCALIBRATED",
+ "status_reason": "selected phi (identity) out-of-sample Brier 0.3041 vs the v4-shrunk benchmark 0.2776 \u2014 does NOT beat it; the lane ships UNCALIBRATED per MODEL-V5.md R4 \u2014 a displayed tag since v5.2; grades no longer cap on it.",
+ "slate_detail": [
+  {
+   "game": "HOU@JAX",
+   "raw": 0.644,
+   "mkt": 0.5713672358196127,
+   "y": 0.0
+  },
+  {
+   "game": "CHI@ATL",
+   "raw": 0.54,
+   "mkt": 0.4570320870493546,
+   "y": 0.0
+  },
+  {
+   "game": "BAL@CLE",
+   "raw": 0.495,
+   "mkt": 0.41456116887301514,
+   "y": 1.0
+  },
+  {
+   "game": "TEN@IND",
+   "raw": 0.689,
+   "mkt": 0.6927277423990484,
+   "y": 0.0
+  },
+  {
+   "game": "NYJ@NE",
+   "raw": 0.639,
+   "mkt": 0.705252624137709,
+   "y": 1.0
+  },
+  {
+   "game": "NO@NYG",
+   "raw": 0.687,
+   "mkt": 0.5429679129506454,
+   "y": 0.0
+  },
+  {
+   "game": "CAR@PHI",
+   "raw": 0.524,
+   "mkt": 0.41456116887301514,
+   "y": 0.0
+  },
+  {
+   "game": "PIT@TB",
+   "raw": 0.498,
+   "mkt": 0.42863276418038726,
+   "y": 0.0
+  },
+  {
+   "game": "ARI@LAR",
+   "raw": 0.67,
+   "mkt": 0.8157483844458762,
+   "y": 0.0
+  },
+  {
+   "game": "LAC@KC",
+   "raw": 0.791,
+   "mkt": 0.705252624137709,
+   "y": 1.0
+  },
+  {
+   "game": "BUF@LV",
+   "raw": 0.54,
+   "mkt": 0.34616928188307844,
+   "y": 0.0
+  }
+ ]
+}

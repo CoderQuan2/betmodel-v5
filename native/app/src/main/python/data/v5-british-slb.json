@@ -1,0 +1,47 @@
+{
+ "sport": "british-slb",
+ "season": "2024-25 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T22:45:44+00:00",
+ "source": "RealGM international league schedule pages (Super League Basketball; basketball.realgm.com league 161; cached 2026-10-27T22:45:44+00:00; data/cache/british_slb_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1526": 1532.2,
+  "2787": 1455.3,
+  "2788": 1458.2,
+  "2848": 1531.7,
+  "953": 1539.5,
+  "955": 1382.4,
+  "957": 1390.6,
+  "959": 1716.2,
+  "960": 1494.8,
+  "962": 1499.1
+ },
+ "margin_map": {
+  "a": 0.356,
+  "b": 0.0267,
+  "sd": 12.98,
+  "n": 174
+ },
+ "backtest": {
+  "brier": 0.2363,
+  "naive_brier": 0.2415,
+  "naive_home_brier": 0.2415,
+  "n": 174,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "953": "Cheshire Phoenix",
+  "955": "Caledonia Gladiators",
+  "957": "Leicester Riders",
+  "959": "London Lions",
+  "960": "Newcastle Eagles",
+  "962": "Sheffield Sharks",
+  "1526": "Bristol Flyers",
+  "2787": "Surrey 89ers",
+  "2788": "Manchester Basketball",
+  "2848": "Liverpool Basketball"
+ }
+}

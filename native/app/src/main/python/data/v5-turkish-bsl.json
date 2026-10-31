@@ -1,0 +1,71 @@
+{
+ "sport": "turkish-bsl",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T21:47:16+00:00",
+ "source": "RealGM international league schedule pages (Turkish BSL; basketball.realgm.com league 7; cached 2026-10-27T21:47:16+00:00; data/cache/turkish_bsl_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "10": 1825.1,
+  "1114": 1376.2,
+  "126": 1413.1,
+  "1461": 1273.9,
+  "1626": 1410.6,
+  "1768": 1146.5,
+  "1784": 1307.5,
+  "1788": 1374.4,
+  "1882": 1761.8,
+  "2017": 1494.3,
+  "2097": 1439.9,
+  "2551": 1318.2,
+  "2629": 1450.1,
+  "2630": 1658.4,
+  "2702": 1493.6,
+  "338": 1559.5,
+  "339": 1770.2,
+  "353": 1668.5,
+  "55": 1784.0,
+  "659": 1399.0,
+  "661": 1422.3,
+  "662": 1653.0
+ },
+ "margin_map": {
+  "a": -0.159,
+  "b": 0.0325,
+  "sd": 12.65,
+  "n": 760
+ },
+ "backtest": {
+  "brier": 0.2001,
+  "naive_brier": 0.242,
+  "naive_home_brier": 0.242,
+  "n": 760,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "10": "Fenerbahce Beko",
+  "55": "Anadolu Efes",
+  "126": "Tofas SC",
+  "338": "Galatasaray",
+  "339": "Besiktas Icrypex",
+  "353": "Turk Telekom",
+  "659": "Mersin BSB",
+  "661": "Pinar Karsiyaka",
+  "662": "Trabzonspor",
+  "1114": "Darussafaka Basketbol Istanbul",
+  "1461": "Demir Insaat Buyukcekmece",
+  "1626": "Socar Petkimspor",
+  "1768": "Samsunspor DSI",
+  "1784": "Yalova Group Belediye Spor",
+  "1788": "Bursaspor",
+  "1882": "Bahcesehir Koleji",
+  "2017": "Korfez Mansia",
+  "2097": "Merkezefendi Belediyesi Denizli Basket",
+  "2551": "Cagdas Bodrum Spor",
+  "2629": "Cayirova",
+  "2630": "Esenler Erokspor",
+  "2702": "Bordo Sportif Balikesir"
+ }
+}

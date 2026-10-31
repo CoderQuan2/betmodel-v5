@@ -1,0 +1,65 @@
+{
+ "sport": "polish-plk",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T22:45:33+00:00",
+ "source": "RealGM international league schedule pages (Polish OBL; basketball.realgm.com league 21; cached 2026-10-27T22:45:33+00:00; data/cache/polish_plk_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1097": 1648.3,
+  "1098": 1474.2,
+  "1602": 1413.1,
+  "1603": 1384.5,
+  "1605": 1628.0,
+  "1687": 1520.0,
+  "1756": 1242.9,
+  "1858": 1729.9,
+  "1885": 1318.6,
+  "1983": 1328.9,
+  "2541": 1243.5,
+  "270": 1655.3,
+  "2701": 1564.3,
+  "274": 1506.0,
+  "472": 1377.0,
+  "497": 1543.8,
+  "737": 1662.8,
+  "744": 1630.0,
+  "745": 1628.6
+ },
+ "margin_map": {
+  "a": -1.469,
+  "b": 0.0268,
+  "sd": 13.26,
+  "n": 752
+ },
+ "backtest": {
+  "brier": 0.2408,
+  "naive_brier": 0.2482,
+  "naive_home_brier": 0.2482,
+  "n": 752,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "270": "King Szczecin",
+  "274": "Trefl Sopot",
+  "472": "Icon Sea Czarni Slupsk",
+  "497": "Krajowa Grupa Spozywcza Arka Gdynia",
+  "737": "Anwil Wloclawek",
+  "744": "Zastal Zielona Gora",
+  "745": "WKS Slask Wroclaw",
+  "1097": "Dziki Warszawa",
+  "1098": "Enea Abramczyk Astoria Bydgoszcz",
+  "1602": "Arriva Polski Cukier Torun",
+  "1603": "Start Lublin",
+  "1605": "MKS Dabrowa Gornicza",
+  "1687": "Stal Ostrow Wielkopolski",
+  "1756": "Miasto Szkla Krosno",
+  "1858": "Legia Warszawa",
+  "1885": "GTK Gliwice",
+  "1983": "PGE Spojnia Stargard",
+  "2541": "Rawlplug Sokol Lancut",
+  "2701": "Gornik Zamek Ksiaz Walbrzych"
+ }
+}

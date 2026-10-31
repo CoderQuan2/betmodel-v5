@@ -1,0 +1,54 @@
+{
+ "sport": "del",
+ "league": "German DEL",
+ "season": "validated regular seasons 2023-24..2025-26 + 2026-27 partial (see cache report)",
+ "fitted_at": "2026-10-27T22:11:57+00:00",
+ "source": "Elite Prospects league scores pages (public mirror; cached 2026-10-27T22:11:57+00:00; data/cache/ep_del_games.json)",
+ "params": {
+  "K": 8.0,
+  "hfa_elo": 32.0
+ },
+ "ratings": {
+  "Adler Mannheim": 1567.8,
+  "Augsburger Panther": 1421.3,
+  "Dresdner Eisl\u00f6wen": 1393.7,
+  "D\u00fcsseldorfer EG": 1430.5,
+  "EHC M\u00fcnchen": 1574.4,
+  "ERC Ingolstadt": 1570.7,
+  "Eisb\u00e4ren Berlin": 1590.1,
+  "Fischtown Pinguins": 1529.6,
+  "Grizzlys Wolfsburg": 1478.8,
+  "Iserlohn Roosters": 1421.5,
+  "Krefeld Pinguine": 1485.3,
+  "K\u00f6lner Haie": 1578.2,
+  "L\u00f6wen Frankfurt": 1418.9,
+  "N\u00fcrnberg Ice Tigers": 1482.0,
+  "Schwenninger Wild Wings": 1487.1,
+  "Straubing Tigers": 1570.2
+ },
+ "games": {
+  "Adler Mannheim": 168,
+  "Augsburger Panther": 168,
+  "Dresdner Eisl\u00f6wen": 52,
+  "D\u00fcsseldorfer EG": 104,
+  "EHC M\u00fcnchen": 168,
+  "ERC Ingolstadt": 169,
+  "Eisb\u00e4ren Berlin": 168,
+  "Fischtown Pinguins": 168,
+  "Grizzlys Wolfsburg": 169,
+  "Iserlohn Roosters": 168,
+  "Krefeld Pinguine": 12,
+  "K\u00f6lner Haie": 168,
+  "L\u00f6wen Frankfurt": 168,
+  "N\u00fcrnberg Ice Tigers": 169,
+  "Schwenninger Wild Wings": 169,
+  "Straubing Tigers": 168
+ },
+ "backtest": {
+  "brier": 0.2322,
+  "naive_brier": 0.2454,
+  "naive_home_brier": 0.2454,
+  "n": 1178,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo, NHL-lane protocol)"
+ }
+}

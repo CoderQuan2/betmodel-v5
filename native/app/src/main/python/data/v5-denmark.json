@@ -1,0 +1,40 @@
+{
+ "sport": "denmark",
+ "league": "Denmark Metal Ligaen",
+ "season": "validated regular seasons 2023-24..2025-26 + 2026-27 partial (see cache report)",
+ "fitted_at": "2026-10-27T22:12:20+00:00",
+ "source": "Elite Prospects league scores pages (public mirror; cached 2026-10-27T22:12:20+00:00; data/cache/ep_denmark_games.json)",
+ "params": {
+  "K": 8.0,
+  "hfa_elo": 32.0
+ },
+ "ratings": {
+  "Aalborg Pirates": 1498.6,
+  "Esbjerg Energy": 1525.9,
+  "Frederikshavn White Hawks": 1439.6,
+  "Herlev Eagles": 1520.3,
+  "Herning Blue Fox": 1647.4,
+  "Odense Bulldogs": 1474.4,
+  "Rungsted Seier Capital": 1469.7,
+  "R\u00f8dovre Mighty Bulls": 1429.4,
+  "S\u00f8nderjyske": 1494.7
+ },
+ "games": {
+  "Aalborg Pirates": 62,
+  "Esbjerg Energy": 62,
+  "Frederikshavn White Hawks": 63,
+  "Herlev Eagles": 63,
+  "Herning Blue Fox": 61,
+  "Odense Bulldogs": 62,
+  "Rungsted Seier Capital": 62,
+  "R\u00f8dovre Mighty Bulls": 61,
+  "S\u00f8nderjyske": 62
+ },
+ "backtest": {
+  "brier": 0.2223,
+  "naive_brier": 0.2441,
+  "naive_home_brier": 0.2441,
+  "n": 279,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo, NHL-lane protocol)"
+ }
+}

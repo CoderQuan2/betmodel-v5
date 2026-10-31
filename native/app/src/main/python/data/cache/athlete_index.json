@@ -1,0 +1,3579 @@
+{
+ "Noah Fifita": {
+  "id": 4801717,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Arizona Wildcats",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Jaylen Raynor": {
+  "id": 5080403,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Iowa State Cyclones",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Devon Dampier": {
+  "id": 5105849,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Utah Utes",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Conner Weigman": {
+  "id": 4685574,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Wayshawn Parker": {
+  "id": 5173431,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Utah Utes",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Trinidad Chambliss": {
+  "id": 4911529,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Arch Manning": {
+  "id": 4870906,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Raleek Brown": {
+  "id": 4685268,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Colton Joseph": {
+  "id": 5125715,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Wisconsin Badgers",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Toa Fa'avae": {
+  "id": 5261479,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "New Mexico Lobos",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Kenny Minchey": {
+  "id": 4918099,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Kentucky Wildcats",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Aaron Rodgers": {
+  "id": 8439,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Tyler Shough": {
+  "id": 4360689,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Jaylen Warren": {
+  "id": 4569987,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Kendre Miller": {
+  "id": 4599739,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Alvin Kamara": {
+  "id": 3054850,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Rico Dowdle": {
+  "id": 4038815,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Baker Mayfield": {
+  "id": 3052587,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Bryce Young": {
+  "id": 4685720,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Bucky Irving": {
+  "id": 4596448,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Chuba Hubbard": {
+  "id": 4241416,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Brock Purdy": {
+  "id": 4361741,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Michael Penix Jr.": {
+  "id": 4360423,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Bijan Robinson": {
+  "id": 4430807,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Christian McCaffrey": {
+  "id": 3117251,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Joe Burrow": {
+  "id": 3915511,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Tyler Huntley": {
+  "id": 4035671,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Derrick Henry": {
+  "id": 3043078,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Chase Brown": {
+  "id": 4362238,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Samaje Perine": {
+  "id": 3116389,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "C.J. Stroud": {
+  "id": 4432577,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Woody Marks": {
+  "id": 4429059,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Malik Willis": {
+  "id": 4242512,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Geno Smith": {
+  "id": 15864,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "New York Jets",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Ollie Gordon II": {
+  "id": 4711533,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Deshaun Watson": {
+  "id": 3122840,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Cam Ward": {
+  "id": 4688380,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Quinshon Judkins": {
+  "id": 4685702,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Tony Pollard": {
+  "id": 3916148,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Tyjae Spears": {
+  "id": 4428557,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Daniel Jones": {
+  "id": 3917792,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Kyler Murray": {
+  "id": 3917315,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Jonathan Taylor": {
+  "id": 4242335,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Matthew Stafford": {
+  "id": 12483,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Los Angeles Rams",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Kirk Cousins": {
+  "id": 14880,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Las Vegas Raiders",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Kyren Williams": {
+  "id": 4430737,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Los Angeles Rams",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Ashton Jeanty": {
+  "id": 4890973,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Las Vegas Raiders",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Blake Corum": {
+  "id": 4429096,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Los Angeles Rams",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Bo Nix": {
+  "id": 4426338,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Jacoby Brissett": {
+  "id": 2578570,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "J.K. Dobbins": {
+  "id": 4241985,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "RJ Harvey": {
+  "id": 4568490,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Tyler Allgeier": {
+  "id": 4373626,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Jordan Love": {
+  "id": 4036378,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Jared Goff": {
+  "id": 3046779,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Josh Jacobs": {
+  "id": 4047365,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Jahmyr Gibbs": {
+  "id": 4429795,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Patrick Mahomes": {
+  "id": 3139477,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Sam Darnold": {
+  "id": 3912547,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Emanuel Wilson": {
+  "id": 4887558,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Kenneth Walker III": {
+  "id": 4567048,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "George Holani": {
+  "id": 4429835,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Tanner McKee": {
+  "id": 4685201,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Philadelphia Eagles",
+  "sport": "nfl",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Dak Prescott": {
+  "id": 2577417,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Dallas Cowboys",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Saquon Barkley": {
+  "id": 3929630,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Philadelphia Eagles",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Javonte Williams": {
+  "id": 4361579,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Dallas Cowboys",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Jalen Green": {
+  "id": 4437244,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Phoenix Suns",
+  "sport": "nba",
+  "events": 38,
+  "status": "CACHED"
+ },
+ "Yaxel Lendeborg": {
+  "id": 5175737,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Golden State Warriors",
+  "sport": "nba",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Brandon Williams": {
+  "id": 4397040,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Golden State Warriors",
+  "sport": "nba",
+  "events": 67,
+  "status": "CACHED"
+ },
+ "Miles Bridges": {
+  "id": 4066383,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Phoenix Suns",
+  "sport": "nba",
+  "events": 84,
+  "status": "CACHED"
+ },
+ "De'Anthony Melton": {
+  "id": 4066436,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Golden State Warriors",
+  "sport": "nba",
+  "events": 51,
+  "status": "CACHED"
+ },
+ "Devin Booker": {
+  "id": 3136193,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Phoenix Suns",
+  "sport": "nba",
+  "events": 76,
+  "status": "CACHED"
+ },
+ "Gui Santos": {
+  "id": 4997536,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Golden State Warriors",
+  "sport": "nba",
+  "events": 74,
+  "status": "CACHED"
+ },
+ "Giannis Antetokounmpo": {
+  "id": 3032977,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 38,
+  "status": "CACHED"
+ },
+ "Brandon Miller": {
+  "id": 4433287,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Charlotte Hornets",
+  "sport": "nba",
+  "events": 71,
+  "status": "CACHED"
+ },
+ "Dennis Schroder": {
+  "id": 3032979,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Charlotte Hornets",
+  "sport": "nba",
+  "events": 91,
+  "status": "CACHED"
+ },
+ "Pelle Larsson": {
+  "id": 4601025,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 75,
+  "status": "CACHED"
+ },
+ "Sion James": {
+  "id": 4602025,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Charlotte Hornets",
+  "sport": "nba",
+  "events": 88,
+  "status": "CACHED"
+ },
+ "Bam Adebayo": {
+  "id": 4066261,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 79,
+  "status": "CACHED"
+ },
+ "Davion Mitchell": {
+  "id": 4278053,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 74,
+  "status": "CACHED"
+ },
+ "Naz Reid": {
+  "id": 4396971,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Charlotte Hornets",
+  "sport": "nba",
+  "events": 92,
+  "status": "CACHED"
+ },
+ "Trey Murphy III": {
+  "id": 4397688,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "New Orleans Pelicans",
+  "sport": "nba",
+  "events": 69,
+  "status": "CACHED"
+ },
+ "Nikola Jokic": {
+  "id": 3112335,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Denver Nuggets",
+  "sport": "nba",
+  "events": 76,
+  "status": "CACHED"
+ },
+ "DeMar DeRozan": {
+  "id": 3978,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Denver Nuggets",
+  "sport": "nba",
+  "events": 80,
+  "status": "CACHED"
+ },
+ "Derik Queen": {
+  "id": 4869780,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "New Orleans Pelicans",
+  "sport": "nba",
+  "events": 81,
+  "status": "CACHED"
+ },
+ "Zion Williamson": {
+  "id": 4395628,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "New Orleans Pelicans",
+  "sport": "nba",
+  "events": 66,
+  "status": "CACHED"
+ },
+ "Dejounte Murray": {
+  "id": 3907497,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "New Orleans Pelicans",
+  "sport": "nba",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Jeremiah Fears": {
+  "id": 5144091,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "New Orleans Pelicans",
+  "sport": "nba",
+  "events": 86,
+  "status": "CACHED"
+ },
+ "Aaron Gordon": {
+  "id": 3064290,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Denver Nuggets",
+  "sport": "nba",
+  "events": 42,
+  "status": "CACHED"
+ },
+ "Jamal Murray": {
+  "id": 3936299,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Denver Nuggets",
+  "sport": "nba",
+  "events": 87,
+  "status": "CACHED"
+ },
+ "Marcus Smart": {
+  "id": 2990992,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Houston Rockets",
+  "sport": "nba",
+  "events": 74,
+  "status": "CACHED"
+ },
+ "Onyeka Okongwu": {
+  "id": 4431680,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Atlanta Hawks",
+  "sport": "nba",
+  "events": 83,
+  "status": "CACHED"
+ },
+ "Dyson Daniels": {
+  "id": 4869342,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Atlanta Hawks",
+  "sport": "nba",
+  "events": 84,
+  "status": "CACHED"
+ },
+ "Amen Thompson": {
+  "id": 4684740,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Houston Rockets",
+  "sport": "nba",
+  "events": 88,
+  "status": "CACHED"
+ },
+ "Jalen Johnson": {
+  "id": 4701230,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Atlanta Hawks",
+  "sport": "nba",
+  "events": 83,
+  "status": "CACHED"
+ },
+ "Nickeil Alexander-Walker": {
+  "id": 4278039,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Atlanta Hawks",
+  "sport": "nba",
+  "events": 86,
+  "status": "CACHED"
+ },
+ "Alperen Sengun": {
+  "id": 4871144,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Houston Rockets",
+  "sport": "nba",
+  "events": 83,
+  "status": "CACHED"
+ },
+ "CJ McCollum": {
+  "id": 2490149,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Atlanta Hawks",
+  "sport": "nba",
+  "events": 84,
+  "status": "CACHED"
+ },
+ "Kevin Durant": {
+  "id": 3202,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Houston Rockets",
+  "sport": "nba",
+  "events": 84,
+  "status": "CACHED"
+ },
+ "Evan Mobley": {
+  "id": 4432158,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 86,
+  "status": "CACHED"
+ },
+ "Donovan Mitchell": {
+  "id": 3908809,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 94,
+  "status": "CACHED"
+ },
+ "Day'Ron Sharpe": {
+  "id": 4432194,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 66,
+  "status": "CACHED"
+ },
+ "Michael Porter Jr.": {
+  "id": 4278104,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 56,
+  "status": "CACHED"
+ },
+ "Egor Demin": {
+  "id": 5175643,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 53,
+  "status": "CACHED"
+ },
+ "James Harden": {
+  "id": 3992,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 91,
+  "status": "CACHED"
+ },
+ "Keon Ellis": {
+  "id": 4702177,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 87,
+  "status": "CACHED"
+ },
+ "Julius Randle": {
+  "id": 3064514,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 94,
+  "status": "CACHED"
+ },
+ "Anthony Davis": {
+  "id": 6583,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 24,
+  "status": "CACHED"
+ },
+ "Pierre Strong": {
+  "id": 4249836,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 2,
+  "status": "CACHED"
+ },
+ "J.J McCarthy": {
+  "id": 4433970,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Tyrone Tracy Jr": {
+  "id": 4360516,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Tyrese Maxey": {
+  "id": 4431678,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Philadelphia 76ers",
+  "sport": "nba",
+  "events": 89,
+  "status": "CACHED"
+ },
+ "Tyler Herro": {
+  "id": 4395725,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 34,
+  "status": "CACHED"
+ },
+ "Jaylen Brown": {
+  "id": 3917376,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Philadelphia 76ers",
+  "sport": "nba",
+  "events": 84,
+  "status": "CACHED"
+ },
+ "Jaime Jaquez Jr.": {
+  "id": 4432848,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 82,
+  "status": "CACHED"
+ },
+ "Kasparas Jakucionis": {
+  "id": 5214640,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 55,
+  "status": "CACHED"
+ },
+ "Ryan Rollins": {
+  "id": 4591725,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 78,
+  "status": "CACHED"
+ },
+ "Joel Embiid": {
+  "id": 3059318,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Philadelphia 76ers",
+  "sport": "nba",
+  "events": 46,
+  "status": "CACHED"
+ },
+ "VJ Edgecombe": {
+  "id": 5124612,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Philadelphia 76ers",
+  "sport": "nba",
+  "events": 90,
+  "status": "CACHED"
+ },
+ "Josh Giddey": {
+  "id": 4871145,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 59,
+  "status": "CACHED"
+ },
+ "Dylan Harper": {
+  "id": 5037871,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 96,
+  "status": "CACHED"
+ },
+ "Stephon Castle": {
+  "id": 4845367,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 94,
+  "status": "CACHED"
+ },
+ "Naji Marshall": {
+  "id": 4278594,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 78,
+  "status": "CACHED"
+ },
+ "De'Aaron Fox": {
+  "id": 4066259,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 97,
+  "status": "CACHED"
+ },
+ "Max Christie": {
+  "id": 4432582,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 81,
+  "status": "CACHED"
+ },
+ "Zaccharie Risacher": {
+  "id": 5211175,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 73,
+  "status": "CACHED"
+ },
+ "Victor Wembanyama": {
+  "id": 5104157,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 94,
+  "status": "CACHED"
+ },
+ "Devin Vassell": {
+  "id": 4395630,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 95,
+  "status": "CACHED"
+ },
+ "Marcus Sasser": {
+  "id": 4432107,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 46,
+  "status": "CACHED"
+ },
+ "Daniel Gafford": {
+  "id": 4278049,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 55,
+  "status": "CACHED"
+ },
+ "P.J. Washington": {
+  "id": 4278078,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 60,
+  "status": "CACHED"
+ },
+ "Andrew Wiggins": {
+  "id": 3059319,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 74,
+  "status": "CACHED"
+ },
+ "Jared Curtis": {
+  "id": 5158948,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Vanderbilt Commodores",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Junior Sherrill": {
+  "id": 5078165,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Vanderbilt Commodores",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Willie Rodriguez": {
+  "id": 5136838,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Kentucky Wildcats",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Kenny Darby": {
+  "id": 5215172,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Kentucky Wildcats",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Steve Angeli": {
+  "id": 4685694,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Syracuse Orange",
+  "sport": "ncaaf",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Billy Edwards Jr.": {
+  "id": 4592532,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "North Carolina Tar Heels",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Isaac Wilson": {
+  "id": 5079771,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Colorado Buffaloes",
+  "sport": "ncaaf",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Drew Mestemaker": {
+  "id": 5219834,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Oklahoma State Cowboys",
+  "sport": "ncaaf",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Jayden Maiava": {
+  "id": 4685454,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "USC Trojans",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Jacob Harris": {
+  "id": 5122018,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Wisconsin Badgers",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Zacharyus Williams": {
+  "id": 5146757,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "USC Trojans",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Trent Mosley": {
+  "id": 5160469,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "USC Trojans",
+  "sport": "ncaaf",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Tyrell Henry": {
+  "id": 4714046,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Wisconsin Badgers",
+  "sport": "ncaaf",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Kayden Dixon-Wyatt": {
+  "id": 5161013,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "USC Trojans",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Tanook Hines": {
+  "id": 5141975,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "USC Trojans",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Omari Hayes": {
+  "id": 4837269,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Iowa State Cyclones",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Isaiah Mizell": {
+  "id": 5198318,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Arizona Wildcats",
+  "sport": "ncaaf",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Tait Reynolds": {
+  "id": 5159078,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Clemson Tigers",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Ethan Grunkemeyer": {
+  "id": 5144078,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Virginia Tech Hokies",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Bear Bachmeier": {
+  "id": 5141367,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "BYU Cougars",
+  "sport": "ncaaf",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Kewan Lacy": {
+  "id": 5086388,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Traylon Ray": {
+  "id": 4870912,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Caleb Odom": {
+  "id": 5079647,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Ryan Wingo": {
+  "id": 5218633,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Deuce Alexander": {
+  "id": 5152158,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Emmett Mosley V": {
+  "id": 5079613,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Horatio Fields": {
+  "id": 4711408,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Trent Walker": {
+  "id": 4879567,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Koby Young": {
+  "id": 5146728,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Noah Bennee": {
+  "id": 4900351,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Utah Utes",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Patrick Overmyer": {
+  "id": 5120299,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Braden Pegan": {
+  "id": 4869422,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Utah Utes",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Creed Whittemore": {
+  "id": 4871040,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Utah Utes",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Amare Thomas": {
+  "id": 5077060,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Ryan Flournoy": {
+  "id": 5083754,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Dallas Cowboys",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Darius Cooper": {
+  "id": 4715355,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Philadelphia Eagles",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "CeeDee Lamb": {
+  "id": 4241389,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Dallas Cowboys",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "George Pickens": {
+  "id": 4426354,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Dallas Cowboys",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Jake Ferguson": {
+  "id": 4242355,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Dallas Cowboys",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Makai Lemon": {
+  "id": 4870795,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Philadelphia Eagles",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Dallas Goedert": {
+  "id": 3121023,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Philadelphia Eagles",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Rashod Bateman": {
+  "id": 4360939,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Dohnte Meyers": {
+  "id": 4384852,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Zay Flowers": {
+  "id": 4429615,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Mike Gesicki": {
+  "id": 3116164,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Tee Higgins": {
+  "id": 4239993,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Ja'Marr Chase": {
+  "id": 4362628,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Cincinnati Bengals",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Ja'Kobi Lane": {
+  "id": 4870847,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 2,
+  "status": "CACHED"
+ },
+ "Josh Cuevas": {
+  "id": 4876132,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Justice Hill": {
+  "id": 4038441,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Kenyon Sadiq": {
+  "id": 5083315,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "New York Jets",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Mason Taylor": {
+  "id": 4808766,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Jets",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Malik Washington": {
+  "id": 4569603,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Adonai Mitchell": {
+  "id": 4597500,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Jets",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Caleb Douglas": {
+  "id": 4869645,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 2,
+  "status": "CACHED"
+ },
+ "Garrett Wilson": {
+  "id": 4569618,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Jets",
+  "sport": "nfl",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Omar Cooper Jr.": {
+  "id": 4723820,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "New York Jets",
+  "sport": "nfl",
+  "events": 2,
+  "status": "CACHED"
+ },
+ "Chris Bell": {
+  "id": 4869961,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Greg Dulcich": {
+  "id": 4367209,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "John Metchie III": {
+  "id": 4567096,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Jalen Coker": {
+  "id": 4695883,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Tommy Tremble": {
+  "id": 4372780,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Tez Johnson": {
+  "id": 4608810,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Darren Waller": {
+  "id": 2576925,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Ted Hurst III": {
+  "id": 5220680,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Cade Otton": {
+  "id": 4243331,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Tetairoa McMillan": {
+  "id": 4685472,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Chris Godwin": {
+  "id": 3116165,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Jordan Addison": {
+  "id": 4429205,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Laquon Treadwell": {
+  "id": 3051889,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Keenan Allen": {
+  "id": 15818,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Josh Downs": {
+  "id": 4688813,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "T.J. Hockenson": {
+  "id": 4036133,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Jauan Jennings": {
+  "id": 3886598,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Will Mallory": {
+  "id": 4362523,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 2,
+  "status": "CACHED"
+ },
+ "Christian Watson": {
+  "id": 4248528,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Tucker Kraft": {
+  "id": 4572680,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Isaac TeSlaa": {
+  "id": 5123663,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Jameson Williams": {
+  "id": 4426388,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Amon-Ra St. Brown": {
+  "id": 4374302,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Matthew Golden": {
+  "id": 4701936,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Sam LaPorta": {
+  "id": 4430027,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Savion Williams": {
+  "id": 4431487,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Adam Trautman": {
+  "id": 3911853,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Evan Engram": {
+  "id": 3051876,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Trey McBride": {
+  "id": 4361307,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Michael Wilson": {
+  "id": 4360761,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Marvin Mims Jr.": {
+  "id": 4686472,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Jalen Brooks": {
+  "id": 4692835,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Courtland Sutton": {
+  "id": 3128429,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Elijah Higgins": {
+  "id": 4426844,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Kendrick Bourne": {
+  "id": 3045523,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Troy Franklin": {
+  "id": 4431280,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Jaylen Waddle": {
+  "id": 4372016,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Travis Kelce": {
+  "id": 15847,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Rashid Shaheed": {
+  "id": 4032473,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 21,
+  "status": "CACHED"
+ },
+ "Cooper Kupp": {
+  "id": 2977187,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Jaxon Smith-Njigba": {
+  "id": 4430878,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Tory Horton": {
+  "id": 4597703,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Noah Gray": {
+  "id": 4240472,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "AJ Barner": {
+  "id": 4576297,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Seattle Seahawks",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Andrew Armstrong": {
+  "id": 5093923,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 1,
+  "status": "CACHED"
+ },
+ "Xavier Worthy": {
+  "id": 4683062,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Cyrus Allen": {
+  "id": 4912218,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Jalen Royals": {
+  "id": 5082630,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "DK Metcalf": {
+  "id": 4047650,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Pat Freiermuth": {
+  "id": 4361411,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Juwan Johnson": {
+  "id": 3929645,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Darnell Washington": {
+  "id": 4430802,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Devaughn Vele": {
+  "id": 4569559,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Germie Bernard": {
+  "id": 4685261,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Pittsburgh Steelers",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Noah Fant": {
+  "id": 4036131,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Chris Olave": {
+  "id": 4361370,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Bryce Lance": {
+  "id": 4879276,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Malik Nabers": {
+  "id": 4595348,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Xavier Hutchinson": {
+  "id": 4686422,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Dalton Schultz": {
+  "id": 3117256,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Foster Moreau": {
+  "id": 3843945,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Jaylin Noel": {
+  "id": 4586312,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Malachi Fields": {
+  "id": 4682648,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Nico Collins": {
+  "id": 4258173,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Darnell Mooney": {
+  "id": 4040655,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Devin Singletary": {
+  "id": 4040761,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Kayshon Boutte": {
+  "id": 4429022,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Marvin Harrison Jr.": {
+  "id": 4432708,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Houston Texans",
+  "sport": "nfl",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Isaiah Likely": {
+  "id": 4361050,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Jerry Jeudy": {
+  "id": 4241463,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Harold Fannin Jr.": {
+  "id": 5083076,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Gunnar Helm": {
+  "id": 4686728,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Elic Ayomanor": {
+  "id": 4883647,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Denzel Boston": {
+  "id": 4832800,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Dylan Sampson": {
+  "id": 5081397,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Carnell Tate": {
+  "id": 4871023,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "KC Concepcion": {
+  "id": 4870653,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Cleveland Browns",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Wan'Dale Robinson": {
+  "id": 4569587,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tennessee Titans",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Brock Bowers": {
+  "id": 4432665,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Las Vegas Raiders",
+  "sport": "nfl",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Tre Tucker": {
+  "id": 4428718,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Las Vegas Raiders",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Michael Mayer": {
+  "id": 4429086,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Las Vegas Raiders",
+  "sport": "nfl",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Kyle Juszczyk": {
+  "id": 16002,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 19,
+  "status": "CACHED"
+ },
+ "Olamide Zaccheaus": {
+  "id": 3917914,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Zachariah Branch": {
+  "id": 4870612,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Austin Hooper": {
+  "id": 3043275,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 20,
+  "status": "CACHED"
+ },
+ "Jahan Dotson": {
+  "id": 4361409,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Kyle Pitts": {
+  "id": 4360248,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "George Kittle": {
+  "id": 3040151,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Christian Kirk": {
+  "id": 3895856,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 15,
+  "status": "CACHED"
+ },
+ "Drake London": {
+  "id": 4426502,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Jordan Watkins": {
+  "id": 4431466,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Brandin Cooks": {
+  "id": 16731,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Kyle Kuzma": {
+  "id": 3134907,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 72,
+  "status": "CACHED"
+ },
+ "Myles Turner": {
+  "id": 3133628,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 74,
+  "status": "CACHED"
+ },
+ "Kel'el Ware": {
+  "id": 5105623,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Milwaukee Bucks",
+  "sport": "nba",
+  "events": 84,
+  "status": "CACHED"
+ },
+ "Dillon Brooks": {
+  "id": 3155526,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Phoenix Suns",
+  "sport": "nba",
+  "events": 65,
+  "status": "CACHED"
+ },
+ "Khaman Maluach": {
+  "id": 5203685,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Phoenix Suns",
+  "sport": "nba",
+  "events": 55,
+  "status": "CACHED"
+ },
+ "Collin Gillespie": {
+  "id": 4278585,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Phoenix Suns",
+  "sport": "nba",
+  "events": 89,
+  "status": "CACHED"
+ },
+ "Matas Buzelis": {
+  "id": 4711294,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 82,
+  "status": "CACHED"
+ },
+ "Kyshawn George": {
+  "id": 5174563,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 51,
+  "status": "CACHED"
+ },
+ "Norman Powell": {
+  "id": 2595516,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 66,
+  "status": "CACHED"
+ },
+ "Alex Sarr": {
+  "id": 5160992,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 50,
+  "status": "CACHED"
+ },
+ "Caleb Wilson": {
+  "id": 5095151,
+  "league_path": "basketball/nba",
+  "season": 2027,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Leonard Miller": {
+  "id": 5044385,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 49,
+  "status": "CACHED"
+ },
+ "Deandre Ayton": {
+  "id": 4278129,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 87,
+  "status": "CACHED"
+ },
+ "Jalen Smith": {
+  "id": 4397189,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 58,
+  "status": "CACHED"
+ },
+ "Trae Young": {
+  "id": 4277905,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Tre Jones": {
+  "id": 4395626,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Chicago Bulls",
+  "sport": "nba",
+  "events": 69,
+  "status": "CACHED"
+ },
+ "Noah Clowney": {
+  "id": 4712896,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 70,
+  "status": "CACHED"
+ },
+ "Jaylon Tyson": {
+  "id": 4683747,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 87,
+  "status": "CACHED"
+ },
+ "Jarrett Allen": {
+  "id": 4066328,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 77,
+  "status": "CACHED"
+ },
+ "Peyton Watson": {
+  "id": 4576087,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 59,
+  "status": "CACHED"
+ },
+ "Keldon Johnson": {
+  "id": 4395723,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 111,
+  "status": "CACHED"
+ },
+ "Julian Champagnie": {
+  "id": 4592479,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "San Antonio Spurs",
+  "sport": "nba",
+  "events": 111,
+  "status": "CACHED"
+ },
+ "Christian Braun": {
+  "id": 4431767,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Denver Nuggets",
+  "sport": "nba",
+  "events": 54,
+  "status": "CACHED"
+ },
+ "Aaron Wiggins": {
+  "id": 4397183,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Atlanta Hawks",
+  "sport": "nba",
+  "events": 81,
+  "status": "CACHED"
+ },
+ "Grayson Allen": {
+  "id": 3135045,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Charlotte Hornets",
+  "sport": "nba",
+  "events": 56,
+  "status": "CACHED"
+ },
+ "Scottre Humphrey": {
+  "id": 5166161,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "New Mexico Lobos",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Kiefer Sibley": {
+  "id": 5146726,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "New Mexico Lobos",
+  "sport": "ncaaf",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Bailen George": {
+  "id": 5326947,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "New Mexico Lobos",
+  "sport": "ncaaf",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Reis Kessel": {
+  "id": 5228015,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "North Dakota State Bison",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Cade Keith": {
+  "id": 5219572,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "New Mexico Lobos",
+  "sport": "ncaaf",
+  "events": 9,
+  "status": "CACHED"
+ },
+ "Mekhi Collins": {
+  "id": 4832952,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "North Dakota State Bison",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "CJ Baxter": {
+  "id": 4870609,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Kentucky Wildcats",
+  "sport": "ncaaf",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Ja'Cory Thomas": {
+  "id": 5295920,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Vanderbilt Commodores",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Owen Eshelman": {
+  "id": 5263246,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Washington State Cougars",
+  "sport": "ncaaf",
+  "events": 1,
+  "status": "CACHED"
+ },
+ "Maddux Madsen": {
+  "id": 4870513,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Boise State Broncos",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Dylan Riley": {
+  "id": 5146712,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Boise State Broncos",
+  "sport": "ncaaf",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Sire Gaines": {
+  "id": 5147379,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Boise State Broncos",
+  "sport": "ncaaf",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Branden Ganashamoorthy": {
+  "id": 5153065,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Washington State Cougars",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Rasean Jones": {
+  "id": 5290573,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Boise State Broncos",
+  "sport": "ncaaf",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Ahmad Miller": {
+  "id": 5154420,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Syracuse Orange",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Tylik Hill": {
+  "id": 5261613,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Syracuse Orange",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Jordan Shipp": {
+  "id": 5079687,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "North Carolina Tar Heels",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "C.J. Sadler": {
+  "id": 5159039,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "North Carolina Tar Heels",
+  "sport": "ncaaf",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Jelani Thurman": {
+  "id": 4871039,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "North Carolina Tar Heels",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Trech Kekahuna": {
+  "id": 5077266,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "North Carolina Tar Heels",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Umari Hatcher": {
+  "id": 4691315,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Syracuse Orange",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Miles Coleman": {
+  "id": 5149007,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Oklahoma State Cowboys",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Justin Bowick": {
+  "id": 5083747,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Oklahoma State Cowboys",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Abu Sama III": {
+  "id": 5078005,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Wisconsin Badgers",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Preston Rex": {
+  "id": 5092200,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "BYU Cougars",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Waden Charles": {
+  "id": 5142600,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "UCF Knights",
+  "sport": "ncaaf",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Derrek Cooper": {
+  "id": 5203606,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Bam Knight": {
+  "id": 4427728,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Arizona Cardinals",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Nathan Hayes": {
+  "id": 5087156,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "North Dakota State Bison",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Kenneth Gainwell": {
+  "id": 4371733,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 18,
+  "status": "CACHED"
+ },
+ "Moussa Diabat\u00e9": {
+  "id": 4433249,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Charlotte Hornets",
+  "sport": "nba",
+  "events": 80,
+  "status": "CACHED"
+ },
+ "Caleb Hawkins": {
+  "id": 5258016,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Oklahoma State Cowboys",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Brandon Phelps": {
+  "id": 5121936,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Arizona Wildcats",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Cam Coleman": {
+  "id": 5079376,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Justin Jefferson": {
+  "id": 4262921,
+  "league_path": "football/nfl",
+  "season": null,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Bobby Portis": {
+  "id": 3064482,
+  "league_path": "basketball/nba",
+  "season": null,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 71,
+  "status": "CACHED"
+ },
+ "Jackson Williams": {
+  "id": 5228002,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "North Dakota State Bison",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Sedrick Alexander": {
+  "id": 5030333,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Vanderbilt Commodores",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Matt Wagner": {
+  "id": 5080888,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Boise State Broncos",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Wyatt Young": {
+  "id": 5148787,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Oklahoma State Cowboys",
+  "sport": "ncaaf",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "Chris Barnes": {
+  "id": 5148822,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Oklahoma State Cowboys",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Joseph Williams": {
+  "id": 5189530,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Colorado Buffaloes",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "King Miller": {
+  "id": 5233016,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "USC Trojans",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Kedrick Reescano": {
+  "id": 4899361,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Arizona Wildcats",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Antwan Roberts": {
+  "id": 4612624,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Arizona Wildcats",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Aiden Flora": {
+  "id": 5219258,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Iowa State Cyclones",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Jeffrey Overton Jr.": {
+  "id": 5214409,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Virginia Tech Hokies",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Ayden Greene": {
+  "id": 4918417,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Virginia Tech Hokies",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Davion Brown": {
+  "id": 5158951,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Virginia Tech Hokies",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Luke Reynolds": {
+  "id": 5138451,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Virginia Tech Hokies",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Que'Sean Brown": {
+  "id": 5218787,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "Virginia Tech Hokies",
+  "sport": "ncaaf",
+  "events": 14,
+  "status": "CACHED"
+ },
+ "TJ Moore": {
+  "id": 5218753,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Clemson Tigers",
+  "sport": "ncaaf",
+  "events": 13,
+  "status": "CACHED"
+ },
+ "Keyone Jenkins": {
+  "id": 5085337,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "UCF Knights",
+  "sport": "ncaaf",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "Duke Watson": {
+  "id": 5136049,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "UCF Knights",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Walker Lyons": {
+  "id": 5221043,
+  "league_path": "football/college-football",
+  "season": null,
+  "team": "BYU Cougars",
+  "sport": "ncaaf",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Kyler Kasper": {
+  "id": 4870876,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "BYU Cougars",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Legend Glasker": {
+  "id": 5279329,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "BYU Cougars",
+  "sport": "ncaaf",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Josh Derry": {
+  "id": 5153889,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "UCF Knights",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Caleb Cunningham": {
+  "id": 5224178,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Ole Miss Rebels",
+  "sport": "ncaaf",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Jermaine Bishop Jr.": {
+  "id": 5161011,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Texas Longhorns",
+  "sport": "ncaaf",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "Makhi Hughes": {
+  "id": 4816098,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Byrd Ficklin": {
+  "id": 5294263,
+  "league_path": "football/college-football",
+  "season": 2025,
+  "team": "Utah Utes",
+  "sport": "ncaaf",
+  "events": 12,
+  "status": "CACHED"
+ },
+ "Re'Shaun Sanford II": {
+  "id": 5078223,
+  "league_path": "football/college-football",
+  "season": 2026,
+  "team": "Houston Cougars",
+  "sport": "ncaaf",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Mark Andrews": {
+  "id": 3116365,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Baltimore Ravens",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Jaylen Wright": {
+  "id": 4682745,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Miami Dolphins",
+  "sport": "nfl",
+  "events": 10,
+  "status": "CACHED"
+ },
+ "AJ Dillon": {
+  "id": 4239934,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Carolina Panthers",
+  "sport": "nfl",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Sean Tucker": {
+  "id": 4430871,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Tampa Bay Buccaneers",
+  "sport": "nfl",
+  "events": 17,
+  "status": "CACHED"
+ },
+ "Jordan Mason": {
+  "id": 4360569,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 16,
+  "status": "CACHED"
+ },
+ "Seth McGowan": {
+  "id": 4686468,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Indianapolis Colts",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "MarShawn Lloyd": {
+  "id": 4429023,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Green Bay Packers",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Sione Vaki": {
+  "id": 4912274,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Detroit Lions",
+  "sport": "nfl",
+  "events": 11,
+  "status": "CACHED"
+ },
+ "Jonah Coleman": {
+  "id": 4702555,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Denver Broncos",
+  "sport": "nfl",
+  "events": 1,
+  "status": "CACHED"
+ },
+ "Emmett Johnson": {
+  "id": 4832955,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Kansas City Chiefs",
+  "sport": "nfl",
+  "events": 5,
+  "status": "CACHED"
+ },
+ "CJ Donaldson": {
+  "id": 5081999,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "New Orleans Saints",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Cam Skattebo": {
+  "id": 4696981,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "New York Giants",
+  "sport": "nfl",
+  "events": 8,
+  "status": "CACHED"
+ },
+ "Mike Washington Jr.": {
+  "id": 4686658,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "Las Vegas Raiders",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Khalil Herbert": {
+  "id": 4035886,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Atlanta Falcons",
+  "sport": "nfl",
+  "events": 7,
+  "status": "CACHED"
+ },
+ "Kaelon Black": {
+  "id": 4696044,
+  "league_path": "football/nfl",
+  "season": 2026,
+  "team": "San Francisco 49ers",
+  "sport": "nfl",
+  "events": 6,
+  "status": "CACHED"
+ },
+ "Kentavious Caldwell-Pope": {
+  "id": 2581018,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Philadelphia 76ers",
+  "sport": "nba",
+  "events": 55,
+  "status": "CACHED"
+ },
+ "Anfernee Simons": {
+  "id": 4351851,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Philadelphia 76ers",
+  "sport": "nba",
+  "events": 58,
+  "status": "CACHED"
+ },
+ "Tre Johnson": {
+  "id": 5238230,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 63,
+  "status": "CACHED"
+ },
+ "Bilal Coulibaly": {
+  "id": 5104155,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Washington Wizards",
+  "sport": "nba",
+  "events": 56,
+  "status": "CACHED"
+ },
+ "Sam Merrill": {
+  "id": 4066757,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Cleveland Cavaliers",
+  "sport": "nba",
+  "events": 70,
+  "status": "CACHED"
+ },
+ "Mikel Brown Jr.": {
+  "id": 5101761,
+  "league_path": "basketball/nba",
+  "season": 2027,
+  "team": "Brooklyn Nets",
+  "sport": "nba",
+  "events": 2,
+  "status": "CACHED"
+ },
+ "Morez Johnson Jr.": {
+  "id": 4873153,
+  "league_path": "basketball/nba",
+  "season": 2027,
+  "team": "Dallas Mavericks",
+  "sport": "nba",
+  "events": 4,
+  "status": "CACHED"
+ },
+ "Tari Eason": {
+  "id": 4433192,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Houston Rockets",
+  "sport": "nba",
+  "events": 69,
+  "status": "CACHED"
+ },
+ "Klay Thompson": {
+  "id": 6475,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Miami Heat",
+  "sport": "nba",
+  "events": 73,
+  "status": "CACHED"
+ },
+ "Aaron Jones": {
+  "id": 3042519,
+  "league_path": "football/nfl",
+  "season": 2025,
+  "team": "Minnesota Vikings",
+  "sport": "nfl",
+  "events": 12,
+  "status": "FETCHED",
+  "board_name": "Aaron Jones",
+  "resolved_name": "Aaron Jones Sr.",
+  "disambiguation": "exact namesake empty-log; suffix variant with log \u2014 board form 'Aaron Jones' resolved to id 17766 (Indianapolis Colts), empty across seasons [2026, 2025]; variant 'Aaron Jones Sr.' is id 3042519 (Minnesota Vikings) with 12 events in season 2025",
+  "namesake_collision_risk": true,
+  "namesakes": [
+   {
+    "id": 17766,
+    "displayName": "Aaron Jones",
+    "team": "Indianapolis Colts"
+   }
+  ]
+ },
+ "Jabari Smith": {
+  "id": 4432639,
+  "league_path": "basketball/nba",
+  "season": 2026,
+  "team": "Houston Rockets",
+  "sport": "nba",
+  "events": 86,
+  "status": "FETCHED",
+  "board_name": "Jabari Smith",
+  "resolved_name": "Jabari Smith Jr.",
+  "disambiguation": "exact namesake empty-log; suffix variant with log \u2014 board form 'Jabari Smith' resolved to id 793 (Brooklyn Nets), empty across seasons [2027, 2026]; variant 'Jabari Smith Jr.' is id 4432639 (Houston Rockets) with 86 events in season 2026",
+  "namesake_collision_risk": true,
+  "namesakes": [
+   {
+    "id": 793,
+    "displayName": "Jabari Smith",
+    "team": "Brooklyn Nets"
+   }
+  ]
+ }
+}

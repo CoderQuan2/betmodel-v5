@@ -1,0 +1,46 @@
+{
+ "sport": "norway",
+ "league": "Norway EliteHockey Ligaen",
+ "season": "validated regular seasons 2023-24..2025-26 + 2026-27 partial (see cache report)",
+ "fitted_at": "2026-10-27T22:12:32+00:00",
+ "source": "Elite Prospects league scores pages (public mirror; cached 2026-10-27T22:12:32+00:00; data/cache/ep_norway_games.json)",
+ "params": {
+  "K": 8.0,
+  "hfa_elo": 32.0
+ },
+ "ratings": {
+  "Comet Halden": 1314.0,
+  "Frisk Asker": 1638.1,
+  "Lillehammer": 1430.8,
+  "L\u00f8renskog": 1378.1,
+  "Narvik Hockey": 1482.8,
+  "Nidaros Hockey": 1447.1,
+  "Ringerike": 1398.5,
+  "Sparta Sarpsborg": 1532.1,
+  "Stavanger Oilers": 1605.7,
+  "Stjernen Hockey": 1415.8,
+  "Storhamar": 1704.3,
+  "V\u00e5lerenga": 1652.6
+ },
+ "games": {
+  "Comet Halden": 90,
+  "Frisk Asker": 146,
+  "Lillehammer": 146,
+  "L\u00f8renskog": 135,
+  "Narvik Hockey": 100,
+  "Nidaros Hockey": 55,
+  "Ringerike": 57,
+  "Sparta Sarpsborg": 135,
+  "Stavanger Oilers": 146,
+  "Stjernen Hockey": 146,
+  "Storhamar": 145,
+  "V\u00e5lerenga": 145
+ },
+ "backtest": {
+  "brier": 0.1864,
+  "naive_brier": 0.2462,
+  "naive_home_brier": 0.2462,
+  "n": 723,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo, NHL-lane protocol)"
+ }
+}

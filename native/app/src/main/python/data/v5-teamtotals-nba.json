@@ -1,0 +1,277 @@
+{
+ "sport": "nba",
+ "lane": "nba-team-totals",
+ "fitted_at": "2026-10-24T22:08:09+00:00",
+ "source": "ESPN NBA scoreboard day pulls (cached 2026-10-19; data/cache/nba_games_2025-26.json)",
+ "history_n": 1231,
+ "params": {
+  "prior_games": 10,
+  "distribution": "normal",
+  "burn_in": 100,
+  "model": "lam_team = (LH|LA)*off[team]*def[opp]; team score ~ distribution(lam_team, sigma_team); sigma_team = per-team walk-forward residual SD shrunk toward the lane pool (prior 30 team-games)"
+ },
+ "distribution_why": "A team total is ONE team's scoring distribution, fitted as such: Normal on team points: ~100 possessions a side; totals tightly near-normal around a pace-driven mean.",
+ "league": {
+  "LH": 116.483,
+  "LA": 114.738,
+  "mean_team_score": 115.61,
+  "sigma_pool_team_score": 11.999
+ },
+ "teams": {
+  "ATL": {
+   "off": 1.022,
+   "def": 1.0034,
+   "gp": 82,
+   "sigma_team": 12.264,
+   "score_mean": 118.463
+  },
+  "BKN": {
+   "off": 0.9253,
+   "def": 1.0023,
+   "gp": 82,
+   "sigma_team": 11.265,
+   "score_mean": 105.927
+  },
+  "BOS": {
+   "off": 0.9942,
+   "def": 0.9348,
+   "gp": 82,
+   "sigma_team": 13.548,
+   "score_mean": 114.854
+  },
+  "CHA": {
+   "off": 1.0031,
+   "def": 0.9659,
+   "gp": 82,
+   "sigma_team": 11.574,
+   "score_mean": 116.012
+  },
+  "CHI": {
+   "off": 1.0054,
+   "def": 1.0455,
+   "gp": 82,
+   "sigma_team": 12.398,
+   "score_mean": 116.305
+  },
+  "CLE": {
+   "off": 1.0302,
+   "def": 0.9985,
+   "gp": 82,
+   "sigma_team": 12.083,
+   "score_mean": 119.524
+  },
+  "DAL": {
+   "off": 0.9885,
+   "def": 1.031,
+   "gp": 82,
+   "sigma_team": 12.177,
+   "score_mean": 114.122
+  },
+  "DEN": {
+   "off": 1.0498,
+   "def": 1.0102,
+   "gp": 82,
+   "sigma_team": 12.178,
+   "score_mean": 122.073
+  },
+  "DET": {
+   "off": 1.0166,
+   "def": 0.9537,
+   "gp": 82,
+   "sigma_team": 10.942,
+   "score_mean": 117.768
+  },
+  "GS": {
+   "off": 0.9923,
+   "def": 0.9966,
+   "gp": 82,
+   "sigma_team": 11.647,
+   "score_mean": 114.61
+  },
+  "HOU": {
+   "off": 0.9971,
+   "def": 0.9568,
+   "gp": 82,
+   "sigma_team": 10.379,
+   "score_mean": 115.232
+  },
+  "IND": {
+   "off": 0.9755,
+   "def": 1.037,
+   "gp": 82,
+   "sigma_team": 12.275,
+   "score_mean": 112.427
+  },
+  "LAC": {
+   "off": 0.9858,
+   "def": 0.9771,
+   "gp": 82,
+   "sigma_team": 11.7,
+   "score_mean": 113.768
+  },
+  "LAL": {
+   "off": 1.0056,
+   "def": 0.9921,
+   "gp": 82,
+   "sigma_team": 11.93,
+   "score_mean": 116.341
+  },
+  "MEM": {
+   "off": 0.9928,
+   "def": 1.0391,
+   "gp": 82,
+   "sigma_team": 10.404,
+   "score_mean": 114.671
+  },
+  "MIA": {
+   "off": 1.0405,
+   "def": 1.0226,
+   "gp": 82,
+   "sigma_team": 12.481,
+   "score_mean": 120.866
+  },
+  "MIL": {
+   "off": 0.9616,
+   "def": 1.0095,
+   "gp": 82,
+   "sigma_team": 12.393,
+   "score_mean": 110.634
+  },
+  "MIN": {
+   "off": 1.0184,
+   "def": 0.9926,
+   "gp": 82,
+   "sigma_team": 12.801,
+   "score_mean": 118.0
+  },
+  "NO": {
+   "off": 0.9993,
+   "def": 1.034,
+   "gp": 82,
+   "sigma_team": 11.679,
+   "score_mean": 115.524
+  },
+  "NY": {
+   "off": 1.0072,
+   "def": 0.9579,
+   "gp": 83,
+   "sigma_team": 12.898,
+   "score_mean": 116.542
+  },
+  "OKC": {
+   "off": 1.0263,
+   "def": 0.9404,
+   "gp": 82,
+   "sigma_team": 11.282,
+   "score_mean": 119.024
+  },
+  "ORL": {
+   "off": 1.001,
+   "def": 0.9961,
+   "gp": 82,
+   "sigma_team": 11.733,
+   "score_mean": 115.744
+  },
+  "PHI": {
+   "off": 1.0021,
+   "def": 1.0035,
+   "gp": 82,
+   "sigma_team": 12.638,
+   "score_mean": 115.878
+  },
+  "PHX": {
+   "off": 0.9767,
+   "def": 0.9654,
+   "gp": 82,
+   "sigma_team": 12.135,
+   "score_mean": 112.585
+  },
+  "POR": {
+   "off": 0.999,
+   "def": 1.0012,
+   "gp": 82,
+   "sigma_team": 11.592,
+   "score_mean": 115.476
+  },
+  "SA": {
+   "off": 1.0319,
+   "def": 0.9696,
+   "gp": 83,
+   "sigma_team": 11.729,
+   "score_mean": 119.747
+  },
+  "SAC": {
+   "off": 0.9645,
+   "def": 1.0416,
+   "gp": 82,
+   "sigma_team": 11.571,
+   "score_mean": 111.0
+  },
+  "TOR": {
+   "off": 0.9925,
+   "def": 0.9707,
+   "gp": 82,
+   "sigma_team": 13.117,
+   "score_mean": 114.634
+  },
+  "UTAH": {
+   "off": 1.0152,
+   "def": 1.0802,
+   "gp": 82,
+   "sigma_team": 11.898,
+   "score_mean": 117.585
+  },
+  "WSH": {
+   "off": 0.9791,
+   "def": 1.0715,
+   "gp": 82,
+   "sigma_team": 12.088,
+   "score_mean": 112.902
+  }
+ },
+ "backtest": {
+  "n": 2262,
+  "mae_model": 9.585,
+  "mae_naive": 10.252,
+  "brier_model": 0.2307,
+  "brier_naive": 0.2503,
+  "verdict": "PASS",
+  "protocol": "walk-forward per team-game (rates from prior games only); naive = the team's own expanding mean score; Brier on P(over L*), L* = .5 line at the naive team mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED",
+ "aliases": {
+  "Atlanta Hawks": "ATL",
+  "Boston Celtics": "BOS",
+  "Brooklyn Nets": "BKN",
+  "Charlotte Hornets": "CHA",
+  "Chicago Bulls": "CHI",
+  "Cleveland Cavaliers": "CLE",
+  "Dallas Mavericks": "DAL",
+  "Denver Nuggets": "DEN",
+  "Detroit Pistons": "DET",
+  "Golden State Warriors": "GS",
+  "Houston Rockets": "HOU",
+  "Indiana Pacers": "IND",
+  "LA Clippers": "LAC",
+  "Los Angeles Lakers": "LAL",
+  "Memphis Grizzlies": "MEM",
+  "Miami Heat": "MIA",
+  "Milwaukee Bucks": "MIL",
+  "Minnesota Timberwolves": "MIN",
+  "New Orleans Pelicans": "NO",
+  "New York Knicks": "NY",
+  "Oklahoma City Thunder": "OKC",
+  "Orlando Magic": "ORL",
+  "Philadelphia 76ers": "PHI",
+  "Phoenix Suns": "PHX",
+  "Portland Trail Blazers": "POR",
+  "Sacramento Kings": "SAC",
+  "San Antonio Spurs": "SA",
+  "Team Stars": "STARS",
+  "Team Stripes": "STRIPES",
+  "Toronto Raptors": "TOR",
+  "Utah Jazz": "UTAH",
+  "Washington Wizards": "WSH",
+  "World": "WORLD"
+ }
+}

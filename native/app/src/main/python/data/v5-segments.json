@@ -1,0 +1,7661 @@
+{
+ "fitted_at": "2026-10-25T00:45:49.613286+00:00",
+ "source": "ESPN scoreboard linescores (NBA/NHL day ranges, NFL day pulls, NCAAF FBS day pulls R6; NCAAF quarters + NHL period forms R7 on the rebuilt pulls); completed seasons 2024-25+2025-26 (NBA/NHL), 2024+2025 (NFL/NCAAF)",
+ "params": {
+  "prior_games": 4.0
+ },
+ "lanes": {
+  "nba-1h": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 57.838,
+    "LA1": 56.918,
+    "share": 0.5018
+   },
+   "sigma_total": 12.283,
+   "sigma_margin": 11.531,
+   "teams": {
+    "ATL": {
+     "off": 1.0455,
+     "def": 1.0406,
+     "gp": 170
+    },
+    "BKN": {
+     "off": 0.9324,
+     "def": 1.0067,
+     "gp": 167
+    },
+    "BOS": {
+     "off": 1.0278,
+     "def": 0.9284,
+     "gp": 179
+    },
+    "CHA": {
+     "off": 0.9654,
+     "def": 0.9964,
+     "gp": 169
+    },
+    "CHI": {
+     "off": 0.9917,
+     "def": 1.0484,
+     "gp": 170
+    },
+    "CLE": {
+     "off": 1.0375,
+     "def": 0.9755,
+     "gp": 177
+    },
+    "DAL": {
+     "off": 0.9984,
+     "def": 1.0242,
+     "gp": 170
+    },
+    "DEN": {
+     "off": 1.0445,
+     "def": 1.02,
+     "gp": 182
+    },
+    "DET": {
+     "off": 1.0377,
+     "def": 0.9874,
+     "gp": 174
+    },
+    "GS": {
+     "off": 0.9592,
+     "def": 0.9694,
+     "gp": 182
+    },
+    "GUA": {
+     "off": 0.9324,
+     "def": 1.0968,
+     "gp": 3
+    },
+    "HOU": {
+     "off": 0.9954,
+     "def": 0.9437,
+     "gp": 175
+    },
+    "IND": {
+     "off": 0.9922,
+     "def": 1.0213,
+     "gp": 191
+    },
+    "LAC": {
+     "off": 0.9744,
+     "def": 0.9566,
+     "gp": 175
+    },
+    "LAL": {
+     "off": 1.0265,
+     "def": 0.9974,
+     "gp": 175
+    },
+    "MEL": {
+     "off": 0.9778,
+     "def": 1.0161,
+     "gp": 1
+    },
+    "MEM": {
+     "off": 1.0341,
+     "def": 1.044,
+     "gp": 175
+    },
+    "MIA": {
+     "off": 1.0204,
+     "def": 0.9929,
+     "gp": 175
+    },
+    "MIL": {
+     "off": 0.9988,
+     "def": 1.0213,
+     "gp": 174
+    },
+    "MIN": {
+     "off": 0.9812,
+     "def": 0.9558,
+     "gp": 184
+    },
+    "NO": {
+     "off": 0.9751,
+     "def": 1.0438,
+     "gp": 167
+    },
+    "NY": {
+     "off": 1.0103,
+     "def": 0.9706,
+     "gp": 187
+    },
+    "OKC": {
+     "off": 1.0483,
+     "def": 0.9398,
+     "gp": 194
+    },
+    "ORL": {
+     "off": 0.9719,
+     "def": 0.9759,
+     "gp": 173
+    },
+    "PHI": {
+     "off": 1.0052,
+     "def": 1.0178,
+     "gp": 167
+    },
+    "PHX": {
+     "off": 0.9961,
+     "def": 0.9941,
+     "gp": 168
+    },
+    "POR": {
+     "off": 0.9909,
+     "def": 0.9989,
+     "gp": 168
+    },
+    "SA": {
+     "off": 1.027,
+     "def": 0.9875,
+     "gp": 170
+    },
+    "SAC": {
+     "off": 0.9915,
+     "def": 1.0487,
+     "gp": 169
+    },
+    "STARS": {
+     "off": 0.929,
+     "def": 0.922,
+     "gp": 1
+    },
+    "TOR": {
+     "off": 0.9732,
+     "def": 0.9841,
+     "gp": 170
+    },
+    "UTAH": {
+     "off": 0.9781,
+     "def": 1.0569,
+     "gp": 168
+    },
+    "WORLD": {
+     "off": 0.922,
+     "def": 0.929,
+     "gp": 1
+    },
+    "WSH": {
+     "off": 0.9639,
+     "def": 1.0751,
+     "gp": 167
+    }
+   },
+   "backtest": {
+    "n": 2519,
+    "mae_total": 9.845,
+    "mae_total_naive": 9.801,
+    "brier_total": 0.2419,
+    "brier_total_naive": 0.2423,
+    "mae_margin": 9.178,
+    "mae_margin_naive": 9.129,
+    "brier_margin": 0.2352,
+    "brier_margin_naive": 0.2342,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding 1H/full share for totals, half the full-game margin for spreads)"
+   },
+   "n_history": 2619
+  },
+  "nfl-1h": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 12.074,
+    "LA1": 10.857,
+    "share": 0.5034
+   },
+   "sigma_total": 9.197,
+   "sigma_margin": 10.019,
+   "teams": {
+    "ARI": {
+     "off": 1.0073,
+     "def": 1.1818,
+     "gp": 34
+    },
+    "ATL": {
+     "off": 1.0922,
+     "def": 1.0073,
+     "gp": 34
+    },
+    "BAL": {
+     "off": 1.1037,
+     "def": 0.865,
+     "gp": 34
+    },
+    "BUF": {
+     "off": 1.1427,
+     "def": 1.0808,
+     "gp": 34
+    },
+    "CAR": {
+     "off": 0.826,
+     "def": 1.3332,
+     "gp": 34
+    },
+    "CHI": {
+     "off": 0.8443,
+     "def": 1.0762,
+     "gp": 34
+    },
+    "CIN": {
+     "off": 1.0808,
+     "def": 1.0854,
+     "gp": 34
+    },
+    "CLE": {
+     "off": 0.725,
+     "def": 1.0486,
+     "gp": 34
+    },
+    "DAL": {
+     "off": 1.1267,
+     "def": 1.2552,
+     "gp": 34
+    },
+    "DEN": {
+     "off": 1.0211,
+     "def": 0.8811,
+     "gp": 34
+    },
+    "DET": {
+     "off": 1.3815,
+     "def": 0.9339,
+     "gp": 34
+    },
+    "GB": {
+     "off": 1.0188,
+     "def": 0.8765,
+     "gp": 34
+    },
+    "HOU": {
+     "off": 1.0968,
+     "def": 0.7916,
+     "gp": 34
+    },
+    "IND": {
+     "off": 1.1106,
+     "def": 0.9798,
+     "gp": 34
+    },
+    "JAX": {
+     "off": 1.0211,
+     "def": 0.9614,
+     "gp": 34
+    },
+    "KC": {
+     "off": 0.9821,
+     "def": 0.8512,
+     "gp": 34
+    },
+    "LAC": {
+     "off": 1.0509,
+     "def": 0.8306,
+     "gp": 34
+    },
+    "LAR": {
+     "off": 1.0303,
+     "def": 0.9316,
+     "gp": 34
+    },
+    "LV": {
+     "off": 0.6768,
+     "def": 1.0716,
+     "gp": 34
+    },
+    "MIA": {
+     "off": 0.9201,
+     "def": 0.8994,
+     "gp": 34
+    },
+    "MIN": {
+     "off": 0.9775,
+     "def": 0.8007,
+     "gp": 34
+    },
+    "NE": {
+     "off": 1.106,
+     "def": 0.9683,
+     "gp": 34
+    },
+    "NO": {
+     "off": 0.9063,
+     "def": 1.1244,
+     "gp": 34
+    },
+    "NYG": {
+     "off": 0.8421,
+     "def": 1.1336,
+     "gp": 34
+    },
+    "NYJ": {
+     "off": 0.7571,
+     "def": 1.2368,
+     "gp": 34
+    },
+    "PHI": {
+     "off": 1.0739,
+     "def": 0.7893,
+     "gp": 34
+    },
+    "PIT": {
+     "off": 0.9408,
+     "def": 0.9063,
+     "gp": 34
+    },
+    "SEA": {
+     "off": 1.0945,
+     "def": 0.8352,
+     "gp": 34
+    },
+    "SF": {
+     "off": 1.106,
+     "def": 0.9155,
+     "gp": 34
+    },
+    "TB": {
+     "off": 1.1267,
+     "def": 1.1496,
+     "gp": 34
+    },
+    "TEN": {
+     "off": 0.7732,
+     "def": 1.2185,
+     "gp": 34
+    },
+    "WSH": {
+     "off": 1.0372,
+     "def": 0.9798,
+     "gp": 34
+    }
+   },
+   "backtest": {
+    "n": 512,
+    "mae_total": 7.461,
+    "mae_total_naive": 7.192,
+    "brier_total": 0.2497,
+    "brier_total_naive": 0.2467,
+    "mae_margin": 8.024,
+    "mae_margin_naive": 7.896,
+    "brier_margin": 0.2482,
+    "brier_margin_naive": 0.2448,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding 1H/full share for totals, half the full-game margin for spreads)"
+   },
+   "n_history": 544
+  },
+  "nhl-1p": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1P": 0.913,
+    "LA1P": 0.829,
+    "mean_total": 1.742
+   },
+   "teams": {
+    "ANA": {
+     "off": 0.8967,
+     "def": 1.138,
+     "gp": 172
+    },
+    "BOS": {
+     "off": 1.033,
+     "def": 0.9936,
+     "gp": 171
+    },
+    "BUF": {
+     "off": 1.2105,
+     "def": 1.0125,
+     "gp": 170
+    },
+    "CAN": {
+     "off": 1.5044,
+     "def": 0.787,
+     "gp": 4
+    },
+    "CAR": {
+     "off": 1.0907,
+     "def": 0.9645,
+     "gp": 187
+    },
+    "CBJ": {
+     "off": 1.0858,
+     "def": 0.9163,
+     "gp": 172
+    },
+    "CGY": {
+     "off": 0.7943,
+     "def": 0.9759,
+     "gp": 173
+    },
+    "CHI": {
+     "off": 0.9358,
+     "def": 1.0663,
+     "gp": 172
+    },
+    "COL": {
+     "off": 1.1446,
+     "def": 0.9302,
+     "gp": 178
+    },
+    "DAL": {
+     "off": 1.0193,
+     "def": 0.9057,
+     "gp": 188
+    },
+    "DET": {
+     "off": 0.9253,
+     "def": 0.9962,
+     "gp": 174
+    },
+    "EDM": {
+     "off": 1.0526,
+     "def": 1.1276,
+     "gp": 195
+    },
+    "FIN": {
+     "off": 1.0634,
+     "def": 1.3913,
+     "gp": 3
+    },
+    "FLA": {
+     "off": 1.1045,
+     "def": 0.9949,
+     "gp": 195
+    },
+    "LA": {
+     "off": 0.9617,
+     "def": 0.7536,
+     "gp": 178
+    },
+    "MIN": {
+     "off": 0.9988,
+     "def": 0.91,
+     "gp": 177
+    },
+    "MTL": {
+     "off": 0.9724,
+     "def": 1.0745,
+     "gp": 176
+    },
+    "NJ": {
+     "off": 0.8321,
+     "def": 0.9533,
+     "gp": 176
+    },
+    "NSH": {
+     "off": 0.9215,
+     "def": 1.0396,
+     "gp": 171
+    },
+    "NYI": {
+     "off": 0.8428,
+     "def": 0.9674,
+     "gp": 171
+    },
+    "NYR": {
+     "off": 1.033,
+     "def": 1.0986,
+     "gp": 171
+    },
+    "OTT": {
+     "off": 1.0122,
+     "def": 1.0059,
+     "gp": 178
+    },
+    "PHI": {
+     "off": 0.8953,
+     "def": 0.974,
+     "gp": 171
+    },
+    "PIT": {
+     "off": 1.1119,
+     "def": 1.0271,
+     "gp": 172
+    },
+    "SEA": {
+     "off": 0.8608,
+     "def": 1.1379,
+     "gp": 170
+    },
+    "SJ": {
+     "off": 0.9423,
+     "def": 1.275,
+     "gp": 172
+    },
+    "STL": {
+     "off": 1.0185,
+     "def": 1.0563,
+     "gp": 178
+    },
+    "SWE": {
+     "off": 1.0634,
+     "def": 1.3913,
+     "gp": 3
+    },
+    "TB": {
+     "off": 1.1636,
+     "def": 0.9544,
+     "gp": 177
+    },
+    "TOR": {
+     "off": 1.0287,
+     "def": 1.0165,
+     "gp": 184
+    },
+    "USA": {
+     "off": 1.0739,
+     "def": 1.2174,
+     "gp": 4
+    },
+    "UTA": {
+     "off": 1.0675,
+     "def": 0.8947,
+     "gp": 89
+    },
+    "UTAH": {
+     "off": 0.9432,
+     "def": 0.8244,
+     "gp": 83
+    },
+    "VAN": {
+     "off": 0.9871,
+     "def": 1.0396,
+     "gp": 171
+    },
+    "VGK": {
+     "off": 0.979,
+     "def": 1.0281,
+     "gp": 183
+    },
+    "WPG": {
+     "off": 0.9738,
+     "def": 0.8761,
+     "gp": 184
+    },
+    "WSH": {
+     "off": 1.0951,
+     "def": 0.9213,
+     "gp": 181
+    }
+   },
+   "backtest": {
+    "n": 2737,
+    "mae_model": 1.05,
+    "mae_naive": 1.048,
+    "brier_model": 0.2528,
+    "brier_naive": 0.2499,
+    "protocol": "walk-forward (rates from prior games only); Brier on over 1.5; naive = expanding league-mean 1P total (Poisson)"
+   },
+   "n_history": 2837,
+   "forms": {
+    "total": {
+     "status": "FAILED-EXAM",
+     "mae_model": 1.05,
+     "mae_naive": 1.048,
+     "brier_model": 0.2528,
+     "brier_naive": 0.2499,
+     "n": 2737,
+     "protocol": "walk-forward (rates from prior games only); Brier on over 1.5; naive = expanding league-mean 1P total (Poisson)",
+     "note": "the shipped R5 totals exam, verbatim"
+    },
+    "moneyline": {
+     "n": 2737,
+     "brier3_model": 0.6759,
+     "brier3_naive": 0.6659,
+     "mae_margin_model": 1.024,
+     "mae_margin_naive": 0.98,
+     "protocol": "walk-forward (period rates from prior games only); period result H/D/A off the independent-Poisson grid; naive = the same grid on expanding league-mean home/away period rates; margin MAE on lam_h - lam_a vs the league-mean margin",
+     "status": "FAILED-EXAM"
+    }
+   },
+   "period_forms_exam": "R7: moneyline form examined in exam_nhl_periods (same walk-forward pass as 2P/3P); the totals form is the shipped R5 exam"
+  },
+  "nba-1q": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 29.186,
+    "LA1": 28.543,
+    "share": 0.2525
+   },
+   "sigma_total": 8.39,
+   "sigma_margin": 8.448,
+   "teams": {
+    "ATL": {
+     "off": 1.0331,
+     "def": 1.0255,
+     "gp": 170
+    },
+    "BKN": {
+     "off": 0.9252,
+     "def": 1.0064,
+     "gp": 167
+    },
+    "BOS": {
+     "off": 1.0339,
+     "def": 0.9258,
+     "gp": 179
+    },
+    "CHA": {
+     "off": 0.9635,
+     "def": 1.0136,
+     "gp": 169
+    },
+    "CHI": {
+     "off": 0.9883,
+     "def": 1.0472,
+     "gp": 170
+    },
+    "CLE": {
+     "off": 1.0635,
+     "def": 0.9608,
+     "gp": 177
+    },
+    "DAL": {
+     "off": 0.997,
+     "def": 1.0402,
+     "gp": 170
+    },
+    "DEN": {
+     "off": 1.0655,
+     "def": 1.0201,
+     "gp": 182
+    },
+    "DET": {
+     "off": 1.0237,
+     "def": 0.9916,
+     "gp": 174
+    },
+    "GS": {
+     "off": 0.9504,
+     "def": 0.9698,
+     "gp": 182
+    },
+    "GUA": {
+     "off": 0.9278,
+     "def": 1.0515,
+     "gp": 3
+    },
+    "HOU": {
+     "off": 0.9872,
+     "def": 0.932,
+     "gp": 175
+    },
+    "IND": {
+     "off": 0.9877,
+     "def": 1.0154,
+     "gp": 191
+    },
+    "LAC": {
+     "off": 0.9831,
+     "def": 0.9684,
+     "gp": 175
+    },
+    "LAL": {
+     "off": 1.0458,
+     "def": 1.0003,
+     "gp": 175
+    },
+    "MEL": {
+     "off": 0.9663,
+     "def": 1.0425,
+     "gp": 1
+    },
+    "MEM": {
+     "off": 1.0452,
+     "def": 1.0443,
+     "gp": 175
+    },
+    "MIA": {
+     "off": 1.0299,
+     "def": 0.9858,
+     "gp": 175
+    },
+    "MIL": {
+     "off": 0.9954,
+     "def": 1.017,
+     "gp": 174
+    },
+    "MIN": {
+     "off": 0.9781,
+     "def": 0.9554,
+     "gp": 184
+    },
+    "NO": {
+     "off": 0.9626,
+     "def": 1.0526,
+     "gp": 167
+    },
+    "NY": {
+     "off": 0.997,
+     "def": 0.9763,
+     "gp": 187
+    },
+    "OKC": {
+     "off": 1.0557,
+     "def": 0.9204,
+     "gp": 194
+    },
+    "ORL": {
+     "off": 0.9731,
+     "def": 0.976,
+     "gp": 173
+    },
+    "PHI": {
+     "off": 1.0024,
+     "def": 1.0234,
+     "gp": 167
+    },
+    "PHX": {
+     "off": 1.0008,
+     "def": 0.9853,
+     "gp": 168
+    },
+    "POR": {
+     "off": 0.9774,
+     "def": 1.0217,
+     "gp": 168
+    },
+    "SA": {
+     "off": 1.0329,
+     "def": 0.9839,
+     "gp": 170
+    },
+    "SAC": {
+     "off": 0.986,
+     "def": 1.041,
+     "gp": 169
+    },
+    "STARS": {
+     "off": 1.0217,
+     "def": 1.0217,
+     "gp": 1
+    },
+    "TOR": {
+     "off": 0.9678,
+     "def": 0.9777,
+     "gp": 170
+    },
+    "UTAH": {
+     "off": 0.981,
+     "def": 1.0636,
+     "gp": 168
+    },
+    "WORLD": {
+     "off": 1.0217,
+     "def": 1.0217,
+     "gp": 1
+    },
+    "WSH": {
+     "off": 0.9539,
+     "def": 1.0812,
+     "gp": 167
+    }
+   },
+   "backtest": {
+    "n": 2519,
+    "mae_total": 6.7,
+    "mae_total_naive": 6.634,
+    "brier_total": 0.245,
+    "brier_total_naive": 0.2471,
+    "mae_margin": 6.771,
+    "mae_margin_naive": 6.697,
+    "brier_margin": 0.2436,
+    "brier_margin_naive": 0.2408,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding segment/full share for totals, the segment share of the full-game margin for spreads, sigma scaled by sqrt(share))"
+   },
+   "n_history": 2619,
+   "form": "1st quarter"
+  },
+  "nfl-1q": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 4.66,
+    "LA1": 4.27,
+    "share": 0.1968
+   },
+   "sigma_total": 5.805,
+   "sigma_margin": 6.769,
+   "teams": {
+    "ARI": {
+     "off": 1.0659,
+     "def": 1.1367,
+     "gp": 34
+    },
+    "ATL": {
+     "off": 1.0483,
+     "def": 0.9009,
+     "gp": 34
+    },
+    "BAL": {
+     "off": 1.0365,
+     "def": 0.73,
+     "gp": 34
+    },
+    "BUF": {
+     "off": 1.1602,
+     "def": 1.0483,
+     "gp": 34
+    },
+    "CAR": {
+     "off": 0.8361,
+     "def": 1.1072,
+     "gp": 34
+    },
+    "CHI": {
+     "off": 0.8656,
+     "def": 1.007,
+     "gp": 34
+    },
+    "CIN": {
+     "off": 1.1426,
+     "def": 0.9422,
+     "gp": 34
+    },
+    "CLE": {
+     "off": 0.842,
+     "def": 1.1131,
+     "gp": 34
+    },
+    "DAL": {
+     "off": 0.9422,
+     "def": 1.4667,
+     "gp": 34
+    },
+    "DEN": {
+     "off": 0.895,
+     "def": 0.8832,
+     "gp": 34
+    },
+    "DET": {
+     "off": 1.0895,
+     "def": 1.0836,
+     "gp": 34
+    },
+    "GB": {
+     "off": 1.0424,
+     "def": 0.5001,
+     "gp": 34
+    },
+    "HOU": {
+     "off": 1.1426,
+     "def": 0.895,
+     "gp": 34
+    },
+    "IND": {
+     "off": 1.2074,
+     "def": 0.9481,
+     "gp": 34
+    },
+    "JAX": {
+     "off": 0.9893,
+     "def": 0.9657,
+     "gp": 34
+    },
+    "KC": {
+     "off": 0.8302,
+     "def": 0.8302,
+     "gp": 34
+    },
+    "LAC": {
+     "off": 1.1013,
+     "def": 0.895,
+     "gp": 34
+    },
+    "LAR": {
+     "off": 0.9481,
+     "def": 1.0659,
+     "gp": 34
+    },
+    "LV": {
+     "off": 0.6946,
+     "def": 1.1249,
+     "gp": 34
+    },
+    "MIA": {
+     "off": 0.9716,
+     "def": 0.9304,
+     "gp": 34
+    },
+    "MIN": {
+     "off": 1.2251,
+     "def": 0.7654,
+     "gp": 34
+    },
+    "NE": {
+     "off": 1.1661,
+     "def": 0.9775,
+     "gp": 34
+    },
+    "NO": {
+     "off": 0.6828,
+     "def": 1.1956,
+     "gp": 34
+    },
+    "NYG": {
+     "off": 0.8125,
+     "def": 1.1013,
+     "gp": 34
+    },
+    "NYJ": {
+     "off": 0.8656,
+     "def": 1.2545,
+     "gp": 34
+    },
+    "PHI": {
+     "off": 1.0777,
+     "def": 0.9245,
+     "gp": 34
+    },
+    "PIT": {
+     "off": 0.783,
+     "def": 1.1661,
+     "gp": 34
+    },
+    "SEA": {
+     "off": 1.1249,
+     "def": 0.8891,
+     "gp": 34
+    },
+    "SF": {
+     "off": 1.172,
+     "def": 0.8007,
+     "gp": 34
+    },
+    "TB": {
+     "off": 1.2192,
+     "def": 1.0483,
+     "gp": 34
+    },
+    "TEN": {
+     "off": 1.0541,
+     "def": 1.2074,
+     "gp": 34
+    },
+    "WSH": {
+     "off": 0.9657,
+     "def": 1.0954,
+     "gp": 34
+    }
+   },
+   "backtest": {
+    "n": 512,
+    "mae_total": 4.644,
+    "mae_total_naive": 4.552,
+    "brier_total": 0.2303,
+    "brier_total_naive": 0.2374,
+    "mae_margin": 5.364,
+    "mae_margin_naive": 5.138,
+    "brier_margin": 0.255,
+    "brier_margin_naive": 0.2457,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding segment/full share for totals, the segment share of the full-game margin for spreads, sigma scaled by sqrt(share))"
+   },
+   "n_history": 544,
+   "form": "1st quarter"
+  },
+  "ncaaf-1h": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 16.496,
+    "LA1": 11.253,
+    "share": 0.5175
+   },
+   "sigma_total": 11.218,
+   "sigma_margin": 13.26,
+   "teams": {
+    "AAMU": {
+     "off": 0.7868,
+     "def": 1.6637,
+     "gp": 2
+    },
+    "ACU": {
+     "off": 0.8424,
+     "def": 1.3108,
+     "gp": 4
+    },
+    "AFA": {
+     "off": 0.8048,
+     "def": 0.8849,
+     "gp": 23
+    },
+    "AKR": {
+     "off": 0.8945,
+     "def": 1.0644,
+     "gp": 24
+    },
+    "ALA": {
+     "off": 1.2264,
+     "def": 0.6754,
+     "gp": 27
+    },
+    "ALB": {
+     "off": 0.8597,
+     "def": 1.251,
+     "gp": 3
+    },
+    "ALCN": {
+     "off": 0.6023,
+     "def": 1.5702,
+     "gp": 3
+    },
+    "ALST": {
+     "off": 1.1027,
+     "def": 1.0451,
+     "gp": 1
+    },
+    "APP": {
+     "off": 0.9305,
+     "def": 1.2265,
+     "gp": 24
+    },
+    "APSU": {
+     "off": 0.8185,
+     "def": 1.1789,
+     "gp": 3
+    },
+    "ARIZ": {
+     "off": 0.9099,
+     "def": 1.0772,
+     "gp": 24
+    },
+    "ARK": {
+     "off": 1.2911,
+     "def": 1.0277,
+     "gp": 25
+    },
+    "ARMY": {
+     "off": 1.0511,
+     "def": 0.6571,
+     "gp": 26
+    },
+    "ARST": {
+     "off": 0.9755,
+     "def": 1.0948,
+     "gp": 25
+    },
+    "ASU": {
+     "off": 1.1148,
+     "def": 0.8358,
+     "gp": 27
+    },
+    "AUB": {
+     "off": 0.9863,
+     "def": 0.7141,
+     "gp": 23
+    },
+    "BALL": {
+     "off": 0.7478,
+     "def": 1.242,
+     "gp": 24
+    },
+    "BAY": {
+     "off": 1.2141,
+     "def": 1.1867,
+     "gp": 25
+    },
+    "BC": {
+     "off": 1.0103,
+     "def": 1.0283,
+     "gp": 24
+    },
+    "BCU": {
+     "off": 0.7342,
+     "def": 1.5991,
+     "gp": 4
+    },
+    "BGSU": {
+     "off": 0.9382,
+     "def": 0.9125,
+     "gp": 24
+    },
+    "BOIS": {
+     "off": 1.3097,
+     "def": 0.8818,
+     "gp": 28
+    },
+    "BRY": {
+     "off": 0.8082,
+     "def": 1.2201,
+     "gp": 3
+    },
+    "BUCK": {
+     "off": 0.8348,
+     "def": 1.3394,
+     "gp": 2
+    },
+    "BUFF": {
+     "off": 0.881,
+     "def": 0.7965,
+     "gp": 25
+    },
+    "BYU": {
+     "off": 1.1688,
+     "def": 0.8108,
+     "gp": 26
+    },
+    "CAL": {
+     "off": 0.9655,
+     "def": 0.8736,
+     "gp": 25
+    },
+    "CAM": {
+     "off": 0.8243,
+     "def": 1.6532,
+     "gp": 4
+    },
+    "CARK": {
+     "off": 0.6332,
+     "def": 1.2613,
+     "gp": 3
+    },
+    "CCSU": {
+     "off": 0.9627,
+     "def": 1.5805,
+     "gp": 3
+    },
+    "CCU": {
+     "off": 0.8661,
+     "def": 1.234,
+     "gp": 25
+    },
+    "CHSO": {
+     "off": 0.5714,
+     "def": 1.0657,
+     "gp": 3
+    },
+    "CIN": {
+     "off": 1.2066,
+     "def": 0.9084,
+     "gp": 25
+    },
+    "CIT": {
+     "off": 0.6667,
+     "def": 1.2913,
+     "gp": 2
+    },
+    "CLEM": {
+     "off": 1.2985,
+     "def": 0.8108,
+     "gp": 26
+    },
+    "CLT": {
+     "off": 0.618,
+     "def": 1.2266,
+     "gp": 23
+    },
+    "CMU": {
+     "off": 0.9581,
+     "def": 0.9954,
+     "gp": 25
+    },
+    "COLG": {
+     "off": 0.9069,
+     "def": 1.4595,
+     "gp": 2
+    },
+    "COLO": {
+     "off": 0.9614,
+     "def": 1.0772,
+     "gp": 24
+    },
+    "CONN": {
+     "off": 1.1917,
+     "def": 0.8711,
+     "gp": 25
+    },
+    "CP": {
+     "off": 1.0225,
+     "def": 1.2478,
+     "gp": 4
+    },
+    "CSU": {
+     "off": 0.7581,
+     "def": 0.9949,
+     "gp": 24
+    },
+    "DEL": {
+     "off": 1.2293,
+     "def": 1.0691,
+     "gp": 23
+    },
+    "DSU": {
+     "off": 0.7868,
+     "def": 1.003,
+     "gp": 2
+    },
+    "DUKE": {
+     "off": 1.0703,
+     "def": 0.9814,
+     "gp": 26
+    },
+    "DUQ": {
+     "off": 0.6441,
+     "def": 1.7793,
+     "gp": 4
+    },
+    "ECU": {
+     "off": 1.0699,
+     "def": 0.8984,
+     "gp": 25
+    },
+    "EIU": {
+     "off": 0.6435,
+     "def": 1.3231,
+     "gp": 3
+    },
+    "EKU": {
+     "off": 0.6261,
+     "def": 1.6171,
+     "gp": 4
+    },
+    "ELON": {
+     "off": 0.7868,
+     "def": 0.9069,
+     "gp": 2
+    },
+    "EMU": {
+     "off": 0.8529,
+     "def": 1.0317,
+     "gp": 23
+    },
+    "ETAM": {
+     "off": 0.5811,
+     "def": 1.3379,
+     "gp": 4
+    },
+    "ETSU": {
+     "off": 0.9318,
+     "def": 1.4157,
+     "gp": 3
+    },
+    "EWU": {
+     "off": 0.8333,
+     "def": 1.4009,
+     "gp": 4
+    },
+    "FAMU": {
+     "off": 0.7259,
+     "def": 1.3745,
+     "gp": 3
+    },
+    "FAU": {
+     "off": 1.1065,
+     "def": 1.1839,
+     "gp": 23
+    },
+    "FIU": {
+     "off": 1.0206,
+     "def": 1.1107,
+     "gp": 24
+    },
+    "FLA": {
+     "off": 0.9588,
+     "def": 0.8662,
+     "gp": 24
+    },
+    "FOR": {
+     "off": 0.7387,
+     "def": 1.2433,
+     "gp": 2
+    },
+    "FRES": {
+     "off": 1.0847,
+     "def": 0.8036,
+     "gp": 26
+    },
+    "FSU": {
+     "off": 0.9196,
+     "def": 0.8796,
+     "gp": 23
+    },
+    "FUR": {
+     "off": 0.7027,
+     "def": 1.6637,
+     "gp": 2
+    },
+    "GASO": {
+     "off": 1.0415,
+     "def": 1.1304,
+     "gp": 26
+    },
+    "GAST": {
+     "off": 0.8315,
+     "def": 1.1652,
+     "gp": 23
+    },
+    "GRAM": {
+     "off": 0.6667,
+     "def": 1.4475,
+     "gp": 2
+    },
+    "GT": {
+     "off": 1.0607,
+     "def": 0.8252,
+     "gp": 26
+    },
+    "GWEB": {
+     "off": 0.9234,
+     "def": 1.0586,
+     "gp": 4
+    },
+    "HAW": {
+     "off": 0.9048,
+     "def": 0.9151,
+     "gp": 24
+    },
+    "HC": {
+     "off": 0.8709,
+     "def": 1.0751,
+     "gp": 2
+    },
+    "HCU": {
+     "off": 0.7156,
+     "def": 1.7143,
+     "gp": 3
+    },
+    "HOU": {
+     "off": 0.8835,
+     "def": 0.9382,
+     "gp": 25
+    },
+    "HOW": {
+     "off": 0.8348,
+     "def": 1.2433,
+     "gp": 2
+    },
+    "IDHO": {
+     "off": 0.7167,
+     "def": 0.8529,
+     "gp": 5
+    },
+    "IDST": {
+     "off": 1.0135,
+     "def": 1.0946,
+     "gp": 4
+    },
+    "ILL": {
+     "off": 1.015,
+     "def": 0.8276,
+     "gp": 26
+    },
+    "ILST": {
+     "off": 0.6162,
+     "def": 1.1279,
+     "gp": 6
+    },
+    "INST": {
+     "off": 0.6982,
+     "def": 1.3379,
+     "gp": 4
+    },
+    "IOWA": {
+     "off": 0.9929,
+     "def": 0.6648,
+     "gp": 25
+    },
+    "ISU": {
+     "off": 1.1022,
+     "def": 0.9183,
+     "gp": 25
+    },
+    "IU": {
+     "off": 1.4539,
+     "def": 0.5574,
+     "gp": 28
+    },
+    "JKST": {
+     "off": 0.8709,
+     "def": 1.039,
+     "gp": 2
+    },
+    "JMU": {
+     "off": 1.212,
+     "def": 0.9189,
+     "gp": 26
+    },
+    "JVST": {
+     "off": 1.1381,
+     "def": 1.0148,
+     "gp": 27
+    },
+    "KENN": {
+     "off": 0.7667,
+     "def": 1.0003,
+     "gp": 25
+    },
+    "KENT": {
+     "off": 0.601,
+     "def": 1.5689,
+     "gp": 24
+    },
+    "KSU": {
+     "off": 1.0078,
+     "def": 0.9307,
+     "gp": 25
+    },
+    "KU": {
+     "off": 1.1732,
+     "def": 0.9944,
+     "gp": 23
+    },
+    "LAF": {
+     "off": 0.7053,
+     "def": 1.0142,
+     "gp": 3
+    },
+    "LAM": {
+     "off": 0.6667,
+     "def": 1.3273,
+     "gp": 2
+    },
+    "LEH": {
+     "off": 0.9009,
+     "def": 1.1027,
+     "gp": 1
+    },
+    "LIB": {
+     "off": 0.9276,
+     "def": 0.8315,
+     "gp": 23
+    },
+    "LIN": {
+     "off": 0.6171,
+     "def": 1.2748,
+     "gp": 4
+    },
+    "LIU": {
+     "off": 0.7156,
+     "def": 1.3848,
+     "gp": 3
+    },
+    "LOU": {
+     "off": 1.2066,
+     "def": 0.8736,
+     "gp": 25
+    },
+    "LSU": {
+     "off": 1.0923,
+     "def": 0.8512,
+     "gp": 25
+    },
+    "LT": {
+     "off": 0.8388,
+     "def": 0.7717,
+     "gp": 25
+    },
+    "M-OH": {
+     "off": 0.83,
+     "def": 0.7196,
+     "gp": 28
+    },
+    "MASS": {
+     "off": 0.8198,
+     "def": 1.2857,
+     "gp": 24
+    },
+    "MCN": {
+     "off": 0.7156,
+     "def": 1.4878,
+     "gp": 3
+    },
+    "MD": {
+     "off": 0.9009,
+     "def": 0.989,
+     "gp": 23
+    },
+    "ME": {
+     "off": 0.8784,
+     "def": 1.1487,
+     "gp": 4
+    },
+    "MEM": {
+     "off": 1.3202,
+     "def": 0.9958,
+     "gp": 26
+    },
+    "MER": {
+     "off": 0.8906,
+     "def": 1.4981,
+     "gp": 3
+    },
+    "MERC": {
+     "off": 1.0595,
+     "def": 1.1027,
+     "gp": 1
+    },
+    "MIA": {
+     "off": 1.2174,
+     "def": 0.7354,
+     "gp": 28
+    },
+    "MICH": {
+     "off": 0.9237,
+     "def": 0.7988,
+     "gp": 26
+    },
+    "MINN": {
+     "off": 0.9862,
+     "def": 0.8012,
+     "gp": 26
+    },
+    "MISS": {
+     "off": 1.431,
+     "def": 0.7916,
+     "gp": 27
+    },
+    "MIZ": {
+     "off": 1.0326,
+     "def": 0.7916,
+     "gp": 25
+    },
+    "MONM": {
+     "off": 1.0759,
+     "def": 1.0759,
+     "gp": 3
+    },
+    "MONT": {
+     "off": 1.1472,
+     "def": 1.039,
+     "gp": 2
+    },
+    "MORG": {
+     "off": 0.7053,
+     "def": 1.3642,
+     "gp": 3
+    },
+    "MOST": {
+     "off": 1.0978,
+     "def": 1.0232,
+     "gp": 24
+    },
+    "MRMK": {
+     "off": 0.5901,
+     "def": 1.2568,
+     "gp": 4
+    },
+    "MRSH": {
+     "off": 1.1648,
+     "def": 0.8482,
+     "gp": 24
+    },
+    "MSST": {
+     "off": 0.982,
+     "def": 1.1776,
+     "gp": 24
+    },
+    "MSU": {
+     "off": 0.861,
+     "def": 0.9331,
+     "gp": 24
+    },
+    "MTST": {
+     "off": 0.9324,
+     "def": 1.2478,
+     "gp": 4
+    },
+    "MTSU": {
+     "off": 0.7354,
+     "def": 1.2399,
+     "gp": 23
+    },
+    "MUR": {
+     "off": 0.6162,
+     "def": 1.6685,
+     "gp": 6
+    },
+    "NAU": {
+     "off": 0.8391,
+     "def": 0.9009,
+     "gp": 3
+    },
+    "NAVY": {
+     "off": 1.1718,
+     "def": 0.8438,
+     "gp": 25
+    },
+    "NCAT": {
+     "off": 0.8082,
+     "def": 1.3745,
+     "gp": 3
+    },
+    "NCCU": {
+     "off": 0.8228,
+     "def": 1.0631,
+     "gp": 2
+    },
+    "NCSU": {
+     "off": 1.0535,
+     "def": 1.1087,
+     "gp": 26
+    },
+    "ND": {
+     "off": 1.4147,
+     "def": 0.6777,
+     "gp": 27
+    },
+    "NDSU": {
+     "off": 1.6521,
+     "def": 0.6453,
+     "gp": 28
+    },
+    "NEB": {
+     "off": 1.1072,
+     "def": 0.722,
+     "gp": 25
+    },
+    "NEV": {
+     "off": 0.7581,
+     "def": 1.0489,
+     "gp": 24
+    },
+    "NICH": {
+     "off": 0.7968,
+     "def": 1.2212,
+     "gp": 5
+    },
+    "NIU": {
+     "off": 0.886,
+     "def": 0.8462,
+     "gp": 25
+    },
+    "NMSU": {
+     "off": 0.7061,
+     "def": 1.1065,
+     "gp": 23
+    },
+    "NORF": {
+     "off": 0.7387,
+     "def": 1.3153,
+     "gp": 2
+    },
+    "NU": {
+     "off": 0.7816,
+     "def": 0.8264,
+     "gp": 25
+    },
+    "NWST": {
+     "off": 0.7162,
+     "def": 2.3739,
+     "gp": 4
+    },
+    "ODU": {
+     "off": 1.1718,
+     "def": 0.7518,
+     "gp": 25
+    },
+    "OHIO": {
+     "off": 1.0451,
+     "def": 0.6963,
+     "gp": 27
+    },
+    "OKST": {
+     "off": 0.7709,
+     "def": 1.2497,
+     "gp": 24
+    },
+    "ORE": {
+     "off": 1.4629,
+     "def": 0.7331,
+     "gp": 28
+    },
+    "ORST": {
+     "off": 0.7007,
+     "def": 1.1225,
+     "gp": 23
+    },
+    "OSU": {
+     "off": 1.2591,
+     "def": 0.5056,
+     "gp": 29
+    },
+    "OU": {
+     "off": 1.0391,
+     "def": 0.7267,
+     "gp": 26
+    },
+    "PENN": {
+     "off": 1.0306,
+     "def": 0.8865,
+     "gp": 1
+    },
+    "PITT": {
+     "off": 1.2144,
+     "def": 1.0054,
+     "gp": 26
+    },
+    "PRST": {
+     "off": 0.7728,
+     "def": 1.7338,
+     "gp": 5
+    },
+    "PSU": {
+     "off": 1.1701,
+     "def": 0.7196,
+     "gp": 28
+    },
+    "PUR": {
+     "off": 0.6153,
+     "def": 1.3013,
+     "gp": 23
+    },
+    "PV": {
+     "off": 0.7508,
+     "def": 1.2793,
+     "gp": 2
+    },
+    "RICE": {
+     "off": 0.825,
+     "def": 1.085,
+     "gp": 24
+    },
+    "RICH": {
+     "off": 0.9627,
+     "def": 1.148,
+     "gp": 3
+    },
+    "RMU": {
+     "off": 0.8709,
+     "def": 0.9069,
+     "gp": 2
+    },
+    "RUTG": {
+     "off": 1.0721,
+     "def": 1.0052,
+     "gp": 24
+    },
+    "SAC": {
+     "off": 1.2373,
+     "def": 1.1412,
+     "gp": 23
+    },
+    "SAM": {
+     "off": 0.6435,
+     "def": 1.3951,
+     "gp": 3
+    },
+    "SC": {
+     "off": 1.0799,
+     "def": 0.7543,
+     "gp": 25
+    },
+    "SCST": {
+     "off": 0.7465,
+     "def": 1.1789,
+     "gp": 3
+    },
+    "SDAK": {
+     "off": 0.7433,
+     "def": 1.3289,
+     "gp": 4
+    },
+    "SDST": {
+     "off": 0.955,
+     "def": 0.9838,
+     "gp": 6
+    },
+    "SDSU": {
+     "off": 0.9949,
+     "def": 0.8276,
+     "gp": 24
+    },
+    "SELA": {
+     "off": 0.5901,
+     "def": 1.1577,
+     "gp": 4
+    },
+    "SEMO": {
+     "off": 0.9215,
+     "def": 1.2819,
+     "gp": 3
+    },
+    "SFA": {
+     "off": 0.8709,
+     "def": 1.1231,
+     "gp": 2
+    },
+    "SFPA": {
+     "off": 0.6802,
+     "def": 1.0496,
+     "gp": 4
+    },
+    "SHSU": {
+     "off": 0.7787,
+     "def": 1.018,
+     "gp": 24
+    },
+    "SHU": {
+     "off": 0.8,
+     "def": 1.3045,
+     "gp": 1
+    },
+    "SIU": {
+     "off": 0.7648,
+     "def": 1.2132,
+     "gp": 5
+    },
+    "SJSU": {
+     "off": 0.9975,
+     "def": 1.0824,
+     "gp": 24
+    },
+    "SMU": {
+     "off": 1.2673,
+     "def": 0.77,
+     "gp": 26
+    },
+    "SOU": {
+     "off": 0.9009,
+     "def": 1.3045,
+     "gp": 1
+    },
+    "STAN": {
+     "off": 0.8182,
+     "def": 1.2319,
+     "gp": 23
+    },
+    "STBK": {
+     "off": 0.6667,
+     "def": 1.1111,
+     "gp": 2
+    },
+    "STMN": {
+     "off": 0.8,
+     "def": 1.4487,
+     "gp": 1
+    },
+    "SUU": {
+     "off": 0.7387,
+     "def": 1.2913,
+     "gp": 2
+    },
+    "SYR": {
+     "off": 0.9949,
+     "def": 1.1931,
+     "gp": 24
+    },
+    "TA&M": {
+     "off": 1.1321,
+     "def": 0.7667,
+     "gp": 25
+    },
+    "TAR": {
+     "off": 0.7868,
+     "def": 1.2072,
+     "gp": 2
+    },
+    "TCU": {
+     "off": 1.2638,
+     "def": 0.8736,
+     "gp": 25
+    },
+    "TEM": {
+     "off": 0.8716,
+     "def": 1.296,
+     "gp": 23
+    },
+    "TENN": {
+     "off": 1.4859,
+     "def": 0.7676,
+     "gp": 26
+    },
+    "TEX": {
+     "off": 1.1827,
+     "def": 0.6214,
+     "gp": 29
+    },
+    "TLSA": {
+     "off": 0.8636,
+     "def": 1.344,
+     "gp": 23
+    },
+    "TNST": {
+     "off": 0.6667,
+     "def": 1.6277,
+     "gp": 2
+    },
+    "TNTC": {
+     "off": 0.695,
+     "def": 1.3231,
+     "gp": 3
+    },
+    "TOL": {
+     "off": 1.1568,
+     "def": 0.5802,
+     "gp": 26
+    },
+    "TOW": {
+     "off": 0.7774,
+     "def": 1.4569,
+     "gp": 3
+    },
+    "TROY": {
+     "off": 0.8301,
+     "def": 0.979,
+     "gp": 26
+    },
+    "TTU": {
+     "off": 1.5436,
+     "def": 0.7484,
+     "gp": 26
+    },
+    "TULN": {
+     "off": 1.2241,
+     "def": 0.7624,
+     "gp": 28
+    },
+    "TXSO": {
+     "off": 0.6667,
+     "def": 1.2553,
+     "gp": 2
+    },
+    "TXST": {
+     "off": 1.3557,
+     "def": 0.9109,
+     "gp": 25
+    },
+    "UAB": {
+     "off": 1.0371,
+     "def": 1.336,
+     "gp": 23
+    },
+    "UAPB": {
+     "off": 0.6667,
+     "def": 1.8199,
+     "gp": 2
+    },
+    "UCD": {
+     "off": 1.0496,
+     "def": 1.2568,
+     "gp": 4
+    },
+    "UCF": {
+     "off": 0.9769,
+     "def": 1.0567,
+     "gp": 24
+    },
+    "UCLA": {
+     "off": 0.7034,
+     "def": 1.0371,
+     "gp": 23
+    },
+    "UGA": {
+     "off": 1.0148,
+     "def": 0.7382,
+     "gp": 27
+    },
+    "UIW": {
+     "off": 0.8,
+     "def": 1.146,
+     "gp": 1
+    },
+    "UK": {
+     "off": 0.8342,
+     "def": 0.9543,
+     "gp": 23
+    },
+    "UL": {
+     "off": 1.1087,
+     "def": 1.0559,
+     "gp": 26
+    },
+    "ULM": {
+     "off": 0.6989,
+     "def": 1.0515,
+     "gp": 24
+    },
+    "UNA": {
+     "off": 0.7387,
+     "def": 1.5436,
+     "gp": 2
+    },
+    "UNC": {
+     "off": 0.8739,
+     "def": 1.0721,
+     "gp": 24
+    },
+    "UNCO": {
+     "off": 0.9627,
+     "def": 0.9936,
+     "gp": 3
+    },
+    "UND": {
+     "off": 0.9215,
+     "def": 1.1377,
+     "gp": 3
+    },
+    "UNH": {
+     "off": 0.955,
+     "def": 1.3514,
+     "gp": 2
+    },
+    "UNI": {
+     "off": 0.7099,
+     "def": 1.409,
+     "gp": 6
+    },
+    "UNLV": {
+     "off": 1.2845,
+     "def": 0.9474,
+     "gp": 27
+    },
+    "UNM": {
+     "off": 1.1495,
+     "def": 1.1445,
+     "gp": 25
+    },
+    "UNT": {
+     "off": 1.438,
+     "def": 1.159,
+     "gp": 27
+    },
+    "URI": {
+     "off": 0.7877,
+     "def": 1.2407,
+     "gp": 3
+    },
+    "USA": {
+     "off": 1.0973,
+     "def": 1.0028,
+     "gp": 25
+    },
+    "USC": {
+     "off": 1.0991,
+     "def": 0.8781,
+     "gp": 26
+    },
+    "USF": {
+     "off": 1.188,
+     "def": 0.9886,
+     "gp": 26
+    },
+    "USM": {
+     "off": 0.8533,
+     "def": 1.1725,
+     "gp": 24
+    },
+    "USU": {
+     "off": 1.0283,
+     "def": 1.278,
+     "gp": 24
+    },
+    "UTAH": {
+     "off": 1.2066,
+     "def": 0.7021,
+     "gp": 25
+    },
+    "UTC": {
+     "off": 0.6744,
+     "def": 1.426,
+     "gp": 3
+    },
+    "UTEP": {
+     "off": 0.7514,
+     "def": 1.1759,
+     "gp": 23
+    },
+    "UTM": {
+     "off": 0.6451,
+     "def": 1.2433,
+     "gp": 6
+    },
+    "UTSA": {
+     "off": 1.3202,
+     "def": 0.9766,
+     "gp": 26
+    },
+    "UTU": {
+     "off": 0.9009,
+     "def": 1.4343,
+     "gp": 1
+    },
+    "UVA": {
+     "off": 1.0202,
+     "def": 0.9133,
+     "gp": 25
+    },
+    "VAN": {
+     "off": 1.1072,
+     "def": 0.8462,
+     "gp": 25
+    },
+    "VILL": {
+     "off": 0.7877,
+     "def": 1.251,
+     "gp": 3
+    },
+    "VMI": {
+     "off": 0.6667,
+     "def": 1.4595,
+     "gp": 2
+    },
+    "VT": {
+     "off": 0.886,
+     "def": 0.8711,
+     "gp": 25
+    },
+    "W&M": {
+     "off": 0.8348,
+     "def": 1.4955,
+     "gp": 2
+    },
+    "WAG": {
+     "off": 0.6802,
+     "def": 1.4189,
+     "gp": 4
+    },
+    "WAKE": {
+     "off": 1.1159,
+     "def": 0.9305,
+     "gp": 24
+    },
+    "WASH": {
+     "off": 1.0525,
+     "def": 0.8512,
+     "gp": 25
+    },
+    "WCU": {
+     "off": 0.8709,
+     "def": 1.0871,
+     "gp": 2
+    },
+    "WEB": {
+     "off": 0.7728,
+     "def": 1.5496,
+     "gp": 5
+    },
+    "WIS": {
+     "off": 0.6313,
+     "def": 0.8075,
+     "gp": 23
+    },
+    "WIU": {
+     "off": 0.5541,
+     "def": 1.6622,
+     "gp": 4
+    },
+    "WKU": {
+     "off": 1.0311,
+     "def": 0.9242,
+     "gp": 27
+    },
+    "WMU": {
+     "off": 1.0288,
+     "def": 0.8544,
+     "gp": 27
+    },
+    "WOF": {
+     "off": 0.8108,
+     "def": 1.1712,
+     "gp": 2
+    },
+    "WSU": {
+     "off": 1.2168,
+     "def": 0.8421,
+     "gp": 26
+    },
+    "WVU": {
+     "off": 0.9177,
+     "def": 1.2214,
+     "gp": 24
+    },
+    "WYO": {
+     "off": 0.668,
+     "def": 1.0901,
+     "gp": 24
+    },
+    "YSU": {
+     "off": 0.9865,
+     "def": 1.5,
+     "gp": 4
+    }
+   },
+   "backtest": {
+    "n": 1778,
+    "mae_total": 8.953,
+    "mae_total_naive": 8.758,
+    "brier_total": 0.2428,
+    "brier_total_naive": 0.2422,
+    "mae_margin": 10.724,
+    "mae_margin_naive": 10.396,
+    "brier_margin": 0.2245,
+    "brier_margin_naive": 0.216,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding segment/full share for totals, half the full-game margin for spreads)"
+   },
+   "n_history": 1878,
+   "coverage": {
+    "days": 302,
+    "events": 1878,
+    "games_with_linescores": 1878
+   },
+   "team_names": {
+    "GT": "Georgia Tech Yellow Jackets",
+    "FSU": "Florida State Seminoles",
+    "UNM": "New Mexico Lobos",
+    "MTST": "Montana State Bobcats",
+    "NEV": "Nevada Wolf Pack",
+    "SMU": "SMU Mustangs",
+    "HAW": "Hawai'i Rainbow Warriors",
+    "DSU": "Delaware State Hornets",
+    "MIZ": "Missouri Tigers",
+    "MUR": "Murray State Racers",
+    "UTAH": "Utah Utes",
+    "SUU": "Southern Utah Thunderbirds",
+    "KU": "Kansas Jayhawks",
+    "LIN": "Lindenwood Lions",
+    "NCSU": "NC State Wolfpack",
+    "WCU": "Western Carolina Catamounts",
+    "RUTG": "Rutgers Scarlet Knights",
+    "HOW": "Howard Bison",
+    "DEL": "Delaware Blue Hens",
+    "BRY": "Bryant Bulldogs",
+    "WAKE": "Wake Forest Demon Deacons",
+    "NCAT": "North Carolina A&T Aggies",
+    "UCF": "UCF Knights",
+    "UNH": "New Hampshire Wildcats",
+    "BUFF": "Buffalo Bulls",
+    "LAF": "Lafayette Leopards",
+    "BGSU": "Bowling Green Falcons",
+    "FOR": "Fordham Rams",
+    "CMU": "Central Michigan Chippewas",
+    "CCSU": "Central Connecticut Blue Devils",
+    "ARK": "Arkansas Razorbacks",
+    "UAPB": "Arkansas-Pine Bluff Golden Lions",
+    "TOL": "Toledo Rockets",
+    "DUQ": "Duquesne Dukes",
+    "COLO": "Colorado Buffaloes",
+    "NDSU": "North Dakota State Bison",
+    "JVST": "Jacksonville State Gamecocks",
+    "CCU": "Coastal Carolina Chanticleers",
+    "UAB": "UAB Blazers",
+    "ALCN": "Alcorn State Braves",
+    "TULN": "Tulane Green Wave",
+    "SELA": "SE Louisiana Lions",
+    "TLSA": "Tulsa Golden Hurricane",
+    "NWST": "Northwestern State Demons",
+    "MINN": "Minnesota Golden Gophers",
+    "UNC": "North Carolina Tar Heels",
+    "ULM": "UL Monroe Warhawks",
+    "JKST": "Jackson State Tigers",
+    "ILL": "Illinois Fighting Illini",
+    "EIU": "Eastern Illinois Panthers",
+    "SJSU": "San Jos\u00e9 State Spartans",
+    "SAC": "Sacramento State Hornets",
+    "OU": "Oklahoma Sooners",
+    "TEM": "Temple Owls",
+    "ARMY": "Army Black Knights",
+    "LEH": "Lehigh Mountain Hawks",
+    "MSU": "Michigan State Spartans",
+    "FAU": "Florida Atlantic Owls",
+    "DUKE": "Duke Blue Devils",
+    "ELON": "Elon Phoenix",
+    "WIS": "Wisconsin Badgers",
+    "WMU": "Western Michigan Broncos",
+    "STAN": "Stanford Cardinal",
+    "TCU": "TCU Horned Frogs",
+    "UGA": "Georgia Bulldogs",
+    "CLEM": "Clemson Tigers",
+    "OSU": "Ohio State Buckeyes",
+    "AKR": "Akron Zips",
+    "ORE": "Oregon Ducks",
+    "IDHO": "Idaho Vandals",
+    "TEX": "Texas Longhorns",
+    "CSU": "Colorado State Rams",
+    "ALA": "Alabama Crimson Tide",
+    "WKU": "Western Kentucky Hilltoppers",
+    "MISS": "Ole Miss Rebels",
+    "FUR": "Furman Paladins",
+    "TA&M": "Texas A&M Aggies",
+    "ND": "Notre Dame Fighting Irish",
+    "WVU": "West Virginia Mountaineers",
+    "PSU": "Penn State Nittany Lions",
+    "MICH": "Michigan Wolverines",
+    "FRES": "Fresno State Bulldogs",
+    "TENN": "Tennessee Volunteers",
+    "UTC": "Chattanooga Mocs",
+    "OKST": "Oklahoma State Cowboys",
+    "SDST": "South Dakota State Jackrabbits",
+    "KSU": "Kansas State Wildcats",
+    "UTM": "UT Martin Skyhawks",
+    "FLA": "Florida Gators",
+    "MIA": "Miami Hurricanes",
+    "ARIZ": "Arizona Wildcats",
+    "IOWA": "Iowa Hawkeyes",
+    "ILST": "Illinois State Redbirds",
+    "VAN": "Vanderbilt Commodores",
+    "VT": "Virginia Tech Hokies",
+    "MD": "Maryland Terrapins",
+    "CONN": "UConn Huskies",
+    "LOU": "Louisville Cardinals",
+    "APSU": "Austin Peay Governors",
+    "PUR": "Purdue Boilermakers",
+    "INST": "Indiana State Sycamores",
+    "PITT": "Pittsburgh Panthers",
+    "KENT": "Kent State Golden Flashes",
+    "NAVY": "Navy Midshipmen",
+    "BUCK": "Bucknell Bison",
+    "CIN": "Cincinnati Bearcats",
+    "TOW": "Towson Tigers",
+    "WSU": "Washington State Cougars",
+    "PRST": "Portland State Vikings",
+    "IU": "Indiana Hoosiers",
+    "FIU": "Florida International Panthers",
+    "NEB": "Nebraska Cornhuskers",
+    "UTEP": "UTEP Miners",
+    "MASS": "Massachusetts Minutemen",
+    "EMU": "Eastern Michigan Eagles",
+    "APP": "App State Mountaineers",
+    "ETSU": "East Tennessee State Buccaneers",
+    "ISU": "Iowa State Cyclones",
+    "UND": "North Dakota Fighting Hawks",
+    "SYR": "Syracuse Orange",
+    "OHIO": "Ohio Bobcats",
+    "UTSA": "UTSA Roadrunners",
+    "KENN": "Kennesaw State Owls",
+    "AFA": "Air Force Falcons",
+    "MRMK": "Merrimack Warriors",
+    "NU": "Northwestern Wildcats",
+    "M-OH": "Miami (OH) RedHawks",
+    "NIU": "Northern Illinois Huskies",
+    "WIU": "Western Illinois Leathernecks",
+    "GASO": "Georgia Southern Eagles",
+    "BOIS": "Boise State Broncos",
+    "SC": "South Carolina Gamecocks",
+    "ODU": "Old Dominion Monarchs",
+    "MRSH": "Marshall Thundering Herd",
+    "STBK": "Stony Brook Seawolves",
+    "CAL": "California Golden Bears",
+    "UCD": "UC Davis Aggies",
+    "USA": "South Alabama Jaguars",
+    "UNT": "North Texas Mean Green",
+    "MSST": "Mississippi State Bulldogs",
+    "EKU": "Eastern Kentucky Colonels",
+    "LIB": "Liberty Flames",
+    "CAM": "Campbell Fighting Camels",
+    "UVA": "Virginia Cavaliers",
+    "RICH": "Richmond Spiders",
+    "ECU": "East Carolina Pirates",
+    "NORF": "Norfolk State Spartans",
+    "ORST": "Oregon State Beavers",
+    "IDST": "Idaho State Bengals",
+    "ARST": "Arkansas State Red Wolves",
+    "CARK": "Central Arkansas Bears",
+    "USF": "South Florida Bulls",
+    "BCU": "Bethune-Cookman Wildcats",
+    "BAY": "Baylor Bears",
+    "TAR": "Tarleton State Texans",
+    "HOU": "Houston Cougars",
+    "UNLV": "UNLV Rebels",
+    "MTSU": "Middle Tennessee Blue Raiders",
+    "TNTC": "Tennessee Tech Golden Eagles",
+    "RICE": "Rice Owls",
+    "SHSU": "Sam Houston Bearkats",
+    "TROY": "Troy Trojans",
+    "MEM": "Memphis Tigers",
+    "UNA": "North Alabama Lions",
+    "AUB": "Auburn Tigers",
+    "AAMU": "Alabama A&M Bulldogs",
+    "UCLA": "UCLA Bruins",
+    "TTU": "Texas Tech Red Raiders",
+    "ACU": "Abilene Christian Wildcats",
+    "UK": "Kentucky Wildcats",
+    "USM": "Southern Miss Golden Eagles",
+    "BYU": "BYU Cougars",
+    "SIU": "Southern Illinois Salukis",
+    "GAST": "Georgia State Panthers",
+    "HCU": "Houston Christian Huskies",
+    "UL": "Louisiana Ragin' Cajuns",
+    "GRAM": "Grambling Tigers",
+    "LT": "Louisiana Tech Bulldogs",
+    "NICH": "Nicholls Colonels",
+    "SDSU": "San Diego State Aztecs",
+    "ETAM": "East Texas A&M Lions",
+    "USU": "Utah State Aggies",
+    "RMU": "Robert Morris Colonials",
+    "CLT": "Charlotte 49ers",
+    "JMU": "James Madison Dukes",
+    "TXST": "Texas State Bobcats",
+    "LAM": "Lamar Cardinals",
+    "MONT": "Montana Grizzlies",
+    "MOST": "Missouri State Bears",
+    "NMSU": "New Mexico State Aggies",
+    "SEMO": "Southeast Missouri State Redhawks",
+    "ASU": "Arizona State Sun Devils",
+    "WYO": "Wyoming Cowboys",
+    "WASH": "Washington Huskies",
+    "WEB": "Weber State Wildcats",
+    "LSU": "LSU Tigers",
+    "USC": "USC Trojans",
+    "BC": "Boston College Eagles",
+    "FAMU": "Florida A&M Rattlers",
+    "NAU": "Northern Arizona Lumberjacks",
+    "URI": "Rhode Island Rams",
+    "MCN": "McNeese Cowboys",
+    "BALL": "Ball State Cardinals",
+    "SFPA": "Saint Francis Red Flash",
+    "UTU": "Utah Tech Trailblazers",
+    "SDAK": "South Dakota Coyotes",
+    "TNST": "Tennessee State Tigers",
+    "ALB": "UAlbany Great Danes",
+    "GWEB": "Gardner-Webb Runnin' Bulldogs",
+    "SAM": "Samford Bulldogs",
+    "W&M": "William & Mary Tribe",
+    "CP": "Cal Poly Mustangs",
+    "UNCO": "Northern Colorado Bears",
+    "TXSO": "Texas Southern Tigers",
+    "SFA": "Stephen F. Austin Lumberjacks",
+    "LIU": "Long Island University Sharks",
+    "UNI": "Northern Iowa Panthers",
+    "PV": "Prairie View A&M Panthers",
+    "VMI": "VMI Keydets",
+    "MORG": "Morgan State Bears",
+    "NCCU": "North Carolina Central Eagles",
+    "SCST": "South Carolina State Bulldogs",
+    "COLG": "Colgate Raiders",
+    "VILL": "Villanova Wildcats",
+    "EWU": "Eastern Washington Eagles",
+    "YSU": "Youngstown State Penguins",
+    "PENN": "Pennsylvania Quakers",
+    "MONM": "Monmouth Hawks",
+    "HC": "Holy Cross Crusaders",
+    "SHU": "Sacred Heart Pioneers",
+    "WAG": "Wagner Seahawks",
+    "ME": "Maine Black Bears",
+    "MER": "Mercer Bears",
+    "CIT": "The Citadel Bulldogs",
+    "WOF": "Wofford Terriers",
+    "CHSO": "Charleston Southern Buccaneers",
+    "ALST": "Alabama State Hornets",
+    "UIW": "Incarnate Word Cardinals",
+    "MERC": "Mercyhurst Lakers",
+    "SOU": "Southern Jaguars",
+    "STMN": "St. Thomas-Minnesota Tommies"
+   }
+  },
+  "nhl-2p": {
+   "league": {
+    "LH": 1.061,
+    "LA": 0.974,
+    "mean_total": 2.035
+   },
+   "teams": {
+    "ANA": {
+     "off": 0.9443,
+     "def": 0.9722,
+     "gp": 172
+    },
+    "BOS": {
+     "off": 0.9272,
+     "def": 1.034,
+     "gp": 171
+    },
+    "BUF": {
+     "off": 1.0851,
+     "def": 1.0795,
+     "gp": 170
+    },
+    "CAN": {
+     "off": 0.8686,
+     "def": 0.8686,
+     "gp": 4
+    },
+    "CAR": {
+     "off": 1.0246,
+     "def": 0.8856,
+     "gp": 187
+    },
+    "CBJ": {
+     "off": 1.0951,
+     "def": 1.0784,
+     "gp": 172
+    },
+    "CGY": {
+     "off": 0.8612,
+     "def": 0.9334,
+     "gp": 173
+    },
+    "CHI": {
+     "off": 0.8717,
+     "def": 1.123,
+     "gp": 172
+    },
+    "COL": {
+     "off": 1.1076,
+     "def": 0.8646,
+     "gp": 178
+    },
+    "DAL": {
+     "off": 1.0858,
+     "def": 0.8912,
+     "gp": 188
+    },
+    "DET": {
+     "off": 0.9337,
+     "def": 0.9944,
+     "gp": 174
+    },
+    "EDM": {
+     "off": 1.181,
+     "def": 0.9685,
+     "gp": 195
+    },
+    "FIN": {
+     "off": 0.7119,
+     "def": 1.1332,
+     "gp": 3
+    },
+    "FLA": {
+     "off": 0.9834,
+     "def": 0.9488,
+     "gp": 195
+    },
+    "LA": {
+     "off": 0.9186,
+     "def": 0.9078,
+     "gp": 178
+    },
+    "MIN": {
+     "off": 0.9237,
+     "def": 0.8639,
+     "gp": 177
+    },
+    "MTL": {
+     "off": 1.0653,
+     "def": 1.0544,
+     "gp": 176
+    },
+    "NJ": {
+     "off": 0.9616,
+     "def": 0.9233,
+     "gp": 176
+    },
+    "NSH": {
+     "off": 0.9553,
+     "def": 1.0958,
+     "gp": 171
+    },
+    "NYI": {
+     "off": 0.989,
+     "def": 1.0396,
+     "gp": 171
+    },
+    "NYR": {
+     "off": 0.9834,
+     "def": 0.989,
+     "gp": 171
+    },
+    "OTT": {
+     "off": 1.0104,
+     "def": 0.924,
+     "gp": 178
+    },
+    "PHI": {
+     "off": 1.0115,
+     "def": 1.2418,
+     "gp": 171
+    },
+    "PIT": {
+     "off": 1.0504,
+     "def": 1.1119,
+     "gp": 172
+    },
+    "SEA": {
+     "off": 0.9495,
+     "def": 1.0738,
+     "gp": 170
+    },
+    "SJ": {
+     "off": 0.9499,
+     "def": 1.1286,
+     "gp": 172
+    },
+    "STL": {
+     "off": 1.0374,
+     "def": 0.9618,
+     "gp": 178
+    },
+    "SWE": {
+     "off": 0.9927,
+     "def": 0.8523,
+     "gp": 3
+    },
+    "TB": {
+     "off": 1.1735,
+     "def": 0.8911,
+     "gp": 177
+    },
+    "TOR": {
+     "off": 1.0409,
+     "def": 1.0357,
+     "gp": 184
+    },
+    "USA": {
+     "off": 0.8686,
+     "def": 0.6229,
+     "gp": 4
+    },
+    "UTA": {
+     "off": 0.9943,
+     "def": 1.0789,
+     "gp": 89
+    },
+    "UTAH": {
+     "off": 1.0064,
+     "def": 1.0855,
+     "gp": 83
+    },
+    "VAN": {
+     "off": 0.8711,
+     "def": 1.1632,
+     "gp": 171
+    },
+    "VGK": {
+     "off": 0.9466,
+     "def": 0.9834,
+     "gp": 183
+    },
+    "WPG": {
+     "off": 1.0252,
+     "def": 0.8788,
+     "gp": 184
+    },
+    "WSH": {
+     "off": 1.0206,
+     "def": 0.9621,
+     "gp": 181
+    }
+   },
+   "forms": {
+    "total": {
+     "n": 2737,
+     "mae_model": 1.07,
+     "mae_naive": 1.018,
+     "brier_model": 0.2399,
+     "brier_naive": 0.2366,
+     "protocol": "walk-forward (period rates from prior games only); Brier on over 1.5; naive = expanding league-mean period total (Poisson) \u2014 the R5 1P protocol per period",
+     "status": "FAILED-EXAM"
+    },
+    "moneyline": {
+     "n": 2737,
+     "brier3_model": 0.6686,
+     "brier3_naive": 0.6641,
+     "mae_margin_model": 1.132,
+     "mae_margin_naive": 1.102,
+     "protocol": "walk-forward (period rates from prior games only); period result H/D/A off the independent-Poisson grid; naive = the same grid on expanding league-mean home/away period rates; margin MAE on lam_h - lam_a vs the league-mean margin",
+     "status": "FAILED-EXAM"
+    }
+   },
+   "backtest": {
+    "n": 2737,
+    "mae_model": 1.07,
+    "mae_naive": 1.018,
+    "brier_model": 0.2399,
+    "brier_naive": 0.2366,
+    "protocol": "walk-forward (period rates from prior games only); Brier on over 1.5; naive = expanding league-mean period total (Poisson) \u2014 the R5 1P protocol per period"
+   },
+   "n_history": 2837,
+   "status": "FAILED-EXAM",
+   "form": "2nd period"
+  },
+  "nhl-3p": {
+   "league": {
+    "LH": 1.098,
+    "LA": 1.047,
+    "mean_total": 2.146
+   },
+   "teams": {
+    "ANA": {
+     "off": 1.0449,
+     "def": 1.1561,
+     "gp": 172
+    },
+    "BOS": {
+     "off": 0.9763,
+     "def": 1.0456,
+     "gp": 171
+    },
+    "BUF": {
+     "off": 1.0623,
+     "def": 1.0623,
+     "gp": 170
+    },
+    "CAN": {
+     "off": 0.6165,
+     "def": 1.1991,
+     "gp": 4
+    },
+    "CAR": {
+     "off": 1.1678,
+     "def": 0.9824,
+     "gp": 187
+    },
+    "CBJ": {
+     "off": 0.9019,
+     "def": 1.0767,
+     "gp": 172
+    },
+    "CGY": {
+     "off": 0.9021,
+     "def": 1.0337,
+     "gp": 173
+    },
+    "CHI": {
+     "off": 0.8437,
+     "def": 1.1508,
+     "gp": 172
+    },
+    "COL": {
+     "off": 1.1897,
+     "def": 0.8107,
+     "gp": 178
+    },
+    "DAL": {
+     "off": 1.0841,
+     "def": 0.9336,
+     "gp": 188
+    },
+    "DET": {
+     "off": 0.9808,
+     "def": 1.0646,
+     "gp": 174
+    },
+    "EDM": {
+     "off": 0.9804,
+     "def": 0.9476,
+     "gp": 195
+    },
+    "FIN": {
+     "off": 0.9709,
+     "def": 1.2373,
+     "gp": 3
+    },
+    "FLA": {
+     "off": 1.0459,
+     "def": 1.0178,
+     "gp": 195
+    },
+    "LA": {
+     "off": 0.9849,
+     "def": 0.99,
+     "gp": 178
+    },
+    "MIN": {
+     "off": 1.0057,
+     "def": 1.0469,
+     "gp": 177
+    },
+    "MTL": {
+     "off": 1.0321,
+     "def": 0.9647,
+     "gp": 176
+    },
+    "NJ": {
+     "off": 0.9803,
+     "def": 1.0062,
+     "gp": 176
+    },
+    "NSH": {
+     "off": 0.8858,
+     "def": 1.0828,
+     "gp": 171
+    },
+    "NYI": {
+     "off": 0.8804,
+     "def": 0.9923,
+     "gp": 171
+    },
+    "NYR": {
+     "off": 0.955,
+     "def": 0.9763,
+     "gp": 171
+    },
+    "OTT": {
+     "off": 1.0361,
+     "def": 0.9439,
+     "gp": 178
+    },
+    "PHI": {
+     "off": 0.9124,
+     "def": 0.923,
+     "gp": 171
+    },
+    "PIT": {
+     "off": 1.0555,
+     "def": 1.0979,
+     "gp": 172
+    },
+    "SEA": {
+     "off": 1.0087,
+     "def": 0.9391,
+     "gp": 170
+    },
+    "SJ": {
+     "off": 0.8701,
+     "def": 1.1932,
+     "gp": 172
+    },
+    "STL": {
+     "off": 0.8927,
+     "def": 0.9132,
+     "gp": 178
+    },
+    "SWE": {
+     "off": 0.8378,
+     "def": 0.5714,
+     "gp": 3
+    },
+    "TB": {
+     "off": 1.1088,
+     "def": 0.8924,
+     "gp": 177
+    },
+    "TOR": {
+     "off": 1.008,
+     "def": 1.0923,
+     "gp": 184
+    },
+    "USA": {
+     "off": 1.0826,
+     "def": 0.5,
+     "gp": 4
+    },
+    "UTA": {
+     "off": 1.0553,
+     "def": 0.9551,
+     "gp": 89
+    },
+    "UTAH": {
+     "off": 0.9246,
+     "def": 0.9888,
+     "gp": 83
+    },
+    "VAN": {
+     "off": 0.8804,
+     "def": 1.1148,
+     "gp": 171
+    },
+    "VGK": {
+     "off": 1.1978,
+     "def": 0.7791,
+     "gp": 183
+    },
+    "WPG": {
+     "off": 0.9683,
+     "def": 0.9633,
+     "gp": 184
+    },
+    "WSH": {
+     "off": 1.1352,
+     "def": 0.8983,
+     "gp": 181
+    }
+   },
+   "forms": {
+    "total": {
+     "n": 2737,
+     "mae_model": 1.097,
+     "mae_naive": 1.081,
+     "brier_model": 0.2309,
+     "brier_naive": 0.2284,
+     "protocol": "walk-forward (period rates from prior games only); Brier on over 1.5; naive = expanding league-mean period total (Poisson) \u2014 the R5 1P protocol per period",
+     "status": "FAILED-EXAM"
+    },
+    "moneyline": {
+     "n": 2737,
+     "brier3_model": 0.6637,
+     "brier3_naive": 0.6599,
+     "mae_margin_model": 1.241,
+     "mae_margin_naive": 1.206,
+     "protocol": "walk-forward (period rates from prior games only); period result H/D/A off the independent-Poisson grid; naive = the same grid on expanding league-mean home/away period rates; margin MAE on lam_h - lam_a vs the league-mean margin",
+     "status": "FAILED-EXAM"
+    }
+   },
+   "backtest": {
+    "n": 2737,
+    "mae_model": 1.097,
+    "mae_naive": 1.081,
+    "brier_model": 0.2309,
+    "brier_naive": 0.2284,
+    "protocol": "walk-forward (period rates from prior games only); Brier on over 1.5; naive = expanding league-mean period total (Poisson) \u2014 the R5 1P protocol per period"
+   },
+   "n_history": 2837,
+   "status": "FAILED-EXAM",
+   "form": "3rd period"
+  },
+  "ncaaf-1q": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 7.003,
+    "LA1": 4.561,
+    "share": 0.2145
+   },
+   "sigma_total": 7.355,
+   "sigma_margin": 8.324,
+   "teams": {
+    "AAMU": {
+     "off": 0.8684,
+     "def": 1.762,
+     "gp": 2
+    },
+    "ACU": {
+     "off": 0.954,
+     "def": 1.4945,
+     "gp": 4
+    },
+    "AFA": {
+     "off": 0.847,
+     "def": 0.9891,
+     "gp": 24
+    },
+    "AKR": {
+     "off": 0.9397,
+     "def": 1.1744,
+     "gp": 24
+    },
+    "ALA": {
+     "off": 1.2113,
+     "def": 0.606,
+     "gp": 28
+    },
+    "ALB": {
+     "off": 0.7444,
+     "def": 1.3374,
+     "gp": 3
+    },
+    "ALCN": {
+     "off": 0.6456,
+     "def": 1.8562,
+     "gp": 3
+    },
+    "ALST": {
+     "off": 1.0421,
+     "def": 1.1459,
+     "gp": 1
+    },
+    "APP": {
+     "off": 0.6802,
+     "def": 1.2609,
+     "gp": 24
+    },
+    "APSU": {
+     "off": 0.9173,
+     "def": 0.9915,
+     "gp": 3
+    },
+    "ARIZ": {
+     "off": 1.1458,
+     "def": 1.2174,
+     "gp": 25
+    },
+    "ARK": {
+     "off": 1.3188,
+     "def": 1.0444,
+     "gp": 25
+    },
+    "ARMY": {
+     "off": 0.9603,
+     "def": 0.8376,
+     "gp": 27
+    },
+    "ARST": {
+     "off": 1.171,
+     "def": 1.344,
+     "gp": 26
+    },
+    "ASU": {
+     "off": 0.9938,
+     "def": 0.9045,
+     "gp": 27
+    },
+    "AUB": {
+     "off": 1.0632,
+     "def": 0.7667,
+     "gp": 24
+    },
+    "BALL": {
+     "off": 0.8223,
+     "def": 1.5512,
+     "gp": 24
+    },
+    "BAY": {
+     "off": 1.0802,
+     "def": 1.2293,
+     "gp": 25
+    },
+    "BC": {
+     "off": 0.6985,
+     "def": 0.7999,
+     "gp": 25
+    },
+    "BCU": {
+     "off": 0.5649,
+     "def": 1.5593,
+     "gp": 4
+    },
+    "BGSU": {
+     "off": 1.0444,
+     "def": 0.955,
+     "gp": 25
+    },
+    "BOIS": {
+     "off": 1.4059,
+     "def": 0.7465,
+     "gp": 28
+    },
+    "BRY": {
+     "off": 0.7197,
+     "def": 1.2138,
+     "gp": 3
+    },
+    "BUCK": {
+     "off": 0.8684,
+     "def": 1.2432,
+     "gp": 2
+    },
+    "BUFF": {
+     "off": 0.9371,
+     "def": 0.5852,
+     "gp": 25
+    },
+    "BYU": {
+     "off": 1.1054,
+     "def": 0.7818,
+     "gp": 27
+    },
+    "CAL": {
+     "off": 1.0384,
+     "def": 0.9981,
+     "gp": 26
+    },
+    "CAM": {
+     "off": 0.8459,
+     "def": 1.6674,
+     "gp": 4
+    },
+    "CARK": {
+     "off": 0.5714,
+     "def": 1.4609,
+     "gp": 3
+    },
+    "CCSU": {
+     "off": 0.9173,
+     "def": 1.4362,
+     "gp": 3
+    },
+    "CCU": {
+     "off": 1.0384,
+     "def": 1.1941,
+     "gp": 26
+    },
+    "CHSO": {
+     "off": 0.5714,
+     "def": 0.9173,
+     "gp": 3
+    },
+    "CIN": {
+     "off": 1.4798,
+     "def": 0.8953,
+     "gp": 25
+    },
+    "CIT": {
+     "off": 0.5714,
+     "def": 1.4362,
+     "gp": 3
+    },
+    "CLEM": {
+     "off": 1.4234,
+     "def": 0.6535,
+     "gp": 27
+    },
+    "CLT": {
+     "off": 0.5814,
+     "def": 1.3412,
+     "gp": 24
+    },
+    "CMU": {
+     "off": 0.8953,
+     "def": 0.8536,
+     "gp": 25
+    },
+    "COLG": {
+     "off": 1.2432,
+     "def": 1.272,
+     "gp": 2
+    },
+    "COLO": {
+     "off": 1.0146,
+     "def": 1.0921,
+     "gp": 25
+    },
+    "CONN": {
+     "off": 1.367,
+     "def": 0.8194,
+     "gp": 26
+    },
+    "CP": {
+     "off": 1.0189,
+     "def": 1.1053,
+     "gp": 4
+    },
+    "CSU": {
+     "off": 0.8357,
+     "def": 0.8118,
+     "gp": 25
+    },
+    "DEL": {
+     "off": 1.0323,
+     "def": 1.0817,
+     "gp": 24
+    },
+    "DSU": {
+     "off": 0.6667,
+     "def": 1.0702,
+     "gp": 2
+    },
+    "DUKE": {
+     "off": 1.2002,
+     "def": 1.0663,
+     "gp": 27
+    },
+    "DUQ": {
+     "off": 0.6513,
+     "def": 1.7755,
+     "gp": 4
+    },
+    "ECU": {
+     "off": 1.4305,
+     "def": 0.7387,
+     "gp": 26
+    },
+    "EIU": {
+     "off": 0.5714,
+     "def": 1.4362,
+     "gp": 3
+    },
+    "EKU": {
+     "off": 0.5,
+     "def": 1.8404,
+     "gp": 4
+    },
+    "ELON": {
+     "off": 0.6667,
+     "def": 0.8396,
+     "gp": 2
+    },
+    "EMU": {
+     "off": 0.915,
+     "def": 0.8903,
+     "gp": 24
+    },
+    "ETAM": {
+     "off": 0.5,
+     "def": 1.3864,
+     "gp": 4
+    },
+    "ETSU": {
+     "off": 0.7444,
+     "def": 1.7574,
+     "gp": 3
+    },
+    "EWU": {
+     "off": 0.8675,
+     "def": 1.689,
+     "gp": 4
+    },
+    "FAMU": {
+     "off": 0.7938,
+     "def": 1.6585,
+     "gp": 3
+    },
+    "FAU": {
+     "off": 1.1188,
+     "def": 1.2732,
+     "gp": 24
+    },
+    "FIU": {
+     "off": 1.0504,
+     "def": 0.9729,
+     "gp": 25
+    },
+    "FLA": {
+     "off": 0.9013,
+     "def": 0.7701,
+     "gp": 25
+    },
+    "FOR": {
+     "off": 0.7531,
+     "def": 1.6467,
+     "gp": 2
+    },
+    "FRES": {
+     "off": 0.9923,
+     "def": 0.9693,
+     "gp": 26
+    },
+    "FSU": {
+     "off": 0.7852,
+     "def": 0.915,
+     "gp": 24
+    },
+    "FUR": {
+     "off": 0.6667,
+     "def": 1.8485,
+     "gp": 2
+    },
+    "GASO": {
+     "off": 1.1826,
+     "def": 1.2748,
+     "gp": 26
+    },
+    "GAST": {
+     "off": 0.8161,
+     "def": 1.2979,
+     "gp": 24
+    },
+    "GRAM": {
+     "off": 0.6667,
+     "def": 1.4738,
+     "gp": 2
+    },
+    "GT": {
+     "off": 1.1076,
+     "def": 0.7733,
+     "gp": 26
+    },
+    "GWEB": {
+     "off": 0.9972,
+     "def": 0.7162,
+     "gp": 4
+    },
+    "HAW": {
+     "off": 1.0921,
+     "def": 0.9371,
+     "gp": 25
+    },
+    "HC": {
+     "off": 0.6667,
+     "def": 1.1567,
+     "gp": 2
+    },
+    "HCU": {
+     "off": 0.5714,
+     "def": 1.9303,
+     "gp": 3
+    },
+    "HOU": {
+     "off": 0.7701,
+     "def": 1.116,
+     "gp": 25
+    },
+    "HOW": {
+     "off": 0.6667,
+     "def": 1.4738,
+     "gp": 2
+    },
+    "IDHO": {
+     "off": 0.7135,
+     "def": 0.8288,
+     "gp": 5
+    },
+    "IDST": {
+     "off": 0.9108,
+     "def": 0.954,
+     "gp": 4
+    },
+    "ILL": {
+     "off": 0.9635,
+     "def": 0.9058,
+     "gp": 26
+    },
+    "ILST": {
+     "off": 0.4346,
+     "def": 1.3512,
+     "gp": 6
+    },
+    "INST": {
+     "off": 0.8243,
+     "def": 1.3215,
+     "gp": 4
+    },
+    "IOWA": {
+     "off": 1.0673,
+     "def": 0.5484,
+     "gp": 26
+    },
+    "ISU": {
+     "off": 1.171,
+     "def": 0.9058,
+     "gp": 26
+    },
+    "IU": {
+     "off": 1.4314,
+     "def": 0.4724,
+     "gp": 29
+    },
+    "JKST": {
+     "off": 0.7531,
+     "def": 1.272,
+     "gp": 2
+    },
+    "JMU": {
+     "off": 1.3285,
+     "def": 0.6367,
+     "gp": 27
+    },
+    "JVST": {
+     "off": 1.1141,
+     "def": 1.1573,
+     "gp": 28
+    },
+    "KENN": {
+     "off": 1.073,
+     "def": 1.0096,
+     "gp": 26
+    },
+    "KENT": {
+     "off": 0.6308,
+     "def": 1.6994,
+     "gp": 24
+    },
+    "KSU": {
+     "off": 0.9669,
+     "def": 0.7105,
+     "gp": 25
+    },
+    "KU": {
+     "off": 1.2176,
+     "def": 0.9953,
+     "gp": 24
+    },
+    "LAF": {
+     "off": 0.6456,
+     "def": 1.1397,
+     "gp": 3
+    },
+    "LAM": {
+     "off": 0.6667,
+     "def": 1.4738,
+     "gp": 2
+    },
+    "LEH": {
+     "off": 1.0421,
+     "def": 1.0421,
+     "gp": 1
+    },
+    "LIB": {
+     "off": 0.7235,
+     "def": 0.8038,
+     "gp": 24
+    },
+    "LIN": {
+     "off": 0.5,
+     "def": 1.408,
+     "gp": 4
+    },
+    "LIU": {
+     "off": 0.7444,
+     "def": 1.2385,
+     "gp": 3
+    },
+    "LOU": {
+     "off": 1.2056,
+     "def": 1.073,
+     "gp": 26
+    },
+    "LSU": {
+     "off": 0.9174,
+     "def": 0.9001,
+     "gp": 26
+    },
+    "LT": {
+     "off": 0.8943,
+     "def": 0.7963,
+     "gp": 26
+    },
+    "M-OH": {
+     "off": 0.8492,
+     "def": 0.7303,
+     "gp": 28
+    },
+    "MASS": {
+     "off": 0.8532,
+     "def": 1.2979,
+     "gp": 24
+    },
+    "MCN": {
+     "off": 0.7444,
+     "def": 1.4115,
+     "gp": 3
+    },
+    "MD": {
+     "off": 0.8964,
+     "def": 0.7605,
+     "gp": 24
+    },
+    "ME": {
+     "off": 0.954,
+     "def": 0.954,
+     "gp": 4
+    },
+    "MEM": {
+     "off": 1.2114,
+     "def": 0.9635,
+     "gp": 26
+    },
+    "MER": {
+     "off": 1.0903,
+     "def": 1.6091,
+     "gp": 3
+    },
+    "MERC": {
+     "off": 1.1459,
+     "def": 1.0421,
+     "gp": 1
+    },
+    "MIA": {
+     "off": 1.3004,
+     "def": 0.703,
+     "gp": 29
+    },
+    "MICH": {
+     "off": 1.0327,
+     "def": 0.5657,
+     "gp": 26
+    },
+    "MINN": {
+     "off": 0.7329,
+     "def": 0.7675,
+     "gp": 26
+    },
+    "MISS": {
+     "off": 1.5627,
+     "def": 0.6384,
+     "gp": 28
+    },
+    "MIZ": {
+     "off": 1.148,
+     "def": 0.8424,
+     "gp": 26
+    },
+    "MONM": {
+     "off": 1.0903,
+     "def": 0.9915,
+     "gp": 3
+    },
+    "MONT": {
+     "off": 1.0414,
+     "def": 1.0702,
+     "gp": 2
+    },
+    "MORG": {
+     "off": 0.8185,
+     "def": 1.1644,
+     "gp": 3
+    },
+    "MOST": {
+     "off": 1.0385,
+     "def": 0.943,
+     "gp": 25
+    },
+    "MRMK": {
+     "off": 0.6513,
+     "def": 1.408,
+     "gp": 4
+    },
+    "MRSH": {
+     "off": 1.0325,
+     "def": 0.9311,
+     "gp": 25
+    },
+    "MSST": {
+     "off": 1.1995,
+     "def": 1.1995,
+     "gp": 25
+    },
+    "MSU": {
+     "off": 0.8903,
+     "def": 0.9211,
+     "gp": 24
+    },
+    "MTST": {
+     "off": 0.8027,
+     "def": 1.3864,
+     "gp": 4
+    },
+    "MTSU": {
+     "off": 0.8532,
+     "def": 1.477,
+     "gp": 24
+    },
+    "MUR": {
+     "off": 0.5557,
+     "def": 1.9739,
+     "gp": 6
+    },
+    "NAU": {
+     "off": 0.6456,
+     "def": 1.0656,
+     "gp": 3
+    },
+    "NAVY": {
+     "off": 1.1422,
+     "def": 0.952,
+     "gp": 26
+    },
+    "NCAT": {
+     "off": 0.7444,
+     "def": 1.7327,
+     "gp": 3
+    },
+    "NCCU": {
+     "off": 0.8684,
+     "def": 0.9261,
+     "gp": 2
+    },
+    "NCSU": {
+     "off": 1.0903,
+     "def": 1.2172,
+     "gp": 26
+    },
+    "ND": {
+     "off": 1.46,
+     "def": 0.4709,
+     "gp": 28
+    },
+    "NDSU": {
+     "off": 1.683,
+     "def": 0.5981,
+     "gp": 29
+    },
+    "NEB": {
+     "off": 1.0384,
+     "def": 0.6407,
+     "gp": 26
+    },
+    "NEV": {
+     "off": 0.7283,
+     "def": 1.116,
+     "gp": 25
+    },
+    "NICH": {
+     "off": 0.7711,
+     "def": 1.117,
+     "gp": 5
+    },
+    "NIU": {
+     "off": 1.0265,
+     "def": 0.782,
+     "gp": 25
+    },
+    "NMSU": {
+     "off": 0.6555,
+     "def": 1.2485,
+     "gp": 24
+    },
+    "NORF": {
+     "off": 0.7531,
+     "def": 1.4449,
+     "gp": 2
+    },
+    "NU": {
+     "off": 0.7164,
+     "def": 0.627,
+     "gp": 25
+    },
+    "NWST": {
+     "off": 1.0189,
+     "def": 2.8348,
+     "gp": 4
+    },
+    "ODU": {
+     "off": 1.2949,
+     "def": 0.7283,
+     "gp": 25
+    },
+    "OHIO": {
+     "off": 0.9659,
+     "def": 0.6144,
+     "gp": 27
+    },
+    "OKST": {
+     "off": 0.7235,
+     "def": 1.3473,
+     "gp": 24
+    },
+    "ORE": {
+     "off": 1.3686,
+     "def": 0.6663,
+     "gp": 29
+    },
+    "ORST": {
+     "off": 0.6246,
+     "def": 1.1867,
+     "gp": 24
+    },
+    "OSU": {
+     "off": 1.1859,
+     "def": 0.3974,
+     "gp": 30
+    },
+    "OU": {
+     "off": 1.0557,
+     "def": 0.6176,
+     "gp": 26
+    },
+    "PENN": {
+     "off": 1.0075,
+     "def": 0.8,
+     "gp": 1
+    },
+    "PITT": {
+     "off": 1.2114,
+     "def": 0.854,
+     "gp": 26
+    },
+    "PRST": {
+     "off": 0.7632,
+     "def": 1.5069,
+     "gp": 6
+    },
+    "PSU": {
+     "off": 0.9493,
+     "def": 0.7134,
+     "gp": 29
+    },
+    "PUR": {
+     "off": 0.6246,
+     "def": 1.125,
+     "gp": 24
+    },
+    "PV": {
+     "off": 0.8684,
+     "def": 1.272,
+     "gp": 2
+    },
+    "RICE": {
+     "off": 0.8297,
+     "def": 1.1279,
+     "gp": 25
+    },
+    "RICH": {
+     "off": 0.7444,
+     "def": 1.3126,
+     "gp": 3
+    },
+    "RMU": {
+     "off": 0.6667,
+     "def": 1.0702,
+     "gp": 2
+    },
+    "RUTG": {
+     "off": 0.9729,
+     "def": 1.0564,
+     "gp": 25
+    },
+    "SAC": {
+     "off": 1.1806,
+     "def": 0.9953,
+     "gp": 24
+    },
+    "SAM": {
+     "off": 0.7444,
+     "def": 1.6091,
+     "gp": 3
+    },
+    "SC": {
+     "off": 1.1279,
+     "def": 0.7283,
+     "gp": 25
+    },
+    "SCST": {
+     "off": 0.6456,
+     "def": 0.9173,
+     "gp": 3
+    },
+    "SDAK": {
+     "off": 0.8027,
+     "def": 1.3864,
+     "gp": 4
+    },
+    "SDST": {
+     "off": 0.694,
+     "def": 0.988,
+     "gp": 6
+    },
+    "SDSU": {
+     "off": 0.8596,
+     "def": 1.0444,
+     "gp": 25
+    },
+    "SELA": {
+     "off": 0.5649,
+     "def": 0.954,
+     "gp": 4
+    },
+    "SEMO": {
+     "off": 1.0903,
+     "def": 1.0903,
+     "gp": 3
+    },
+    "SFA": {
+     "off": 0.9549,
+     "def": 1.272,
+     "gp": 2
+    },
+    "SFPA": {
+     "off": 0.7162,
+     "def": 1.235,
+     "gp": 4
+    },
+    "SHSU": {
+     "off": 0.6985,
+     "def": 1.1339,
+     "gp": 25
+    },
+    "SHU": {
+     "off": 0.8,
+     "def": 1.2843,
+     "gp": 1
+    },
+    "SIU": {
+     "off": 0.7711,
+     "def": 1.3861,
+     "gp": 5
+    },
+    "SJSU": {
+     "off": 0.794,
+     "def": 1.0206,
+     "gp": 25
+    },
+    "SMU": {
+     "off": 1.3229,
+     "def": 0.6981,
+     "gp": 27
+    },
+    "SOU": {
+     "off": 0.8,
+     "def": 1.2843,
+     "gp": 1
+    },
+    "STAN": {
+     "off": 0.8347,
+     "def": 1.162,
+     "gp": 24
+    },
+    "STBK": {
+     "off": 0.6667,
+     "def": 1.272,
+     "gp": 2
+    },
+    "STMN": {
+     "off": 0.8,
+     "def": 1.7685,
+     "gp": 1
+    },
+    "SUU": {
+     "off": 0.8396,
+     "def": 1.272,
+     "gp": 2
+    },
+    "SYR": {
+     "off": 0.788,
+     "def": 1.277,
+     "gp": 25
+    },
+    "TA&M": {
+     "off": 1.2229,
+     "def": 0.9174,
+     "gp": 26
+    },
+    "TAR": {
+     "off": 0.7531,
+     "def": 1.4738,
+     "gp": 2
+    },
+    "TCU": {
+     "off": 1.1941,
+     "def": 0.7387,
+     "gp": 26
+    },
+    "TEM": {
+     "off": 0.7729,
+     "def": 1.3659,
+     "gp": 24
+    },
+    "TENN": {
+     "off": 1.7187,
+     "def": 0.7848,
+     "gp": 26
+    },
+    "TEX": {
+     "off": 1.2113,
+     "def": 0.5248,
+     "gp": 29
+    },
+    "TLSA": {
+     "off": 0.81,
+     "def": 1.2732,
+     "gp": 24
+    },
+    "TNST": {
+     "off": 0.6667,
+     "def": 1.5602,
+     "gp": 2
+    },
+    "TNTC": {
+     "off": 0.5714,
+     "def": 1.4362,
+     "gp": 3
+    },
+    "TOL": {
+     "off": 1.0096,
+     "def": 0.6349,
+     "gp": 26
+    },
+    "TOW": {
+     "off": 0.7197,
+     "def": 1.5844,
+     "gp": 3
+    },
+    "TROY": {
+     "off": 0.6695,
+     "def": 1.1019,
+     "gp": 26
+    },
+    "TTU": {
+     "off": 1.7637,
+     "def": 0.7762,
+     "gp": 27
+    },
+    "TULN": {
+     "off": 1.2168,
+     "def": 0.8006,
+     "gp": 28
+    },
+    "TXSO": {
+     "off": 0.6667,
+     "def": 1.1567,
+     "gp": 2
+    },
+    "TXST": {
+     "off": 1.6265,
+     "def": 0.8251,
+     "gp": 26
+    },
+    "UAB": {
+     "off": 1.0014,
+     "def": 1.5203,
+     "gp": 24
+    },
+    "UAPB": {
+     "off": 0.6667,
+     "def": 2.1367,
+     "gp": 2
+    },
+    "UCD": {
+     "off": 1.1486,
+     "def": 1.1053,
+     "gp": 4
+    },
+    "UCF": {
+     "off": 0.9705,
+     "def": 0.915,
+     "gp": 24
+    },
+    "UCLA": {
+     "off": 0.4888,
+     "def": 1.0694,
+     "gp": 24
+    },
+    "UGA": {
+     "off": 0.8708,
+     "def": 0.8492,
+     "gp": 28
+    },
+    "UIW": {
+     "off": 0.8,
+     "def": 1.1459,
+     "gp": 1
+    },
+    "UK": {
+     "off": 0.8015,
+     "def": 0.7887,
+     "gp": 23
+    },
+    "UL": {
+     "off": 0.9436,
+     "def": 0.9045,
+     "gp": 27
+    },
+    "ULM": {
+     "off": 0.7976,
+     "def": 1.3165,
+     "gp": 24
+    },
+    "UNA": {
+     "off": 0.8396,
+     "def": 1.272,
+     "gp": 2
+    },
+    "UNC": {
+     "off": 0.8297,
+     "def": 1.1577,
+     "gp": 25
+    },
+    "UNCO": {
+     "off": 0.9173,
+     "def": 0.8926,
+     "gp": 3
+    },
+    "UND": {
+     "off": 0.8027,
+     "def": 1.1702,
+     "gp": 4
+    },
+    "UNH": {
+     "off": 1.0702,
+     "def": 1.2432,
+     "gp": 2
+    },
+    "UNI": {
+     "off": 0.6248,
+     "def": 1.5069,
+     "gp": 6
+    },
+    "UNLV": {
+     "off": 1.1465,
+     "def": 1.0492,
+     "gp": 28
+    },
+    "UNM": {
+     "off": 0.9729,
+     "def": 0.9669,
+     "gp": 25
+    },
+    "UNT": {
+     "off": 1.7525,
+     "def": 1.1333,
+     "gp": 27
+    },
+    "URI": {
+     "off": 1.0903,
+     "def": 0.8926,
+     "gp": 3
+    },
+    "USA": {
+     "off": 1.0623,
+     "def": 1.1935,
+     "gp": 25
+    },
+    "USC": {
+     "off": 1.0039,
+     "def": 0.8367,
+     "gp": 26
+    },
+    "USF": {
+     "off": 1.2345,
+     "def": 1.246,
+     "gp": 26
+    },
+    "USM": {
+     "off": 0.9397,
+     "def": 1.2794,
+     "gp": 24
+    },
+    "USU": {
+     "off": 1.2472,
+     "def": 0.8834,
+     "gp": 25
+    },
+    "UTAH": {
+     "off": 1.1041,
+     "def": 0.6389,
+     "gp": 25
+    },
+    "UTC": {
+     "off": 0.7444,
+     "def": 1.5844,
+     "gp": 3
+    },
+    "UTEP": {
+     "off": 0.8903,
+     "def": 1.2238,
+     "gp": 24
+    },
+    "UTM": {
+     "off": 0.6421,
+     "def": 1.3685,
+     "gp": 6
+    },
+    "UTSA": {
+     "off": 1.2806,
+     "def": 0.8655,
+     "gp": 26
+    },
+    "UTU": {
+     "off": 1.0421,
+     "def": 1.7685,
+     "gp": 1
+    },
+    "UVA": {
+     "off": 1.0384,
+     "def": 0.6868,
+     "gp": 26
+    },
+    "VAN": {
+     "off": 1.0615,
+     "def": 0.8251,
+     "gp": 26
+    },
+    "VILL": {
+     "off": 0.9173,
+     "def": 1.1644,
+     "gp": 3
+    },
+    "VMI": {
+     "off": 0.6667,
+     "def": 1.3585,
+     "gp": 2
+    },
+    "VT": {
+     "off": 0.9609,
+     "def": 0.7999,
+     "gp": 25
+    },
+    "W&M": {
+     "off": 0.6667,
+     "def": 1.4738,
+     "gp": 2
+    },
+    "WAG": {
+     "off": 0.5,
+     "def": 1.4728,
+     "gp": 4
+    },
+    "WAKE": {
+     "off": 1.1935,
+     "def": 0.8715,
+     "gp": 25
+    },
+    "WASH": {
+     "off": 0.7848,
+     "def": 0.7156,
+     "gp": 26
+    },
+    "WCU": {
+     "off": 1.0702,
+     "def": 1.4738,
+     "gp": 2
+    },
+    "WEB": {
+     "off": 0.6366,
+     "def": 1.5782,
+     "gp": 5
+    },
+    "WIS": {
+     "off": 0.6494,
+     "def": 0.7544,
+     "gp": 24
+    },
+    "WIU": {
+     "off": 0.5649,
+     "def": 1.862,
+     "gp": 4
+    },
+    "WKU": {
+     "off": 1.0663,
+     "def": 0.9045,
+     "gp": 27
+    },
+    "WMU": {
+     "off": 0.8153,
+     "def": 0.8655,
+     "gp": 27
+    },
+    "WOF": {
+     "off": 0.7531,
+     "def": 1.0702,
+     "gp": 2
+    },
+    "WSU": {
+     "off": 1.2287,
+     "def": 0.9174,
+     "gp": 26
+    },
+    "WVU": {
+     "off": 0.8655,
+     "def": 0.9967,
+     "gp": 25
+    },
+    "WYO": {
+     "off": 0.7482,
+     "def": 1.1373,
+     "gp": 24
+    },
+    "YSU": {
+     "off": 0.781,
+     "def": 1.408,
+     "gp": 4
+    }
+   },
+   "backtest": {
+    "n": 1822,
+    "mae_total": 5.799,
+    "mae_total_naive": 5.607,
+    "brier_total": 0.259,
+    "brier_total_naive": 0.2695,
+    "mae_margin": 6.662,
+    "mae_margin_naive": 6.393,
+    "brier_margin": 0.2391,
+    "brier_margin_naive": 0.2304,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding segment/full share for totals, the segment share of the full-game margin for spreads, sigma scaled by sqrt(share))"
+   },
+   "n_history": 1922,
+   "coverage": {
+    "events": 1923,
+    "games_with_linescores": 1922,
+    "pull_days": 302,
+    "seasons": "2024+2025 (ESPN FBS groups=80)"
+   },
+   "team_names": {
+    "GT": "Georgia Tech Yellow Jackets",
+    "FSU": "Florida State Seminoles",
+    "UNM": "New Mexico Lobos",
+    "MTST": "Montana State Bobcats",
+    "NEV": "Nevada Wolf Pack",
+    "SMU": "SMU Mustangs",
+    "HAW": "Hawai'i Rainbow Warriors",
+    "DSU": "Delaware State Hornets",
+    "MIZ": "Missouri Tigers",
+    "MUR": "Murray State Racers",
+    "UTAH": "Utah Utes",
+    "SUU": "Southern Utah Thunderbirds",
+    "KU": "Kansas Jayhawks",
+    "LIN": "Lindenwood Lions",
+    "NCSU": "NC State Wolfpack",
+    "WCU": "Western Carolina Catamounts",
+    "RUTG": "Rutgers Scarlet Knights",
+    "HOW": "Howard Bison",
+    "DEL": "Delaware Blue Hens",
+    "BRY": "Bryant Bulldogs",
+    "WAKE": "Wake Forest Demon Deacons",
+    "NCAT": "North Carolina A&T Aggies",
+    "UCF": "UCF Knights",
+    "UNH": "New Hampshire Wildcats",
+    "BUFF": "Buffalo Bulls",
+    "LAF": "Lafayette Leopards",
+    "BGSU": "Bowling Green Falcons",
+    "FOR": "Fordham Rams",
+    "CMU": "Central Michigan Chippewas",
+    "CCSU": "Central Connecticut Blue Devils",
+    "ARK": "Arkansas Razorbacks",
+    "UAPB": "Arkansas-Pine Bluff Golden Lions",
+    "TOL": "Toledo Rockets",
+    "DUQ": "Duquesne Dukes",
+    "COLO": "Colorado Buffaloes",
+    "NDSU": "North Dakota State Bison",
+    "JVST": "Jacksonville State Gamecocks",
+    "CCU": "Coastal Carolina Chanticleers",
+    "UAB": "UAB Blazers",
+    "ALCN": "Alcorn State Braves",
+    "TULN": "Tulane Green Wave",
+    "SELA": "SE Louisiana Lions",
+    "TLSA": "Tulsa Golden Hurricane",
+    "NWST": "Northwestern State Demons",
+    "MINN": "Minnesota Golden Gophers",
+    "UNC": "North Carolina Tar Heels",
+    "ULM": "UL Monroe Warhawks",
+    "JKST": "Jackson State Tigers",
+    "ILL": "Illinois Fighting Illini",
+    "EIU": "Eastern Illinois Panthers",
+    "SJSU": "San Jos\u00e9 State Spartans",
+    "SAC": "Sacramento State Hornets",
+    "OU": "Oklahoma Sooners",
+    "TEM": "Temple Owls",
+    "ARMY": "Army Black Knights",
+    "LEH": "Lehigh Mountain Hawks",
+    "MSU": "Michigan State Spartans",
+    "FAU": "Florida Atlantic Owls",
+    "DUKE": "Duke Blue Devils",
+    "ELON": "Elon Phoenix",
+    "WIS": "Wisconsin Badgers",
+    "WMU": "Western Michigan Broncos",
+    "STAN": "Stanford Cardinal",
+    "TCU": "TCU Horned Frogs",
+    "UGA": "Georgia Bulldogs",
+    "CLEM": "Clemson Tigers",
+    "OSU": "Ohio State Buckeyes",
+    "AKR": "Akron Zips",
+    "ORE": "Oregon Ducks",
+    "IDHO": "Idaho Vandals",
+    "TEX": "Texas Longhorns",
+    "CSU": "Colorado State Rams",
+    "ALA": "Alabama Crimson Tide",
+    "WKU": "Western Kentucky Hilltoppers",
+    "MISS": "Ole Miss Rebels",
+    "FUR": "Furman Paladins",
+    "TA&M": "Texas A&M Aggies",
+    "ND": "Notre Dame Fighting Irish",
+    "WVU": "West Virginia Mountaineers",
+    "PSU": "Penn State Nittany Lions",
+    "MICH": "Michigan Wolverines",
+    "FRES": "Fresno State Bulldogs",
+    "TENN": "Tennessee Volunteers",
+    "UTC": "Chattanooga Mocs",
+    "OKST": "Oklahoma State Cowboys",
+    "SDST": "South Dakota State Jackrabbits",
+    "KSU": "Kansas State Wildcats",
+    "UTM": "UT Martin Skyhawks",
+    "FLA": "Florida Gators",
+    "MIA": "Miami Hurricanes",
+    "ARIZ": "Arizona Wildcats",
+    "IOWA": "Iowa Hawkeyes",
+    "ILST": "Illinois State Redbirds",
+    "VAN": "Vanderbilt Commodores",
+    "VT": "Virginia Tech Hokies",
+    "MD": "Maryland Terrapins",
+    "CONN": "UConn Huskies",
+    "LOU": "Louisville Cardinals",
+    "APSU": "Austin Peay Governors",
+    "PUR": "Purdue Boilermakers",
+    "INST": "Indiana State Sycamores",
+    "PITT": "Pittsburgh Panthers",
+    "KENT": "Kent State Golden Flashes",
+    "NAVY": "Navy Midshipmen",
+    "BUCK": "Bucknell Bison",
+    "CIN": "Cincinnati Bearcats",
+    "TOW": "Towson Tigers",
+    "WSU": "Washington State Cougars",
+    "PRST": "Portland State Vikings",
+    "IU": "Indiana Hoosiers",
+    "FIU": "Florida International Panthers",
+    "NEB": "Nebraska Cornhuskers",
+    "UTEP": "UTEP Miners",
+    "MASS": "Massachusetts Minutemen",
+    "EMU": "Eastern Michigan Eagles",
+    "APP": "App State Mountaineers",
+    "ETSU": "East Tennessee State Buccaneers",
+    "ISU": "Iowa State Cyclones",
+    "UND": "North Dakota Fighting Hawks",
+    "SYR": "Syracuse Orange",
+    "OHIO": "Ohio Bobcats",
+    "UTSA": "UTSA Roadrunners",
+    "KENN": "Kennesaw State Owls",
+    "AFA": "Air Force Falcons",
+    "MRMK": "Merrimack Warriors",
+    "NU": "Northwestern Wildcats",
+    "M-OH": "Miami (OH) RedHawks",
+    "NIU": "Northern Illinois Huskies",
+    "WIU": "Western Illinois Leathernecks",
+    "GASO": "Georgia Southern Eagles",
+    "BOIS": "Boise State Broncos",
+    "SC": "South Carolina Gamecocks",
+    "ODU": "Old Dominion Monarchs",
+    "MRSH": "Marshall Thundering Herd",
+    "STBK": "Stony Brook Seawolves",
+    "CAL": "California Golden Bears",
+    "UCD": "UC Davis Aggies",
+    "USA": "South Alabama Jaguars",
+    "UNT": "North Texas Mean Green",
+    "MSST": "Mississippi State Bulldogs",
+    "EKU": "Eastern Kentucky Colonels",
+    "LIB": "Liberty Flames",
+    "CAM": "Campbell Fighting Camels",
+    "UVA": "Virginia Cavaliers",
+    "RICH": "Richmond Spiders",
+    "ECU": "East Carolina Pirates",
+    "NORF": "Norfolk State Spartans",
+    "ORST": "Oregon State Beavers",
+    "IDST": "Idaho State Bengals",
+    "ARST": "Arkansas State Red Wolves",
+    "CARK": "Central Arkansas Bears",
+    "USF": "South Florida Bulls",
+    "BCU": "Bethune-Cookman Wildcats",
+    "BAY": "Baylor Bears",
+    "TAR": "Tarleton State Texans",
+    "HOU": "Houston Cougars",
+    "UNLV": "UNLV Rebels",
+    "MTSU": "Middle Tennessee Blue Raiders",
+    "TNTC": "Tennessee Tech Golden Eagles",
+    "RICE": "Rice Owls",
+    "SHSU": "Sam Houston Bearkats",
+    "TROY": "Troy Trojans",
+    "MEM": "Memphis Tigers",
+    "UNA": "North Alabama Lions",
+    "AUB": "Auburn Tigers",
+    "AAMU": "Alabama A&M Bulldogs",
+    "UCLA": "UCLA Bruins",
+    "TTU": "Texas Tech Red Raiders",
+    "ACU": "Abilene Christian Wildcats",
+    "BYU": "BYU Cougars",
+    "SIU": "Southern Illinois Salukis",
+    "GAST": "Georgia State Panthers",
+    "HCU": "Houston Christian Huskies",
+    "UL": "Louisiana Ragin' Cajuns",
+    "GRAM": "Grambling Tigers",
+    "LT": "Louisiana Tech Bulldogs",
+    "NICH": "Nicholls Colonels",
+    "SDSU": "San Diego State Aztecs",
+    "ETAM": "East Texas A&M Lions",
+    "USU": "Utah State Aggies",
+    "RMU": "Robert Morris Colonials",
+    "CLT": "Charlotte 49ers",
+    "JMU": "James Madison Dukes",
+    "TXST": "Texas State Bobcats",
+    "LAM": "Lamar Cardinals",
+    "MONT": "Montana Grizzlies",
+    "MOST": "Missouri State Bears",
+    "NMSU": "New Mexico State Aggies",
+    "SEMO": "Southeast Missouri State Redhawks",
+    "ASU": "Arizona State Sun Devils",
+    "WYO": "Wyoming Cowboys",
+    "WASH": "Washington Huskies",
+    "WEB": "Weber State Wildcats",
+    "LSU": "LSU Tigers",
+    "USC": "USC Trojans",
+    "BC": "Boston College Eagles",
+    "FAMU": "Florida A&M Rattlers",
+    "NAU": "Northern Arizona Lumberjacks",
+    "URI": "Rhode Island Rams",
+    "MCN": "McNeese Cowboys",
+    "BALL": "Ball State Cardinals",
+    "SFPA": "Saint Francis Red Flash",
+    "UTU": "Utah Tech Trailblazers",
+    "UK": "Kentucky Wildcats",
+    "SDAK": "South Dakota Coyotes",
+    "TNST": "Tennessee State Tigers",
+    "ALB": "UAlbany Great Danes",
+    "GWEB": "Gardner-Webb Runnin' Bulldogs",
+    "SAM": "Samford Bulldogs",
+    "W&M": "William & Mary Tribe",
+    "CP": "Cal Poly Mustangs",
+    "UNCO": "Northern Colorado Bears",
+    "USM": "Southern Miss Golden Eagles",
+    "TXSO": "Texas Southern Tigers",
+    "SFA": "Stephen F. Austin Lumberjacks",
+    "LIU": "Long Island University Sharks",
+    "UNI": "Northern Iowa Panthers",
+    "PV": "Prairie View A&M Panthers",
+    "VMI": "VMI Keydets",
+    "MORG": "Morgan State Bears",
+    "NCCU": "North Carolina Central Eagles",
+    "SCST": "South Carolina State Bulldogs",
+    "COLG": "Colgate Raiders",
+    "VILL": "Villanova Wildcats",
+    "EWU": "Eastern Washington Eagles",
+    "YSU": "Youngstown State Penguins",
+    "PENN": "Pennsylvania Quakers",
+    "MONM": "Monmouth Hawks",
+    "HC": "Holy Cross Crusaders",
+    "SHU": "Sacred Heart Pioneers",
+    "WAG": "Wagner Seahawks",
+    "ME": "Maine Black Bears",
+    "MER": "Mercer Bears",
+    "CIT": "The Citadel Bulldogs",
+    "WOF": "Wofford Terriers",
+    "CHSO": "Charleston Southern Buccaneers",
+    "ALST": "Alabama State Hornets",
+    "UIW": "Incarnate Word Cardinals",
+    "MERC": "Mercyhurst Lakers",
+    "SOU": "Southern Jaguars",
+    "STMN": "St. Thomas-Minnesota Tommies"
+   },
+   "form": "1st quarter"
+  },
+  "ncaaf-2q": {
+   "status": "FAILED-EXAM",
+   "league": {
+    "LH1": 9.434,
+    "LA1": 6.725,
+    "share": 0.3032
+   },
+   "sigma_total": 8.256,
+   "sigma_margin": 9.509,
+   "teams": {
+    "AAMU": {
+     "off": 0.7286,
+     "def": 1.5949,
+     "gp": 2
+    },
+    "ACU": {
+     "off": 0.763,
+     "def": 1.1807,
+     "gp": 4
+    },
+    "AFA": {
+     "off": 0.7971,
+     "def": 0.7705,
+     "gp": 24
+    },
+    "AKR": {
+     "off": 0.8634,
+     "def": 0.9871,
+     "gp": 24
+    },
+    "ALA": {
+     "off": 1.2389,
+     "def": 0.7013,
+     "gp": 28
+    },
+    "ALB": {
+     "off": 0.9427,
+     "def": 1.1903,
+     "gp": 3
+    },
+    "ALCN": {
+     "off": 0.5714,
+     "def": 1.3671,
+     "gp": 3
+    },
+    "ALST": {
+     "off": 1.1466,
+     "def": 0.9733,
+     "gp": 1
+    },
+    "APP": {
+     "off": 1.1109,
+     "def": 1.2037,
+     "gp": 24
+    },
+    "APSU": {
+     "off": 0.7482,
+     "def": 1.314,
+     "gp": 3
+    },
+    "ARIZ": {
+     "off": 0.7482,
+     "def": 0.9872,
+     "gp": 25
+    },
+    "ARK": {
+     "off": 1.2732,
+     "def": 1.0171,
+     "gp": 25
+    },
+    "ARMY": {
+     "off": 1.0872,
+     "def": 0.5323,
+     "gp": 27
+    },
+    "ARST": {
+     "off": 0.8099,
+     "def": 0.9255,
+     "gp": 26
+    },
+    "ASU": {
+     "off": 1.203,
+     "def": 0.7878,
+     "gp": 27
+    },
+    "AUB": {
+     "off": 0.9606,
+     "def": 0.6777,
+     "gp": 24
+    },
+    "BALL": {
+     "off": 0.6954,
+     "def": 1.0225,
+     "gp": 24
+    },
+    "BAY": {
+     "off": 1.3116,
+     "def": 1.158,
+     "gp": 25
+    },
+    "BC": {
+     "off": 1.2006,
+     "def": 1.2049,
+     "gp": 25
+    },
+    "BCU": {
+     "off": 0.8558,
+     "def": 1.6294,
+     "gp": 4
+    },
+    "BGSU": {
+     "off": 0.8677,
+     "def": 0.872,
+     "gp": 25
+    },
+    "BOIS": {
+     "off": 1.2428,
+     "def": 0.9798,
+     "gp": 28
+    },
+    "BRY": {
+     "off": 0.872,
+     "def": 1.2256,
+     "gp": 3
+    },
+    "BUCK": {
+     "off": 0.8111,
+     "def": 1.4093,
+     "gp": 2
+    },
+    "BUFF": {
+     "off": 0.8421,
+     "def": 0.9488,
+     "gp": 25
+    },
+    "BYU": {
+     "off": 1.1511,
+     "def": 0.8397,
+     "gp": 27
+    },
+    "CAL": {
+     "off": 0.9296,
+     "def": 0.7893,
+     "gp": 26
+    },
+    "CAM": {
+     "off": 0.8094,
+     "def": 1.6449,
+     "gp": 4
+    },
+    "CARK": {
+     "off": 0.6775,
+     "def": 1.1195,
+     "gp": 3
+    },
+    "CCSU": {
+     "off": 0.9958,
+     "def": 1.6853,
+     "gp": 3
+    },
+    "CCU": {
+     "off": 0.7893,
+     "def": 1.2514,
+     "gp": 26
+    },
+    "CHSO": {
+     "off": 0.5714,
+     "def": 1.1726,
+     "gp": 3
+    },
+    "CIN": {
+     "off": 1.0128,
+     "def": 0.919,
+     "gp": 25
+    },
+    "CIT": {
+     "off": 0.5714,
+     "def": 1.4909,
+     "gp": 3
+    },
+    "CLEM": {
+     "off": 1.211,
+     "def": 0.9076,
+     "gp": 27
+    },
+    "CLT": {
+     "off": 0.6689,
+     "def": 1.2258,
+     "gp": 24
+    },
+    "CMU": {
+     "off": 1.0043,
+     "def": 1.0982,
+     "gp": 25
+    },
+    "COLG": {
+     "off": 0.6667,
+     "def": 1.5949,
+     "gp": 2
+    },
+    "COLO": {
+     "off": 0.9061,
+     "def": 1.0854,
+     "gp": 25
+    },
+    "CONN": {
+     "off": 1.0822,
+     "def": 0.9172,
+     "gp": 26
+    },
+    "CP": {
+     "off": 1.026,
+     "def": 1.3509,
+     "gp": 4
+    },
+    "CSU": {
+     "off": 0.7013,
+     "def": 1.158,
+     "gp": 25
+    },
+    "DEL": {
+     "off": 1.3363,
+     "def": 1.0269,
+     "gp": 24
+    },
+    "DSU": {
+     "off": 0.8729,
+     "def": 0.9555,
+     "gp": 2
+    },
+    "DUKE": {
+     "off": 0.9754,
+     "def": 0.9475,
+     "gp": 27
+    },
+    "DUQ": {
+     "off": 0.6392,
+     "def": 1.7841,
+     "gp": 4
+    },
+    "ECU": {
+     "off": 0.8966,
+     "def": 1.0203,
+     "gp": 26
+    },
+    "EIU": {
+     "off": 0.6952,
+     "def": 1.2433,
+     "gp": 3
+    },
+    "EKU": {
+     "off": 0.7166,
+     "def": 1.4592,
+     "gp": 4
+    },
+    "ELON": {
+     "off": 0.8729,
+     "def": 0.9555,
+     "gp": 2
+    },
+    "EMU": {
+     "off": 0.8015,
+     "def": 1.133,
+     "gp": 24
+    },
+    "ETAM": {
+     "off": 0.6392,
+     "def": 1.3045,
+     "gp": 4
+    },
+    "ETSU": {
+     "off": 1.0665,
+     "def": 1.1726,
+     "gp": 3
+    },
+    "EWU": {
+     "off": 0.8094,
+     "def": 1.1962,
+     "gp": 4
+    },
+    "FAMU": {
+     "off": 0.6775,
+     "def": 1.1726,
+     "gp": 3
+    },
+    "FAU": {
+     "off": 1.1684,
+     "def": 1.0755,
+     "gp": 24
+    },
+    "FIU": {
+     "off": 1.0299,
+     "def": 1.2177,
+     "gp": 25
+    },
+    "FLA": {
+     "off": 0.9744,
+     "def": 0.9872,
+     "gp": 25
+    },
+    "FOR": {
+     "off": 0.7286,
+     "def": 0.9555,
+     "gp": 2
+    },
+    "FRES": {
+     "off": 1.1524,
+     "def": 0.6862,
+     "gp": 26
+    },
+    "FSU": {
+     "off": 0.9916,
+     "def": 0.881,
+     "gp": 24
+    },
+    "FUR": {
+     "off": 0.7286,
+     "def": 1.533,
+     "gp": 2
+    },
+    "GASO": {
+     "off": 0.942,
+     "def": 1.0286,
+     "gp": 26
+    },
+    "GAST": {
+     "off": 0.8545,
+     "def": 1.1021,
+     "gp": 24
+    },
+    "GRAM": {
+     "off": 0.6667,
+     "def": 1.4299,
+     "gp": 2
+    },
+    "GT": {
+     "off": 1.0286,
+     "def": 0.8636,
+     "gp": 26
+    },
+    "GWEB": {
+     "off": 0.8713,
+     "def": 1.3045,
+     "gp": 4
+    },
+    "HAW": {
+     "off": 0.8208,
+     "def": 0.872,
+     "gp": 25
+    },
+    "HC": {
+     "off": 1.0173,
+     "def": 1.0173,
+     "gp": 2
+    },
+    "HCU": {
+     "off": 0.819,
+     "def": 1.5616,
+     "gp": 3
+    },
+    "HOU": {
+     "off": 0.9659,
+     "def": 0.8123,
+     "gp": 25
+    },
+    "HOW": {
+     "off": 0.9555,
+     "def": 1.0792,
+     "gp": 2
+    },
+    "IDHO": {
+     "off": 0.7195,
+     "def": 0.8708,
+     "gp": 5
+    },
+    "IDST": {
+     "off": 1.0879,
+     "def": 1.1962,
+     "gp": 4
+    },
+    "ILL": {
+     "off": 1.0533,
+     "def": 0.7728,
+     "gp": 26
+    },
+    "ILST": {
+     "off": 0.7466,
+     "def": 0.9693,
+     "gp": 6
+    },
+    "INST": {
+     "off": 0.6083,
+     "def": 1.3509,
+     "gp": 4
+    },
+    "IOWA": {
+     "off": 0.9131,
+     "def": 0.7604,
+     "gp": 26
+    },
+    "ISU": {
+     "off": 1.0162,
+     "def": 0.8883,
+     "gp": 26
+    },
+    "IU": {
+     "off": 1.4602,
+     "def": 0.6163,
+     "gp": 29
+    },
+    "JKST": {
+     "off": 0.9555,
+     "def": 0.8729,
+     "gp": 2
+    },
+    "JMU": {
+     "off": 1.1471,
+     "def": 1.1192,
+     "gp": 27
+    },
+    "JVST": {
+     "off": 1.1732,
+     "def": 0.9102,
+     "gp": 28
+    },
+    "KENN": {
+     "off": 0.6037,
+     "def": 0.9667,
+     "gp": 26
+    },
+    "KENT": {
+     "off": 0.5805,
+     "def": 1.4778,
+     "gp": 24
+    },
+    "KSU": {
+     "off": 1.0385,
+     "def": 1.0897,
+     "gp": 25
+    },
+    "KU": {
+     "off": 1.1463,
+     "def": 0.996,
+     "gp": 24
+    },
+    "LAF": {
+     "off": 0.7482,
+     "def": 0.9251,
+     "gp": 3
+    },
+    "LAM": {
+     "off": 0.6667,
+     "def": 1.2236,
+     "gp": 2
+    },
+    "LEH": {
+     "off": 0.8,
+     "def": 1.1466,
+     "gp": 1
+    },
+    "LIB": {
+     "off": 1.0623,
+     "def": 0.8015,
+     "gp": 24
+    },
+    "LIN": {
+     "off": 0.7011,
+     "def": 1.1807,
+     "gp": 4
+    },
+    "LIU": {
+     "off": 0.6952,
+     "def": 1.4909,
+     "gp": 3
+    },
+    "LOU": {
+     "off": 1.1936,
+     "def": 0.7522,
+     "gp": 26
+    },
+    "LSU": {
+     "off": 1.1689,
+     "def": 0.8388,
+     "gp": 26
+    },
+    "LT": {
+     "off": 0.7811,
+     "def": 0.748,
+     "gp": 26
+    },
+    "M-OH": {
+     "off": 0.8173,
+     "def": 0.7129,
+     "gp": 28
+    },
+    "MASS": {
+     "off": 0.7971,
+     "def": 1.2789,
+     "gp": 24
+    },
+    "MCN": {
+     "off": 0.6952,
+     "def": 1.5439,
+     "gp": 3
+    },
+    "MD": {
+     "off": 0.9253,
+     "def": 1.186,
+     "gp": 24
+    },
+    "ME": {
+     "off": 0.8249,
+     "def": 1.289,
+     "gp": 4
+    },
+    "MEM": {
+     "off": 1.3999,
+     "def": 1.0203,
+     "gp": 26
+    },
+    "MER": {
+     "off": 0.7482,
+     "def": 1.4201,
+     "gp": 3
+    },
+    "MERC": {
+     "off": 0.998,
+     "def": 1.1466,
+     "gp": 1
+    },
+    "MIA": {
+     "off": 1.1489,
+     "def": 0.7213,
+     "gp": 29
+    },
+    "MICH": {
+     "off": 0.8471,
+     "def": 0.9667,
+     "gp": 26
+    },
+    "MINN": {
+     "off": 1.1689,
+     "def": 0.8264,
+     "gp": 26
+    },
+    "MISS": {
+     "off": 1.3975,
+     "def": 0.8599,
+     "gp": 28
+    },
+    "MIZ": {
+     "off": 0.8924,
+     "def": 0.7687,
+     "gp": 26
+    },
+    "MONM": {
+     "off": 1.0665,
+     "def": 1.1372,
+     "gp": 3
+    },
+    "MONT": {
+     "off": 1.2236,
+     "def": 1.0173,
+     "gp": 2
+    },
+    "MORG": {
+     "off": 0.6245,
+     "def": 1.5085,
+     "gp": 3
+    },
+    "MOST": {
+     "off": 1.0769,
+     "def": 1.0641,
+     "gp": 25
+    },
+    "MRMK": {
+     "off": 0.5464,
+     "def": 1.1498,
+     "gp": 4
+    },
+    "MRSH": {
+     "off": 1.2433,
+     "def": 0.8293,
+     "gp": 25
+    },
+    "MSST": {
+     "off": 0.7995,
+     "def": 1.1964,
+     "gp": 25
+    },
+    "MSU": {
+     "off": 0.8413,
+     "def": 0.9429,
+     "gp": 24
+    },
+    "MTST": {
+     "off": 1.026,
+     "def": 1.1498,
+     "gp": 4
+    },
+    "MTSU": {
+     "off": 0.6821,
+     "def": 1.0888,
+     "gp": 24
+    },
+    "MUR": {
+     "off": 0.6599,
+     "def": 1.452,
+     "gp": 6
+    },
+    "NAU": {
+     "off": 0.9781,
+     "def": 0.7836,
+     "gp": 3
+    },
+    "NAVY": {
+     "off": 1.1689,
+     "def": 0.8058,
+     "gp": 26
+    },
+    "NCAT": {
+     "off": 0.8543,
+     "def": 1.1195,
+     "gp": 3
+    },
+    "NCCU": {
+     "off": 0.7904,
+     "def": 1.1617,
+     "gp": 2
+    },
+    "NCSU": {
+     "off": 1.0286,
+     "def": 1.0327,
+     "gp": 26
+    },
+    "ND": {
+     "off": 1.3898,
+     "def": 0.8289,
+     "gp": 28
+    },
+    "NDSU": {
+     "off": 1.5689,
+     "def": 0.6725,
+     "gp": 29
+    },
+    "NEB": {
+     "off": 1.1812,
+     "def": 0.7687,
+     "gp": 26
+    },
+    "NEV": {
+     "off": 0.7354,
+     "def": 1.1153,
+     "gp": 25
+    },
+    "NICH": {
+     "off": 0.8157,
+     "def": 1.2971,
+     "gp": 5
+    },
+    "NIU": {
+     "off": 0.7866,
+     "def": 0.8933,
+     "gp": 25
+    },
+    "NMSU": {
+     "off": 0.7308,
+     "def": 1.0446,
+     "gp": 24
+    },
+    "NORF": {
+     "off": 0.7286,
+     "def": 1.2236,
+     "gp": 2
+    },
+    "NU": {
+     "off": 0.8293,
+     "def": 0.9702,
+     "gp": 25
+    },
+    "NWST": {
+     "off": 0.5,
+     "def": 2.0471,
+     "gp": 4
+    },
+    "ODU": {
+     "off": 1.0854,
+     "def": 0.7696,
+     "gp": 25
+    },
+    "OHIO": {
+     "off": 1.1032,
+     "def": 0.7559,
+     "gp": 27
+    },
+    "OKST": {
+     "off": 0.8059,
+     "def": 1.1816,
+     "gp": 24
+    },
+    "ORE": {
+     "off": 1.5014,
+     "def": 0.7701,
+     "gp": 29
+    },
+    "ORST": {
+     "off": 0.7882,
+     "def": 1.0402,
+     "gp": 24
+    },
+    "OSU": {
+     "off": 1.3371,
+     "def": 0.569,
+     "gp": 30
+    },
+    "OU": {
+     "off": 1.0286,
+     "def": 0.8058,
+     "gp": 26
+    },
+    "PENN": {
+     "off": 1.0475,
+     "def": 0.9485,
+     "gp": 1
+    },
+    "PITT": {
+     "off": 1.2184,
+     "def": 1.1152,
+     "gp": 26
+    },
+    "PRST": {
+     "off": 0.8208,
+     "def": 1.8605,
+     "gp": 6
+    },
+    "PSU": {
+     "off": 1.2951,
+     "def": 0.7513,
+     "gp": 29
+    },
+    "PUR": {
+     "off": 0.5849,
+     "def": 1.4557,
+     "gp": 24
+    },
+    "PV": {
+     "off": 0.6667,
+     "def": 1.2855,
+     "gp": 2
+    },
+    "RICE": {
+     "off": 0.8336,
+     "def": 1.0641,
+     "gp": 25
+    },
+    "RICH": {
+     "off": 1.1195,
+     "def": 1.0311,
+     "gp": 3
+    },
+    "RMU": {
+     "off": 1.0173,
+     "def": 0.7904,
+     "gp": 2
+    },
+    "RUTG": {
+     "off": 1.1708,
+     "def": 0.983,
+     "gp": 25
+    },
+    "SAC": {
+     "off": 1.2966,
+     "def": 1.2391,
+     "gp": 24
+    },
+    "SAM": {
+     "off": 0.5714,
+     "def": 1.2433,
+     "gp": 3
+    },
+    "SC": {
+     "off": 1.047,
+     "def": 0.7738,
+     "gp": 25
+    },
+    "SCST": {
+     "off": 0.819,
+     "def": 1.3671,
+     "gp": 3
+    },
+    "SDAK": {
+     "off": 0.7011,
+     "def": 1.289,
+     "gp": 4
+    },
+    "SDST": {
+     "off": 1.1426,
+     "def": 0.9817,
+     "gp": 6
+    },
+    "SDSU": {
+     "off": 1.0598,
+     "def": 0.7269,
+     "gp": 25
+    },
+    "SELA": {
+     "off": 0.6083,
+     "def": 1.3045,
+     "gp": 4
+    },
+    "SEMO": {
+     "off": 0.8013,
+     "def": 1.4201,
+     "gp": 3
+    },
+    "SFA": {
+     "off": 0.8111,
+     "def": 1.0173,
+     "gp": 2
+    },
+    "SFPA": {
+     "off": 0.6547,
+     "def": 0.9177,
+     "gp": 4
+    },
+    "SHSU": {
+     "off": 0.8208,
+     "def": 0.9488,
+     "gp": 25
+    },
+    "SHU": {
+     "off": 0.8,
+     "def": 1.3198,
+     "gp": 1
+    },
+    "SIU": {
+     "off": 0.7607,
+     "def": 1.0908,
+     "gp": 5
+    },
+    "SJSU": {
+     "off": 1.0982,
+     "def": 1.1323,
+     "gp": 25
+    },
+    "SMU": {
+     "off": 1.227,
+     "def": 0.8038,
+     "gp": 27
+    },
+    "SOU": {
+     "off": 0.9733,
+     "def": 1.3198,
+     "gp": 1
+    },
+    "STAN": {
+     "off": 0.7705,
+     "def": 1.2214,
+     "gp": 24
+    },
+    "STBK": {
+     "off": 0.6667,
+     "def": 0.9967,
+     "gp": 2
+    },
+    "STMN": {
+     "off": 0.8,
+     "def": 1.2208,
+     "gp": 1
+    },
+    "SUU": {
+     "off": 0.6667,
+     "def": 1.3061,
+     "gp": 2
+    },
+    "SYR": {
+     "off": 1.0854,
+     "def": 1.1238,
+     "gp": 25
+    },
+    "TA&M": {
+     "off": 1.0616,
+     "def": 0.616,
+     "gp": 26
+    },
+    "TAR": {
+     "off": 0.8111,
+     "def": 1.0173,
+     "gp": 2
+    },
+    "TCU": {
+     "off": 1.2555,
+     "def": 0.9461,
+     "gp": 26
+    },
+    "TEM": {
+     "off": 0.9341,
+     "def": 1.1993,
+     "gp": 24
+    },
+    "TENN": {
+     "off": 1.3215,
+     "def": 0.7563,
+     "gp": 26
+    },
+    "TEX": {
+     "off": 1.1639,
+     "def": 0.6913,
+     "gp": 29
+    },
+    "TLSA": {
+     "off": 0.8766,
+     "def": 1.4513,
+     "gp": 24
+    },
+    "TNST": {
+     "off": 0.6667,
+     "def": 1.6774,
+     "gp": 2
+    },
+    "TNTC": {
+     "off": 0.7836,
+     "def": 1.2433,
+     "gp": 3
+    },
+    "TOL": {
+     "off": 1.2638,
+     "def": 0.5418,
+     "gp": 26
+    },
+    "TOW": {
+     "off": 0.819,
+     "def": 1.3671,
+     "gp": 3
+    },
+    "TROY": {
+     "off": 0.9461,
+     "def": 0.8924,
+     "gp": 26
+    },
+    "TTU": {
+     "off": 1.3547,
+     "def": 0.688,
+     "gp": 27
+    },
+    "TULN": {
+     "off": 1.2312,
+     "def": 0.7361,
+     "gp": 28
+    },
+    "TXSO": {
+     "off": 0.6667,
+     "def": 1.3268,
+     "gp": 2
+    },
+    "TXST": {
+     "off": 1.1565,
+     "def": 1.0657,
+     "gp": 26
+    },
+    "UAB": {
+     "off": 1.0755,
+     "def": 1.186,
+     "gp": 24
+    },
+    "UAPB": {
+     "off": 0.6667,
+     "def": 1.5949,
+     "gp": 2
+    },
+    "UCD": {
+     "off": 0.9796,
+     "def": 1.3664,
+     "gp": 4
+    },
+    "UCF": {
+     "off": 0.9827,
+     "def": 1.1595,
+     "gp": 24
+    },
+    "UCLA": {
+     "off": 0.8457,
+     "def": 1.0446,
+     "gp": 24
+    },
+    "UGA": {
+     "off": 1.1577,
+     "def": 0.6471,
+     "gp": 28
+    },
+    "UIW": {
+     "off": 0.8,
+     "def": 1.1466,
+     "gp": 1
+    },
+    "UK": {
+     "off": 0.8587,
+     "def": 1.1062,
+     "gp": 23
+    },
+    "UL": {
+     "off": 1.3068,
+     "def": 1.1751,
+     "gp": 27
+    },
+    "ULM": {
+     "off": 0.6291,
+     "def": 0.8634,
+     "gp": 24
+    },
+    "UNA": {
+     "off": 0.6667,
+     "def": 1.7393,
+     "gp": 2
+    },
+    "UNC": {
+     "off": 0.8677,
+     "def": 0.9616,
+     "gp": 25
+    },
+    "UNCO": {
+     "off": 0.9958,
+     "def": 1.0665,
+     "gp": 3
+    },
+    "UND": {
+     "off": 0.9177,
+     "def": 0.9641,
+     "gp": 4
+    },
+    "UNH": {
+     "off": 0.8729,
+     "def": 1.4299,
+     "gp": 2
+    },
+    "UNI": {
+     "off": 0.7713,
+     "def": 1.3406,
+     "gp": 6
+    },
+    "UNLV": {
+     "off": 1.3975,
+     "def": 0.8637,
+     "gp": 28
+    },
+    "UNM": {
+     "off": 1.2775,
+     "def": 1.2732,
+     "gp": 25
+    },
+    "UNT": {
+     "off": 1.215,
+     "def": 1.1791,
+     "gp": 27
+    },
+    "URI": {
+     "off": 0.5714,
+     "def": 1.4909,
+     "gp": 3
+    },
+    "USA": {
+     "off": 1.1238,
+     "def": 0.8677,
+     "gp": 25
+    },
+    "USC": {
+     "off": 1.1689,
+     "def": 0.9089,
+     "gp": 26
+    },
+    "USF": {
+     "off": 1.1565,
+     "def": 0.8058,
+     "gp": 26
+    },
+    "USM": {
+     "off": 0.8678,
+     "def": 1.0225,
+     "gp": 24
+    },
+    "USU": {
+     "off": 0.9872,
+     "def": 1.4866,
+     "gp": 25
+    },
+    "UTAH": {
+     "off": 1.2817,
+     "def": 0.7482,
+     "gp": 25
+    },
+    "UTC": {
+     "off": 0.6245,
+     "def": 1.314,
+     "gp": 3
+    },
+    "UTEP": {
+     "off": 0.6645,
+     "def": 1.1595,
+     "gp": 24
+    },
+    "UTM": {
+     "off": 0.6475,
+     "def": 1.155,
+     "gp": 6
+    },
+    "UTSA": {
+     "off": 1.3504,
+     "def": 1.0575,
+     "gp": 26
+    },
+    "UTU": {
+     "off": 0.8,
+     "def": 1.1961,
+     "gp": 1
+    },
+    "UVA": {
+     "off": 0.975,
+     "def": 1.0657,
+     "gp": 26
+    },
+    "VAN": {
+     "off": 1.1194,
+     "def": 0.8966,
+     "gp": 26
+    },
+    "VILL": {
+     "off": 0.6952,
+     "def": 1.314,
+     "gp": 3
+    },
+    "VMI": {
+     "off": 0.6667,
+     "def": 1.533,
+     "gp": 2
+    },
+    "VT": {
+     "off": 0.8336,
+     "def": 0.9232,
+     "gp": 25
+    },
+    "W&M": {
+     "off": 0.9555,
+     "def": 1.5124,
+     "gp": 2
+    },
+    "WAG": {
+     "off": 0.8094,
+     "def": 1.3819,
+     "gp": 4
+    },
+    "WAKE": {
+     "off": 1.0385,
+     "def": 0.9446,
+     "gp": 25
+    },
+    "WASH": {
+     "off": 1.2266,
+     "def": 0.9131,
+     "gp": 26
+    },
+    "WCU": {
+     "off": 0.7286,
+     "def": 0.8111,
+     "gp": 2
+    },
+    "WEB": {
+     "off": 0.8708,
+     "def": 1.5309,
+     "gp": 5
+    },
+    "WIS": {
+     "off": 0.5937,
+     "def": 0.8413,
+     "gp": 24
+    },
+    "WIU": {
+     "off": 0.5464,
+     "def": 1.5211,
+     "gp": 4
+    },
+    "WKU": {
+     "off": 1.0074,
+     "def": 0.9395,
+     "gp": 27
+    },
+    "WMU": {
+     "off": 1.1831,
+     "def": 0.8477,
+     "gp": 27
+    },
+    "WOF": {
+     "off": 0.8523,
+     "def": 1.2443,
+     "gp": 2
+    },
+    "WSU": {
+     "off": 1.2101,
+     "def": 0.7893,
+     "gp": 26
+    },
+    "WVU": {
+     "off": 0.983,
+     "def": 1.35,
+     "gp": 25
+    },
+    "WYO": {
+     "off": 0.6114,
+     "def": 1.0579,
+     "gp": 24
+    },
+    "YSU": {
+     "off": 1.1343,
+     "def": 1.5675,
+     "gp": 4
+    }
+   },
+   "backtest": {
+    "n": 1822,
+    "mae_total": 6.614,
+    "mae_total_naive": 6.482,
+    "brier_total": 0.2518,
+    "brier_total_naive": 0.2536,
+    "mae_margin": 7.596,
+    "mae_margin_naive": 7.342,
+    "brier_margin": 0.2345,
+    "brier_margin_naive": 0.2264,
+    "protocol": "walk-forward (rates from prior games only); naive = scaled full-game baseline (expanding segment/full share for totals, the segment share of the full-game margin for spreads, sigma scaled by sqrt(share))"
+   },
+   "n_history": 1922,
+   "coverage": {
+    "events": 1923,
+    "games_with_linescores": 1922,
+    "pull_days": 302,
+    "seasons": "2024+2025 (ESPN FBS groups=80)"
+   },
+   "team_names": {
+    "GT": "Georgia Tech Yellow Jackets",
+    "FSU": "Florida State Seminoles",
+    "UNM": "New Mexico Lobos",
+    "MTST": "Montana State Bobcats",
+    "NEV": "Nevada Wolf Pack",
+    "SMU": "SMU Mustangs",
+    "HAW": "Hawai'i Rainbow Warriors",
+    "DSU": "Delaware State Hornets",
+    "MIZ": "Missouri Tigers",
+    "MUR": "Murray State Racers",
+    "UTAH": "Utah Utes",
+    "SUU": "Southern Utah Thunderbirds",
+    "KU": "Kansas Jayhawks",
+    "LIN": "Lindenwood Lions",
+    "NCSU": "NC State Wolfpack",
+    "WCU": "Western Carolina Catamounts",
+    "RUTG": "Rutgers Scarlet Knights",
+    "HOW": "Howard Bison",
+    "DEL": "Delaware Blue Hens",
+    "BRY": "Bryant Bulldogs",
+    "WAKE": "Wake Forest Demon Deacons",
+    "NCAT": "North Carolina A&T Aggies",
+    "UCF": "UCF Knights",
+    "UNH": "New Hampshire Wildcats",
+    "BUFF": "Buffalo Bulls",
+    "LAF": "Lafayette Leopards",
+    "BGSU": "Bowling Green Falcons",
+    "FOR": "Fordham Rams",
+    "CMU": "Central Michigan Chippewas",
+    "CCSU": "Central Connecticut Blue Devils",
+    "ARK": "Arkansas Razorbacks",
+    "UAPB": "Arkansas-Pine Bluff Golden Lions",
+    "TOL": "Toledo Rockets",
+    "DUQ": "Duquesne Dukes",
+    "COLO": "Colorado Buffaloes",
+    "NDSU": "North Dakota State Bison",
+    "JVST": "Jacksonville State Gamecocks",
+    "CCU": "Coastal Carolina Chanticleers",
+    "UAB": "UAB Blazers",
+    "ALCN": "Alcorn State Braves",
+    "TULN": "Tulane Green Wave",
+    "SELA": "SE Louisiana Lions",
+    "TLSA": "Tulsa Golden Hurricane",
+    "NWST": "Northwestern State Demons",
+    "MINN": "Minnesota Golden Gophers",
+    "UNC": "North Carolina Tar Heels",
+    "ULM": "UL Monroe Warhawks",
+    "JKST": "Jackson State Tigers",
+    "ILL": "Illinois Fighting Illini",
+    "EIU": "Eastern Illinois Panthers",
+    "SJSU": "San Jos\u00e9 State Spartans",
+    "SAC": "Sacramento State Hornets",
+    "OU": "Oklahoma Sooners",
+    "TEM": "Temple Owls",
+    "ARMY": "Army Black Knights",
+    "LEH": "Lehigh Mountain Hawks",
+    "MSU": "Michigan State Spartans",
+    "FAU": "Florida Atlantic Owls",
+    "DUKE": "Duke Blue Devils",
+    "ELON": "Elon Phoenix",
+    "WIS": "Wisconsin Badgers",
+    "WMU": "Western Michigan Broncos",
+    "STAN": "Stanford Cardinal",
+    "TCU": "TCU Horned Frogs",
+    "UGA": "Georgia Bulldogs",
+    "CLEM": "Clemson Tigers",
+    "OSU": "Ohio State Buckeyes",
+    "AKR": "Akron Zips",
+    "ORE": "Oregon Ducks",
+    "IDHO": "Idaho Vandals",
+    "TEX": "Texas Longhorns",
+    "CSU": "Colorado State Rams",
+    "ALA": "Alabama Crimson Tide",
+    "WKU": "Western Kentucky Hilltoppers",
+    "MISS": "Ole Miss Rebels",
+    "FUR": "Furman Paladins",
+    "TA&M": "Texas A&M Aggies",
+    "ND": "Notre Dame Fighting Irish",
+    "WVU": "West Virginia Mountaineers",
+    "PSU": "Penn State Nittany Lions",
+    "MICH": "Michigan Wolverines",
+    "FRES": "Fresno State Bulldogs",
+    "TENN": "Tennessee Volunteers",
+    "UTC": "Chattanooga Mocs",
+    "OKST": "Oklahoma State Cowboys",
+    "SDST": "South Dakota State Jackrabbits",
+    "KSU": "Kansas State Wildcats",
+    "UTM": "UT Martin Skyhawks",
+    "FLA": "Florida Gators",
+    "MIA": "Miami Hurricanes",
+    "ARIZ": "Arizona Wildcats",
+    "IOWA": "Iowa Hawkeyes",
+    "ILST": "Illinois State Redbirds",
+    "VAN": "Vanderbilt Commodores",
+    "VT": "Virginia Tech Hokies",
+    "MD": "Maryland Terrapins",
+    "CONN": "UConn Huskies",
+    "LOU": "Louisville Cardinals",
+    "APSU": "Austin Peay Governors",
+    "PUR": "Purdue Boilermakers",
+    "INST": "Indiana State Sycamores",
+    "PITT": "Pittsburgh Panthers",
+    "KENT": "Kent State Golden Flashes",
+    "NAVY": "Navy Midshipmen",
+    "BUCK": "Bucknell Bison",
+    "CIN": "Cincinnati Bearcats",
+    "TOW": "Towson Tigers",
+    "WSU": "Washington State Cougars",
+    "PRST": "Portland State Vikings",
+    "IU": "Indiana Hoosiers",
+    "FIU": "Florida International Panthers",
+    "NEB": "Nebraska Cornhuskers",
+    "UTEP": "UTEP Miners",
+    "MASS": "Massachusetts Minutemen",
+    "EMU": "Eastern Michigan Eagles",
+    "APP": "App State Mountaineers",
+    "ETSU": "East Tennessee State Buccaneers",
+    "ISU": "Iowa State Cyclones",
+    "UND": "North Dakota Fighting Hawks",
+    "SYR": "Syracuse Orange",
+    "OHIO": "Ohio Bobcats",
+    "UTSA": "UTSA Roadrunners",
+    "KENN": "Kennesaw State Owls",
+    "AFA": "Air Force Falcons",
+    "MRMK": "Merrimack Warriors",
+    "NU": "Northwestern Wildcats",
+    "M-OH": "Miami (OH) RedHawks",
+    "NIU": "Northern Illinois Huskies",
+    "WIU": "Western Illinois Leathernecks",
+    "GASO": "Georgia Southern Eagles",
+    "BOIS": "Boise State Broncos",
+    "SC": "South Carolina Gamecocks",
+    "ODU": "Old Dominion Monarchs",
+    "MRSH": "Marshall Thundering Herd",
+    "STBK": "Stony Brook Seawolves",
+    "CAL": "California Golden Bears",
+    "UCD": "UC Davis Aggies",
+    "USA": "South Alabama Jaguars",
+    "UNT": "North Texas Mean Green",
+    "MSST": "Mississippi State Bulldogs",
+    "EKU": "Eastern Kentucky Colonels",
+    "LIB": "Liberty Flames",
+    "CAM": "Campbell Fighting Camels",
+    "UVA": "Virginia Cavaliers",
+    "RICH": "Richmond Spiders",
+    "ECU": "East Carolina Pirates",
+    "NORF": "Norfolk State Spartans",
+    "ORST": "Oregon State Beavers",
+    "IDST": "Idaho State Bengals",
+    "ARST": "Arkansas State Red Wolves",
+    "CARK": "Central Arkansas Bears",
+    "USF": "South Florida Bulls",
+    "BCU": "Bethune-Cookman Wildcats",
+    "BAY": "Baylor Bears",
+    "TAR": "Tarleton State Texans",
+    "HOU": "Houston Cougars",
+    "UNLV": "UNLV Rebels",
+    "MTSU": "Middle Tennessee Blue Raiders",
+    "TNTC": "Tennessee Tech Golden Eagles",
+    "RICE": "Rice Owls",
+    "SHSU": "Sam Houston Bearkats",
+    "TROY": "Troy Trojans",
+    "MEM": "Memphis Tigers",
+    "UNA": "North Alabama Lions",
+    "AUB": "Auburn Tigers",
+    "AAMU": "Alabama A&M Bulldogs",
+    "UCLA": "UCLA Bruins",
+    "TTU": "Texas Tech Red Raiders",
+    "ACU": "Abilene Christian Wildcats",
+    "BYU": "BYU Cougars",
+    "SIU": "Southern Illinois Salukis",
+    "GAST": "Georgia State Panthers",
+    "HCU": "Houston Christian Huskies",
+    "UL": "Louisiana Ragin' Cajuns",
+    "GRAM": "Grambling Tigers",
+    "LT": "Louisiana Tech Bulldogs",
+    "NICH": "Nicholls Colonels",
+    "SDSU": "San Diego State Aztecs",
+    "ETAM": "East Texas A&M Lions",
+    "USU": "Utah State Aggies",
+    "RMU": "Robert Morris Colonials",
+    "CLT": "Charlotte 49ers",
+    "JMU": "James Madison Dukes",
+    "TXST": "Texas State Bobcats",
+    "LAM": "Lamar Cardinals",
+    "MONT": "Montana Grizzlies",
+    "MOST": "Missouri State Bears",
+    "NMSU": "New Mexico State Aggies",
+    "SEMO": "Southeast Missouri State Redhawks",
+    "ASU": "Arizona State Sun Devils",
+    "WYO": "Wyoming Cowboys",
+    "WASH": "Washington Huskies",
+    "WEB": "Weber State Wildcats",
+    "LSU": "LSU Tigers",
+    "USC": "USC Trojans",
+    "BC": "Boston College Eagles",
+    "FAMU": "Florida A&M Rattlers",
+    "NAU": "Northern Arizona Lumberjacks",
+    "URI": "Rhode Island Rams",
+    "MCN": "McNeese Cowboys",
+    "BALL": "Ball State Cardinals",
+    "SFPA": "Saint Francis Red Flash",
+    "UTU": "Utah Tech Trailblazers",
+    "UK": "Kentucky Wildcats",
+    "SDAK": "South Dakota Coyotes",
+    "TNST": "Tennessee State Tigers",
+    "ALB": "UAlbany Great Danes",
+    "GWEB": "Gardner-Webb Runnin' Bulldogs",
+    "SAM": "Samford Bulldogs",
+    "W&M": "William & Mary Tribe",
+    "CP": "Cal Poly Mustangs",
+    "UNCO": "Northern Colorado Bears",
+    "USM": "Southern Miss Golden Eagles",
+    "TXSO": "Texas Southern Tigers",
+    "SFA": "Stephen F. Austin Lumberjacks",
+    "LIU": "Long Island University Sharks",
+    "UNI": "Northern Iowa Panthers",
+    "PV": "Prairie View A&M Panthers",
+    "VMI": "VMI Keydets",
+    "MORG": "Morgan State Bears",
+    "NCCU": "North Carolina Central Eagles",
+    "SCST": "South Carolina State Bulldogs",
+    "COLG": "Colgate Raiders",
+    "VILL": "Villanova Wildcats",
+    "EWU": "Eastern Washington Eagles",
+    "YSU": "Youngstown State Penguins",
+    "PENN": "Pennsylvania Quakers",
+    "MONM": "Monmouth Hawks",
+    "HC": "Holy Cross Crusaders",
+    "SHU": "Sacred Heart Pioneers",
+    "WAG": "Wagner Seahawks",
+    "ME": "Maine Black Bears",
+    "MER": "Mercer Bears",
+    "CIT": "The Citadel Bulldogs",
+    "WOF": "Wofford Terriers",
+    "CHSO": "Charleston Southern Buccaneers",
+    "ALST": "Alabama State Hornets",
+    "UIW": "Incarnate Word Cardinals",
+    "MERC": "Mercyhurst Lakers",
+    "SOU": "Southern Jaguars",
+    "STMN": "St. Thomas-Minnesota Tommies"
+   },
+   "form": "2nd quarter"
+  }
+ },
+ "soccer-1h": {
+  "epl": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4753,
+   "share_a": 0.4189,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6378,
+     "brier3_1h_naive": 0.6725
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2302,
+     "brier_over15_naive": 0.2284
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 680,
+    "brier_over15": 0.2302,
+    "brier_over15_naive": 0.2284,
+    "brier3_1h": 0.6378,
+    "brier3_1h_naive": 0.6725,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 760
+  },
+  "championship": {
+   "status": "FITTED",
+   "share_h": 0.4677,
+   "share_a": 0.4396,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6447,
+     "brier3_1h_naive": 0.6877
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2205,
+     "brier_over15_naive": 0.2208
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 1024,
+    "brier_over15": 0.2205,
+    "brier_over15_naive": 0.2208,
+    "brier3_1h": 0.6447,
+    "brier3_1h_naive": 0.6877,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 1104
+  },
+  "serie-a": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4225,
+   "share_a": 0.444,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6334,
+     "brier3_1h_naive": 0.6993
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2091,
+     "brier_over15_naive": 0.2085
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 680,
+    "brier_over15": 0.2091,
+    "brier_over15_naive": 0.2085,
+    "brier3_1h": 0.6334,
+    "brier3_1h_naive": 0.6993,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 760
+  },
+  "serie-b": {
+   "status": "FITTED",
+   "share_h": 0.4444,
+   "share_a": 0.4753,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6405,
+     "brier3_1h_naive": 0.6939
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2261,
+     "brier_over15_naive": 0.2262
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 680,
+    "brier_over15": 0.2261,
+    "brier_over15_naive": 0.2262,
+    "brier3_1h": 0.6405,
+    "brier3_1h_naive": 0.6939,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 760
+  },
+  "la-liga": {
+   "status": "FITTED",
+   "share_h": 0.4548,
+   "share_a": 0.4051,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.625,
+     "brier3_1h_naive": 0.6806
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2089,
+     "brier_over15_naive": 0.2095
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 680,
+    "brier_over15": 0.2089,
+    "brier_over15_naive": 0.2095,
+    "brier3_1h": 0.625,
+    "brier3_1h_naive": 0.6806,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 760
+  },
+  "la-liga-2": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4355,
+   "share_a": 0.431,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6393,
+     "brier3_1h_naive": 0.6953
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2194,
+     "brier_over15_naive": 0.2188
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 844,
+    "brier_over15": 0.2194,
+    "brier_over15_naive": 0.2188,
+    "brier3_1h": 0.6393,
+    "brier3_1h_naive": 0.6953,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 924
+  },
+  "bundesliga": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4554,
+   "share_a": 0.458,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6406,
+     "brier3_1h_naive": 0.6706
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2402,
+     "brier_over15_naive": 0.24
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 531,
+    "brier_over15": 0.2402,
+    "brier_over15_naive": 0.24,
+    "brier3_1h": 0.6406,
+    "brier3_1h_naive": 0.6706,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 611
+  },
+  "bundesliga-2": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.446,
+   "share_a": 0.444,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6536,
+     "brier3_1h_naive": 0.7137
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2395,
+     "brier_over15_naive": 0.2392
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 532,
+    "brier_over15": 0.2395,
+    "brier_over15_naive": 0.2392,
+    "brier3_1h": 0.6536,
+    "brier3_1h_naive": 0.7137,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 612
+  },
+  "ligue-1": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.416,
+   "share_a": 0.4612,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6439,
+     "brier3_1h_naive": 0.6937
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2255,
+     "brier_over15_naive": 0.225
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 532,
+    "brier_over15": 0.2255,
+    "brier_over15_naive": 0.225,
+    "brier3_1h": 0.6439,
+    "brier3_1h_naive": 0.6937,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 612
+  },
+  "ligue-2": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4484,
+   "share_a": 0.4508,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6427,
+     "brier3_1h_naive": 0.7009
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2202,
+     "brier_over15_naive": 0.2194
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 531,
+    "brier_over15": 0.2202,
+    "brier_over15_naive": 0.2194,
+    "brier3_1h": 0.6427,
+    "brier3_1h_naive": 0.7009,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 611
+  },
+  "eredivisie": {
+   "status": "FITTED",
+   "share_h": 0.4654,
+   "share_a": 0.4289,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6261,
+     "brier3_1h_naive": 0.6621
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2367,
+     "brier_over15_naive": 0.2371
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 532,
+    "brier_over15": 0.2367,
+    "brier_over15_naive": 0.2371,
+    "brier3_1h": 0.6261,
+    "brier3_1h_naive": 0.6621,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 612
+  },
+  "primeira-liga": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4589,
+   "share_a": 0.4375,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6006,
+     "brier3_1h_naive": 0.6641
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2207,
+     "brier_over15_naive": 0.2207
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 532,
+    "brier_over15": 0.2207,
+    "brier_over15_naive": 0.2207,
+    "brier3_1h": 0.6006,
+    "brier3_1h_naive": 0.6641,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 612
+  },
+  "super-lig": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.446,
+   "share_a": 0.4353,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6222,
+     "brier3_1h_naive": 0.6668
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2231,
+     "brier_over15_naive": 0.2228
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 567,
+    "brier_over15": 0.2231,
+    "brier_over15_naive": 0.2228,
+    "brier3_1h": 0.6222,
+    "brier3_1h_naive": 0.6668,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 647
+  },
+  "super-league-greece": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4583,
+   "share_a": 0.4537,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6298,
+     "brier3_1h_naive": 0.6541
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2146,
+     "brier_over15_naive": 0.2143
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 389,
+    "brier_over15": 0.2146,
+    "brier_over15_naive": 0.2143,
+    "brier3_1h": 0.6298,
+    "brier3_1h_naive": 0.6541,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 469
+  },
+  "jupiler-pro": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4499,
+   "share_a": 0.482,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6442,
+     "brier3_1h_naive": 0.6971
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2309,
+     "brier_over15_naive": 0.2304
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 542,
+    "brier_over15": 0.2309,
+    "brier_over15_naive": 0.2304,
+    "brier3_1h": 0.6442,
+    "brier3_1h_naive": 0.6971,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 622
+  },
+  "scottish-premiership": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4532,
+   "share_a": 0.4474,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6405,
+     "brier3_1h_naive": 0.6722
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2338,
+     "brier_over15_naive": 0.233
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 376,
+    "brier_over15": 0.2338,
+    "brier_over15_naive": 0.233,
+    "brier3_1h": 0.6405,
+    "brier3_1h_naive": 0.6722,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 456
+  },
+  "mls": {
+   "status": "FITTED",
+   "share_h": 0.4696,
+   "share_a": 0.4504,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6567,
+     "brier3_1h_naive": 0.6679
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2423,
+     "brier_over15_naive": 0.2424
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 431,
+    "brier_over15": 0.2423,
+    "brier_over15_naive": 0.2424,
+    "brier3_1h": 0.6567,
+    "brier3_1h_naive": 0.6679,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 511,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 511,
+    "games_ht_covered": 511,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "groups",
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "brasileirao": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4671,
+   "share_a": 0.4142,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6491,
+     "brier3_1h_naive": 0.6855
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2135,
+     "brier_over15_naive": 0.2126
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 299,
+    "brier_over15": 0.2135,
+    "brier_over15_naive": 0.2126,
+    "brier3_1h": 0.6491,
+    "brier3_1h_naive": 0.6855,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 379,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 380,
+    "games_ht_covered": 379,
+    "coverage_frac": 0.9974,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "liga-mx": {
+   "status": "FITTED",
+   "share_h": 0.4882,
+   "share_a": 0.4336,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6308,
+     "brier3_1h_naive": 0.6728
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2347,
+     "brier_over15_naive": 0.2354
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 225,
+    "brier_over15": 0.2347,
+    "brier_over15_naive": 0.2354,
+    "brier3_1h": 0.6308,
+    "brier3_1h_naive": 0.6728,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 305,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 306,
+    "games_ht_covered": 305,
+    "coverage_frac": 0.9967,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "liga-profesional": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4486,
+   "share_a": 0.431,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6162,
+     "brier3_1h_naive": 0.707
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.176,
+     "brier_over15_naive": 0.1756
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 400,
+    "brier_over15": 0.176,
+    "brier_over15_naive": 0.1756,
+    "brier3_1h": 0.6162,
+    "brier3_1h_naive": 0.707,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 480,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 480,
+    "games_ht_covered": 480,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "groups",
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "brasileirao-b": {
+   "status": "FITTED",
+   "share_h": 0.4342,
+   "share_a": 0.4655,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6139,
+     "brier3_1h_naive": 0.6991
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2057,
+     "brier_over15_naive": 0.2058
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 296,
+    "brier_over15": 0.2057,
+    "brier_over15_naive": 0.2058,
+    "brier3_1h": 0.6139,
+    "brier3_1h_naive": 0.6991,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 376,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 377,
+    "games_ht_covered": 376,
+    "coverage_frac": 0.9973,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "nacional-b": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4558,
+   "share_a": 0.4188,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.608,
+     "brier3_1h_naive": 0.672
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.16,
+     "brier_over15_naive": 0.1597
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 530,
+    "brier_over15": 0.16,
+    "brier_over15_naive": 0.1597,
+    "brier3_1h": 0.608,
+    "brier3_1h_naive": 0.672,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 610,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 610,
+    "games_ht_covered": 610,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "groups",
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "usl-championship": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4566,
+   "share_a": 0.4292,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6309,
+     "brier3_1h_naive": 0.6967
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2232,
+     "brier_over15_naive": 0.2221
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 642,
+    "brier_over15": 0.2232,
+    "brier_over15_naive": 0.2221,
+    "brier3_1h": 0.6309,
+    "brier3_1h_naive": 0.6967,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 722,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 724,
+    "games_ht_covered": 722,
+    "coverage_frac": 0.9972,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "groups",
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "usl-league-one": {
+   "status": "FITTED",
+   "share_h": 0.4969,
+   "share_a": 0.4619,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6523,
+     "brier3_1h_naive": 0.6763
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2384,
+     "brier_over15_naive": 0.2418
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 396,
+    "brier_over15": 0.2384,
+    "brier_over15_naive": 0.2418,
+    "brier3_1h": 0.6523,
+    "brier3_1h_naive": 0.6763,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 476,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 478,
+    "games_ht_covered": 476,
+    "coverage_frac": 0.9958,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "peru-liga-1": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4415,
+   "share_a": 0.4674,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6263,
+     "brier3_1h_naive": 0.6904
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2304,
+     "brier_over15_naive": 0.2297
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 497,
+    "brier_over15": 0.2304,
+    "brier_over15_naive": 0.2297,
+    "brier3_1h": 0.6263,
+    "brier3_1h_naive": 0.6904,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 577,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 584,
+    "games_ht_covered": 577,
+    "coverage_frac": 0.988,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "colombia-primera": {
+   "status": "FITTED",
+   "share_h": 0.4709,
+   "share_a": 0.4584,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6285,
+     "brier3_1h_naive": 0.6903
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2165,
+     "brier_over15_naive": 0.2167
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 704,
+    "brier_over15": 0.2165,
+    "brier_over15_naive": 0.2167,
+    "brier3_1h": 0.6285,
+    "brier3_1h_naive": 0.6903,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 784,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 784,
+    "games_ht_covered": 784,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "ecuador-ligapro": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4555,
+   "share_a": 0.4365,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6435,
+     "brier3_1h_naive": 0.7071
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.21,
+     "brier_over15_naive": 0.209
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 479,
+    "brier_over15": 0.21,
+    "brier_over15_naive": 0.209,
+    "brier3_1h": 0.6435,
+    "brier3_1h_naive": 0.7071,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 559,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 560,
+    "games_ht_covered": 559,
+    "coverage_frac": 0.9982,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "uruguay-primera": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 569,
+    "games_ht_covered": 563,
+    "coverage_frac": 0.9895,
+    "fallback_added": 407,
+    "validation": {
+     "checked": 20,
+     "agree": 19,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 433,
+     "negative_or_noninteger_period_values": 1,
+     "fallback_games": 407,
+     "entry0_goal_share": 0.0075,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN uru.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 1 negative/non-integer period values in 433 pulled summaries, entry[0] goal share 0.0075 over 407 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "paraguay-primera": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 490,
+    "games_ht_covered": 488,
+    "coverage_frac": 0.9959,
+    "fallback_added": 352,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 374,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 352,
+     "entry0_goal_share": 0.0,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN par.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 374 pulled summaries, entry[0] goal share 0.0 over 352 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "bolivia-profesional": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 416,
+    "games_ht_covered": 412,
+    "coverage_frac": 0.9904,
+    "fallback_added": 279,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 303,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 279,
+     "entry0_goal_share": 0.0,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN bol.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 303 pulled summaries, entry[0] goal share 0.0 over 279 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "venezuela-primera": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 439,
+    "games_ht_covered": 427,
+    "coverage_frac": 0.9727,
+    "fallback_added": 297,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 329,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 297,
+     "entry0_goal_share": 0.0,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN ven.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 329 pulled summaries, entry[0] goal share 0.0 over 297 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "costa-rica-primera": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 252,
+    "games_ht_covered": 251,
+    "coverage_frac": 0.996,
+    "fallback_added": 173,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "groups",
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 194,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 173,
+     "entry0_goal_share": 0.0,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN crc.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 194 pulled summaries, entry[0] goal share 0.0 over 173 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "guatemala-liga": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 382,
+    "games_ht_covered": 381,
+    "coverage_frac": 0.9974,
+    "fallback_added": 277,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 298,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 277,
+     "entry0_goal_share": 0.0096,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN gua.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 298 pulled summaries, entry[0] goal share 0.0096 over 277 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "chile-primera": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.3946,
+   "share_a": 0.4588,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6731,
+     "brier3_1h_naive": 0.7462
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2284,
+     "brier_over15_naive": 0.2271
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 336,
+    "brier_over15": 0.2284,
+    "brier_over15_naive": 0.2271,
+    "brier3_1h": 0.6731,
+    "brier3_1h_naive": 0.7462,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 416,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 417,
+    "games_ht_covered": 416,
+    "coverage_frac": 0.9976,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "nwsl": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4352,
+   "share_a": 0.4981,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.655,
+     "brier3_1h_naive": 0.7161
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2428,
+     "brier_over15_naive": 0.242
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 329,
+    "brier_over15": 0.2428,
+    "brier_over15_naive": 0.242,
+    "brier3_1h": 0.655,
+    "brier3_1h_naive": 0.7161,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 409,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 410,
+    "games_ht_covered": 409,
+    "coverage_frac": 0.9976,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "liga-mx-femenil": {
+   "status": "NO-DATA",
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 100,
+    "games_ht_covered": 100,
+    "coverage_frac": 1.0,
+    "fallback_added": 74,
+    "validation": {
+     "checked": 20,
+     "agree": 15,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "groups",
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 94,
+     "negative_or_noninteger_period_values": 1,
+     "fallback_games": 74,
+     "entry0_goal_share": 0.0,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN mex.w.1 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 1 negative/non-integer period values in 94 pulled summaries, entry[0] goal share 0.0 over 74 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "wsl": {
+   "status": "FITTED",
+   "share_h": 0.4766,
+   "share_a": 0.4877,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6262,
+     "brier3_1h_naive": 0.6779
+    },
+    "total": {
+     "status": "FITTED",
+     "brier_over15": 0.2438,
+     "brier_over15_naive": 0.2464
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": true
+   },
+   "backtest": {
+    "n": 184,
+    "brier_over15": 0.2438,
+    "brier_over15_naive": 0.2464,
+    "brier3_1h": 0.6262,
+    "brier3_1h_naive": 0.6779,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 264,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 264,
+    "games_ht_covered": 264,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "a-league-women": {
+   "status": "NO-DATA",
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 113,
+    "games_ht_covered": 113,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "evidence": "ESPN aus.w.1: 113 of 113 completed games carry reconcilable half-time goals (scoreboard scoring details reconciling to the final score, plus summary period linescores where present); validation sample: 20 checked, 20 with summary linescores; summary competitor fields sampled: ['homeAway', 'id', 'linescores', 'order', 'possession', 'record', 'score', 'team', 'uid', 'winner']. Below the pre-stated 120-game floor for the walk-forward half-share exam \u2014 the league stamps NO-DATA, never a guessed share.",
+   "ht_source": "ESPN scoreboard details + summary linescores (insufficient)"
+  },
+  "a-league": {
+   "status": "FAILED-EXAM",
+   "share_h": 0.4156,
+   "share_a": 0.4747,
+   "forms": {
+    "result": {
+     "status": "FITTED",
+     "brier3_1h": 0.6625,
+     "brier3_1h_naive": 0.7188
+    },
+    "total": {
+     "status": "FAILED-EXAM",
+     "brier_over15": 0.2272,
+     "brier_over15_naive": 0.226
+    }
+   },
+   "bar_r6": "per-form: 1H result passes iff its walk-forward Brier3 beats the fixed-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's (pre-stated in the R6 assignment, before this builder ran)",
+   "form_facts": {
+    "result_beats_naive": true,
+    "total_beats_naive": false
+   },
+   "backtest": {
+    "n": 83,
+    "brier_over15": 0.2272,
+    "brier_over15_naive": 0.226,
+    "brier3_1h": 0.6625,
+    "brier3_1h_naive": 0.7188,
+    "protocol": "walk-forward (strengths + shares from prior games only); naive = fixed 0.44 shares + full-game grid for the 1H result"
+   },
+   "n_history": 163,
+   "exam_route": "scoreboard-details",
+   "coverage": {
+    "games_completed": 163,
+    "games_ht_covered": 163,
+    "coverage_frac": 1.0,
+    "fallback_added": 0,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)"
+   },
+   "ht_source": "ESPN scoreboard scoring details (clock-parsed 1st-half goals, reconciled to final scores; validated against ESPN summary period linescores: 20/20 sampled games agree)",
+   "bar_r7": "R7 (pre-stated): the R6 per-form bar on ESPN period scores \u2014 1H result passes iff walk-forward Brier3 beats the fixed-0.44-share naive's; 1H total passes iff its Brier beats the 0.44-share naive's"
+  },
+  "brasileirao-c": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 216,
+    "games_ht_covered": 214,
+    "coverage_frac": 0.9907,
+    "fallback_added": 182,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 204,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 182,
+     "entry0_goal_share": 0.0,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN bra.3 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 204 pulled summaries, entry[0] goal share 0.0 over 182 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "primera-b-ar": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 882,
+    "games_ht_covered": 880,
+    "coverage_frac": 0.9977,
+    "fallback_added": 562,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 584,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 562,
+     "entry0_goal_share": 0.0022,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN arg.3 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 584 pulled summaries, entry[0] goal share 0.0022 over 562 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  },
+  "liga-expansion": {
+   "status": "NO-DATA",
+   "exam_route": "summary-linescores-fallback",
+   "coverage": {
+    "games_completed": 467,
+    "games_ht_covered": 458,
+    "coverage_frac": 0.9807,
+    "fallback_added": 326,
+    "validation": {
+     "checked": 20,
+     "agree": 20,
+     "summary_has_linescores": 20,
+     "summary_competitor_fields": [
+      "homeAway",
+      "id",
+      "linescores",
+      "order",
+      "possession",
+      "record",
+      "score",
+      "team",
+      "uid",
+      "winner"
+     ]
+    },
+    "bar": "primary route needs >= 0.85 reconciled and >= 120 games (pre-stated in the builder header)",
+    "summary_integrity_audit": {
+     "summaries_scanned": 355,
+     "negative_or_noninteger_period_values": 0,
+     "fallback_games": 326,
+     "entry0_goal_share": 0.001,
+     "corrupt": true
+    }
+   },
+   "evidence": "ESPN mex.2 period data is corrupt: scoreboard scoring details reconcile for too few games, and the summary period linescores fail the integrity audit \u2014 0 negative/non-integer period values in 355 pulled summaries, entry[0] goal share 0.001 over 326 fallback games (real 1H shares run 0.41-0.50; the band is [0.30, 0.60]). The split the payload carries is not a half-time split, so no half-share is fitted \u2014 the league stamps NO-DATA with this evidence.",
+   "ht_source": "ESPN scoreboard details + summary linescores (corrupt)"
+  }
+ },
+ "soccer_1h_source": "football-data.co.uk CSVs (HTHG/HTAG), seasons 2024-25 + 2025-26, walk-forward exam per league",
+ "soccer_1h_espn_source": "R7: ESPN scoreboard scoring details (primary) / summary period linescores (fallback), windows identical to the shipped full-game fits; exam = fit_soccer_halves.exam_league (R6 per-form bar)"
+}

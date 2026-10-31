@@ -1,0 +1,256 @@
+{
+ "sport": "nfl",
+ "lane": "nfl-team-totals",
+ "fitted_at": "2026-10-24T22:08:08+00:00",
+ "source": "nflverse games.csv (github.com/nflverse/nfldata) \u2014 REG games, seasons 2024 + 2025-to-date; 50% off-season regression of team rates",
+ "history_n": 544,
+ "params": {
+  "prior_games": 4,
+  "distribution": "normal",
+  "burn_in": 32,
+  "model": "lam_team = (LH|LA)*off[team]*def[opp]; team score ~ distribution(lam_team, sigma_team); sigma_team = per-team walk-forward residual SD shrunk toward the lane pool (prior 30 team-games)"
+ },
+ "distribution_why": "A team total is ONE team's scoring distribution, fitted as such: Normal on team points: the classic totals model \u2014 sum of many drives/scoring events; sigma ~13-14 from residuals.",
+ "league": {
+  "LH": 23.947,
+  "LA": 21.978,
+  "mean_team_score": 22.962,
+  "sigma_pool_team_score": 9.412
+ },
+ "teams": {
+  "ARI": {
+   "off": 0.9549,
+   "def": 1.1358,
+   "gp": 25.5,
+   "sigma_team": 8.85,
+   "score_mean": 22.206
+  },
+  "ATL": {
+   "off": 0.9438,
+   "def": 1.0398,
+   "gp": 25.5,
+   "sigma_team": 9.429,
+   "score_mean": 21.824
+  },
+  "BAL": {
+   "off": 1.1439,
+   "def": 0.9896,
+   "gp": 25.5,
+   "sigma_team": 10.07,
+   "score_mean": 27.706
+  },
+  "BUF": {
+   "off": 1.2332,
+   "def": 0.9461,
+   "gp": 25.5,
+   "sigma_team": 10.191,
+   "score_mean": 29.588
+  },
+  "CAR": {
+   "off": 0.8464,
+   "def": 1.0907,
+   "gp": 25.5,
+   "sigma_team": 9.732,
+   "score_mean": 19.176
+  },
+  "CHI": {
+   "off": 1.0154,
+   "def": 1.0213,
+   "gp": 25.5,
+   "sigma_team": 9.304,
+   "score_mean": 22.088
+  },
+  "CIN": {
+   "off": 1.0952,
+   "def": 1.1823,
+   "gp": 25.5,
+   "sigma_team": 10.401,
+   "score_mean": 26.059
+  },
+  "CLE": {
+   "off": 0.7379,
+   "def": 1.0162,
+   "gp": 25.5,
+   "sigma_team": 8.596,
+   "score_mean": 15.794
+  },
+  "DAL": {
+   "off": 1.0893,
+   "def": 1.2354,
+   "gp": 25.5,
+   "sigma_team": 9.376,
+   "score_mean": 24.147
+  },
+  "DEN": {
+   "off": 1.0413,
+   "def": 0.8243,
+   "gp": 25.5,
+   "sigma_team": 9.28,
+   "score_mean": 24.294
+  },
+  "DET": {
+   "off": 1.262,
+   "def": 0.9977,
+   "gp": 25.5,
+   "sigma_team": 10.612,
+   "score_mean": 30.735
+  },
+  "GB": {
+   "off": 1.0523,
+   "def": 0.9165,
+   "gp": 25.5,
+   "sigma_team": 9.293,
+   "score_mean": 25.029
+  },
+  "HOU": {
+   "off": 1.0066,
+   "def": 0.8457,
+   "gp": 25.5,
+   "sigma_team": 9.451,
+   "score_mean": 22.824
+  },
+  "IND": {
+   "off": 1.1018,
+   "def": 1.059,
+   "gp": 25.5,
+   "sigma_team": 8.747,
+   "score_mean": 24.794
+  },
+  "JAX": {
+   "off": 1.0715,
+   "def": 0.9527,
+   "gp": 25.5,
+   "sigma_team": 9.544,
+   "score_mean": 23.353
+  },
+  "KC": {
+   "off": 0.9542,
+   "def": 0.8604,
+   "gp": 25.5,
+   "sigma_team": 8.373,
+   "score_mean": 21.971
+  },
+  "LAC": {
+   "off": 0.9756,
+   "def": 0.8597,
+   "gp": 25.5,
+   "sigma_team": 9.137,
+   "score_mean": 22.647
+  },
+  "LAR": {
+   "off": 1.1712,
+   "def": 0.9313,
+   "gp": 25.5,
+   "sigma_team": 9.267,
+   "score_mean": 26.029
+  },
+  "LV": {
+   "off": 0.7195,
+   "def": 1.0937,
+   "gp": 25.5,
+   "sigma_team": 8.15,
+   "score_mean": 16.176
+  },
+  "MIA": {
+   "off": 0.9025,
+   "def": 1.0302,
+   "gp": 25.5,
+   "sigma_team": 9.411,
+   "score_mean": 20.353
+  },
+  "MIN": {
+   "off": 0.9623,
+   "def": 0.8722,
+   "gp": 25.5,
+   "sigma_team": 9.811,
+   "score_mean": 22.824
+  },
+  "NE": {
+   "off": 1.0723,
+   "def": 0.9158,
+   "gp": 25.5,
+   "sigma_team": 8.748,
+   "score_mean": 22.912
+  },
+  "NO": {
+   "off": 0.8368,
+   "def": 0.9948,
+   "gp": 25.5,
+   "sigma_team": 8.752,
+   "score_mean": 18.941
+  },
+  "NYG": {
+   "off": 0.8996,
+   "def": 1.09,
+   "gp": 25.5,
+   "sigma_team": 10.062,
+   "score_mean": 19.235
+  },
+  "NYJ": {
+   "off": 0.828,
+   "def": 1.1764,
+   "gp": 25.5,
+   "sigma_team": 9.297,
+   "score_mean": 18.765
+  },
+  "PHI": {
+   "off": 1.0368,
+   "def": 0.839,
+   "gp": 25.5,
+   "sigma_team": 8.755,
+   "score_mean": 24.765
+  },
+  "PIT": {
+   "off": 1.0022,
+   "def": 0.963,
+   "gp": 25.5,
+   "sigma_team": 9.105,
+   "score_mean": 22.853
+  },
+  "SEA": {
+   "off": 1.1254,
+   "def": 0.8383,
+   "gp": 25.5,
+   "sigma_team": 9.544,
+   "score_mean": 25.235
+  },
+  "SF": {
+   "off": 1.0679,
+   "def": 1.0051,
+   "gp": 25.5,
+   "sigma_team": 10.206,
+   "score_mean": 24.294
+  },
+  "TB": {
+   "off": 1.0671,
+   "def": 1.0265,
+   "gp": 25.5,
+   "sigma_team": 9.931,
+   "score_mean": 25.941
+  },
+  "TEN": {
+   "off": 0.7844,
+   "def": 1.1808,
+   "gp": 25.5,
+   "sigma_team": 9.128,
+   "score_mean": 17.5
+  },
+  "WSH": {
+   "off": 1.0191,
+   "def": 1.09,
+   "gp": 25.5,
+   "sigma_team": 9.477,
+   "score_mean": 24.735
+  }
+ },
+ "backtest": {
+  "n": 1024,
+  "mae_model": 7.53,
+  "mae_naive": 7.852,
+  "brier_model": 0.2359,
+  "brier_naive": 0.2498,
+  "verdict": "PASS",
+  "protocol": "walk-forward per team-game (rates from prior games only); naive = the team's own expanding mean score; Brier on P(over L*), L* = .5 line at the naive team mean; PASS requires MAE and Brier both better than naive"
+ },
+ "status": "FITTED"
+}

@@ -1,0 +1,40 @@
+{
+ "sport": "wnba",
+ "season": "2023-2026 regular seasons",
+ "fitted_at": "2026-10-27T20:52:50+00:00",
+ "source": "ESPN WNBA scoreboard day pulls (cached 2026-10-27T20:51:53+00:00; data/cache/wnba_games_2023-26.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "ATL": 1717.4,
+  "CHI": 1335.3,
+  "CON": 1272.5,
+  "DAL": 1591.2,
+  "GS": 1739.8,
+  "IND": 1665.5,
+  "LA": 1384.5,
+  "LV": 1664.5,
+  "MIN": 1732.2,
+  "NY": 1581.1,
+  "PHX": 1369.5,
+  "POR": 1403.9,
+  "SEA": 1242.7,
+  "TOR": 1189.2,
+  "WSH": 1610.6
+ },
+ "margin_map": {
+  "a": -1.175,
+  "b": 0.0283,
+  "sd": 12.9,
+  "n": 1100
+ },
+ "backtest": {
+  "brier": 0.2197,
+  "naive_brier": 0.2487,
+  "naive_home_brier": 0.2487,
+  "n": 1100,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ }
+}

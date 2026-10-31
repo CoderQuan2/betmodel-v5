@@ -1,0 +1,71 @@
+{
+ "sport": "brazil-nbb",
+ "season": "2023-24 to 2026-27 regular seasons",
+ "fitted_at": "2026-10-27T22:44:45+00:00",
+ "source": "RealGM international league schedule pages (Brazilian NBB; basketball.realgm.com league 59; cached 2026-10-27T22:44:45+00:00; data/cache/brazil_nbb_games_2023-27.json)",
+ "params": {
+  "K": 20,
+  "hfa_elo": 100
+ },
+ "ratings": {
+  "1288": 1682.1,
+  "1289": 1135.4,
+  "1711": 1402.7,
+  "1884": 1238.7,
+  "2027": 1731.6,
+  "209": 1782.7,
+  "211": 1714.5,
+  "2135": 1234.3,
+  "2136": 1584.2,
+  "2139": 1366.3,
+  "2204": 1250.1,
+  "2252": 1326.5,
+  "2784": 1382.2,
+  "282": 1876.6,
+  "283": 1488.0,
+  "408": 1672.6,
+  "554": 1643.4,
+  "562": 1425.9,
+  "69": 1564.3,
+  "77": 1241.1,
+  "92": 1511.9,
+  "941": 1744.8
+ },
+ "margin_map": {
+  "a": -0.295,
+  "b": 0.0339,
+  "sd": 12.44,
+  "n": 1049
+ },
+ "backtest": {
+  "brier": 0.1942,
+  "naive_brier": 0.2415,
+  "naive_home_brier": 0.2415,
+  "n": 1049,
+  "protocol": "walk-forward (pre-game ratings, sequential Elo)"
+ },
+ "teams": {
+  "69": "Bauru",
+  "77": "Vasco da Gama",
+  "92": "Sao Jose Unimed Vinac",
+  "209": "Minas",
+  "211": "Pinheiros Sky",
+  "282": "Franca",
+  "283": "Uniao Corinthians",
+  "408": "Flamengo",
+  "554": "Paulistano",
+  "562": "Rio Claro Basquete",
+  "941": "Uniceub-BRB-Brasilia",
+  "1288": "Mogi das Cruzes",
+  "1289": "Basquete Cearense",
+  "1711": "Caxias Do Sul Basquetetriches",
+  "1884": "Botafogo F.R.",
+  "2027": "Corinthians",
+  "2135": "Pato Basquete",
+  "2136": "Unifacisa Paraiba",
+  "2139": "Sao Paulo FC",
+  "2204": "Osasco Basquete",
+  "2252": "Cerrado Basquete",
+  "2784": "Cruzeiro"
+ }
+}

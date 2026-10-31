@@ -1,0 +1,38 @@
+{
+ "sport": "cfl",
+ "lane": "cfl",
+ "fitted_at": "2026-10-27T22:28:44+00:00",
+ "source": "CFL official API (cfl.ca/api/v1/content/data/schedule), regular seasons 2016-2019, 2021-2026 (no 2020 season \u2014 cancelled); fetched 2026-10-27T22:27:12+00:00",
+ "history_n": 792,
+ "params": {
+  "model": "sequential Elo",
+  "K": 20,
+  "hfa_elo": 55,
+  "base": 1500.0,
+  "season_regression": 0.5,
+  "mov_multiplier": null
+ },
+ "ratings": {
+  "British Columbia Lions": 1532.9,
+  "Calgary Stampeders": 1507.9,
+  "Edmonton Elks": 1548.6,
+  "Hamilton Tiger-Cats": 1453.0,
+  "Montreal Alouettes": 1582.0,
+  "Ottawa Redblacks": 1349.9,
+  "Saskatchewan Roughriders": 1523.8,
+  "Toronto Argonauts": 1488.4,
+  "Winnipeg Blue Bombers": 1513.6
+ },
+ "margin_map": {
+  "a": -2.455,
+  "b": 0.0748,
+  "sd": 14.13
+ },
+ "backtest": {
+  "n": 791,
+  "brier": 0.2291,
+  "naive_brier": 0.2494,
+  "protocol": "walk-forward (ratings from prior games only, 50% regression at season boundaries); naive = expanding overall home-win rate; ties score y=0.5; PASS requires Brier < naive"
+ },
+ "status": "FITTED"
+}

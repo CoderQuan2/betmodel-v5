@@ -1,0 +1,2244 @@
+{
+ "fetched_at": "2026-10-27T22:12:20+00:00",
+ "source": "Elite Prospects league scores pages (public mirror)",
+ "report": [
+  "2023-2024: no game rows on EP (coverage gap \u2014 excluded)",
+  "2024-2025: no game rows on EP (coverage gap \u2014 excluded)",
+  "2025-2026: RS closed: 216 games, 9 teams, all pairs at 6 (listed 252)",
+  "2026-2027: partial season, 63 games taken as listed"
+ ],
+ "games": [
+  {
+   "date": "2025-09-09",
+   "home": "Rungsted Seier Capital",
+   "away": "Esbjerg Energy",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "S\u00f8nderjyske",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-09",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2025-09-10",
+   "home": "Herlev Eagles",
+   "away": "Odense Bulldogs",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Esbjerg Energy",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Rungsted Seier Capital",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Odense Bulldogs",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-12",
+   "home": "Frederikshavn White Hawks",
+   "away": "Aalborg Pirates",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Aalborg Pirates",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-09-14",
+   "home": "Herning Blue Fox",
+   "away": "Rungsted Seier Capital",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-15",
+   "home": "Esbjerg Energy",
+   "away": "Odense Bulldogs",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-16",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "S\u00f8nderjyske",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-17",
+   "home": "Odense Bulldogs",
+   "away": "Aalborg Pirates",
+   "hs": 4,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-17",
+   "home": "Herlev Eagles",
+   "away": "Frederikshavn White Hawks",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Rungsted Seier Capital",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "S\u00f8nderjyske",
+   "away": "Odense Bulldogs",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Aalborg Pirates",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-19",
+   "home": "Herning Blue Fox",
+   "away": "Esbjerg Energy",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Herlev Eagles",
+   "away": "Herning Blue Fox",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Esbjerg Energy",
+   "away": "Aalborg Pirates",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-21",
+   "home": "Frederikshavn White Hawks",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-22",
+   "home": "Rungsted Seier Capital",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-23",
+   "home": "Odense Bulldogs",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-24",
+   "home": "S\u00f8nderjyske",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Esbjerg Energy",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Odense Bulldogs",
+   "away": "Frederikshavn White Hawks",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Herning Blue Fox",
+   "away": "Aalborg Pirates",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-26",
+   "home": "Herlev Eagles",
+   "away": "Rungsted Seier Capital",
+   "hs": 1,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Esbjerg Energy",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "Rungsted Seier Capital",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-09-28",
+   "home": "S\u00f8nderjyske",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-29",
+   "home": "Aalborg Pirates",
+   "away": "Odense Bulldogs",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Frederikshavn White Hawks",
+   "away": "Esbjerg Energy",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-09-30",
+   "home": "Herning Blue Fox",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 9,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-01",
+   "home": "Herlev Eagles",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Aalborg Pirates",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "S\u00f8nderjyske",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Odense Bulldogs",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-03",
+   "home": "Rungsted Seier Capital",
+   "away": "Herlev Eagles",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Aalborg Pirates",
+   "away": "Rungsted Seier Capital",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-05",
+   "home": "Esbjerg Energy",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-06",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herning Blue Fox",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Esbjerg Energy",
+   "away": "Rungsted Seier Capital",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Aalborg Pirates",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-10",
+   "home": "Herlev Eagles",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Rungsted Seier Capital",
+   "away": "Aalborg Pirates",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-12",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herlev Eagles",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "S\u00f8nderjyske",
+   "away": "Aalborg Pirates",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Odense Bulldogs",
+   "away": "Rungsted Seier Capital",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-17",
+   "home": "Herning Blue Fox",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-10-19",
+   "home": "Herlev Eagles",
+   "away": "Esbjerg Energy",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "Aalborg Pirates",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-21",
+   "home": "Odense Bulldogs",
+   "away": "Herlev Eagles",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "Frederikshavn White Hawks",
+   "away": "S\u00f8nderjyske",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-22",
+   "home": "Rungsted Seier Capital",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Aalborg Pirates",
+   "away": "Esbjerg Energy",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-24",
+   "home": "Herning Blue Fox",
+   "away": "Odense Bulldogs",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "S\u00f8nderjyske",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-10-26",
+   "home": "Odense Bulldogs",
+   "away": "Esbjerg Energy",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Aalborg Pirates",
+   "away": "Herning Blue Fox",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "Esbjerg Energy",
+   "away": "Herlev Eagles",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-28",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Odense Bulldogs",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-29",
+   "home": "Frederikshavn White Hawks",
+   "away": "Rungsted Seier Capital",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Esbjerg Energy",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Herlev Eagles",
+   "away": "Aalborg Pirates",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Herning Blue Fox",
+   "away": "S\u00f8nderjyske",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-10-31",
+   "home": "Rungsted Seier Capital",
+   "away": "Odense Bulldogs",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Frederikshavn White Hawks",
+   "away": "Odense Bulldogs",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "Herning Blue Fox",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-02",
+   "home": "S\u00f8nderjyske",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-10",
+   "home": "S\u00f8nderjyske",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-11",
+   "home": "Odense Bulldogs",
+   "away": "Aalborg Pirates",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "Esbjerg Energy",
+   "away": "Herlev Eagles",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-12",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Rungsted Seier Capital",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Aalborg Pirates",
+   "away": "Esbjerg Energy",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Frederikshavn White Hawks",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-14",
+   "home": "Herlev Eagles",
+   "away": "S\u00f8nderjyske",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-16",
+   "home": "S\u00f8nderjyske",
+   "away": "Aalborg Pirates",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-17",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "Herlev Eagles",
+   "away": "Aalborg Pirates",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-11-18",
+   "home": "Esbjerg Energy",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Frederikshavn White Hawks",
+   "away": "S\u00f8nderjyske",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-19",
+   "home": "Herning Blue Fox",
+   "away": "Rungsted Seier Capital",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Rungsted Seier Capital",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Odense Bulldogs",
+   "away": "Herlev Eagles",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Aalborg Pirates",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2025-11-21",
+   "home": "Herning Blue Fox",
+   "away": "Frederikshavn White Hawks",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-23",
+   "home": "Esbjerg Energy",
+   "away": "Rungsted Seier Capital",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-24",
+   "home": "Odense Bulldogs",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "Aalborg Pirates",
+   "away": "Herlev Eagles",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-25",
+   "home": "S\u00f8nderjyske",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-26",
+   "home": "Rungsted Seier Capital",
+   "away": "Herning Blue Fox",
+   "hs": 3,
+   "as": 8,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "S\u00f8nderjyske",
+   "away": "Esbjerg Energy",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-11-28",
+   "home": "Herlev Eagles",
+   "away": "Odense Bulldogs",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-11-30",
+   "home": "Herning Blue Fox",
+   "away": "Herlev Eagles",
+   "hs": 8,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-01",
+   "home": "Esbjerg Energy",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Herning Blue Fox",
+   "away": "Aalborg Pirates",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-02",
+   "home": "Odense Bulldogs",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-04",
+   "home": "Esbjerg Energy",
+   "away": "Aalborg Pirates",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Rungsted Seier Capital",
+   "away": "Herlev Eagles",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Frederikshavn White Hawks",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-05",
+   "home": "Herning Blue Fox",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-07",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Aalborg Pirates",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-08",
+   "home": "S\u00f8nderjyske",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "Aalborg Pirates",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "Frederikshavn White Hawks",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-09",
+   "home": "Herlev Eagles",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Odense Bulldogs",
+   "away": "Esbjerg Energy",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "S\u00f8nderjyske",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Aalborg Pirates",
+   "away": "Rungsted Seier Capital",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-12",
+   "home": "Herlev Eagles",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "Rungsted Seier Capital",
+   "away": "Aalborg Pirates",
+   "hs": 0,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-14",
+   "home": "Esbjerg Energy",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-16",
+   "home": "Aalborg Pirates",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-16",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Odense Bulldogs",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-17",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herlev Eagles",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Rungsted Seier Capital",
+   "away": "Esbjerg Energy",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Herlev Eagles",
+   "away": "Frederikshavn White Hawks",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "Herning Blue Fox",
+   "away": "Odense Bulldogs",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-19",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Frederikshavn White Hawks",
+   "away": "Rungsted Seier Capital",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "S\u00f8nderjyske",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-21",
+   "home": "Odense Bulldogs",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-22",
+   "home": "Herning Blue Fox",
+   "away": "Aalborg Pirates",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-27",
+   "home": "Esbjerg Energy",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-27",
+   "home": "Rungsted Seier Capital",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-27",
+   "home": "S\u00f8nderjyske",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2025-12-27",
+   "home": "Frederikshavn White Hawks",
+   "away": "Aalborg Pirates",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Herning Blue Fox",
+   "away": "Esbjerg Energy",
+   "hs": 5,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Aalborg Pirates",
+   "away": "Frederikshavn White Hawks",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2025-12-28",
+   "home": "Odense Bulldogs",
+   "away": "S\u00f8nderjyske",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Esbjerg Energy",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Odense Bulldogs",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2025-12-30",
+   "home": "Herlev Eagles",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-02",
+   "home": "Rungsted Seier Capital",
+   "away": "Frederikshavn White Hawks",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Herning Blue Fox",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-03",
+   "home": "Odense Bulldogs",
+   "away": "Aalborg Pirates",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Herlev Eagles",
+   "away": "Esbjerg Energy",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-04",
+   "home": "Frederikshavn White Hawks",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Herlev Eagles",
+   "away": "Aalborg Pirates",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Odense Bulldogs",
+   "away": "Frederikshavn White Hawks",
+   "hs": 7,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-06",
+   "home": "Herning Blue Fox",
+   "away": "Rungsted Seier Capital",
+   "hs": 9,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Aalborg Pirates",
+   "away": "Herlev Eagles",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-13",
+   "home": "Esbjerg Energy",
+   "away": "Frederikshavn White Hawks",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Odense Bulldogs",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-14",
+   "home": "Rungsted Seier Capital",
+   "away": "S\u00f8nderjyske",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "S\u00f8nderjyske",
+   "away": "Esbjerg Energy",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "Frederikshavn White Hawks",
+   "away": "Aalborg Pirates",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-16",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herlev Eagles",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-18",
+   "home": "Herlev Eagles",
+   "away": "Odense Bulldogs",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-19",
+   "home": "Rungsted Seier Capital",
+   "away": "Frederikshavn White Hawks",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-01-20",
+   "home": "Herning Blue Fox",
+   "away": "Herlev Eagles",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-21",
+   "home": "Frederikshavn White Hawks",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Esbjerg Energy",
+   "away": "S\u00f8nderjyske",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Odense Bulldogs",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Aalborg Pirates",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-23",
+   "home": "Rungsted Seier Capital",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "Aalborg Pirates",
+   "away": "Herning Blue Fox",
+   "hs": 0,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-25",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Herning Blue Fox",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-27",
+   "home": "Herlev Eagles",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "Rungsted Seier Capital",
+   "away": "Esbjerg Energy",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-28",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Aalborg Pirates",
+   "hs": 9,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Esbjerg Energy",
+   "away": "Aalborg Pirates",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "S\u00f8nderjyske",
+   "away": "Rungsted Seier Capital",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Odense Bulldogs",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-01-30",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herning Blue Fox",
+   "hs": 3,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-02-01",
+   "home": "Rungsted Seier Capital",
+   "away": "Odense Bulldogs",
+   "hs": 6,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-02",
+   "home": "Aalborg Pirates",
+   "away": "Esbjerg Energy",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-02",
+   "home": "Herlev Eagles",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-02",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-03",
+   "home": "Frederikshavn White Hawks",
+   "away": "Rungsted Seier Capital",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-04",
+   "home": "S\u00f8nderjyske",
+   "away": "Aalborg Pirates",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Esbjerg Energy",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Odense Bulldogs",
+   "away": "S\u00f8nderjyske",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Herlev Eagles",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-06",
+   "home": "Aalborg Pirates",
+   "away": "Rungsted Seier Capital",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-09",
+   "home": "Rungsted Seier Capital",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-10",
+   "home": "Esbjerg Energy",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-10",
+   "home": "S\u00f8nderjyske",
+   "away": "Frederikshavn White Hawks",
+   "hs": 8,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "S\u00f8nderjyske",
+   "away": "Odense Bulldogs",
+   "hs": 8,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "Herning Blue Fox",
+   "away": "Esbjerg Energy",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-20",
+   "home": "Rungsted Seier Capital",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-22",
+   "home": "Aalborg Pirates",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-23",
+   "home": "Esbjerg Energy",
+   "away": "Rungsted Seier Capital",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-02-23",
+   "home": "Herning Blue Fox",
+   "away": "Odense Bulldogs",
+   "hs": 10,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "S\u00f8nderjyske",
+   "away": "Herlev Eagles",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-24",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Frederikshavn White Hawks",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-25",
+   "home": "Odense Bulldogs",
+   "away": "Rungsted Seier Capital",
+   "hs": 6,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-02-26",
+   "home": "Frederikshavn White Hawks",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Esbjerg Energy",
+   "away": "Odense Bulldogs",
+   "hs": 4,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Aalborg Pirates",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Herning Blue Fox",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-02-27",
+   "home": "Herlev Eagles",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Aalborg Pirates",
+   "away": "Herning Blue Fox",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-01",
+   "home": "Frederikshavn White Hawks",
+   "away": "Odense Bulldogs",
+   "hs": 0,
+   "as": 9,
+   "final": true
+  },
+  {
+   "date": "2026-03-02",
+   "home": "S\u00f8nderjyske",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Rungsted Seier Capital",
+   "away": "Aalborg Pirates",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Herlev Eagles",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-04",
+   "home": "Odense Bulldogs",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Odense Bulldogs",
+   "away": "Esbjerg Energy",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Herning Blue Fox",
+   "away": "S\u00f8nderjyske",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Rungsted Seier Capital",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-06",
+   "home": "Herlev Eagles",
+   "away": "Frederikshavn White Hawks",
+   "hs": 6,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "Aalborg Pirates",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "S\u00f8nderjyske",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-03-08",
+   "home": "Esbjerg Energy",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 8,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-08-28",
+   "home": "S\u00f8nderjyske",
+   "away": "Odense Bulldogs",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-08-28",
+   "home": "Frederikshavn White Hawks",
+   "away": "Aalborg Pirates",
+   "hs": 3,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-08-28",
+   "home": "Herning Blue Fox",
+   "away": "Esbjerg Energy",
+   "hs": 7,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-08-30",
+   "home": "Herning Blue Fox",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-08-30",
+   "home": "Frederikshavn White Hawks",
+   "away": "S\u00f8nderjyske",
+   "hs": 7,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-01",
+   "home": "Frederikshavn White Hawks",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-01",
+   "home": "Odense Bulldogs",
+   "away": "Rungsted Seier Capital",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-02",
+   "home": "Esbjerg Energy",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-07",
+   "home": "Aalborg Pirates",
+   "away": "Odense Bulldogs",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-08",
+   "home": "S\u00f8nderjyske",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-08",
+   "home": "Rungsted Seier Capital",
+   "away": "Frederikshavn White Hawks",
+   "hs": 4,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-09",
+   "home": "Herlev Eagles",
+   "away": "Esbjerg Energy",
+   "hs": 7,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-14",
+   "home": "Odense Bulldogs",
+   "away": "Frederikshavn White Hawks",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "Aalborg Pirates",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-15",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Esbjerg Energy",
+   "away": "Odense Bulldogs",
+   "hs": 4,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Herning Blue Fox",
+   "away": "S\u00f8nderjyske",
+   "hs": 5,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Aalborg Pirates",
+   "away": "Frederikshavn White Hawks",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-18",
+   "home": "Rungsted Seier Capital",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "S\u00f8nderjyske",
+   "away": "Rungsted Seier Capital",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Frederikshavn White Hawks",
+   "away": "Esbjerg Energy",
+   "hs": 4,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-20",
+   "home": "Herlev Eagles",
+   "away": "Odense Bulldogs",
+   "hs": 1,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-09-22",
+   "home": "Herning Blue Fox",
+   "away": "Aalborg Pirates",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-23",
+   "home": "Herlev Eagles",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Odense Bulldogs",
+   "away": "Herning Blue Fox",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Rungsted Seier Capital",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Aalborg Pirates",
+   "away": "Esbjerg Energy",
+   "hs": 0,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-09-25",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herlev Eagles",
+   "hs": 2,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Herning Blue Fox",
+   "away": "Frederikshavn White Hawks",
+   "hs": 7,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-09-27",
+   "home": "Esbjerg Energy",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 5,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-09-28",
+   "home": "Aalborg Pirates",
+   "away": "S\u00f8nderjyske",
+   "hs": 1,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Herning Blue Fox",
+   "away": "Herlev Eagles",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-09-29",
+   "home": "Rungsted Seier Capital",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-09-30",
+   "home": "Esbjerg Energy",
+   "away": "Frederikshavn White Hawks",
+   "hs": 5,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Odense Bulldogs",
+   "away": "Esbjerg Energy",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Herlev Eagles",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "Rungsted Seier Capital",
+   "away": "Aalborg Pirates",
+   "hs": 4,
+   "as": 7,
+   "final": true
+  },
+  {
+   "date": "2026-10-02",
+   "home": "S\u00f8nderjyske",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-04",
+   "home": "Aalborg Pirates",
+   "away": "Rungsted Seier Capital",
+   "hs": 0,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-05",
+   "home": "S\u00f8nderjyske",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-05",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Esbjerg Energy",
+   "hs": 2,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Esbjerg Energy",
+   "away": "S\u00f8nderjyske",
+   "hs": 6,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Odense Bulldogs",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Frederikshavn White Hawks",
+   "away": "Herning Blue Fox",
+   "hs": 0,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-09",
+   "home": "Rungsted Seier Capital",
+   "away": "Herlev Eagles",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "S\u00f8nderjyske",
+   "away": "Esbjerg Energy",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-10",
+   "home": "Herlev Eagles",
+   "away": "Rungsted Seier Capital",
+   "hs": 3,
+   "as": 0,
+   "final": true
+  },
+  {
+   "date": "2026-10-11",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Aalborg Pirates",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-12",
+   "home": "Herlev Eagles",
+   "away": "Aalborg Pirates",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Herlev Eagles",
+   "away": "Frederikshavn White Hawks",
+   "hs": 3,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Rungsted Seier Capital",
+   "away": "S\u00f8nderjyske",
+   "hs": 1,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Herning Blue Fox",
+   "away": "Odense Bulldogs",
+   "hs": 6,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-16",
+   "home": "Aalborg Pirates",
+   "away": "R\u00f8dovre Mighty Bulls",
+   "hs": 3,
+   "as": 5,
+   "final": true
+  },
+  {
+   "date": "2026-10-18",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Frederikshavn White Hawks",
+   "hs": 2,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-19",
+   "home": "Esbjerg Energy",
+   "away": "Rungsted Seier Capital",
+   "hs": 2,
+   "as": 6,
+   "final": true
+  },
+  {
+   "date": "2026-10-19",
+   "home": "Odense Bulldogs",
+   "away": "Herlev Eagles",
+   "hs": 6,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-20",
+   "home": "Aalborg Pirates",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Esbjerg Energy",
+   "away": "Herning Blue Fox",
+   "hs": 1,
+   "as": 4,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Odense Bulldogs",
+   "away": "S\u00f8nderjyske",
+   "hs": 2,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "R\u00f8dovre Mighty Bulls",
+   "away": "Herlev Eagles",
+   "hs": 5,
+   "as": 3,
+   "final": true
+  },
+  {
+   "date": "2026-10-23",
+   "home": "Frederikshavn White Hawks",
+   "away": "Rungsted Seier Capital",
+   "hs": 4,
+   "as": 1,
+   "final": true
+  },
+  {
+   "date": "2026-10-26",
+   "home": "Frederikshavn White Hawks",
+   "away": "Odense Bulldogs",
+   "hs": 5,
+   "as": 2,
+   "final": true
+  },
+  {
+   "date": "2026-10-26",
+   "home": "S\u00f8nderjyske",
+   "away": "Aalborg Pirates",
+   "hs": 3,
+   "as": 1,
+   "final": true
+  }
+ ]
+}
