@@ -8,9 +8,11 @@ record).
 
 The ENTIRE app in one file, per the Pilot's 1-script preference:
 this shell plus the engine (betmodel5.py, one self-contained
-script, byte-identical to the lab's) are the only two Python files
-in the repo. Flet requires the entry point to be named main.py —
-that is the only reason there are two.
+script, byte-identical to the lab's) are the app's two Python
+files. Flet requires the entry point to be named main.py —
+that is the only reason there are two. (The 3D fulfillment
+adds one bundled module, history_store.py — the pull-history
+recorder, stdlib-only and engine-free by design.)
 
 Screens (bottom nav — five destinations through v12; v13.0 adds a sixth, Stocks):
   * Board — every checked market from the current pull as a card
@@ -122,7 +124,9 @@ import sys
 import threading
 import traceback
 import time
+import http.server
 import urllib.request
+from urllib.parse import parse_qs, urlparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 
@@ -131,6 +135,7 @@ if APP_DIR not in sys.path:
     sys.path.insert(0, APP_DIR)
 
 import betmodel5 as b5  # the engine — one script, imported, never copied
+import history_store  # the 3D pull-history recorder (bundled module)
 import flet as ft
 
 # ------------------------------------------------------------------
@@ -354,8 +359,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "13.1.0"
-BUILD_NUMBER = 54
+APP_VERSION = "13.2.0"
+BUILD_NUMBER = 55
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -995,6 +1000,62 @@ def snapshot_path() -> str:
     return os.path.join(storage_dir(), f"{INTERNAL_ID}-last-pull.json")
 
 
+def history_store_dir() -> str:
+    """The pull-history store's home (the recorder keeps its
+    monthly JSONL files under <this>/pull-history/)."""
+    return os.path.join(storage_dir(), f"{INTERNAL_ID}-history")
+
+
+# The slate the instrument server's /api/slate.json serves —
+# updated at every save_snapshot moment (and once at boot from
+# the restored snapshot), so the API always describes the
+# pull the app is actually showing.
+_CURRENT_SLATE = {"rec": None}
+
+# The recorder's health, read by the Lab's data-health line.
+# A recorder failure lands here and NEVER in the pull path:
+# pulls, prices and renders proceed exactly as before, and
+# the Lab names the failure instead of hiding it.
+_RECORDER_HEALTH = {"recorded": 0, "last_stamp": None,
+                    "last_error": None}
+
+
+def history_health_line() -> str:
+    """The Lab's data-health line for the pull-history
+    recorder (3D fulfillment, build plan step 1)."""
+    try:
+        begins = history_store.history_begins(history_store_dir())
+    except Exception:
+        begins = None
+    err = _RECORDER_HEALTH.get("last_error")
+    if err:
+        return (f"Pull-history recorder: FAILED on the last "
+                f"attempt — {err}. Pulls and prices are "
+                f"unaffected; the 3D history windows are "
+                f"missing that pull."
+                + (f" History on file begins {begins}."
+                   if begins else ""))
+    if begins is None:
+        return ("Pull-history recorder: armed — no pulls "
+                "recorded yet. On-device history begins with "
+                "the first pull this build records; before "
+                "the recorder, the app kept only the latest "
+                "pull, so there is no earlier history to show "
+                "and none is invented.")
+    return (f"Pull-history recorder: recording — history "
+            f"begins {begins} (on-device; nothing before the "
+            f"recorder shipped exists, and none is invented) · "
+            f"{_RECORDER_HEALTH['recorded']} pull(s) recorded "
+            f"this session.")
+
+
+def _note_record_result(res: dict, stamp) -> None:
+    if res.get("status") == "recorded":
+        _RECORDER_HEALTH["recorded"] += 1
+        _RECORDER_HEALTH["last_stamp"] = stamp
+        _RECORDER_HEALTH["last_error"] = None
+
+
 def engine_fingerprint() -> str:
     """Short hash + size of the running engine, computed from the
     imported module itself. The packaged Android build does not keep
@@ -1270,7 +1331,245 @@ INSTRUMENTS = [
      "note": "The weekend command board for the Week 6 slate.",
      "chip": "FROZEN · WEEK 6, 2026 · CONTAINS AN AUDIT FLAG"},
 ]
+
+# Data classes (3D fulfillment, step 3): every registry entry
+# declares its feed — live (computed from the current pull or
+# the live model at open), history (the pull recorder's
+# windows), static-sample (a frozen bundled sample; it keeps
+# its SNAPSHOT chip forever and is never re-labelled). The 11
+# lab instruments above predate the field; theirs are stamped
+# here from what each one actually is (the two WP surfaces
+# compute live from the model; the rest are frozen samples,
+# including the WP print render).
+_LEGACY_DATA = {"wp-surface-webgl2.html": "live",
+                "wp-surface-3d-interactive.html": "live"}
+for _inst in INSTRUMENTS:
+    _inst["data"] = _LEGACY_DATA.get(_inst["file"],
+                                     "static-sample")
+    _inst["shelf"] = "snapshot"
+
+# The history shelf (3D fulfillment): true-3D surfaces fed by
+# the pull recorder through /api/history.json. Each carries
+# its graph id and the windows its feed supports (SPEC §4);
+# G4 and G7 ship their UNBUILT-DATA gate as the surface —
+# the page draws the gate the payload names, never a series.
+INSTRUMENTS += [
+    {"file": "g1-edge-terrain.html", "family": "History",
+     "name": "G1 — Edge Terrain",
+     "note": "One path per market across pulls: model p × "
+             "market implied p × time. Shows which bets the "
+             "market walked toward the model — and which the "
+             "model walked toward the market.",
+     "chip": "HISTORY · PULL RECORDER",
+     "data": "history", "shelf": "history",
+     "graph": "g1-edge-terrain",
+     "windows": ["live", "month", "season"]},
+    {"file": "g6-coverage-topography.html", "family": "History",
+     "name": "G6 — Coverage Topography",
+     "note": "Sport × time × priced share: the pricing "
+             "program's frontier moving — which sports price "
+             "up as their lanes earn records, and the stale "
+             "ridges where prices sit unmoved.",
+     "chip": "HISTORY · PULL RECORDER",
+     "data": "history", "shelf": "history",
+     "graph": "g6-coverage-topography",
+     "windows": ["live", "month", "season"]},
+    {"file": "g2-price-rivers.html", "family": "History",
+     "name": "G2 — Price Rivers",
+     "note": "One game's whole market complex across pulls "
+             "— ribbons of price and edge that breathe "
+             "together, with the lead/lag between a game's "
+             "markets visible.",
+     "chip": "HISTORY · PULL RECORDER",
+     "data": "history", "shelf": "history",
+     "graph": "g2-price-rivers",
+     "windows": ["live", "month"]},
+    {"file": "g3-drift-field.html", "family": "History",
+     "name": "G3 — Drift Field",
+     "note": "Every market's step between consecutive "
+             "pulls: price move × model move × pull index, "
+             "coloured by lane — where the book re-prices "
+             "toward a lane's model, and where it fades it.",
+     "chip": "HISTORY · PULL RECORDER",
+     "data": "history", "shelf": "history",
+     "graph": "g3-drift-field",
+     "windows": ["month", "season"]},
+    {"file": "g5-correlation-space.html", "family": "History",
+     "name": "G5 — Correlation Space, Live",
+     "note": "Same-game clusters in correlation space with "
+             "time trails: a game's priced markets tightening "
+             "(edge dispersion falling) as kickoff approaches "
+             "is correlation risk concentrating.",
+     "chip": "LIVE · CURRENT PULL + TODAY'S RECORDER",
+     "data": "live", "shelf": "history",
+     "graph": "g5-correlation-space",
+     "windows": ["live"]},
+    {"file": "g8-clv-surface.html", "family": "History",
+     "name": "G8 — CLV Surface (price side)",
+     "note": "Lane × week × mean closing-line movement, in "
+             "implied points — which lanes' prices shortened "
+             "into their last sighting. The settled side "
+             "prints its gate: it waits on the results join.",
+     "chip": "HISTORY · PRICE SIDE ONLY",
+     "data": "history", "shelf": "history",
+     "graph": "g8-clv-surface",
+     "windows": ["live", "month", "season"]},
+    {"file": "g7-team-trajectories.html", "family": "History",
+     "name": "G7 — Team-Strength Trajectories",
+     "note": "Attack × defense × rating, one path per team "
+             "across the season. Gate: the pull record "
+             "carries no team identity or pool stamps yet — "
+             "the surface prints that gate until they join.",
+     "chip": "UNBUILT-DATA · PRINTS ITS GATE",
+     "data": "history", "shelf": "history",
+     "graph": "g7-team-trajectories",
+     "windows": ["season"]},
+    {"file": "g4-calibration-volume.html", "family": "History",
+     "name": "G4 — Calibration Volume",
+     "note": "Predicted p × realized frequency × time — "
+             "the calibration curve as a surface. Gate: it "
+             "needs settled outcomes joined per market, "
+             "which do not exist yet; the surface prints "
+             "that gate instead of a series.",
+     "chip": "UNBUILT-DATA · PRINTS ITS GATE",
+     "data": "history", "shelf": "history",
+     "graph": "g4-calibration-volume",
+     "windows": ["live", "month", "season"]},
+]
 INSTRUMENT_FAMILIES = ["Stocks", "Win Probability", "NFL"]
+
+# ------------------------------------------------------------------
+# The 3D history API (fulfillment step 2) — the loopback server
+# stops being static-only: beside the instrument files it
+# serves the current pull and the pull-history windows, shaped
+# per graph by history_store's pure shape_* functions:
+#
+#     /api/slate.json             the current pull, per event
+#     /api/history.json?window=live|month|season&graph=<id>
+#                                 [&event=<fd_event_id>]
+#
+# The payload is the DATA-CONTRACT shape ({window, grain,
+# from, to, history_begins, graph, series}). Every error is
+# JSON with the error NAMED ({"error": ...}) — no traceback
+# page ever reaches a client (the build-51 law, applied to
+# the server as well as the pages).
+
+
+def _slate_payload() -> dict:
+    """The current pull for /api/slate.json: per-event
+    summaries with the team-name labels the pull record
+    deliberately does not carry (history surfaces join their
+    event trails to these labels client-side)."""
+    rec = _CURRENT_SLATE.get("rec")
+    if not rec:
+        return {"pulled_at": None, "source": None,
+                "verified": None, "events": [], "markets": 0}
+    events = {}
+    for m in rec.get("markets") or []:
+        eid = m.get("fd_event_id")
+        if eid is None:
+            continue
+        slot = events.get(str(eid))
+        if slot is None:
+            label = " vs ".join(
+                x for x in (m.get("home"), m.get("away")) if x) \
+                or m.get("competition") or ""
+            slot = events[str(eid)] = {
+                "fd_event_id": eid, "sport": m.get("sport"),
+                "label": label,
+                "competition": m.get("competition"),
+                "market_time": m.get("market_time"),
+                "n_markets": 0, "keys": []}
+        slot["n_markets"] += 1
+        slot["keys"].append(history_store.market_key(m))
+    return {"pulled_at": rec.get("pulled_at"),
+            "source": rec.get("source"),
+            "verified": rec.get("verified"),
+            "markets": len(rec.get("markets") or []),
+            "events": sorted(
+                events.values(),
+                key=lambda e: (-e["n_markets"],
+                               str(e["fd_event_id"])))}
+
+
+def history_payload(window, graph, event_id=None) -> dict:
+    """The DATA-CONTRACT payload for one (window, graph) ask
+    against the on-device store. Raises ValueError with a
+    stable name for a bad window or graph — the handler
+    turns it into the named JSON error body."""
+    win = history_store.load_window(
+        history_store_dir(), window,
+        datetime.now(history_store.DETROIT))
+    return {"window": win["window"],
+            "grain": win["grain"],
+            "from": win["from"],
+            "to": win["to"],
+            "history_begins": win["history_begins"],
+            "graph": graph,
+            "series": history_store.shape_for(
+                graph, win["records"], event_id)}
+
+
+class _InstrumentHandler(http.server.SimpleHTTPRequestHandler):
+    """Static instrument files + the history API, one
+    handler. Static behaviour is the stock handler's (the
+    port/probe law from build 51 is in ensure_instrument_
+    server, unchanged); the /api/* routes answer JSON."""
+
+    def log_message(self, *args):
+        pass
+
+    def _send_json(self, code, obj):
+        body = json.dumps(obj).encode("utf-8")
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def send_error(self, code, message=None, explain=None):
+        # JSON errors, named — never the stock HTML page.
+        self._send_json(code, {"error": f"http_{code}",
+                               "detail": message or ""})
+
+    def do_GET(self):
+        parsed = urlparse(self.path)
+        if parsed.path == "/api/slate.json":
+            try:
+                self._send_json(200, _slate_payload())
+            except Exception as e:  # named, never a traceback
+                self._send_json(500, {"error": type(e).__name__,
+                                      "detail": str(e)})
+            return
+        if parsed.path == "/api/history.json":
+            qs = parse_qs(parsed.query)
+            window = (qs.get("window") or ["live"])[0]
+            graph = (qs.get("graph")
+                     or ["g1-edge-terrain"])[0]
+            event_id = (qs.get("event") or [None])[0]
+            try:
+                payload = history_payload(window, graph,
+                                          event_id)
+            except ValueError as e:
+                name = str(e)
+                if name.startswith("unknown window"):
+                    name = "unknown_window"
+                self._send_json(400, {"error": name,
+                                      "detail": str(e),
+                                      "window": window,
+                                      "graph": graph})
+                return
+            except Exception as e:  # named, never a traceback
+                self._send_json(500, {"error": type(e).__name__,
+                                      "detail": str(e)})
+                return
+            self._send_json(200, payload)
+            return
+        if parsed.path.startswith("/api/"):
+            self._send_json(404, {"error": "unknown_api_path",
+                                  "detail": parsed.path})
+            return
+        super().do_GET()
 STOCKS_SAMPLE_NOTE = (
     "One sample — 6 names, 44 sessions, chosen from a 42-name "
     "universe. Patterns and J are observations about this sample, "
@@ -1308,13 +1607,8 @@ def ensure_instrument_server() -> int | None:
             return None
         try:
             import functools
-            import http.server
 
-            class _Quiet(http.server.SimpleHTTPRequestHandler):
-                def log_message(self, *args):
-                    pass
-
-            handler = functools.partial(_Quiet,
+            handler = functools.partial(_InstrumentHandler,
                                         directory=INSTRUMENTS_DIR)
             httpd = None
             port = None
@@ -1685,6 +1979,10 @@ def merge_sport_pull(slate: dict | None, partial: dict) -> dict:
 
 
 def save_snapshot(rec: dict) -> None:
+    # every save moment is also the instrument server's
+    # current-slate moment: /api/slate.json serves what the
+    # app is showing, never a slate of its own
+    _CURRENT_SLATE["rec"] = rec
     try:
         with open(snapshot_path(), "w") as f:
             json.dump(rec, f)
@@ -5162,7 +5460,8 @@ def main(page: ft.Page):
              # "show on Board" point, the Board league filter,
              # the one-level return, and the full-screen viewer
              # — segment, zoom and detail all survive pulls.
-             "panel_segment": "charts", "chart_highlight": "",
+             "panel_segment": "charts", "panel_time": "live",
+             "chart_highlight": "",
              "chart_board": None, "league_filter": None,
              "nav_return": None, "viewer_kind": None,
              "viewer_zoom": 1.0, "viewer_detail": "",
@@ -5176,6 +5475,7 @@ def main(page: ft.Page):
              "stocks_expiry": None, "stocks_busy": False,
              "stocks_note": "",
              "holdings": load_holdings()}
+    _CURRENT_SLATE["rec"] = state["slate"]
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM,
@@ -5346,6 +5646,57 @@ def main(page: ft.Page):
             state["verdicts"] = verdicts
             state["verdict_cache"] = cache
         return state["verdicts"]
+
+    def record_pull(rec, partial=None):
+        """The 3D recorder hook (fulfillment step 1): called
+        at the three save_snapshot moments — a full pull
+        landing, a scoped pull's success merge, a scoped
+        pull's error merge — once verdicts exist for the
+        slate. A full pull records the whole slate; a scoped
+        pull records ONLY the slice it actually pulled (its
+        own markets under its own stamp — the rest of the
+        board was not seen at that moment and is never
+        written as if it were), with verdicts sliced from
+        the merged slate's pass by market identity. The
+        error merge re-saves an unchanged slate whose stamp
+        is already on file, so the store's dedupe makes the
+        call a no-op. A recorder failure stamps the Lab's
+        data-health line and NEVER breaks the pull."""
+        try:
+            if partial is not None:
+                stamp = partial.get("pulled_at")
+                markets = partial.get("markets") or []
+                if history_store.has_pull(
+                        history_store_dir(), stamp) \
+                        == len(markets):
+                    return  # this slice is already on file
+                verdicts = ensure_verdicts() or []
+                by_id = {id(m): i for i, m in enumerate(
+                    rec.get("markets") or [])}
+                sliced = [verdicts[by_id[id(m)]]
+                          if id(m) in by_id
+                          and by_id[id(m)] < len(verdicts)
+                          else None for m in markets]
+                res = history_store.record_pull(
+                    history_store_dir(),
+                    {"pulled_at": stamp, "markets": markets,
+                     "sports": {}},
+                    sliced)
+            else:
+                stamp = rec.get("pulled_at")
+                if history_store.has_pull(
+                        history_store_dir(), stamp) \
+                        == len(rec.get("markets") or []):
+                    return  # already recorded when it landed
+                verdicts = ensure_verdicts()
+                if verdicts is None:
+                    return
+                res = history_store.record_pull(
+                    history_store_dir(), rec, verdicts)
+            _note_record_result(res, stamp)
+        except Exception as e:
+            _RECORDER_HEALTH["last_error"] = (
+                f"{type(e).__name__}: {e}")
 
     # ---------------- Cards ----------------
 
@@ -5897,6 +6248,7 @@ def main(page: ft.Page):
             state["parlay_legs"] = []
             state["protected_confirm"] = False
             save_snapshot(rec)
+            record_pull(rec)
             refresh_stamp()
             if rec.get("verified"):
                 per = ", ".join(
@@ -6045,6 +6397,9 @@ def main(page: ft.Page):
                     state["slate"] = merge_sport_pull(
                         state["slate"], partial)
                     save_snapshot(state["slate"])
+                    # the unchanged slate's stamp is already
+                    # on file — the recorder dedupes this call
+                    record_pull(state["slate"])
                 status.value = (
                     f"{label} pull didn't land — "
                     f"{entry['error']}. Keeping the last good "
@@ -6063,6 +6418,7 @@ def main(page: ft.Page):
             if not auto:
                 _show_only_sport(sport, partial)
             save_snapshot(state["slate"])
+            record_pull(state["slate"], partial)
             refresh_stamp()
             status.value = (
                 f"Pulled {label}: {entry.get('games', 0)} games "
@@ -7286,6 +7642,9 @@ def main(page: ft.Page):
                 f"lab writes it.", size=11, color=FAINT, height=1.35))
             record_view.controls.append(section_header(
                 "LATEST PULL — WHAT THE APP DID", ACCENT))
+            record_view.controls.append(ft.Text(
+                history_health_line(), size=11, color=DIM,
+                height=1.35))
             rec = state["slate"]
             if rec:
                 verdicts = ensure_verdicts() or []
@@ -8056,6 +8415,13 @@ def main(page: ft.Page):
                 page.update()
                 return
             url = f"http://127.0.0.1:{port}/{inst['file']}"
+            if inst.get("shelf") == "history":
+                # the TIME control's window rides along: a
+                # history instrument opens on the panel's
+                # selected window (its own buttons can move
+                # from there; its stamp always prints the
+                # window it actually drew)
+                url += f"?window={state.get('panel_time') or 'live'}"
             state["instrument_url"] = url
             try:
                 page.run_task(url_launcher.launch_url, url)
@@ -8113,6 +8479,24 @@ def main(page: ft.Page):
         [("charts", "Charts"), ("coverage", "Coverage"),
          ("instruments", "Instruments"), ("registry", "Registry")],
         "charts", on_panel_seg)
+
+    # ---- the TIME control (3D fulfillment, step 3) ----
+    # Live | 1 Month | Season: the data window the history
+    # instruments open on. Orthogonal to the four segments
+    # and kept in panel state, so it survives pulls like the
+    # segment, the zoom and the tapped detail do. The native
+    # charts stay current-pull summaries (their law); only
+    # history-fed surfaces read this window.
+
+    def on_panel_time(e):
+        sel = e.control.selected or []
+        state["panel_time"] = next(iter(sel)) if sel else "live"
+        render_stage()
+
+    panel_time_ctrl = _segmented(
+        [("live", "Live"), ("month", "1 Month"),
+         ("season", "Season")],
+        "live", on_panel_time)
 
     # ---- Stocks destination (v13.0): four segments, one
     # switcher — Tape | Matrix | Options | Holdings, on the Xii
@@ -8874,6 +9258,70 @@ def main(page: ft.Page):
     def render_panel_instruments(col):
         with _UPDATE_LOCK:
             col.controls = []
+
+            def _inst_card(inst):
+                return ft.Container(
+                    bgcolor=CARD_BG, border_radius=10, padding=10,
+                    content=ft.Column(spacing=4, controls=[
+                        ft.Row(
+                            spacing=8, alignment=ft
+                            .MainAxisAlignment.SPACE_BETWEEN,
+                            controls=[
+                                ft.Text(inst["name"], size=14,
+                                        color=INK, weight=ft
+                                        .FontWeight.BOLD),
+                                ft.Button(
+                                    "Open",
+                                    on_click=on_open_instrument(
+                                        inst))]),
+                        ft.Text(inst["note"], size=11, color=DIM,
+                                height=1.3),
+                        ft.Text(inst["chip"], size=10,
+                                color=FAINT)]))
+
+            # ---- the history shelf (3D fulfillment) ----
+            col.controls.append(section_header(
+                "HISTORY INSTRUMENTS — TRUE 3D FROM THE RECORDER",
+                ACCENT))
+            try:
+                begins = history_store.history_begins(
+                    history_store_dir())
+            except Exception:
+                begins = None
+            col.controls.append(ft.Text(
+                (f"History begins {begins} — on-device, from "
+                 f"the pull recorder. Nothing before the "
+                 f"recorder shipped exists, and none is "
+                 f"invented; every surface below prints its "
+                 f"own data stamp (window, range, grain)."
+                 if begins else
+                 "No pulls recorded yet — on-device history "
+                 "begins with the first pull this build "
+                 "records. There is no earlier history and "
+                 "none is invented; the surfaces below draw "
+                 "their empty windows until pulls land."),
+                size=11, color=DIM, height=1.3))
+            _win_label = {"live": "Live", "month": "1 Month",
+                          "season": "Season"}.get(
+                state.get("panel_time") or "live", "Live")
+            col.controls.append(ft.Text(
+                f"TIME window: {_win_label} — history "
+                f"instruments open on the panel's TIME control "
+                f"(above the segments); each page also carries "
+                f"its own window buttons and prints the window "
+                f"it actually drew.", size=11, color=FAINT,
+                height=1.3))
+            hist_members = [i for i in INSTRUMENTS
+                            if i.get("shelf") == "history"
+                            and os.path.isfile(os.path.join(
+                                INSTRUMENTS_DIR, i["file"]))]
+            for inst in hist_members:
+                col.controls.append(_inst_card(inst))
+            if not hist_members:
+                col.controls.append(ft.Text(
+                    "The history instruments are not bundled in "
+                    "this edition.", size=11, color=FAINT))
+            # ---- the snapshot shelf (its law is unchanged) ----
             col.controls.append(section_header(
                 "SNAPSHOT INSTRUMENTS — OPEN IN BROWSER", ACCENT))
             col.controls.append(ft.Text(
@@ -8892,7 +9340,7 @@ def main(page: ft.Page):
                     "This build shipped without the instruments "
                     "folder, so the shelf prints its state instead "
                     "of a dead list. The full BetFi Xii build "
-                    "carries all 11."))
+                    "carries the full shelf."))
                 return
             col.controls.append(stage_status)
             try:
@@ -8905,6 +9353,7 @@ def main(page: ft.Page):
             for family in INSTRUMENT_FAMILIES:
                 members = [i for i in INSTRUMENTS
                            if i["family"] == family
+                           and i.get("shelf") == "snapshot"
                            and os.path.isfile(os.path.join(
                                INSTRUMENTS_DIR, i["file"]))]
                 if not members:
@@ -8912,24 +9361,7 @@ def main(page: ft.Page):
                 col.controls.append(section_header(
                     family.upper(), ACCENT))
                 for inst in members:
-                    col.controls.append(ft.Container(
-                        bgcolor=CARD_BG, border_radius=10, padding=10,
-                        content=ft.Column(spacing=4, controls=[
-                            ft.Row(
-                                spacing=8, alignment=ft
-                                .MainAxisAlignment.SPACE_BETWEEN,
-                                controls=[
-                                    ft.Text(inst["name"], size=14,
-                                            color=INK, weight=ft
-                                            .FontWeight.BOLD),
-                                    ft.Button(
-                                        "Open",
-                                        on_click=on_open_instrument(
-                                            inst))]),
-                            ft.Text(inst["note"], size=11, color=DIM,
-                                    height=1.3),
-                            ft.Text(inst["chip"], size=10,
-                                    color=FAINT)])))
+                    col.controls.append(_inst_card(inst))
                 if family == "Stocks":
                     col.controls.append(ft.Text(
                         STOCKS_SAMPLE_NOTE, size=10, color=FAINT,
@@ -8942,6 +9374,8 @@ def main(page: ft.Page):
                 seg = "charts"
             state["panel_segment"] = seg
             panel_seg_ctrl.selected = [seg]
+            panel_time_ctrl.selected = [
+                state.get("panel_time") or "live"]
             stage_view.controls = [screen_title(
                 "Instruments",
                 "One panel, four views of the same pull and the "
@@ -8954,6 +9388,18 @@ def main(page: ft.Page):
                              padding=ft.Padding(
                                  left=6, right=6, top=6, bottom=6),
                              content=panel_seg_ctrl),
+                # the TIME control (fulfillment step 3): the
+                # history window, orthogonal to the segments
+                ft.Row(spacing=8, wrap=True,
+                       vertical_alignment=ft
+                       .CrossAxisAlignment.CENTER,
+                       controls=[
+                           ft.Text("TIME", size=11, color=FAINT,
+                                   weight=ft.FontWeight.BOLD),
+                           panel_time_ctrl,
+                           ft.Text("the window the history "
+                                   "instruments open on",
+                                   size=11, color=FAINT)]),
                 panel_switcher]
             panel_switcher.content = _PANEL_COLS[seg]
             {"charts": render_panel_charts,

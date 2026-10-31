@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G5 Correlation Space, Live — BetFi Xii</title>
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
+<style>
+  body { margin:0; background:#0b0f16; color:#dbe4f0;
+         font-family:system-ui,sans-serif; }
+  .wrap { box-sizing:border-box; padding:10px 12px; }
+  .title { font-weight:600; font-size:15px; margin-bottom:2px; }
+  .sub { color:#8fa1b8; font-size:12px; margin-bottom:6px; }
+  #stamp { color:#a9bcd4; font-size:12px; margin-bottom:8px;
+           min-height:16px; }
+  #cv { width:100%; display:block; touch-action:none;
+    cursor:grab; background:#0e141f; border-radius:10px; }
+  #lab { font-size:12px; color:#8fa1b8; margin-top:8px;
+         min-height:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">G5 — Correlation Space, Live</div>
+  <div class="sub">One trail per game, drawn from today's
+    pulls: across = the game's mean |edge| (how hard the
+    model leans on the game, 0–30 pt scale), up = the game's
+    edge dispersion (the spread between its markets' edges,
+    0–30), depth = time. A trail sliding DOWN the dispersion
+    axis as time runs is a game whose markets are agreeing —
+    correlation risk concentrating into one number as
+    kickoff approaches. Live window only: trails are
+    intraday by construction. Game names join from the
+    current pull. Drag to orbit.</div>
+  <div id="stamp">no pull history loaded yet</div>
+  <canvas id="cv" width="660" height="450"></canvas>
+  <div id="lab"></div>
+</div>
+<script>
+(function () {
+  var cv = document.getElementById('cv');
+  var stampEl = document.getElementById('stamp');
+  var labEl = document.getElementById('lab');
+  var ctx = cv.getContext('2d');
+  var payload = null;
+  var labels = {};
+  var yaw = -0.65, pitch = 0.52;
+  var tmin = 0, tmax = 1;
+  var PALETTE = ['#35d0ff', '#ffb84d', '#7fe08a', '#ff7a9c',
+                 '#b49aff', '#ffd76a', '#6ae0d4', '#ff9a3c',
+                 '#8fc7ff', '#d48fff', '#a0e05a', '#ff6a6a'];
+
+  function fitCanvas() {
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(280, Math.floor(r.width || 660));
+    cv.width = w;
+    cv.height = Math.floor(w * 0.68);
+  }
+
+  function rot(x, y, z) {
+    var cx = x - 0.5, cy = y - 0.5, cz = z - 0.5;
+    var c1 = Math.cos(yaw), s1 = Math.sin(yaw);
+    var x1 = cx * c1 - cz * s1, z1 = cx * s1 + cz * c1;
+    var c2 = Math.cos(pitch), s2 = Math.sin(pitch);
+    var y2 = cy * c2 - z1 * s2, z2 = cy * s2 + z1 * c2;
+    return [x1, y2, z2];
+  }
+
+  function project(x, y, z, w, h) {
+    var r = rot(x, y, z);
+    var s = Math.min(w, h) * 0.92;
+    return [w / 2 + r[0] * s, h / 2 - r[1] * s, r[2]];
+  }
+
+  function line(a, b, style, width) {
+    ctx.strokeStyle = style; ctx.lineWidth = width || 1;
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]);
+    ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+
+  function scale30(v) {
+    return Math.max(0, Math.min(1, v / 30));
+  }
+
+  function draw() {
+    var w = cv.width, h = cv.height;
+    ctx.fillStyle = '#0e141f';
+    ctx.fillRect(0, 0, w, h);
+    ctx.font = '11px system-ui,sans-serif';
+    var i;
+    for (i = 0; i <= 4; i++) {
+      var f = i / 4;
+      line(project(f, 0, 0, w, h), project(f, 0, 1, w, h),
+           '#1b2839');
+      line(project(0, 0, f, w, h), project(1, 0, f, w, h),
+           '#1b2839');
+    }
+    line(project(0, 0, 0, w, h), project(0, 1, 0, w, h), '#2c3e55');
+    line(project(0, 1, 0, w, h), project(1, 1, 0, w, h), '#2c3e55');
+    line(project(1, 0, 0, w, h), project(1, 1, 0, w, h), '#2c3e55');
+    ctx.fillStyle = '#8fa1b8';
+    var ax = project(1, 0, 0, w, h);
+    ctx.fillText('mean |edge| →', ax[0] - 70, ax[1] + 16);
+    var ay = project(0, 1, 0, w, h);
+    ctx.fillText('dispersion →', ay[0] + 4, ay[1] - 6);
+    var az = project(0, 0, 1, w, h);
+    ctx.fillText('time →', az[0] - 8, az[1] + 16);
+
+    var s = (payload && payload.series) || {};
+    var trails = s.trails || [];
+    if (!trails.length) {
+      ctx.fillStyle = '#a9bcd4';
+      ctx.font = '13px system-ui,sans-serif';
+      ctx.fillText('no game has two priced markets on two ' +
+                   'pulls today yet — trails form as the day ' +
+                   'pulls', 18, 28);
+      return;
+    }
+    var deco = trails.map(function (tr, ti) {
+      var pts = tr.points.map(function (pt) {
+        var z = (tmax > tmin)
+          ? (pt[0] - tmin) / (tmax - tmin) : 0.5;
+        return project(scale30(pt[1]), scale30(pt[2]), z,
+                       w, h);
+      });
+      var depth = 0;
+      pts.forEach(function (q) { depth += q[2]; });
+      return { tr: tr, ti: ti, pts: pts,
+               depth: depth / Math.max(1, pts.length) };
+    });
+    deco.sort(function (a, b) { return a.depth - b.depth; });
+    deco.forEach(function (d, idx) {
+      var col = PALETTE[d.ti % PALETTE.length];
+      ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.8;
+      ctx.beginPath();
+      d.pts.forEach(function (q, j) {
+        if (j === 0) ctx.moveTo(q[0], q[1]);
+        else ctx.lineTo(q[0], q[1]);
+      });
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = col;
+      d.pts.forEach(function (q) {
+        ctx.beginPath(); ctx.arc(q[0], q[1], 1.8, 0, 6.2832);
+        ctx.fill();
+      });
+      var end = d.pts[d.pts.length - 1];
+      ctx.beginPath(); ctx.arc(end[0], end[1], 3, 0, 6.2832);
+      ctx.fill();
+      if (idx >= deco.length - 8) {
+        var name = labels[String(d.tr.fd_event_id)] ||
+          ((d.tr.sport || '?') + ' event ' + d.tr.fd_event_id);
+        ctx.fillStyle = '#dbe4f0';
+        ctx.font = '10px system-ui,sans-serif';
+        ctx.fillText(name, end[0] + 6, end[1] - 4);
+      }
+    });
+  }
+
+  function stampLine() {
+    if (!payload) return;
+    var s = payload.series || {};
+    stampEl.textContent =
+      'window ' + payload.window + ' (live only)' +
+      ' · ' + (payload.from || '—') + ' → ' +
+      (payload.to || '—') +
+      ' · grain ' + payload.grain +
+      ' · history begins ' + (payload.history_begins || '—') +
+      ' · ' + (s.trails_returned || 0) + ' game trails' +
+      (s.trails_total && s.trails_total !== s.trails_returned
+        ? ' (' + s.trails_total + ' before the ' + s.cap +
+          ' cap)' : '');
+    labEl.textContent = (s.trails_returned || 0)
+      ? 'each trail is one game across today\'s pulls — ' +
+        'falling dispersion is the game agreeing with itself'
+      : 'a trail needs a game with two priced markets on ' +
+        'two of today\'s pulls';
+  }
+
+  function load() {
+    if (typeof fetch !== 'function') { draw(); return; }
+    fetch('/api/slate.json')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        (j.events || []).forEach(function (ev) {
+          if (ev.label) {
+            labels[String(ev.fd_event_id)] = ev.label;
+          }
+        });
+      })
+      .catch(function () { /* labels are a join, not a gate */ })
+      .then(function () {
+        return fetch('/api/history.json?window=live' +
+                     '&graph=g5-correlation-space');
+      })
+      .then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) {
+            throw new Error('server said ' +
+              (j.error || ('http ' + r.status)));
+          }
+          return j;
+        });
+      })
+      .then(function (j) {
+        payload = j;
+        var ts = [];
+        (j.series.trails || []).forEach(function (tr) {
+          tr.points.forEach(function (pt) { ts.push(pt[0]); });
+        });
+        if (ts.length) {
+          tmin = Math.min.apply(null, ts);
+          tmax = Math.max.apply(null, ts);
+        }
+        stampLine();
+        draw();
+      })
+      .catch(function (e) {
+        stampEl.textContent = 'history feed failed: ' +
+          e.message;
+      });
+  }
+
+  var drag = null;
+  cv.addEventListener('pointerdown', function (e) {
+    drag = { x: e.clientX, y: e.clientY };
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    yaw += (e.clientX - drag.x) * 0.008;
+    pitch += (e.clientY - drag.y) * 0.008;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch));
+    drag = { x: e.clientX, y: e.clientY };
+    draw();
+  });
+  cv.addEventListener('pointerup', function () { drag = null; });
+  cv.addEventListener('pointerleave', function () {
+    drag = null;
+  });
+  window.addEventListener('resize', function () {
+    fitCanvas(); draw();
+  });
+
+  fitCanvas();
+  load();
+})();
+</script>
+</body>
+</html>

@@ -111,7 +111,7 @@ def main():
     src, out, product, major = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
     files = []
     blobs = {}
-    for name in ("betmodel5.py", "main.py"):
+    for name in ("betmodel5.py", "main.py", "history_store.py"):
         data = open(os.path.join(src, name), "rb").read()
         blobs[name] = data
         files.append({"name": name, "bytes": len(data), "sha256": sha(data)})

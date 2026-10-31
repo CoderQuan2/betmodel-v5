@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G4 Calibration Volume — BetFi Xii</title>
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
+<style>
+  body { margin:0; background:#0b0f16; color:#dbe4f0;
+         font-family:system-ui,sans-serif; }
+  .wrap { box-sizing:border-box; padding:10px 12px; }
+  .title { font-weight:600; font-size:15px; margin-bottom:2px; }
+  .sub { color:#8fa1b8; font-size:12px; margin-bottom:6px; }
+  #stamp { color:#a9bcd4; font-size:12px; margin-bottom:8px;
+           min-height:16px; }
+  .btns { margin-bottom:8px; }
+  .btns button { background:#16202e; color:#dbe4f0;
+    border:1px solid #2c3e55; border-radius:6px;
+    padding:5px 12px; font-size:12px; margin-right:6px;
+    cursor:pointer; }
+  .btns button.on { background:#1d4e5f; border-color:#35d0ff;
+    color:#bfefff; }
+  #gate { border:1px solid #8a6d1d; background:#1d1807;
+    color:#ffd76a; border-radius:10px; padding:12px;
+    font-size:13px; line-height:1.5; margin-bottom:8px; }
+  #cv { width:100%; display:block; touch-action:none;
+    cursor:grab; background:#0e141f; border-radius:10px; }
+  #lab { font-size:12px; color:#8fa1b8; margin-top:8px;
+         min-height:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">G4 — Calibration Volume</div>
+  <div class="sub">Planned axes: across = predicted
+    probability, up = realized frequency, depth = time — the
+    calibration curve as a surface that tilts as evidence
+    accrues. It is not drawn: the realized side does not
+    exist in the pull record. This page prints the gate the
+    feed itself returns, in every window, until the missing
+    join lands — no synthetic outcomes, ever.</div>
+  <div id="stamp">no pull history loaded yet</div>
+  <div class="btns">
+    <button id="btn-live" type="button">Live</button>
+    <button id="btn-month" type="button">1 Month</button>
+    <button id="btn-season" type="button">Season</button>
+  </div>
+  <div id="gate">reading the feed's gate…</div>
+  <canvas id="cv" width="660" height="450"></canvas>
+  <div id="lab"></div>
+</div>
+<script>
+(function () {
+  var cv = document.getElementById('cv');
+  var stampEl = document.getElementById('stamp');
+  var labEl = document.getElementById('lab');
+  var gateEl = document.getElementById('gate');
+  var ctx = cv.getContext('2d');
+  var payload = null;
+  var win = 'live';
+  (function () {
+    var q = (window.location && window.location.search) || '';
+    var m = /[?&]window=(live|month|season)\b/.exec(q);
+    if (m) win = m[1];
+  })();
+  var yaw = -0.65, pitch = 0.52;
+
+  function setActive() {
+    var map = { live: 'btn-live', month: 'btn-month',
+                season: 'btn-season' };
+    for (var k in map) {
+      var b = document.getElementById(map[k]);
+      if (b) b.className = (k === win) ? 'on' : '';
+    }
+  }
+
+  function fitCanvas() {
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(280, Math.floor(r.width || 660));
+    cv.width = w;
+    cv.height = Math.floor(w * 0.68);
+  }
+
+  function rot(x, y, z) {
+    var cx = x - 0.5, cy = y - 0.5, cz = z - 0.5;
+    var c1 = Math.cos(yaw), s1 = Math.sin(yaw);
+    var x1 = cx * c1 - cz * s1, z1 = cx * s1 + cz * c1;
+    var c2 = Math.cos(pitch), s2 = Math.sin(pitch);
+    var y2 = cy * c2 - z1 * s2, z2 = cy * s2 + z1 * c2;
+    return [x1, y2, z2];
+  }
+
+  function project(x, y, z, w, h) {
+    var r = rot(x, y, z);
+    var s = Math.min(w, h) * 0.92;
+    return [w / 2 + r[0] * s, h / 2 - r[1] * s, r[2]];
+  }
+
+  function line(a, b, style, width) {
+    ctx.strokeStyle = style; ctx.lineWidth = width || 1;
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]);
+    ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+
+  function draw() {
+    // the empty volume the surface will fill: axes only,
+    // deliberately faint — a frame, not a fake surface
+    var w = cv.width, h = cv.height;
+    ctx.fillStyle = '#0e141f';
+    ctx.fillRect(0, 0, w, h);
+    ctx.font = '11px system-ui,sans-serif';
+    var i;
+    for (i = 0; i <= 4; i++) {
+      var f = i / 4;
+      line(project(f, 0, 0, w, h), project(f, 0, 1, w, h),
+           '#141d2c');
+      line(project(0, 0, f, w, h), project(1, 0, f, w, h),
+           '#141d2c');
+    }
+    for (i = 0; i <= 4; i++) {
+      var z = i / 4;
+      line(project(0, 0, z, w, h), project(1, 1, z, w, h),
+           '#1d2c1f');
+    }
+    line(project(0, 0, 0, w, h), project(0, 1, 0, w, h), '#22314a');
+    line(project(0, 1, 0, w, h), project(1, 1, 0, w, h), '#22314a');
+    line(project(1, 0, 0, w, h), project(1, 1, 0, w, h), '#22314a');
+    ctx.fillStyle = '#54677f';
+    var ax = project(1, 0, 0, w, h);
+    ctx.fillText('predicted p →', ax[0] - 66, ax[1] + 16);
+    var ay = project(0, 1, 0, w, h);
+    ctx.fillText('realized freq →', ay[0] + 4, ay[1] - 6);
+    var az = project(0, 0, 1, w, h);
+    ctx.fillText('time →', az[0] - 8, az[1] + 16);
+    var dm = project(0.62, 0.62, 1, w, h);
+    ctx.fillText('perfect calibration', dm[0] + 6, dm[1]);
+    ctx.fillStyle = '#a9bcd4';
+    ctx.font = '13px system-ui,sans-serif';
+    ctx.fillText('UNBUILT-DATA — see the gate above', 18, 28);
+  }
+
+  function stampLine() {
+    if (!payload) return;
+    var s = payload.series || {};
+    stampEl.textContent =
+      'window ' + payload.window +
+      ' · ' + (payload.from || '—') + ' → ' +
+      (payload.to || '—') +
+      ' · grain ' + payload.grain +
+      ' · history begins ' + (payload.history_begins || '—') +
+      ' · ' + (s.records_seen || 0) + ' pull records read';
+    if (s.gate) {
+      gateEl.textContent = s.gate + ' — missing input: ' +
+        s.missing;
+    } else {
+      gateEl.textContent = 'the feed returned no gate and ' +
+        'no surface this page knows how to draw';
+    }
+    labEl.textContent = 'when the results join lands, this ' +
+      'page draws the surface from the same feed — the gate ' +
+      'is the feed\'s own answer today';
+  }
+
+  function load() {
+    setActive();
+    if (typeof fetch !== 'function') { draw(); return; }
+    fetch('/api/history.json?window=' + win +
+          '&graph=g4-calibration-volume')
+      .then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) {
+            throw new Error('server said ' +
+              (j.error || ('http ' + r.status)));
+          }
+          return j;
+        });
+      })
+      .then(function (j) {
+        payload = j;
+        stampLine();
+        draw();
+      })
+      .catch(function (e) {
+        stampEl.textContent = 'history feed failed: ' +
+          e.message;
+        gateEl.textContent = 'the gate could not be read — ' +
+          'the feed itself failed (see the stamp above)';
+      });
+  }
+
+  ['live', 'month', 'season'].forEach(function (name) {
+    var b = document.getElementById('btn-' + name);
+    if (b) b.addEventListener('click', function () {
+      win = name; load();
+    });
+  });
+
+  var drag = null;
+  cv.addEventListener('pointerdown', function (e) {
+    drag = { x: e.clientX, y: e.clientY };
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    yaw += (e.clientX - drag.x) * 0.008;
+    pitch += (e.clientY - drag.y) * 0.008;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch));
+    drag = { x: e.clientX, y: e.clientY };
+    draw();
+  });
+  cv.addEventListener('pointerup', function () { drag = null; });
+  cv.addEventListener('pointerleave', function () {
+    drag = null;
+  });
+  window.addEventListener('resize', function () {
+    fitCanvas(); draw();
+  });
+
+  fitCanvas();
+  load();
+})();
+</script>
+</body>
+</html>

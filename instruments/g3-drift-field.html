@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G3 Drift Field — BetFi Xii</title>
+<script>
+/* BetFi instrument guard (v12.30): a failure anywhere in this
+   page prints itself in a banner instead of leaving a silent
+   blank page — screenshot the banner and the fault is named. */
+window.__betfiErrorShown = false;
+window.__betfiShowError = function (msg) {
+  if (window.__betfiErrorShown) return;
+  window.__betfiErrorShown = true;
+  var show = function () {
+    var b = document.createElement('div');
+    b.setAttribute('style', 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1020;color:#fff;font:13px/1.45 system-ui,sans-serif;padding:10px 12px;white-space:pre-wrap;word-break:break-word;');
+    b.textContent = 'This instrument hit an error: ' + msg;
+    if (document.body) document.body.appendChild(b);
+  };
+  if (document.body) show();
+  else document.addEventListener('DOMContentLoaded', show);
+};
+window.addEventListener('error', function (e) {
+  window.__betfiShowError((e && e.message) ? e.message : 'unknown script error');
+});
+window.addEventListener('unhandledrejection', function (e) {
+  window.__betfiShowError('unhandled promise rejection: ' + ((e && e.reason && e.reason.message) || e.reason || 'unknown'));
+});
+</script>
+<style>
+  body { margin:0; background:#0b0f16; color:#dbe4f0;
+         font-family:system-ui,sans-serif; }
+  .wrap { box-sizing:border-box; padding:10px 12px; }
+  .title { font-weight:600; font-size:15px; margin-bottom:2px; }
+  .sub { color:#8fa1b8; font-size:12px; margin-bottom:6px; }
+  #stamp { color:#a9bcd4; font-size:12px; margin-bottom:8px;
+           min-height:16px; }
+  .btns { margin-bottom:8px; }
+  .btns button { background:#16202e; color:#dbe4f0;
+    border:1px solid #2c3e55; border-radius:6px;
+    padding:5px 12px; font-size:12px; margin-right:6px;
+    cursor:pointer; }
+  .btns button.on { background:#1d4e5f; border-color:#35d0ff;
+    color:#bfefff; }
+  #cv { width:100%; display:block; touch-action:none;
+    cursor:grab; background:#0e141f; border-radius:10px; }
+  #lab { font-size:12px; color:#8fa1b8; margin-top:8px;
+         min-height:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title">G3 — Drift Field</div>
+  <div class="sub">Every market's step between two
+    consecutive pulls is one point: across = the price's move
+    (implied points, ±30 scale), up = the model probability's
+    move (points, ±30), depth = which pull the step landed
+    on. Points coloured by lane (sport). A lane whose cloud
+    runs along the diagonal is being re-priced WITH its
+    model — the book respecting the lane; a lane smeared
+    against it is being faded. The two centre planes are
+    no-move. Drag to orbit.</div>
+  <div id="stamp">no pull history loaded yet</div>
+  <div class="btns">
+    <button id="btn-month" type="button">1 Month</button>
+    <button id="btn-season" type="button">Season</button>
+  </div>
+  <canvas id="cv" width="660" height="450"></canvas>
+  <div id="lab"></div>
+</div>
+<script>
+(function () {
+  var cv = document.getElementById('cv');
+  var stampEl = document.getElementById('stamp');
+  var labEl = document.getElementById('lab');
+  var ctx = cv.getContext('2d');
+  var payload = null;
+  var win = 'month';
+  (function () {
+    var q = (window.location && window.location.search) || '';
+    var m = /[?&]window=(month|season)\b/.exec(q);
+    if (m) win = m[1];
+  })();
+  var yaw = -0.65, pitch = 0.52;
+  var PALETTE = ['#35d0ff', '#ffb84d', '#7fe08a', '#ff7a9c',
+                 '#b49aff', '#ffd76a', '#6ae0d4', '#ff9a3c',
+                 '#8fc7ff', '#d48fff', '#a0e05a', '#ff6a6a'];
+
+  function setActive() {
+    var map = { month: 'btn-month', season: 'btn-season' };
+    for (var k in map) {
+      var b = document.getElementById(map[k]);
+      if (b) b.className = (k === win) ? 'on' : '';
+    }
+  }
+
+  function fitCanvas() {
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(280, Math.floor(r.width || 660));
+    cv.width = w;
+    cv.height = Math.floor(w * 0.68);
+  }
+
+  function rot(x, y, z) {
+    var cx = x - 0.5, cy = y - 0.5, cz = z - 0.5;
+    var c1 = Math.cos(yaw), s1 = Math.sin(yaw);
+    var x1 = cx * c1 - cz * s1, z1 = cx * s1 + cz * c1;
+    var c2 = Math.cos(pitch), s2 = Math.sin(pitch);
+    var y2 = cy * c2 - z1 * s2, z2 = cy * s2 + z1 * c2;
+    return [x1, y2, z2];
+  }
+
+  function project(x, y, z, w, h) {
+    var r = rot(x, y, z);
+    var s = Math.min(w, h) * 0.92;
+    return [w / 2 + r[0] * s, h / 2 - r[1] * s, r[2]];
+  }
+
+  function line(a, b, style, width) {
+    ctx.strokeStyle = style; ctx.lineWidth = width || 1;
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]);
+    ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+
+  function scale30(v) {
+    return Math.max(0, Math.min(1, v / 30 * 0.5 + 0.5));
+  }
+
+  function draw() {
+    var w = cv.width, h = cv.height;
+    ctx.fillStyle = '#0e141f';
+    ctx.fillRect(0, 0, w, h);
+    ctx.font = '11px system-ui,sans-serif';
+    var i;
+    for (i = 0; i <= 4; i++) {
+      var f = i / 4;
+      line(project(f, 0, 0, w, h), project(f, 0, 1, w, h),
+           '#1b2839');
+      line(project(0, 0, f, w, h), project(1, 0, f, w, h),
+           '#1b2839');
+    }
+    // the no-move centre planes
+    line(project(0.5, 0, 0, w, h), project(0.5, 0, 1, w, h),
+         '#3f7d5a');
+    line(project(0.5, 0, 1, w, h), project(0.5, 1, 1, w, h),
+         '#274b3a');
+    line(project(0, 0.5, 1, w, h), project(1, 0.5, 1, w, h),
+         '#274b3a');
+    line(project(0, 0, 0, w, h), project(0, 1, 0, w, h), '#2c3e55');
+    line(project(0, 1, 0, w, h), project(1, 1, 0, w, h), '#2c3e55');
+    line(project(1, 0, 0, w, h), project(1, 1, 0, w, h), '#2c3e55');
+    ctx.fillStyle = '#8fa1b8';
+    var ax = project(1, 0, 0, w, h);
+    ctx.fillText('price move →', ax[0] - 62, ax[1] + 16);
+    var ay = project(0, 1, 0, w, h);
+    ctx.fillText('model move →', ay[0] + 4, ay[1] - 6);
+    var az = project(0, 0, 1, w, h);
+    ctx.fillText('pulls →', az[0] - 8, az[1] + 16);
+
+    var s = (payload && payload.series) || {};
+    var points = s.points || [];
+    if (!points.length) {
+      ctx.fillStyle = '#a9bcd4';
+      ctx.font = '13px system-ui,sans-serif';
+      ctx.fillText('no consecutive-pull steps in this window ' +
+                   'yet — a step needs the same market priced ' +
+                   'on two pulls', 18, 28);
+      return;
+    }
+    var lanes = s.lanes || [];
+    var laneIdx = {};
+    lanes.forEach(function (l, i2) { laneIdx[l] = i2; });
+    var pulls = Math.max(1, (s.pulls || 1) - 1);
+    var deco = points.map(function (p) {
+      var q = project(scale30(p.x), scale30(p.y),
+                      Math.max(0, Math.min(1, p.z / pulls)),
+                      w, h);
+      return { p: p, q: q, depth: q[2] };
+    });
+    deco.sort(function (a, b) { return a.depth - b.depth; });
+    deco.forEach(function (d) {
+      ctx.fillStyle = PALETTE[
+        (laneIdx[d.p.sport] || 0) % PALETTE.length];
+      ctx.globalAlpha = 0.8;
+      ctx.beginPath();
+      ctx.arc(d.q[0], d.q[1], 1.8, 0, 6.2832);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    // lane legend
+    ctx.font = '10px system-ui,sans-serif';
+    lanes.slice(0, 12).forEach(function (l, i2) {
+      ctx.fillStyle = PALETTE[i2 % PALETTE.length];
+      ctx.fillText('■ ' + l, 12, 20 + i2 * 13);
+    });
+  }
+
+  function stampLine() {
+    if (!payload) return;
+    var s = payload.series || {};
+    stampEl.textContent =
+      'window ' + payload.window +
+      ' · ' + (payload.from || '—') + ' → ' +
+      (payload.to || '—') +
+      ' · grain ' + payload.grain +
+      ' · history begins ' + (payload.history_begins || '—') +
+      ' · ' + (s.points_returned || 0) + ' steps over ' +
+      (s.pulls || 0) + ' pulls' +
+      (s.points_total && s.points_total !== s.points_returned
+        ? ' (' + s.points_total + ' before the ' + s.cap +
+          ' cap — ' + s.cap_rule + ')' : '');
+    labEl.textContent = (s.points_returned || 0)
+      ? 'each point is one market stepping between two ' +
+        'consecutive pulls — drift given a body'
+      : 'the drift ledger needs two pulls of the same market';
+  }
+
+  function load() {
+    setActive();
+    if (typeof fetch !== 'function') { draw(); return; }
+    fetch('/api/history.json?window=' + win +
+          '&graph=g3-drift-field')
+      .then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) {
+            throw new Error('server said ' +
+              (j.error || ('http ' + r.status)));
+          }
+          return j;
+        });
+      })
+      .then(function (j) {
+        payload = j;
+        stampLine();
+        draw();
+      })
+      .catch(function (e) {
+        stampEl.textContent = 'history feed failed: ' +
+          e.message;
+      });
+  }
+
+  ['month', 'season'].forEach(function (name) {
+    var b = document.getElementById('btn-' + name);
+    if (b) b.addEventListener('click', function () {
+      win = name; load();
+    });
+  });
+
+  var drag = null;
+  cv.addEventListener('pointerdown', function (e) {
+    drag = { x: e.clientX, y: e.clientY };
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    yaw += (e.clientX - drag.x) * 0.008;
+    pitch += (e.clientY - drag.y) * 0.008;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch));
+    drag = { x: e.clientX, y: e.clientY };
+    draw();
+  });
+  cv.addEventListener('pointerup', function () { drag = null; });
+  cv.addEventListener('pointerleave', function () {
+    drag = null;
+  });
+  window.addEventListener('resize', function () {
+    fitCanvas(); draw();
+  });
+
+  fitCanvas();
+  load();
+})();
+</script>
+</body>
+</html>

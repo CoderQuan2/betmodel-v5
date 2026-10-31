@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "13.1.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 54)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "13.2.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 55)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -1693,10 +1693,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "13.1.0 (build 54)" in _readme)
+          "13.2.0 (build 55)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "13.1.0"' in _wf
-          and '--build-number "54"' in _wf)
+          '--build-version "13.2.0"' in _wf
+          and '--build-number "55"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -3621,6 +3621,316 @@ def main():
         b5.fd_parse_sport_page = _orig_parse
         b5.fd_event_menu = _orig_event_menu
         app.set_chosen_sport("nfl")
+
+    # ---------- 3D fulfillment (13.2.0): recorder, windows,
+    # shapes, server, panel ----------
+    import tempfile as _tf3
+    import urllib.request as _ur3
+    import urllib.error as _ue3
+    from datetime import datetime as _dt3
+    from datetime import timedelta as _td3
+    import history_store as _hs3
+
+    _now3 = _dt3.now(_hs3.DETROIT)
+    _stamps3 = [(_now3 - _td3(hours=h)).isoformat(
+        timespec="seconds") for h in (5, 3, 0)]
+
+    def _synth3(pull):
+        base = [
+            {"sport": "nfl", "fd_event_id": 111,
+             "fd_market_id": "1.1", "fd_selection_id": 11,
+             "market": "moneyline", "side": "home",
+             "line": None, "price": -140 - pull * 10},
+            {"sport": "nfl", "fd_event_id": 111,
+             "fd_market_id": "1.2", "fd_selection_id": 12,
+             "market": "moneyline", "side": "away",
+             "line": None, "price": 120 + pull * 5},
+            {"sport": "nba", "fd_event_id": 222,
+             "fd_market_id": "2.1", "fd_selection_id": 21,
+             "market": "spread", "side": "away",
+             "line": -3.5, "price": -105 - pull * 5},
+            {"sport": "nba", "fd_event_id": 222,
+             "fd_market_id": "2.2", "fd_selection_id": 22,
+             "market": "moneyline", "side": "home",
+             "line": None, "price": None},
+        ]
+        vs = []
+        for m in base:
+            q = _hs3.implied_prob(m["price"])
+            vs.append(None if q is None else
+                      {"p": min(0.99, max(0.01, q + 0.02)),
+                       "verdict": "BET HERE", "grade": "B",
+                       "metal": "SILVER"})
+        return _hs3.shape_record(
+            {"pulled_at": _stamps3[pull], "markets": base,
+             "sports": {}}, vs)
+
+    _tmp3 = _tf3.mkdtemp(prefix="betfi-3d-")
+    _store3 = os.path.join(_tmp3, "store")
+    _recs3 = [_synth3(j) for j in range(3)]
+    for _r in _recs3:
+        _hs3.append_pull(_store3, _r)
+    _live3 = _hs3.load_window(_store3, "live", _now3)
+    _month3 = _hs3.load_window(_store3, "month", _now3)
+    _season3 = _hs3.load_window(_store3, "season", _now3)
+    check("3d: windows serve the recorded pulls (live/month/"
+          "season)",
+          len(_live3["records"]) == 3
+          and len(_month3["records"]) == 3
+          and len(_season3["records"]) == 3)
+    check("3d: history_begins == oldest recorded stamp",
+          _live3["history_begins"] == _stamps3[0]
+          and _hs3.history_begins(_store3) == _stamps3[0]
+          and _hs3.history_begins(
+              os.path.join(_tmp3, "no-store")) is None)
+
+    _store3b = os.path.join(_tmp3, "store_b")
+    _mkts3 = [
+        {"sport": "soccer", "fd_event_id": 333, "home": "ARS",
+         "away": "CHE", "fd_market_id": "3.1",
+         "fd_selection_id": 31, "market": "moneyline",
+         "side": "home", "line": None, "price": -120},
+        {"sport": "soccer", "fd_event_id": 333, "home": "ARS",
+         "away": "CHE", "fd_market_id": "3.2",
+         "fd_selection_id": 32, "market": "moneyline",
+         "side": "away", "line": None, "price": 200},
+        {"sport": "soccer", "fd_event_id": 333, "home": "ARS",
+         "away": "CHE", "fd_market_id": "3.3",
+         "fd_selection_id": 33, "market": "totals",
+         "side": "over", "line": 2.5, "price": None},
+    ]
+    _vs3 = [{"p": 0.55, "verdict": "BET HERE", "grade": "B",
+             "metal": "SILVER"},
+            {"p": 0.31, "verdict": "WATCH", "grade": "C",
+             "metal": "STEEL"}, None]
+    _slate3 = {"pulled_at": _stamps3[2], "markets": _mkts3,
+               "sports": {}}
+    _r1 = _hs3.record_pull(_store3b, _slate3, _vs3)
+    _r2 = _hs3.record_pull(_store3b, _slate3, _vs3)
+    check("3d: record_pull records once, then dedupes",
+          _r1["status"] == "recorded"
+          and _r2["status"] == "duplicate")
+    _slice3 = _hs3.load_window(_store3b, "live", _now3)
+    check("3d: has_pull counts the slice; the slice holds only "
+          "its own markets",
+          _hs3.has_pull(_store3b, _stamps3[2]) == 3
+          and _hs3.has_pull(_store3b, _stamps3[0]) is None
+          and len(_slice3["records"]) == 1
+          and all(e["sport"] == "soccer"
+                  for e in _slice3["records"][0]["markets"]))
+
+    # compaction: fold, last-pull-wins, idempotence, convergent
+    # re-fold (an earlier same-day append cannot displace the
+    # standing daily winner)
+    _store3c = os.path.join(_tmp3, "store_c")
+    _day3 = (_now3 - _td3(days=40)).date()
+    _t1 = _dt3(_day3.year, _day3.month, _day3.day, 9, 0,
+               tzinfo=_hs3.DETROIT).isoformat(timespec="seconds")
+    _t2 = _dt3(_day3.year, _day3.month, _day3.day, 18, 0,
+               tzinfo=_hs3.DETROIT).isoformat(timespec="seconds")
+    _t0 = _dt3(_day3.year, _day3.month, _day3.day, 7, 0,
+               tzinfo=_hs3.DETROIT).isoformat(timespec="seconds")
+
+    def _mk3(stamp, k1_price, with_k2=True):
+        mkts = [
+            {"sport": "nfl", "fd_event_id": 111,
+             "fd_market_id": "1.1", "fd_selection_id": 11,
+             "market": "moneyline", "side": "home",
+             "line": None, "price": k1_price},
+            {"sport": "nfl", "fd_event_id": 111,
+             "fd_market_id": "1.2", "fd_selection_id": 12,
+             "market": "totals", "side": "over",
+             "line": 44.5, "price": -110}]
+        if with_k2:
+            mkts.append(
+                {"sport": "nba", "fd_event_id": 222,
+                 "fd_market_id": "2.1", "fd_selection_id": 21,
+                 "market": "spread", "side": "away",
+                 "line": -3.5, "price": -105})
+        return _hs3.shape_record(
+            {"pulled_at": stamp, "markets": mkts, "sports": {}},
+            [{"p": 0.6, "verdict": "BET HERE", "grade": "B",
+              "metal": "SILVER"}] * len(mkts))
+
+    _hs3.append_pull(_store3c, _mk3(_t1, -140))
+    _hs3.append_pull(_store3c, _mk3(_t2, -150, with_k2=False))
+    _hs3.append_pull(_store3c, _mk3(
+        _now3.isoformat(timespec="seconds"), -160))
+    _hs3.compact(_store3c, _now3)
+    _seas3 = _hs3.load_window(_store3c, "season", _now3)
+    _daily3 = [r for r in _seas3["records"]
+               if r["grain"] == "day"]
+    _pulls3 = [r for r in _seas3["records"]
+               if r["grain"] == "pull"]
+    _k1key3 = _hs3.market_key(
+        {"sport": "nfl", "fd_event_id": 111,
+         "market": "moneyline", "side": "home", "line": None})
+    _bykey3 = {r["markets"][0]["key"]: r for r in _daily3}
+    _k1 = _bykey3.get(_k1key3)
+    check("3d: compaction folds an old day to one daily record "
+          "per key; last pull wins (price + stamp)",
+          len(_daily3) == 3 and len(_pulls3) == 1
+          and _k1 is not None
+          and _k1["markets"][0]["price"] == -150
+          and _k1["pulled_at"] == _t2)
+
+    def _bytes3(store):
+        hdir = os.path.join(store, _hs3.HISTORY_DIRNAME)
+        return {f: open(os.path.join(hdir, f), "rb").read()
+                for f in sorted(os.listdir(hdir))}
+
+    _before3 = _bytes3(_store3c)
+    _hs3.compact(_store3c, _now3)
+    _idem3 = _bytes3(_store3c) == _before3
+    _hs3.append_pull(_store3c, _mk3(_t0, -120, with_k2=False))
+    _hs3.compact(_store3c, _now3)
+    _seas3b = _hs3.load_window(_store3c, "season", _now3)
+    _k1b = {r["markets"][0]["key"]: r
+            for r in _seas3b["records"]
+            if r["grain"] == "day"}.get(_k1key3)
+    check("3d: compaction idempotent + convergent re-fold "
+          "(earlier append cannot displace the daily winner)",
+          _idem3 and _k1b is not None
+          and _k1b["markets"][0]["price"] == -150
+          and _k1b["pulled_at"] == _t2)
+
+    # shape purity + gates
+    _terr3 = _hs3.shape_edge_terrain(_month3["records"])
+    check("3d: G1 terrain paths sorted, >=2 points, probs in "
+          "[0,1], fair diagonal present",
+          len(_terr3["paths"]) >= 1
+          and _terr3["diagonal"] is True
+          and all(len(p["points"]) >= 2
+                  and all(p["points"][i][0]
+                          <= p["points"][i + 1][0]
+                          for i in range(len(p["points"]) - 1))
+                  and all(0.0 <= pt[1] <= 1.0
+                          and 0.0 <= pt[2] <= 1.0
+                          for pt in p["points"])
+                  for p in _terr3["paths"]))
+    _riv3 = _hs3.shape_price_rivers(_recs3, event_id=111)
+    _riv3x = _hs3.shape_price_rivers(_recs3, event_id=999)
+    check("3d: G2 rivers honour an explicit event; an unknown "
+          "event draws nothing (never a substitute game)",
+          _riv3["event"] is not None
+          and _riv3["event"]["fd_event_id"] == 111
+          and _riv3x["event"] is None
+          and _riv3x["ribbons"] == [])
+    _cov3 = _hs3.shape_coverage_topography(_recs3)
+    check("3d: G6 coverage shares in [0,1] with the unpriced "
+          "denominator counted",
+          _cov3["cells_total"] == 6
+          and all(0.0 <= c["share"] <= 1.0
+                  for c in _cov3["cells"])
+          and all(c["n"] == 2 and c["priced"] == 1
+                  and abs(c["share"] - 0.5) < 1e-9
+                  for c in _cov3["cells"]
+                  if c["sport"] == "nba"))
+    _clv3 = _hs3.shape_clv_surface(_recs3)
+    _g4_3 = _hs3.shape_calibration_volume(_recs3)
+    _g7_3 = _hs3.shape_team_trajectories(_recs3)
+    check("3d: G8 settled side + G4 + G7 print UNBUILT-DATA "
+          "gates, never a series",
+          _clv3["settled"]["gate"] == "UNBUILT-DATA"
+          and "results join" in _clv3["settled"]["missing"]
+          and _g4_3["gate"] == "UNBUILT-DATA"
+          and "series" not in _g4_3
+          and _g7_3["gate"] == "UNBUILT-DATA"
+          and "pool" in _g7_3["missing"])
+    try:
+        _hs3.shape_for("nope", _recs3)
+        _unk3 = False
+    except ValueError as _e3:
+        _unk3 = str(_e3) == "unknown_graph"
+    check("3d: shape_for rejects an unknown graph by name",
+          _unk3)
+
+    # server: the real handler over the fixture store
+    _orig_dir3 = app.history_store_dir
+    _orig_slate3 = app._CURRENT_SLATE.get("rec")
+    app.history_store_dir = lambda: _store3
+    app._CURRENT_SLATE["rec"] = _slate3
+    try:
+        _port3 = app.ensure_instrument_server()
+
+        def _fetch3(path):
+            try:
+                with _ur3.urlopen(
+                        f"http://127.0.0.1:{_port3}{path}",
+                        timeout=15) as r:
+                    return r.status, r.read()
+            except _ue3.HTTPError as e:
+                return e.code, e.read()
+
+        _st3, _body3 = _fetch3("/g1-edge-terrain.html")
+        _disk3 = open(os.path.join(
+            app.INSTRUMENTS_DIR, "g1-edge-terrain.html"),
+            "rb").read()
+        check("3d: instrument server serves static pages "
+              "byte-exact", _port3 is not None and _st3 == 200
+              and _body3 == _disk3)
+        _st3, _body3 = _fetch3("/api/slate.json")
+        _slj3 = json.loads(_body3)
+        check("3d: /api/slate.json serves the current pull",
+              _st3 == 200 and _slj3["markets"] == 3
+              and len(_slj3["events"]) >= 1)
+        _st3, _body3 = _fetch3(
+            "/api/history.json?window=live&graph=g1-edge-terrain")
+        _hj3 = json.loads(_body3)
+        check("3d: /api/history.json answers the contract shape "
+              "with the history_begins stamp",
+              _st3 == 200 and _hj3["window"] == "live"
+              and _hj3["graph"] == "g1-edge-terrain"
+              and _hj3["history_begins"] == _stamps3[0]
+              and "grain" in _hj3 and "series" in _hj3)
+        _e_g3 = _fetch3(
+            "/api/history.json?window=live&graph=nope")
+        _e_w3 = _fetch3(
+            "/api/history.json?window=nope"
+            "&graph=g1-edge-terrain")
+        _e_a3 = _fetch3("/api/nope.json")
+        check("3d: server errors are named JSON (400/400/404)",
+              _e_g3[0] == 400 and b"unknown_graph" in _e_g3[1]
+              and _e_w3[0] == 400
+              and b"unknown_window" in _e_w3[1]
+              and _e_a3[0] == 404
+              and b"unknown_api_path" in _e_a3[1])
+    finally:
+        app.history_store_dir = _orig_dir3
+        app._CURRENT_SLATE["rec"] = _orig_slate3
+
+    # registry + panel wiring
+    _hist3 = [i for i in app.INSTRUMENTS
+              if i.get("shelf") == "history"]
+    check("3d: registry — every entry stamped with its data "
+          "kind; the 8 history instruments exist on disk",
+          len(app.INSTRUMENTS) == 19
+          and all(i.get("data") in ("live", "history",
+                                    "static-sample")
+                  and i.get("shelf") in ("history", "snapshot")
+                  for i in app.INSTRUMENTS)
+          and len(_hist3) == 8
+          and all(os.path.exists(os.path.join(
+              app.INSTRUMENTS_DIR, i["file"])) for i in _hist3))
+    _src3 = open(os.path.join(HERE, "main.py")).read()
+    _g4html3 = open(os.path.join(
+        app.INSTRUMENTS_DIR, "g4-calibration-volume.html"),
+        encoding="utf-8").read()
+    _g7html3 = open(os.path.join(
+        app.INSTRUMENTS_DIR, "g7-team-trajectories.html"),
+        encoding="utf-8").read()
+    check("3d: panel TIME control defaults to live, persists "
+          "in panel state, and rides ?window= into history "
+          "instruments only",
+          '"panel_time": "live"' in _src3
+          and "?window={state.get('panel_time')" in _src3
+          and 'if inst.get("shelf") == "history":' in _src3)
+    check("3d: gate pages draw only what the payload carries "
+          "(gate text + the history API, no baked series)",
+          "UNBUILT-DATA" in _g4html3
+          and "UNBUILT-DATA" in _g7html3
+          and "/api/history.json" in _g4html3
+          and "/api/history.json" in _g7html3)
 
     failed = [r for r in RESULTS if not r[1]]
     print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} checks "
