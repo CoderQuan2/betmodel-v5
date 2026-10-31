@@ -12,7 +12,7 @@ script, byte-identical to the lab's) are the only two Python files
 in the repo. Flet requires the entry point to be named main.py —
 that is the only reason there are two.
 
-Screens (bottom nav, five destinations — permanently capped):
+Screens (bottom nav — five destinations through v12; v13.0 adds a sixth, Stocks):
   * Board — every checked market from the current pull as a card
     (face: matchup / record / odds / hero probability + edge /
     grade + calibration chip / verdict pill + stance pill; depth
@@ -122,6 +122,7 @@ import sys
 import threading
 import traceback
 import time
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 
@@ -353,8 +354,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "12.31.0"
-BUILD_NUMBER = 52
+APP_VERSION = "13.0.0"
+BUILD_NUMBER = 53
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -1667,6 +1668,322 @@ def load_snapshot() -> dict | None:
     except Exception:
         pass
     return None
+
+
+# ------------------------------------------------------------------
+# Stocks pull (v13.0) — Nasdaq API, stdlib urllib, the same
+# fetch -> raw dict -> pure parse structure as the menu pull.
+# Route verified by probe 2026-10-30 (the v13-stocks fill):
+# quote/info, historical, and the two-phase option-chain (the
+# bare call returns only the nearest expiry group; the
+# response's filterlist month buckets give the fromdate/todate
+# span whose ranged call returns every expiry group at once).
+# Every parsed block carries {source, pulled_at, delay_class}.
+# The chain's own embedded lastTrade stamp was observed one
+# session stale at probe time — it is kept raw for audit and
+# NEVER used as spot; spot is the quote's regular close.
+
+STOCK_UNIVERSE = ["MSTR", "CRM", "META", "AVGO", "SMCI", "BAC"]
+NASDAQ_BASE = "https://api.nasdaq.com/api/quote"
+NASDAQ_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+NASDAQ_SOURCE = "Nasdaq API"
+NASDAQ_MIN_INTERVAL_S = 0.5
+
+_nasdaq_last_call = [0.0]
+_nasdaq_lock = threading.Lock()
+
+
+def _stock_stamp(delay_class: str) -> dict:
+    return {"source": NASDAQ_SOURCE,
+            "pulled_at": datetime.now().astimezone().isoformat(
+                timespec="seconds"),
+            "delay_class": delay_class}
+
+
+def _nasdaq_get(url: str):
+    """One paced GET -> parsed JSON. Raises on HTTP/JSON failure."""
+    with _nasdaq_lock:
+        wait = NASDAQ_MIN_INTERVAL_S - (
+            time.monotonic() - _nasdaq_last_call[0])
+        if wait > 0:
+            time.sleep(wait)
+        req = urllib.request.Request(url, headers={
+            "User-Agent": NASDAQ_UA,
+            "Accept": "application/json",
+            "Accept-Language": "en-US,en;q=0.9",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                body = resp.read().decode("utf-8")
+        finally:
+            _nasdaq_last_call[0] = time.monotonic()
+    return json.loads(body)
+
+
+def _nasdaq_num(raw):
+    """Nasdaq display numbers: '$132.20', '+1.29%', '33,997,225'
+    -> float; '--', '', None -> None."""
+    if raw is None:
+        return None
+    s = str(raw).strip().replace("$", "").replace(",", "") \
+        .replace("%", "")
+    if s in ("", "--", "N/A", "NA", "-"):
+        return None
+    try:
+        return float(s)
+    except ValueError:
+        return None
+
+
+def _nasdaq_int(raw):
+    v = _nasdaq_num(raw)
+    return None if v is None else int(v)
+
+
+def parse_nasdaq_quote(raw: dict, sym: str) -> dict:
+    """Raw quote/info JSON -> the quote block. Primary (live /
+    after-hours) and secondary (regular close) are kept
+    separate — they routinely disagree after hours.
+    spot_reference is the regular close when present (that is
+    the session the option chain's quotes belong to), else the
+    primary last sale; the stale chain lastTrade is never spot.
+    """
+    data = (raw or {}).get("data") or {}
+    p = data.get("primaryData") or {}
+    s = data.get("secondaryData") or {}
+
+    def block(b):
+        return {
+            "last": _nasdaq_num(b.get("lastSalePrice")),
+            "net_change": _nasdaq_num(b.get("netChange")),
+            "pct_change": _nasdaq_num(b.get("percentageChange")),
+            "bid": _nasdaq_num(b.get("bidPrice")),
+            "ask": _nasdaq_num(b.get("askPrice")),
+            "bid_size": _nasdaq_int(b.get("bidSize")),
+            "ask_size": _nasdaq_int(b.get("askSize")),
+            "volume": _nasdaq_num(b.get("volume")),
+            "last_trade_timestamp_raw": b.get("lastTradeTimestamp"),
+            "is_realtime": bool(b.get("isRealTime")),
+        }
+
+    primary, secondary = block(p), block(s)
+    spot = secondary["last"] if secondary["last"] is not None \
+        else primary["last"]
+    out = _stock_stamp("realtime-claimed")
+    out.update({
+        "symbol": sym,
+        "company_name": data.get("companyName"),
+        "exchange": data.get("exchange"),
+        "market_status": data.get("marketStatus"),
+        "primary": primary,
+        "secondary": secondary,
+        "spot_reference": spot,
+        "spot_reference_basis": "secondary (regular close)"
+        if secondary["last"] is not None
+        else "primary (last sale)",
+    })
+    return out
+
+
+def parse_nasdaq_history(raw: dict, sym: str) -> dict:
+    """Raw historical JSON -> ascending daily OHLCV bars."""
+    data = (raw or {}).get("data") or {}
+    tt = data.get("tradesTable") or {}
+    bars = []
+    for r in tt.get("rows") or []:
+        try:
+            iso = datetime.strptime(
+                r["date"], "%m/%d/%Y").date().isoformat()
+        except (KeyError, ValueError):
+            continue
+        bars.append({
+            "date": iso,
+            "open": _nasdaq_num(r.get("open")),
+            "high": _nasdaq_num(r.get("high")),
+            "low": _nasdaq_num(r.get("low")),
+            "close": _nasdaq_num(r.get("close")),
+            "volume": _nasdaq_int(r.get("volume")),
+        })
+    bars.sort(key=lambda b: b["date"])
+    out = _stock_stamp("eod")
+    out.update({
+        "symbol": sym,
+        "total_records_reported": data.get("totalRecords"),
+        "asof_raw": tt.get("asOf"),
+        "n_bars": len(bars),
+        "first_date": bars[0]["date"] if bars else None,
+        "last_date": bars[-1]["date"] if bars else None,
+        "bars": bars,
+    })
+    return out
+
+
+def nasdaq_chain_buckets(raw: dict) -> list:
+    """Phase 1 of the chain pull: the bare response's month
+    buckets ([{label, from, to}]) spanning every listed expiry."""
+    bdata = (raw or {}).get("data") or {}
+    buckets = []
+    for e in ((bdata.get("filterlist") or {}).get("fromdate")
+              or {}).get("filter") or []:
+        val = e.get("value") or ""
+        if "|" in val:
+            lo, hi = val.split("|", 1)
+            buckets.append({"label": e.get("label"),
+                            "from": lo, "to": hi})
+    return buckets
+
+
+def parse_nasdaq_chain(raw: dict, sym: str) -> dict:
+    """Phase 2: the ranged response -> expiries with contracts.
+
+    Rows alternate group-header rows (strike null, expirygroup
+    'November 6, 2026') and strike rows whose own expiryDate is
+    only a short label, so each strike row inherits its ISO
+    expiry from the preceding group header.
+    """
+    fdata = (raw or {}).get("data") or {}
+    rows = ((fdata.get("table") or {}).get("rows")) or []
+
+    def side(row, prefix):
+        return {
+            "last": _nasdaq_num(row.get(f"{prefix}_Last")),
+            "change": _nasdaq_num(row.get(f"{prefix}_Change")),
+            "bid": _nasdaq_num(row.get(f"{prefix}_Bid")),
+            "ask": _nasdaq_num(row.get(f"{prefix}_Ask")),
+            "volume": _nasdaq_int(row.get(f"{prefix}_Volume")),
+            "open_interest": _nasdaq_int(
+                row.get(f"{prefix}_Openinterest")),
+        }
+
+    expiries = []
+    current = None
+    for r in rows:
+        if r.get("strike") is None:
+            label = r.get("expirygroup")
+            if not label:
+                continue
+            iso = datetime.strptime(
+                label, "%B %d, %Y").date().isoformat()
+            current = {"expiry": iso, "expiry_label": label,
+                       "contracts": []}
+            expiries.append(current)
+            continue
+        if current is None:
+            continue
+        current["contracts"].append({
+            "strike": _nasdaq_num(r.get("strike")),
+            "expiry_label_short": r.get("expiryDate"),
+            "occ_ref": (r.get("drillDownURL") or "").rsplit("/", 1)[-1]
+            or None,
+            "call": side(r, "c"),
+            "put": side(r, "p"),
+        })
+    for e in expiries:
+        e["contracts"].sort(key=lambda c: c["strike"])
+        e["n_strikes"] = len(e["contracts"])
+    out = _stock_stamp("delayed")
+    out.update({
+        "symbol": sym,
+        # WART (kept raw for audit, never used as spot): this
+        # stamp was one full session stale at probe time.
+        "last_trade_raw_STALE": fdata.get("lastTrade"),
+        "n_expiries": len(expiries),
+        "n_contract_rows": sum(e["n_strikes"] for e in expiries),
+        "expiries": expiries,
+    })
+    return out
+
+
+def stock_history_fromdate() -> str:
+    """One year of daily bars — enough for the RV estimators
+    on-device (the exam archive keeps the full history)."""
+    return (datetime.now().astimezone().date()
+            - timedelta(days=365)).isoformat()
+
+
+def fetch_stock_bundle(sym: str, fromdate: str) -> dict:
+    """fetch -> raw dicts -> parsed bundle {quote, history,
+    chain} for one name. Raises on any leg's failure; the
+    caller keeps the last good bundle and stamps it STALE."""
+    quote = parse_nasdaq_quote(
+        _nasdaq_get(f"{NASDAQ_BASE}/{sym}/info?assetclass=stocks"),
+        sym)
+    history = parse_nasdaq_history(
+        _nasdaq_get(f"{NASDAQ_BASE}/{sym}/historical"
+                    f"?assetclass=stocks&fromdate={fromdate}"
+                    f"&limit=9999"), sym)
+    bare = _nasdaq_get(
+        f"{NASDAQ_BASE}/{sym}/option-chain?assetclass=stocks")
+    buckets = nasdaq_chain_buckets(bare)
+    if not buckets:
+        raise RuntimeError(f"{sym}: no expiry buckets in chain "
+                           f"response")
+    lo = min(b["from"] for b in buckets)
+    hi = max(b["to"] for b in buckets)
+    chain = parse_nasdaq_chain(
+        _nasdaq_get(f"{NASDAQ_BASE}/{sym}/option-chain"
+                    f"?assetclass=stocks&fromdate={lo}&todate={hi}"),
+        sym)
+    chain["expiry_buckets_listed"] = buckets
+    chain["enumeration"] = {
+        "method": "filterlist.fromdate buckets -> single "
+                  "ranged call",
+        "fromdate": lo, "todate": hi}
+    return {"quote": quote, "history": history, "chain": chain}
+
+
+def stocks_snapshot_path() -> str:
+    return os.path.join(storage_dir(), f"{INTERNAL_ID}-stocks.json")
+
+
+def save_stocks_snapshot(names: dict) -> None:
+    try:
+        with open(stocks_snapshot_path(), "w") as f:
+            json.dump(names, f)
+    except Exception:
+        pass
+
+
+def load_stocks_snapshot() -> dict | None:
+    try:
+        with open(stocks_snapshot_path()) as f:
+            names = json.load(f)
+        if isinstance(names, dict) and names:
+            return names
+    except Exception:
+        pass
+    return None
+
+
+def _holdings_path() -> str:
+    return os.path.join(storage_dir(),
+                        f"{INTERNAL_ID}-holdings.json")
+
+
+def load_holdings() -> dict:
+    """User-entered stock positions {sym: {shares, avg_cost}},
+    persisted on-device (the chosen-sport JSON pattern). A
+    missing or unreadable file is no positions, never an
+    error."""
+    try:
+        with open(_holdings_path()) as f:
+            h = json.load(f)
+        if isinstance(h, dict):
+            return {s: {"shares": float(v.get("shares") or 0),
+                        "avg_cost": float(v.get("avg_cost") or 0)}
+                    for s, v in h.items()
+                    if isinstance(v, dict)}
+    except Exception:
+        pass
+    return {}
+
+
+def save_holdings(holdings: dict) -> None:
+    try:
+        with open(_holdings_path(), "w") as f:
+            json.dump(holdings, f)
+    except Exception:
+        pass
 
 
 # ------------------------------------------------------------------
@@ -4733,7 +5050,17 @@ def main(page: ft.Page):
              "panel_segment": "charts", "chart_highlight": "",
              "chart_board": None, "league_filter": None,
              "nav_return": None, "viewer_kind": None,
-             "viewer_zoom": 1.0, "viewer_detail": ""}
+             "viewer_zoom": 1.0, "viewer_detail": "",
+             # v13.0 Stocks destination: the pulled name
+             # bundles ({sym: {quote, history, chain}}), the
+             # active segment / name / expiry, the pull flag
+             # and note, and the user-entered holdings
+             # (persisted on-device; see load_holdings).
+             "stocks": load_stocks_snapshot(),
+             "stocks_seg": "tape", "stocks_sym": "MSTR",
+             "stocks_expiry": None, "stocks_busy": False,
+             "stocks_note": "",
+             "holdings": load_holdings()}
     stamp_text, degraded = stamp_of(state["slate"])
     stamp_ctrl = ft.Text(f"Menu: {stamp_text}", size=12,
                          color=WARN if degraded else DIM,
@@ -4754,7 +5081,7 @@ def main(page: ft.Page):
     stale_ctrl = ft.Text("", size=11, color=GOLD,
                          weight=ft.FontWeight.BOLD)
 
-    # view containers — the five destinations (v10.4.1 nav):
+    # view containers — the destinations (v10.4.1 nav; Stocks added v13.0):
     # Board (cards + finds behind a segment), Slip (Parse /
     # Parlay / Solver behind a segment), Lab, the 3D shelf,
     # More — plus the More sub-views (Terms / Equations / Dev).
@@ -4772,11 +5099,16 @@ def main(page: ft.Page):
     terms_view = ft.Column(spacing=8)
     equations_view = ft.Column(spacing=8)
     dev_view = ft.Column(spacing=8)
+    stocks_view = ft.Column(spacing=8)
     views = {"board": board_view, "slip": slip_view,
              "lab": record_view, "stage": stage_view,
              "more": more_view, "terms": terms_view,
-             "equations": equations_view, "dev": dev_view}
-    TOP_VIEWS = ["board", "slip", "lab", "stage", "more"]
+             "equations": equations_view, "dev": dev_view,
+             "stocks": stocks_view}
+    # v13.0: Stocks joins as a sixth destination, appended so
+    # the five standing indices (0-4) never move.
+    TOP_VIEWS = ["board", "slip", "lab", "stage", "more",
+                 "stocks"]
 
     def _switcher(content):
         # v12.1 weighted switch: 260 ms ease-in-out-cubic both
@@ -6274,7 +6606,8 @@ def main(page: ft.Page):
                                 ft.IconButton(
                                     icon=ft.Icons.CLOSE, icon_size=16,
                                     icon_color=FAINT, width=40,
-                                    height=40, tooltip="Remove leg",
+                                    height=40,
+                                    tooltip="Remove leg",
                                     on_click=lambda _e, i=i:
                                     on_remove_leg(i))])))
             else:
@@ -6607,7 +6940,7 @@ def main(page: ft.Page):
     def _sub_header(title, subtitle=""):
         return ft.Row(spacing=8, controls=[
             ft.IconButton(icon=ft.Icons.ARROW_BACK, icon_color=ACCENT,
-                          tooltip="Go back",
+                          tooltip="Back",
                           on_click=lambda _e: show("more")),
             screen_title(title, subtitle)])
 
@@ -7657,6 +7990,520 @@ def main(page: ft.Page):
          ("instruments", "Instruments"), ("registry", "Registry")],
         "charts", on_panel_seg)
 
+    # ---- Stocks destination (v13.0): four segments, one
+    # switcher — Tape | Matrix | Options | Holdings, on the Xii
+    # panel pattern (only the active segment is built per
+    # render; segment, name and expiry live in state and
+    # survive pulls). The section prints the market's own
+    # numbers — quotes, realized vol, the options-implied
+    # distribution — and the lane truth beside them: S1/S5
+    # FAILED-EXAM, S2/S3/S4 NOT-BUILT, so every action here is
+    # WATCH and no model probability or edge exists to print.
+
+    stocks_tape_col = ft.Column(spacing=8)
+    stocks_matrix_col = ft.Column(spacing=8)
+    stocks_options_col = ft.Column(spacing=8)
+    stocks_holdings_col = ft.Column(spacing=8)
+    _STOCKS_COLS = {"tape": stocks_tape_col,
+                    "matrix": stocks_matrix_col,
+                    "options": stocks_options_col,
+                    "holdings": stocks_holdings_col}
+    stocks_switcher = _switcher(stocks_tape_col)
+
+    def show_stocks_segment(seg: str):
+        with _UPDATE_LOCK:
+            state["stocks_seg"] = seg
+            stocks_seg_ctrl.selected = [seg]
+            render_stocks()
+            _settle_in(page, stocks_switcher.content)
+
+    def on_stocks_seg(e):
+        sel = e.control.selected or []
+        show_stocks_segment(next(iter(sel)) if sel else "tape")
+
+    stocks_seg_ctrl = _segmented(
+        [("tape", "Tape"), ("matrix", "Matrix"),
+         ("options", "Options"), ("holdings", "Holdings")],
+        "tape", on_stocks_seg)
+
+    def _stocks_names() -> dict:
+        return state.get("stocks") or {}
+
+    def _stocks_asof(bundle):
+        # the pull's own date (ET-stamped at pull time) — DTE
+        # and the implied extraction both key off it, so an
+        # archived pull shapes the same grid it shaped live
+        raw = ((bundle or {}).get("quote") or {}).get("pulled_at")
+        try:
+            return datetime.fromisoformat(raw).date()
+        except Exception:
+            return datetime.now().astimezone().date()
+
+    def _stocks_default_expiry(bundle):
+        chain = (bundle or {}).get("chain") or {}
+        exps = [e["expiry"] for e in chain.get("expiries") or []]
+        if not exps:
+            return None
+        asof = _stocks_asof(bundle)
+        for ex in exps:
+            try:
+                dte = (datetime.strptime(
+                    ex, "%Y-%m-%d").date() - asof).days
+            except ValueError:
+                continue
+            if dte >= 5:
+                return ex
+        return exps[0]
+
+    def _fmt_money(v):
+        return "—" if v is None else f"${v:,.2f}"
+
+    def _fmt_pct(v, digits=2):
+        return "—" if v is None else f"{v:+.{digits}f}%"
+
+    def _stocks_empty(col, title, line):
+        col.controls = [
+            ft.Text(title, size=13, color=INK,
+                    weight=ft.FontWeight.BOLD),
+            ft.Text(line, size=12, color=DIM, height=1.35)]
+
+    # ---------------- stocks pull ----------------
+
+    def on_stocks_pull(_e):
+        with _UPDATE_LOCK:
+            if state["stocks_busy"]:
+                return
+            state["stocks_note"] = "Pulling stocks — Nasdaq API…"
+            render_stocks()
+            page.run_thread(_stocks_pull_worker)
+
+    def _stocks_pull_worker():
+        # Off the event-handler thread (page.run_thread), the
+        # _pull_worker pattern: a failed name keeps its last
+        # good bundle, stamped STALE — data is never invented
+        # to fill the gap, and the failure names itself in the
+        # note line.
+        if state["stocks_busy"]:
+            return
+        state["stocks_busy"] = True
+        try:
+            old = state.get("stocks") or {}
+            names, failed, fresh = {}, [], 0
+            for sym in STOCK_UNIVERSE:
+                try:
+                    names[sym] = fetch_stock_bundle(
+                        sym, stock_history_fromdate())
+                    fresh += 1
+                except Exception:
+                    failed.append(sym)
+                    if sym in old:
+                        kept = dict(old[sym])
+                        kept["stale"] = True
+                        names[sym] = kept
+            state["stocks"] = names
+            save_stocks_snapshot(names)
+            note = (f"Nasdaq pull landed: {fresh} of "
+                    f"{len(STOCK_UNIVERSE)} names fresh")
+            if failed:
+                note += (f" · failed: {', '.join(failed)} — "
+                         f"last good data kept, stamped STALE")
+            state["stocks_note"] = note + "."
+            if state["view"] == "stocks":
+                render_stocks()
+            with _UPDATE_LOCK:
+                page.update()
+        except Exception as e:
+            state["stocks_note"] = (
+                f"Stocks pull failed on this device: "
+                f"{type(e).__name__}: {e}")
+            try:
+                with _UPDATE_LOCK:
+                    page.update()
+            except Exception:
+                pass
+        finally:
+            state["stocks_busy"] = False
+
+    # ---------------- tape ----------------
+
+    def render_stocks_tape(col):
+        names = _stocks_names()
+        if not names:
+            _stocks_empty(
+                col, "No stock pull yet",
+                "Pull stocks and the tape fills from the "
+                "Nasdaq API — quotes, chains and a year of "
+                "daily history per name. Nothing is drawn "
+                "from nothing.")
+            return
+        out = [ft.Text(
+            "Quotes are the market's own numbers (Nasdaq "
+            "API). Delay classes: quotes realtime-claimed, "
+            "chains delayed, history end-of-day — every row "
+            "carries its own pull stamp.", size=11, color=DIM,
+            height=1.35)]
+        for sym in STOCK_UNIVERSE:
+            bundle = names.get(sym)
+            if not bundle:
+                continue
+            v = b5.stock_quote_view(bundle)
+            pct = v["pct_change"]
+            out.append(ft.Row(spacing=8, vertical_alignment=
+                              ft.CrossAxisAlignment.CENTER,
+                              controls=[
+                ft.Text(sym, size=14, color=INK,
+                        weight=ft.FontWeight.BOLD, width=58),
+                ft.Text(v["company_name"] or "", size=11,
+                        color=DIM, width=170,
+                        overflow=ft.TextOverflow.ELLIPSIS),
+                ft.Text(_fmt_money(v["last"]), size=14,
+                        color=INK, width=86,
+                        text_align=ft.TextAlign.RIGHT),
+                ft.Text(_fmt_pct(pct), size=13, width=76,
+                        text_align=ft.TextAlign.RIGHT,
+                        color=EDGE_POS if (pct or 0) >= 0
+                        else EDGE_NEG)]))
+            stamp = (f"{v['source']} · pulled {v['pulled_at']} "
+                     f"· {v['delay_class']}")
+            if v["stale"]:
+                stamp += " · STALE — last good pull kept"
+            out.append(ft.Text(stamp, size=10, color=FAINT))
+        col.controls = out
+
+    # ---------------- matrix ----------------
+
+    def render_stocks_matrix(col):
+        names = _stocks_names()
+        if not names:
+            _stocks_empty(
+                col, "No stock pull yet",
+                "The matrix prices each name's realized vol "
+                "and prints its lane truth. Pull stocks first "
+                "— nothing is drawn from nothing.")
+            return
+        out = [ft.Text(
+            "One row per name: the market's spot, realized "
+            "vol from the pulled history, and the examined "
+            "lanes' verdicts. The model-probability columns "
+            "of the v13.0 design stay stamped, not numbered — "
+            "both matrix lanes failed their exams.",
+            size=11, color=DIM, height=1.35)]
+        for sym in STOCK_UNIVERSE:
+            bundle = names.get(sym)
+            if not bundle:
+                continue
+            v = b5.stock_quote_view(bundle)
+            rows = [
+                ft.Row(spacing=8, controls=[
+                    ft.Text(sym, size=14, color=INK,
+                            weight=ft.FontWeight.BOLD),
+                    ft.Text(v["company_name"] or "", size=11,
+                            color=DIM)]),
+                ft.Text(
+                    f"Spot (regular close): "
+                    f"{_fmt_money(v['spot_reference'])} — "
+                    f"{v['spot_reference_basis'] or ''}",
+                    size=12, color=INK)]
+            rv = v["rv"]
+            if rv and rv.get("cc20_pct") is not None:
+                rows.append(ft.Text(
+                    f"Realized vol (annualized, pulled "
+                    f"history): cc20 {rv['cc20_pct']:.1f}% · "
+                    f"cc60 {rv['cc60_pct']:.1f}% · "
+                    f"EWMA(λ=0.94) {rv['ewma94_pct']:.1f}%",
+                    size=12, color=INK))
+            else:
+                rows.append(ft.Text(
+                    "Realized vol unavailable — no usable "
+                    "history in this pull.", size=12,
+                    color=DIM))
+            for stamp in v["lanes"]:
+                rows.append(ft.Text(stamp, size=10,
+                                    color=FAINT, height=1.3))
+            rows.append(ft.Row(spacing=6, controls=[
+                ft.Text("ACTION:", size=12, color=DIM),
+                ft.Text("WATCH", size=12, color=ACCENT,
+                        weight=ft.FontWeight.BOLD),
+                ft.Text("— " + v["action_reason"], size=11,
+                        color=DIM)]))
+            out.append(ft.Container(
+                bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+                border_radius=10, padding=10,
+                content=ft.Column(spacing=3, controls=rows)))
+        col.controls = out
+
+    # ---------------- options ----------------
+
+    def _on_stocks_sym(e):
+        sym = e.control.value
+        if sym in _stocks_names():
+            state["stocks_sym"] = sym
+            state["stocks_expiry"] = None
+            render_stocks()
+
+    def _on_stocks_expiry(e):
+        state["stocks_expiry"] = e.control.value
+        render_stocks()
+
+    def render_stocks_options(col):
+        names = _stocks_names()
+        if not names:
+            _stocks_empty(
+                col, "No stock pull yet",
+                "The options grid is built from the pulled "
+                "chain — the market's own implied probability "
+                "book. Pull stocks first; nothing is drawn "
+                "from nothing.")
+            return
+        sym = state.get("stocks_sym")
+        if sym not in names:
+            sym = next(s for s in STOCK_UNIVERSE if s in names)
+            state["stocks_sym"] = sym
+        bundle = names[sym]
+        quote = bundle.get("quote") or {}
+        chain = bundle.get("chain") or {}
+        spot = quote.get("spot_reference")
+        asof = _stocks_asof(bundle)
+        expiries = [e["expiry"]
+                    for e in chain.get("expiries") or []]
+        out = [ft.Row(spacing=8, controls=[
+            ft.Dropdown(
+                value=sym, width=130,
+                options=[ft.DropdownOption(key=s, text=s)
+                         for s in STOCK_UNIVERSE if s in names],
+                on_select=_on_stocks_sym),
+            ft.Text(f"spot (regular close): {_fmt_money(spot)}",
+                    size=12, color=DIM)])]
+        if not expiries or spot is None:
+            out.append(ft.Text(
+                "No chain in this pull for " + sym + " — the "
+                "grid has nothing to extract from.",
+                size=12, color=DIM, height=1.35))
+            col.controls = out
+            return
+        expiry = state.get("stocks_expiry")
+        if expiry not in expiries:
+            expiry = _stocks_default_expiry(bundle)
+            state["stocks_expiry"] = expiry
+
+        def _exp_label(ex):
+            dte = (datetime.strptime(
+                ex, "%Y-%m-%d").date() - asof).days
+            return f"{ex} · {dte} DTE"
+
+        out.append(ft.Dropdown(
+            value=expiry, width=210,
+            options=[ft.DropdownOption(key=ex,
+                                       text=_exp_label(ex))
+                     for ex in expiries],
+            on_select=_on_stocks_expiry))
+        block = next(e for e in chain["expiries"]
+                     if e["expiry"] == expiry)
+        grid = b5.option_grid_view(block, spot,
+                                   asof=asof.isoformat())
+        out.append(ft.Text(b5.STOCK_MODEL_STAMP, size=11,
+                           color=WARN, height=1.35))
+        if grid["short_dated"]:
+            out.append(ft.Text(
+                f"SHORT-DATED — IMPLIED UNRELIABLE "
+                f"({grid['dte_calendar']} DTE): implied "
+                f"probabilities suppressed on this expiry.",
+                size=12, color=WARN,
+                weight=ft.FontWeight.BOLD, height=1.35))
+
+        def _cell(txt, w, color=INK, bold=False, align=None):
+            return ft.Text(txt, size=11, color=color, width=w,
+                           weight=ft.FontWeight.BOLD if bold
+                           else None, text_align=align)
+
+        R = ft.TextAlign.RIGHT
+        out.append(ft.Row(spacing=6, controls=[
+            _cell("Strike", 62, DIM, True),
+            _cell("Call bid", 58, DIM, True, R),
+            _cell("Call ask", 58, DIM, True, R),
+            _cell("IV", 56, DIM, True, R),
+            _cell("P(above)", 66, DIM, True, R),
+            _cell("Model", 74, DIM, True),
+            _cell("Action", 52, DIM, True)]))
+        for r in grid["rows"]:
+            iv = (f"{r['iv'] * 100:.1f}%" if r["iv"] is not None
+                  else "—")
+            p = (f"{r['p_above'] * 100:.1f}%"
+                 if r["p_above"] is not None else "—")
+            out.append(ft.Row(spacing=6, controls=[
+                _cell(f"{r['strike']:,.0f}", 62),
+                _cell(_fmt_money(r["call_bid"]), 58, INK,
+                      False, R),
+                _cell(_fmt_money(r["call_ask"]), 58, INK,
+                      False, R),
+                _cell(iv, 56, INK, False, R),
+                _cell(p, 66, ACCENT if r["p_above"] is not None
+                      else FAINT, False, R),
+                _cell("NOT-BUILT", 74, FAINT),
+                _cell("WATCH", 52, ACCENT, True)]))
+        diag = grid["diagnostics"]
+        em, sm = grid["expected_move_pct"], \
+            grid["straddle_move_pct"]
+        if em is not None and not grid["short_dated"]:
+            line = (f"Implied expected move (density): "
+                    f"{em * 100:.1f}% of spot")
+            if sm is not None:
+                line += (f" · ATM straddle cross-check: "
+                         f"{sm * 100:.1f}%")
+            out.append(ft.Text(line, size=11, color=DIM,
+                               height=1.35))
+            out.append(ft.Text(
+                f"Extraction diagnostics: mass before "
+                f"renormalization "
+                f"{diag.get('mass_before_renorm', 0):.3f} · "
+                f"clipped negative mass "
+                f"{diag.get('clipped_negative_mass', 0):.3f} · "
+                f"implied mean vs forward "
+                f"{diag.get('mean_minus_forward', 0):+.2f} · "
+                f"strikes used {diag.get('n_strikes_used')} "
+                f"of {diag.get('n_strikes_listed')}",
+                size=10, color=FAINT, height=1.35))
+        for lane in ("S2", "S3", "S4"):
+            out.append(ft.Text(b5.STOCK_LANES[lane]["stamp"],
+                               size=10, color=FAINT, height=1.3))
+        for note in grid["notes"]:
+            out.append(ft.Text(note, size=10, color=FAINT,
+                               height=1.3))
+        out.append(ft.Text(
+            f"Chain: {chain.get('source')} · pulled "
+            f"{chain.get('pulled_at')} · delayed composite; "
+            f"spot is the quote's regular close, never the "
+            f"chain's embedded last-trade stamp.",
+            size=10, color=FAINT, height=1.3))
+        col.controls = out
+
+    # ---------------- holdings ----------------
+
+    def _save_holding(sym, shares_field, cost_field):
+        def _h(_e):
+            sh = _parse_bankroll(shares_field.value)
+            co = _parse_bankroll(cost_field.value)
+            h = dict(state["holdings"])
+            if sh is None and co is None:
+                h.pop(sym, None)
+                state["stocks_note"] = (
+                    f"{sym}: holding cleared.")
+            elif sh is None or co is None:
+                state["stocks_note"] = (
+                    f"{sym}: enter both shares and average "
+                    f"cost, or clear both — holding unchanged.")
+                render_stocks()
+                return
+            else:
+                h[sym] = {"shares": sh, "avg_cost": co}
+                state["stocks_note"] = (
+                    f"{sym}: holding saved on this device.")
+            state["holdings"] = h
+            save_holdings(h)
+            render_stocks()
+        return _h
+
+    def render_stocks_holdings(col):
+        names = _stocks_names()
+        out = [ft.Text(
+            "Your positions, entered by you and stored only "
+            "on this device. Values and P/L are computed from "
+            "the pulled spot — never estimated. SELL stays "
+            "WATCH for every name: no stock lane has passed "
+            "its exam (S1/S5 FAILED-EXAM · S2/S3/S4 "
+            "NOT-BUILT), so BetFi prints no sell signal and "
+            "sizes no exit.", size=11, color=DIM, height=1.35)]
+        for sym in STOCK_UNIVERSE:
+            held = state["holdings"].get(sym) or {}
+            bundle = names.get(sym) or {}
+            spot = (bundle.get("quote") or {}).get(
+                "spot_reference")
+            sh_field = ft.TextField(
+                label="Shares", width=110, text_size=13,
+                value=(f"{held['shares']:g}"
+                       if held.get("shares") else ""))
+            cost_field = ft.TextField(
+                label="Avg cost", width=110, text_size=13,
+                value=(f"{held['avg_cost']:g}"
+                       if held.get("avg_cost") else ""))
+            rows = [ft.Row(spacing=8, vertical_alignment=
+                           ft.CrossAxisAlignment.CENTER,
+                           controls=[
+                ft.Text(sym, size=14, color=INK,
+                        weight=ft.FontWeight.BOLD, width=58),
+                sh_field, cost_field,
+                secondary_button(
+                    "Save", _save_holding(sym, sh_field,
+                                          cost_field))])]
+            shares = held.get("shares") or 0
+            cost = held.get("avg_cost") or 0
+            if shares:
+                if spot is not None and cost:
+                    value = shares * spot
+                    pl = shares * (spot - cost)
+                    plpct = (spot / cost - 1.0) * 100.0
+                    rows.append(ft.Text(
+                        f"{shares:g} sh × {_fmt_money(spot)} "
+                        f"= {_fmt_money(value)} · P/L "
+                        f"{pl:+,.2f} ({plpct:+.1f}%) vs avg "
+                        f"cost {_fmt_money(cost)} · SELL: "
+                        f"WATCH (no examined lane)",
+                        size=12,
+                        color=EDGE_POS if pl >= 0 else EDGE_NEG))
+                elif spot is not None:
+                    rows.append(ft.Text(
+                        f"{shares:g} sh × {_fmt_money(spot)} "
+                        f"= {_fmt_money(shares * spot)} · "
+                        f"enter an average cost to see P/L · "
+                        f"SELL: WATCH (no examined lane)",
+                        size=12, color=INK))
+                else:
+                    rows.append(ft.Text(
+                        f"{shares:g} sh held · no stock pull "
+                        f"yet — position value unknown, never "
+                        f"estimated · SELL: WATCH (no examined "
+                        f"lane)", size=12, color=DIM))
+            out.append(ft.Container(
+                bgcolor=CARD_BG, border=_border_all(1, HAIRLINE),
+                border_radius=10, padding=10,
+                content=ft.Column(spacing=4, controls=rows)))
+        col.controls = out
+
+    def render_stocks():
+        with _UPDATE_LOCK:
+            seg = state.get("stocks_seg") or "tape"
+            if seg not in _STOCKS_COLS:
+                seg = "tape"
+            state["stocks_seg"] = seg
+            stocks_seg_ctrl.selected = [seg]
+            stocks_view.controls = [
+                screen_title(
+                    "Stocks",
+                    "The market's own numbers — quotes, "
+                    "realized vol, and the options-implied "
+                    "distribution. No stock lane has passed "
+                    "its exam, so every action is WATCH."),
+                ft.Container(
+                    gradient=HEADER_GRADIENT, border_radius=10,
+                    padding=ft.Padding(
+                        left=6, right=6, top=6, bottom=6),
+                    content=stocks_seg_ctrl),
+                ft.Row(spacing=8, vertical_alignment=
+                       ft.CrossAxisAlignment.CENTER, controls=[
+                           primary_button("Pull stocks",
+                                          on_stocks_pull),
+                           ft.Text(state.get("stocks_note")
+                                   or "", size=11, color=DIM)]),
+                stocks_switcher]
+            stocks_switcher.content = _STOCKS_COLS[seg]
+            {"tape": render_stocks_tape,
+             "matrix": render_stocks_matrix,
+             "options": render_stocks_options,
+             "holdings": render_stocks_holdings}[seg](
+                _STOCKS_COLS[seg])
+            page.update()
+
+
     def _panel_entries():
         if not state["slate"]:
             return []
@@ -8018,6 +8865,8 @@ def main(page: ft.Page):
                 render_lab()
             elif name == "stage":
                 render_stage()
+            elif name == "stocks":
+                render_stocks()
             elif name == "more":
                 render_more()
             elif name == "terms":
@@ -8151,6 +9000,8 @@ def main(page: ft.Page):
                          label="3D"),
             nav_dest_cls(icon=ft.Icons.MORE_HORIZ,
                          label="More"),
+            nav_dest_cls(icon=ft.Icons.SHOW_CHART,
+                         label="Stocks"),
         ]
         page.navigation_bar = nav_bar_cls(
             selected_index=0, on_change=on_nav,
@@ -8175,6 +9026,9 @@ def main(page: ft.Page):
             pressify(ft.OutlinedButton(
                 "More",
                 on_click=lambda _e: show("more")), sound="tick"),
+            pressify(ft.OutlinedButton(
+                "Stocks",
+                on_click=lambda _e: show("stocks")), sound="tick"),
         ]))
 
     # v12.1 QoL: back-to-top on the Board. Flet 1.0.4's board is
