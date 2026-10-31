@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "12.31.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 52)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "13.0.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 53)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -423,6 +423,55 @@ def main():
                                    and v["pess_edge_pts"] > 0))
               for v in b5.run_slate(_rec))
           and app.bet_now(_v0) == bool(_v0.get("bet_now")))
+    # ---------- v13.0 stocks + options (WATCH-only) ----------
+    import math as _math
+    _S, _T, _SIG = 100.0, 30 / 365, 0.35
+    _synth = []
+    _k = 70.0
+    while _k <= 130.0:
+        _px = b5.bs_price(_S, _k, _T, 0.04, _SIG, "call", 0.0)
+        _synth.append({"strike": _k,
+                       "call": {"bid": _px * 0.995,
+                                "ask": _px * 1.005},
+                       "put": {"bid": 0.0, "ask": 0.0}})
+        _k += 2.5
+    check("v13 engine: IV round-trips and the implied "
+          "distribution is a clean survival curve",
+          abs(b5.implied_vol(
+              b5.bs_price(_S, 100.0, _T, 0.04, _SIG, "call", 0.0),
+              _S, 100.0, _T)[0] - _SIG) < 0.02
+          and (lambda d: (
+              list(d["prob_above"].values())
+              == sorted(d["prob_above"].values(), reverse=True)
+              and all(0.0 <= p <= 1.0
+                      for p in d["prob_above"].values())
+              and 0.35 < d["prob_above"][100.0] < 0.60
+              and d["expected_move"] > 0))(
+              b5.implied_distribution(
+                  _synth, _S, expiry="2026-11-29",
+                  asof="2026-10-30")))
+    check("v13 lanes: registry truth in the engine — S1/S5 "
+          "FAILED-EXAM, S2/S3/S4 NOT-BUILT",
+          {k: v["status"] for k, v in b5.STOCK_LANES.items()}
+          == {"S1": "FAILED-EXAM", "S2": "NOT-BUILT",
+              "S3": "NOT-BUILT", "S4": "NOT-BUILT",
+              "S5": "FAILED-EXAM"})
+    _qv = b5.stock_quote_view(
+        {"quote": {"symbol": "TST", "primary": {"last": 100.0},
+                   "source": "Nasdaq API"},
+         "history": {"bars": [{"close": 100.0}] * 80},
+         "chain": {}})
+    _gv = b5.option_grid_view(
+        {"expiry": "2026-11-29", "contracts": _synth}, _S,
+        asof="2026-10-30")
+    check("v13 views: WATCH-only — no model probability, no "
+          "INVEST/SELL anywhere in the shaped output",
+          _qv["action"] == "WATCH"
+          and "INVEST" not in str(_qv) and "SELL" not in str(_qv)
+          and "INVEST" not in str(_gv) and "SELL-" not in str(_gv)
+          and all(a == "WATCH" for a in
+                  [c.get("action") for c in _gv.get("cells", [])]
+                  if a is not None))
     check("v12.8: 11's anatomy leads with the verdict line "
           "and carries state + calibration tag",
           any(ln.startswith("state:")
@@ -1537,10 +1586,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "12.31.0 (build 52)" in _readme)
+          "13.0.0 (build 53)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "12.31.0"' in _wf
-          and '--build-number "52"' in _wf)
+          '--build-version "13.0.0"' in _wf
+          and '--build-number "53"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),

@@ -12812,6 +12812,660 @@ def run_regression():
     print(f"[betmodel5] wrote {os.path.abspath(path)}")
 
 
+# ------------------------------------------------------------------
+# Organ 9 (v13.0) — stocks & options: the market's own probability
+# book, with NO examined model behind it yet. Ported from the
+# v13-stocks fill reference implementation (fill/iv.py,
+# fill/implied.py, fill/rv.py) — the port is line-faithful so the
+# seed-snapshot acceptance numbers reproduce exactly.
+#
+# Lane law (LANES-REGISTRY.md, exams run 2026-10-30): S1 and S5
+# FAILED their walk-forward exams; S2 is NOT-BUILT (tradable —
+# no historical chains; its RV-half exam failed too); S3/S4 are
+# NOT-BUILT (data). Consequence, enforced by the shaping
+# functions below: this organ computes the IMPLIED side only
+# (the market's quotes, and what they imply). It never emits a
+# model probability, a model edge, or an action other than
+# WATCH for a stock or an option.
+#
+# Scaffold assumptions carried from the fill, stated wherever
+# the numbers surface: risk-free rate r = 0.04 flat, dividend
+# yield q = 0 (BAC pays a dividend — its IVs carry a small
+# known bias until a schedule is wired), European-exercise
+# math on American single-name contracts, Black-Scholes.
+
+from datetime import date as _date
+
+BS_R_FLAT = 0.04          # scaffold assumption, documented above
+_BS_SQRT2 = math.sqrt(2.0)
+
+
+def _bs_norm_cdf(x):
+    return 0.5 * (1.0 + math.erf(x / _BS_SQRT2))
+
+
+def _bs_d1(S, K, T, r, sigma, q=0.0):
+    return (math.log(S / K) + (r - q + 0.5 * sigma * sigma) * T) \
+        / (sigma * math.sqrt(T))
+
+
+def _bs_d2(S, K, T, r, sigma, q=0.0):
+    return _bs_d1(S, K, T, r, sigma, q) - sigma * math.sqrt(T)
+
+
+def bs_price(S, K, T, r, sigma, kind, q=0.0):
+    """Black-Scholes price; kind in {'call','put'}. T in years."""
+    if T <= 0 or sigma <= 0:
+        # expiry limit: intrinsic value
+        return max(S - K, 0.0) if kind == "call" else max(K - S, 0.0)
+    d1 = _bs_d1(S, K, T, r, sigma, q)
+    d2 = _bs_d2(S, K, T, r, sigma, q)
+    if kind == "call":
+        return S * math.exp(-q * T) * _bs_norm_cdf(d1) \
+            - K * math.exp(-r * T) * _bs_norm_cdf(d2)
+    return K * math.exp(-r * T) * _bs_norm_cdf(-d2) \
+        - S * math.exp(-q * T) * _bs_norm_cdf(-d1)
+
+
+def bs_delta(S, K, T, r, sigma, kind, q=0.0):
+    if T <= 0 or sigma <= 0:
+        if kind == "call":
+            return 1.0 if S > K else 0.0
+        return -1.0 if S < K else 0.0
+    d1 = _bs_d1(S, K, T, r, sigma, q)
+    if kind == "call":
+        return math.exp(-q * T) * _bs_norm_cdf(d1)
+    return -math.exp(-q * T) * _bs_norm_cdf(-d1)
+
+
+def _bs_bounds(S, K, T, r, kind, q=0.0):
+    """No-arbitrage price bounds for the bisection target."""
+    if kind == "call":
+        lo = max(S * math.exp(-q * T) - K * math.exp(-r * T), 0.0)
+        hi = S * math.exp(-q * T)
+    else:
+        lo = max(K * math.exp(-r * T) - S * math.exp(-q * T), 0.0)
+        hi = K * math.exp(-r * T)
+    return lo, hi
+
+
+def implied_vol(price, S, K, T, r=BS_R_FLAT, kind="call", q=0.0):
+    """IV by bisection on sigma in [1e-4, 5.0].
+
+    Returns (sigma, None) on success or (None, reason) where
+    reason is one of: 'nonpositive_price', 'expired',
+    'below_lower_bound', 'at_lower_bound', 'above_upper_bound',
+    'no_bracket', 'no_convergence'. A 1e-4 tolerance band at the
+    lower bound absorbs tick noise: prices within a tick of
+    intrinsic are reported 'at_lower_bound' (IV economically ~0
+    / undefined) rather than forced.
+    """
+    if price is None or price <= 0:
+        return None, "nonpositive_price"
+    if T <= 0:
+        return None, "expired"
+    lo_b, hi_b = _bs_bounds(S, K, T, r, kind, q)
+    if price < lo_b - 1e-4:
+        return None, "below_lower_bound"
+    if price <= lo_b + 1e-4:
+        return None, "at_lower_bound"
+    if price >= hi_b:
+        return None, "above_upper_bound"
+    lo, hi = 1e-4, 5.0
+    if bs_price(S, K, T, r, lo, kind, q) > price:
+        return None, "no_bracket"
+    if bs_price(S, K, T, r, hi, kind, q) < price:
+        return None, "no_bracket"
+    for _ in range(200):
+        mid = 0.5 * (lo + hi)
+        pm = bs_price(S, K, T, r, mid, kind, q)
+        if abs(pm - price) < 1e-6 or (hi - lo) < 1e-7:
+            return mid, None
+        if pm < price:
+            lo = mid
+        else:
+            hi = mid
+    return None, "no_convergence"
+
+
+IV_MAX_SPREAD_FRAC = 0.50   # guard: skip when spread > 50% of mid
+
+
+def iv_from_quote(bid, ask, S, K, T, r=BS_R_FLAT, kind="call", q=0.0):
+    """IV from a contract's bid/ask MID, with the scaffold guards.
+
+    Guards, in order (each returns a named skip reason):
+      missing bid or ask        -> 'missing_bid_ask'
+      bid or ask negative       -> 'negative_quote'
+      bid > ask                 -> 'crossed'
+      ask == 0 (hence mid == 0) -> 'zero_ask'
+      (ask-bid)/mid > 0.50      -> 'spread_too_wide'
+    A zero BID with a positive ask yields spread/mid = 2.0 by
+    construction, so zero-bid contracts always trip
+    'spread_too_wide' under the 50% rule (they are NOT treated
+    as missing — the reason recorded is the spread guard).
+    On success returns {'iv', 'mid', 'spread_frac',
+    'skip_reason': None}; on skip, iv is None (mid filled when
+    computable) and 'skip_reason' names the guard that fired.
+    """
+    if bid is None or ask is None:
+        return {"iv": None, "mid": None, "spread_frac": None,
+                "skip_reason": "missing_bid_ask"}
+    if bid < 0 or ask < 0:
+        return {"iv": None, "mid": None, "spread_frac": None,
+                "skip_reason": "negative_quote"}
+    if bid > ask:
+        return {"iv": None, "mid": None, "spread_frac": None,
+                "skip_reason": "crossed"}
+    if ask <= 0:
+        return {"iv": None, "mid": None, "spread_frac": None,
+                "skip_reason": "zero_ask"}
+    mid = 0.5 * (bid + ask)
+    spread_frac = (ask - bid) / mid
+    if spread_frac > IV_MAX_SPREAD_FRAC:
+        return {"iv": None, "mid": mid, "spread_frac": spread_frac,
+                "skip_reason": "spread_too_wide"}
+    iv, reason = implied_vol(mid, S, K, T, r, kind, q)
+    return {"iv": iv, "mid": mid, "spread_frac": spread_frac,
+            "skip_reason": reason}
+
+
+# ---- realized vol (fill/rv.py port) ----
+
+RV_TRADING_DAYS = 252
+RV_EWMA_LAMBDA = 0.94
+
+
+def _rv_log_returns(closes):
+    closes = [c for c in closes if c]
+    return [math.log(closes[i] / closes[i - 1])
+            for i in range(1, len(closes))]
+
+
+def _rv_stdev(xs):
+    n = len(xs)
+    if n < 2:
+        return None
+    m = sum(xs) / n
+    return math.sqrt(sum((x - m) ** 2 for x in xs) / (n - 1))
+
+
+def _rv_cc(rets, window):
+    if len(rets) < window:
+        return None
+    sd = _rv_stdev(rets[-window:])
+    return None if sd is None else sd * math.sqrt(RV_TRADING_DAYS) * 100.0
+
+
+def _rv_ewma(rets, lam=RV_EWMA_LAMBDA):
+    if len(rets) < 21:
+        return None
+    seed = _rv_stdev(rets[:20])
+    var = seed * seed
+    for r in rets[20:]:
+        var = lam * var + (1.0 - lam) * r * r
+    return math.sqrt(var) * math.sqrt(RV_TRADING_DAYS) * 100.0
+
+
+def realized_vols(closes):
+    """Realized-vol estimators from daily closes.
+
+    `closes` is a list of close prices (ascending by date) or a
+    list of bar dicts carrying "close". Returns cc20/cc60/ewma94
+    as annualized % (None per estimator when the series is too
+    short), plus provenance. EWMA is RiskMetrics-style,
+    lambda = 0.94, seeded with the first 20 returns' variance
+    and run over the full series.
+    """
+    if closes and isinstance(closes[0], dict):
+        closes = [b.get("close") for b in closes]
+    rets = _rv_log_returns(list(closes or []))
+    return {
+        "n_returns": len(rets),
+        "cc20_pct": _rv_cc(rets, 20),
+        "cc60_pct": _rv_cc(rets, 60),
+        "ewma94_pct": _rv_ewma(rets),
+        "ewma_lambda": RV_EWMA_LAMBDA,
+        "annualization": f"sqrt({RV_TRADING_DAYS})",
+    }
+
+
+# ---- implied distribution (fill/implied.py port) ----
+# Pipeline, named exactly as the fill named it (the
+# OPTIONS-SUBSECTION-SPEC smoothing slot, filled):
+#   1. usable call mids only (the iv guards);
+#   2. PRICE-SPACE SMOOTHING: weighted least-squares quadratic
+#      in strike over the 13 nearest strikes, tricube weights;
+#      the smoothed price is the fit's intercept;
+#   3. Breeden-Litzenberger second difference of the smoothed
+#      prices, non-uniform-spacing form;
+#   4. arbitrage repair: NEGATIVE-DENSITY CLIPPING (clipped
+#      mass reported), then UNIT-MASS RENORMALIZATION
+#      (pre-repair total mass reported);
+#   5. survival via midpoint CDF over bin masses — P(above K)
+#      non-increasing in K and inside [0,1] by construction.
+# The distribution is TRUNCATED to the listed strike range:
+# no tail mass outside [K_min, K_max], so the expected move
+# understates true tails. European-style extraction on
+# American contracts; q = 0; r = 0.04 flat.
+
+BL_SMOOTH_WINDOW = 13         # strikes per local quadratic fit
+
+
+def _bl_years_to_expiry(expiry_iso, asof):
+    """ACT/365 with a half-day floor so 0DTE never divides by 0."""
+    exp = _date.fromisoformat(expiry_iso)
+    days = (exp - asof).days
+    return max(days, 0.5) / 365.0, days
+
+
+def _bl_usable_mids(contracts, kind="call"):
+    """-> (points [(strike, mid)], skips {reason: count})"""
+    pts, skips = [], {}
+    seen = set()
+    for c in contracts:
+        side = c[kind]
+        bid, ask = side.get("bid"), side.get("ask")
+        reason = None
+        if bid is None or ask is None:
+            reason = "missing_bid_ask"
+        elif bid < 0 or ask < 0:
+            reason = "negative_quote"
+        elif bid > ask:
+            reason = "crossed"
+        elif ask <= 0:
+            reason = "zero_ask"
+        else:
+            mid = 0.5 * (bid + ask)
+            if (ask - bid) / mid > IV_MAX_SPREAD_FRAC:
+                reason = "spread_too_wide"
+        if reason:
+            skips[reason] = skips.get(reason, 0) + 1
+            continue
+        K = c["strike"]
+        if K in seen:
+            skips["duplicate_strike"] = skips.get("duplicate_strike", 0) + 1
+            continue
+        seen.add(K)
+        pts.append((K, 0.5 * (bid + ask)))
+    pts.sort()
+    return pts, skips
+
+
+def _bl_solve3(A, b):
+    """Gaussian elimination for a 3x3 system; None if singular."""
+    M = [row[:] + [b[i]] for i, row in enumerate(A)]
+    for col in range(3):
+        piv = max(range(col, 3), key=lambda rr: abs(M[rr][col]))
+        if abs(M[piv][col]) < 1e-12:
+            return None
+        M[col], M[piv] = M[piv], M[col]
+        for rr in range(3):
+            if rr != col:
+                fac = M[rr][col] / M[col][col]
+                for cc in range(4):
+                    M[rr][cc] -= fac * M[col][cc]
+    return [M[i][3] / M[i][i] for i in range(3)]
+
+
+def _bl_smooth_prices(Ks, Cs, window=BL_SMOOTH_WINDOW):
+    """Local quadratic (tricube-weighted LSQ) smoothed prices.
+    Returns (smoothed list, rms residual of fit vs raw mids)."""
+    n = len(Ks)
+    half = window // 2
+    out, resid = [], []
+    for i in range(n):
+        lo = max(0, i - half)
+        hi = min(n, lo + window)
+        lo = max(0, hi - window)
+        idx = range(lo, hi)
+        dmax = max(abs(Ks[j] - Ks[i]) for j in idx) or 1.0
+        A = [[0.0] * 3 for _ in range(3)]
+        b = [0.0] * 3
+        for j in idx:
+            x = Ks[j] - Ks[i]
+            u = abs(x) / dmax
+            wgt = (1.0 - u ** 3) ** 3 if u < 1.0 else 0.0
+            if wgt == 0.0 and j != i:
+                continue
+            basis = [1.0, x, x * x]
+            for a in range(3):
+                b[a] += wgt * basis[a] * Cs[j]
+                for c in range(3):
+                    A[a][c] += wgt * basis[a] * basis[c]
+        sol = _bl_solve3(A, b)
+        fit = sol[0] if sol is not None else Cs[i]
+        out.append(fit)
+        resid.append(fit - Cs[i])
+    rms = math.sqrt(sum(r * r for r in resid) / len(resid)) if resid \
+        else None
+    return out, rms
+
+
+def implied_distribution(chain_rows, spot, expiry=None, asof=None,
+                         r=BS_R_FLAT):
+    """Risk-neutral extraction for ONE expiry.
+
+    chain_rows: the expiry's contract list (dicts carrying
+    "strike" and call/put quote blocks, the pulled chain
+    shape), or a whole expiry block {"expiry": ..., "contracts":
+    [...]}. spot: the chain session's regular close — NEVER a
+    stale chain-embedded lastTrade. expiry: ISO date (taken
+    from the block when chain_rows is a block). asof: a date or
+    ISO date string (default: today).
+
+    Returns {"status", "expiry", "dte_calendar", "T_years",
+    "spot", "prob_above": {strike: P(finish above strike)},
+    "density": [{strike, density, mass}], "expected_move",
+    "expected_move_pct", "straddle_move" (ATM straddle mid, $),
+    "straddle_move_pct", "diagnostics": {...}} — diagnostics
+    carries the pre-repair mass, clipped negative mass, implied
+    mean vs forward, strike counts and quote skips, the
+    smoothing record, the truncation range, the method string
+    and the standing limitations. On failure status is
+    'insufficient_strikes' or 'degenerate_density' and
+    prob_above is empty: no curve is dressed up as a result.
+    """
+    if isinstance(chain_rows, dict):
+        if expiry is None:
+            expiry = chain_rows.get("expiry")
+        contracts = chain_rows.get("contracts") or []
+    else:
+        contracts = list(chain_rows or [])
+    if asof is None:
+        asof = _date.today()
+    elif isinstance(asof, str):
+        asof = _date.fromisoformat(asof)
+    T, dte = _bl_years_to_expiry(expiry, asof)
+    pts, skips = _bl_usable_mids(contracts, "call")
+    diag = {
+        "n_strikes_listed": len(contracts),
+        "n_strikes_used": len(pts),
+        "quote_skips": skips,
+        "method": "local-quadratic (13-strike tricube) smoothing "
+                  "of call mids -> Breeden-Litzenberger 2nd "
+                  "difference; negative-density clipping + "
+                  "unit-mass renormalization",
+        "limitations": [
+            "European-style extraction on American contracts",
+            "dividend yield q = 0 assumed",
+            "risk-free rate r = 0.04 flat",
+            "distribution truncated to the listed strike range "
+            "(no tail mass outside it)",
+        ],
+    }
+    base = {"expiry": expiry, "dte_calendar": dte, "T_years": T,
+            "spot": spot, "r": r, "prob_above": {}, "density": [],
+            "expected_move": None, "expected_move_pct": None,
+            "straddle_move": None, "straddle_move_pct": None,
+            "diagnostics": diag}
+    if len(pts) < 3:
+        base["status"] = "insufficient_strikes"
+        return base
+
+    Ks = [p[0] for p in pts]
+    raw = [p[1] for p in pts]
+    n = len(Ks)
+
+    tol = max(0.10, 0.001 * spot)
+    n_below = sum(1 for K, mid in pts
+                  if mid < max(spot - K * math.exp(-r * T), 0.0) - tol)
+    Cs, rms = _bl_smooth_prices(Ks, raw)
+    diag["smoothing"] = {
+        "form": "weighted local quadratic in strike",
+        "window_strikes": BL_SMOOTH_WINDOW,
+        "rms_residual_vs_mids": rms,
+        "mids_below_intrinsic": n_below,
+    }
+
+    w = [0.0] * n
+    w[0] = Ks[1] - Ks[0]
+    w[-1] = Ks[-1] - Ks[-2]
+    for i in range(1, n - 1):
+        w[i] = (Ks[i + 1] - Ks[i - 1]) / 2.0
+
+    disc = math.exp(r * T)
+    f = [0.0] * n
+    for i in range(1, n - 1):
+        sl = (Cs[i] - Cs[i - 1]) / (Ks[i] - Ks[i - 1])
+        sr = (Cs[i + 1] - Cs[i]) / (Ks[i + 1] - Ks[i])
+        f[i] = disc * (sr - sl) / w[i]
+    f[0] = f[1]
+    f[-1] = f[-2]
+
+    clipped_mass = sum(min(fi, 0.0) * wi for fi, wi in zip(f, w))
+    f = [max(fi, 0.0) for fi in f]
+    masses = [fi * wi for fi, wi in zip(f, w)]
+    total = sum(masses)
+    if total <= 0:
+        diag["mass_before_renorm"] = total
+        base["status"] = "degenerate_density"
+        return base
+    masses = [m / total for m in masses]
+    dens = [m / wi for m, wi in zip(masses, w)]
+
+    prob_above = {}
+    density = []
+    cdf_run = 0.0
+    for i in range(n):
+        cdf_i = cdf_run + 0.5 * masses[i]
+        prob_above[Ks[i]] = 1.0 - cdf_i
+        density.append({"strike": Ks[i], "density": dens[i],
+                        "mass": masses[i],
+                        "call_mid": raw[i], "call_smooth": Cs[i]})
+        cdf_run += masses[i]
+
+    mean = sum(m * K for m, K in zip(masses, Ks))
+    exp_move = sum(m * abs(K - spot) for m, K in zip(masses, Ks))
+    forward = spot * math.exp(r * T)
+
+    j = min(range(n), key=lambda i: abs(Ks[i] - spot))
+    atm_strike = Ks[j]
+    straddle = None
+    for c in contracts:
+        if c["strike"] == atm_strike:
+            cm, pm = c["call"], c["put"]
+            if None not in (cm.get("bid"), cm.get("ask"),
+                            pm.get("bid"), pm.get("ask")):
+                straddle = (0.5 * (cm["bid"] + cm["ask"])
+                            + 0.5 * (pm["bid"] + pm["ask"]))
+            break
+
+    diag.update({
+        "mass_before_renorm": total,
+        "clipped_negative_mass": clipped_mass,
+        "implied_mean": mean,
+        "forward": forward,
+        "mean_minus_forward": mean - forward,
+        "atm_strike": atm_strike,
+        "truncation": {"k_min": Ks[0], "k_max": Ks[-1]},
+    })
+    base.update({
+        "status": "ok",
+        "prob_above": prob_above,
+        "density": density,
+        "expected_move": exp_move,
+        "expected_move_pct": exp_move / spot if spot else None,
+        "straddle_move": straddle,
+        "straddle_move_pct": (straddle / spot
+                              if straddle is not None and spot
+                              else None),
+    })
+    return base
+
+
+# ---- the lane registry, as stamped on surfaces ----
+
+STOCK_LANES = {
+    "S1": {
+        "name": "Equity distribution",
+        "surface": "stocks matrix",
+        "status": "FAILED-EXAM",
+        "stamp": "S1 equity distribution — FAILED-EXAM "
+                 "(model Brier 0.26314 vs naive 0.25916, "
+                 "h=21, n=828; 0.28637 vs 0.28251, h=63, n=774)",
+        "detail": "Terminal for this estimator (Student-t on "
+                  "trailing 252d log returns), walk-forward "
+                  "exam 2026-10-30.",
+    },
+    "S2": {
+        "name": "IV-vs-RV (VRP)",
+        "surface": "options grid",
+        "status": "NOT-BUILT",
+        "stamp": "S2 IV-vs-RV — NOT-BUILT (tradable: no "
+                 "historical chains); RV-half FAILED-EXAM "
+                 "(EWMA MSE 0.06842 vs naive 0.06277, n=828)",
+        "detail": "Closer: the forward chain archive started "
+                  "2026-10-30 matures into the exam dataset.",
+    },
+    "S3": {
+        "name": "Earnings move",
+        "surface": "options grid + matrix flag",
+        "status": "NOT-BUILT",
+        "stamp": "S3 earnings move — NOT-BUILT (data: earnings "
+                 "route 404 on all six names; historical "
+                 "implied moves unavailable on free routes)",
+        "detail": "Closers: a verified earnings source plus "
+                  "the forward chain archive.",
+    },
+    "S4": {
+        "name": "Skew",
+        "surface": "options grid",
+        "status": "NOT-BUILT",
+        "stamp": "S4 skew — NOT-BUILT (data: no historical "
+                 "chains)",
+        "detail": "Closer: the forward chain archive started "
+                  "2026-10-30.",
+    },
+    "S5": {
+        "name": "Momentum probability",
+        "surface": "stocks matrix",
+        "status": "FAILED-EXAM",
+        "stamp": "S5 momentum — FAILED-EXAM (model Brier "
+                 "0.28244 vs naive 0.26622, n=786; won 1 of 6 "
+                 "names)",
+        "detail": "Terminal for this feature set, walk-forward "
+                  "exam 2026-10-30.",
+    },
+}
+
+STOCK_MODEL_STAMP = ("no model — S2/S3/S4 are NOT-BUILT, so "
+                     "this grid is the market's implied side "
+                     "only")
+
+
+def stock_quote_view(bundle):
+    """Shape one pulled name bundle for the app surfaces.
+
+    bundle: {"quote": <quote dict>, "history": <history dict>,
+    "chain": <chain dict>} in the pulled (seed snapshot) shape;
+    any part may be missing. Pure: no I/O, no clock — the
+    bundle's own stamps ride through. The view carries the
+    market's numbers and the lane truth — action is WATCH,
+    because no stock lane has passed its exam.
+    """
+    bundle = bundle or {}
+    q = bundle.get("quote") or {}
+    hist = bundle.get("history") or {}
+    prim = q.get("primary") or {}
+    closes = [b.get("close") for b in hist.get("bars") or []]
+    rv = realized_vols(closes) if any(closes) else None
+    return {
+        "symbol": q.get("symbol"),
+        "company_name": q.get("company_name"),
+        "last": prim.get("last"),
+        "net_change": prim.get("net_change"),
+        "pct_change": prim.get("pct_change"),
+        "spot_reference": q.get("spot_reference"),
+        "spot_reference_basis": q.get("spot_reference_basis"),
+        "market_status": q.get("market_status"),
+        "source": q.get("source"),
+        "pulled_at": q.get("pulled_at"),
+        "delay_class": q.get("delay_class"),
+        "stale": bool(bundle.get("stale")),
+        "rv": rv,
+        "lanes": [STOCK_LANES["S1"]["stamp"],
+                  STOCK_LANES["S5"]["stamp"]],
+        "action": "WATCH",
+        "action_reason": "no stock lane has passed its exam "
+                         "(S1/S5 FAILED-EXAM, S2–S4 NOT-BUILT) "
+                         "— BetFi prints no buy or sell signal "
+                         "for this name",
+    }
+
+
+def option_grid_view(chain_block, spot, asof=None, band=0.20):
+    """Shape one expiry's grid for the Options segment.
+
+    chain_block: {"expiry": ..., "contracts": [...]} in the
+    pulled chain shape. spot: the chain session's regular
+    close. Rows cover strikes within ±band of spot. Each row
+    carries the market's quotes, the computed call IV (or its
+    skip reason), and the implied P(finish above strike) —
+    EXCEPT on short-dated expiries (< 5 DTE), where the
+    extraction is diagnostically unusable on this feed: there
+    P is SUPPRESSED (None) and the grid stamps SHORT-DATED —
+    IMPLIED UNRELIABLE rather than dressing a noise curve up
+    as probabilities. The model column is the registry truth
+    (STOCK_MODEL_STAMP) and every row's action is WATCH.
+    """
+    if asof is None:
+        asof = _date.today()
+    elif isinstance(asof, str):
+        asof = _date.fromisoformat(asof)
+    dist = implied_distribution(chain_block, spot, asof=asof)
+    dte = dist["dte_calendar"]
+    short_dated = dte is not None and dte < 5
+    T = dist["T_years"]
+    contracts = (chain_block or {}).get("contracts") or []
+    rows = []
+    for c in contracts:
+        K = c.get("strike")
+        if K is None or not spot or abs(K - spot) > band * spot:
+            continue
+        call = c.get("call") or {}
+        put = c.get("put") or {}
+        ivr = iv_from_quote(call.get("bid"), call.get("ask"),
+                            spot, K, T, kind="call")
+        p = None
+        if not short_dated and dist["status"] == "ok":
+            p = dist["prob_above"].get(K)
+        rows.append({
+            "strike": K,
+            "call_bid": call.get("bid"), "call_ask": call.get("ask"),
+            "call_last": call.get("last"),
+            "put_bid": put.get("bid"), "put_ask": put.get("ask"),
+            "iv": ivr["iv"], "iv_skip": ivr["skip_reason"],
+            "p_above": p,
+            "model": STOCK_MODEL_STAMP,
+            "action": "WATCH",
+        })
+    rows.sort(key=lambda r: r["strike"])
+    notes = list(dist["diagnostics"].get("limitations") or [])
+    if short_dated:
+        notes.insert(0, "SHORT-DATED — IMPLIED UNRELIABLE: "
+                        "under 5 DTE this feed's quote noise "
+                        "swamps the extraction, so implied "
+                        "probabilities are suppressed, not "
+                        "printed")
+    elif dist["status"] != "ok":
+        notes.insert(0, f"implied extraction unavailable for "
+                        f"this expiry ({dist['status']}) — "
+                        f"quotes and IVs only")
+    return {
+        "expiry": dist["expiry"], "dte_calendar": dte,
+        "T_years": T, "spot": spot,
+        "short_dated": short_dated,
+        "extraction_status": dist["status"],
+        "expected_move_pct": dist["expected_move_pct"],
+        "straddle_move_pct": dist["straddle_move_pct"],
+        "diagnostics": dist["diagnostics"],
+        "notes": notes,
+        "rows": rows,
+        "action": "WATCH",
+    }
+
+
 def cmd_regression(args):
     run_regression()
 
