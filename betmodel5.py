@@ -11387,7 +11387,8 @@ def fd_parse_sport_page(page, sport):
                     "runners_n": len(mk.get("runners") or []),
                     "runners": [
                         {"name": r.get("runnerName"),
-                         "price": _fd_runner_price(r)}
+                         "price": _fd_runner_price(r),
+                         "fd_selection_id": r.get("selectionId")}
                         for r in (mk.get("runners") or [])
                         if r.get("runnerName")]})
                 routed[sport] = routed.get(sport, 0) + 1
@@ -11433,7 +11434,9 @@ def fd_parse_sport_page(page, sport):
                 price = _fd_runner_price(r) if r else None
                 if price is not None:
                     slate.append({**base, "market": "moneyline",
-                                  "side": side, "price": price})
+                                  "side": side, "price": price,
+                                  "fd_selection_id":
+                                      r.get("selectionId")})
             if sport == "soccer":
                 # the 1X2 market's third leg (v5.2): FanDuel lists
                 # the Draw as its own runner. The soccer engine
@@ -11444,7 +11447,9 @@ def fd_parse_sport_page(page, sport):
                 price = _fd_runner_price(r) if r else None
                 if price is not None:
                     slate.append({**base, "market": "moneyline",
-                                  "side": "draw", "price": price})
+                                  "side": "draw", "price": price,
+                                  "fd_selection_id":
+                                      r.get("selectionId")})
             if sport in ("cricket", "rugby-union"):
                 # R4: the same third leg where the sport has one
                 # (Test cricket posts a Draw runner; the test
@@ -11453,7 +11458,9 @@ def fd_parse_sport_page(page, sport):
                 price = _fd_runner_price(r) if r else None
                 if price is not None:
                     slate.append({**base, "market": "moneyline",
-                                  "side": "draw", "price": price})
+                                  "side": "draw", "price": price,
+                                  "fd_selection_id":
+                                      r.get("selectionId")})
         elif mname in ("Spread", "Point Spread"):
             for side, team in (("home", raw_home),
                                ("away", raw_away)):
@@ -11462,14 +11469,18 @@ def fd_parse_sport_page(page, sport):
                     slate.append({**base, "market": "spread",
                                   "side": side,
                                   "line": r.get("handicap"),
-                                  "price": _fd_runner_price(r)})
+                                  "price": _fd_runner_price(r),
+                                  "fd_selection_id":
+                                      r.get("selectionId")})
         elif mname in ("Total Points", "Total"):
             for r in runners:
                 if r.get("runnerName") == "Over":
                     slate.append({**base, "market": "totals",
                                   "side": "over",
                                   "line": r.get("handicap"),
-                                  "price": _fd_runner_price(r)})
+                                  "price": _fd_runner_price(r),
+                                  "fd_selection_id":
+                                      r.get("selectionId")})
     return slate, inventory, len(games), routed
 
 

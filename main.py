@@ -354,8 +354,8 @@ INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
 # internal id (and therefore the on-device storage path,
 # snapshot filename and engine-data folder) is UNCHANGED from
 # BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "13.0.0"
-BUILD_NUMBER = 53
+APP_VERSION = "13.1.0"
+BUILD_NUMBER = 54
 DISPLAY_NAME = "BetFi Xii"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -550,9 +550,9 @@ def tertiary_button(text, on_click):
 
 PULSE_PERIOD_S = 2.0      # the live dot's period (artist §1.2)
 PULSE_PERIODS = {"splash": 3.2, "dot": 2.0, "golden": 2.8,
-                 "shimmer": 1.5}
+                 "shimmer": 1.5, "betnow": 1.6}
 _PULSE_TARGETS = {"splash": [], "dot": [], "golden": [],
-                  "shimmer": []}
+                  "shimmer": [], "betnow": {}}
 _PULSE_STOPS = {}
 _DOT_FRESH = {"fresh": False}   # the live dot's freshness gate
 # (artist §1.2): the dot loop runs, but writes nothing while the
@@ -657,7 +657,9 @@ def _pulse_value(key, elapsed):
     (ignition .0->.55, swell .55->.35, swell .35->.60, hold .60),
     then the idle breath (period 3.2 s, alpha .25<->.40).
     dot: period 2.0 s, alpha 1.0<->.45. golden: period 2.8 s,
-    alpha .35<->.50. shimmer: 1.2 s sweep + 0.3 s flat, peak
+    alpha .35<->.50. betnow: period 1.6 s, alpha 1.0<->.45 (the
+    FanDuel link box's flash — the dot's envelope, faster).
+    shimmer: 1.2 s sweep + 0.3 s flat, peak
     alpha .12 (the sheen layer's own opacity)."""
     import math
     if key == "splash":
@@ -677,12 +679,32 @@ def _pulse_value(key, elapsed):
     if key == "golden":
         ph = (elapsed % 2.8) / 2.8
         return 0.425 + 0.075 * math.sin(ph * 2 * math.pi)
+    if key == "betnow":
+        ph = (elapsed % 1.6) / 1.6
+        return 0.725 + 0.275 * math.sin(ph * 2 * math.pi)
     if key == "shimmer":
         ph = elapsed % 1.5
         if ph >= 1.2:
             return 0.0
         return 0.12 * math.sin((ph / 1.2) * math.pi)
     return 1.0
+
+
+def _prune_pulse_target(key, ctrl):
+    """Drop one control from a pulse key's registry — the
+    keyed (dict) registries lose the entry whose value it is,
+    the list registries lose the control itself. Called when
+    a target's update() raises: its surface has left the
+    tree, so it would raise on every tick forever."""
+    targets = _PULSE_TARGETS.get(key)
+    if isinstance(targets, dict):
+        for k in [k for k, v in targets.items() if v is ctrl]:
+            del targets[k]
+    elif isinstance(targets, list):
+        try:
+            targets.remove(ctrl)
+        except ValueError:
+            pass
 
 
 def ice_pulse_loop(key):
@@ -701,14 +723,25 @@ def ice_pulse_loop(key):
         limit = 4 if key == "shimmer" else 3
         # v12.7.1 one-lock: the whole tick (every ctrl write +
         # update) runs inside the update lock, so a pulse tick
-        # can never interleave with a render's patch.
+        # can never interleave with a render's patch. A key's
+        # registry is a list, or a dict keyed by owner (betnow:
+        # one glow layer per expanded card, keyed by card key).
         with _UPDATE_LOCK:
-            for ctrl in list(_PULSE_TARGETS.get(key) or [])[:limit]:
+            targets = _PULSE_TARGETS.get(key)
+            if isinstance(targets, dict):
+                ctrls = list(targets.values())
+            else:
+                ctrls = list(targets or [])
+            for ctrl in ctrls[:limit]:
                 try:
                     ctrl.opacity = value
                     ctrl.update()
                 except Exception:
-                    pass
+                    # Detached control (its surface left the
+                    # tree): prune it instead of retrying it
+                    # forever — an expanded card's glow layer
+                    # detaches on every collapse re-render.
+                    _prune_pulse_target(key, ctrl)
         stop.wait(0.12)
 
 
@@ -2867,22 +2900,26 @@ _CARD_FONT_FALLBACKS = {
 _FONT_CACHE = {}
 _CARD_ACTION_LABELS = ("COPY LABEL", "SLIP", "COLLAPSE")
 _ACTION_BAR_PX = 84     # the expanded action bar's height, px
-_CARD_HOOKS = {"refresh": None, "slip": None}
+_CARD_HOOKS = {"refresh": None, "slip": None, "open_url": None}
 _RENDER_STAMPS = {}     # per-card "card rendered" stamp, cached
                         # so a card's provenance line — and its
                         # PNG bytes — are stable across draws
 
 
-def bind_card_hooks(refresh=None, slip=None):
+def bind_card_hooks(refresh=None, slip=None, open_url=None):
     """main() binds the app's own navigation here (the
     bind_clipboard pattern): refresh re-shows the current
     view (a card tap toggles expansion by re-rendering
     through the normal path); slip opens the Slip view,
-    whose Protected Slip panel is the app's slip surface."""
+    whose Protected Slip panel is the app's slip surface;
+    open_url hands a URL to the app's UrlLauncher service
+    (the BET NOW box's FanDuel QuickSlip link rides it)."""
     if refresh is not None:
         _CARD_HOOKS["refresh"] = refresh
     if slip is not None:
         _CARD_HOOKS["slip"] = slip
+    if open_url is not None:
+        _CARD_HOOKS["open_url"] = open_url
 
 
 def _card_key(mkt):
@@ -3186,6 +3223,9 @@ def _depth_sections(mkt, verdict, rec, quotes_by_game,
     if mkt.get("fd_market_id"):
         provenance.append(f"FanDuel market id: "
                           f"{mkt['fd_market_id']}")
+    if mkt.get("fd_selection_id"):
+        provenance.append(f"FanDuel selection id: "
+                          f"{mkt['fd_selection_id']}")
     provenance.append(f"card rendered: "
                       f"{_render_stamp(_card_key(mkt))}")
 
@@ -3649,49 +3689,124 @@ def _card_fallback_png(mkt, verdict, err, design="C"):
     return _png_bytes(img)
 
 
-def _bet_now_chip():
-    """The BET NOW indicator (build 52): a native control
-    mounted at the TOP of an expanded card whose bet survives
-    the verdict ladder's pessimistic-end test (bet_now()) —
-    the render loops place it directly above the card (see
+def fanduel_bet_url(mkt):
+    """The FanDuel QuickSlip deep link for this exact bet,
+    or None: sportsbook.fanduel.com/addToBetslip with the
+    market id AND the selection id opens FanDuel (the app
+    where installed, the web book otherwise) with that one
+    selection already on the bet slip. Both ids ride the
+    slate from the pull (fd_market_id since the menu parser
+    landed; fd_selection_id since this build) — a slate
+    pulled before selection ids rode it cannot arm the
+    link, and no URL is ever guessed in its place."""
+    mkt = mkt or {}
+    market_id = mkt.get("fd_market_id")
+    selection_id = mkt.get("fd_selection_id")
+    if market_id and selection_id:
+        return ("https://sportsbook.fanduel.com/addToBetslip"
+                f"?marketId={market_id}"
+                f"&selectionId={selection_id}")
+    return None
+
+
+def fanduel_link_state(mkt):
+    """'armed' when the exact one-tap QuickSlip link can be
+    built for this market; 'predates-link-ids' when the
+    slate entry lacks one of the ids (a pull from before
+    selection ids rode the slate — pull the menu again and
+    the next render arms it)."""
+    return "armed" if fanduel_bet_url(mkt) \
+        else "predates-link-ids"
+
+
+def _bet_now_chip(mkt, verdict):
+    """The BET NOW box (build 52's indicator, rebuilt as the
+    one-tap FanDuel link box): a native control mounted at
+    the TOP of an expanded card whose bet survives the
+    verdict ladder's pessimistic-end test (bet_now()) — the
+    render loops place it directly above the card (see
     bet_now_chip_for); the card control itself stays the
     bare GestureDetector every surface enumerates.
 
-    STATIC glow, deliberately: the pulse keys are owned —
-    the golden key's target list is assigned wholesale by
-    its two owners' render finishes (the Finds glow bar and
-    the Protected Slip glow bar), and no registration
-    lifecycle exists that an expansion chip could join
-    without racing those assignments or the 3-target tick
-    cap — so the chip carries the standing static ICE_GLOW
-    and no new timer or thread exists for it.
+    FLASHING, on the app's standing pulse law: a pre-rendered
+    ICE_GLOW layer sits behind the front box and the
+    dedicated 'betnow' pulse (1.6 s, alpha .45<->1.0) breathes
+    its OPACITY — Flet cannot animate shadow blur. The glow
+    layer registers in the betnow registry keyed by card key,
+    so a re-render replaces the card's stale layer instead of
+    accumulating one per render, and the pulse loop prunes a
+    layer whose surface has left the tree.
 
     Accent (cyan) treatment, not gold: the design law
     reserves gold to GOLDEN surfaces (GOLD is "GOLDEN only —
     nowhere else"), while cyan is the glow "wherever the
     model sees something real" — a priced bet the ladder's
-    own test survives."""
-    return ft.Container(
+    own test survives.
+
+    THE TAP: the front box is the tap target. Armed (the
+    pull carried both FanDuel ids) it opens the exact
+    QuickSlip link through the open_url card hook — main()
+    binds it to the UrlLauncher service, the instrument
+    pattern; unbound (headless), the tap no-ops silently.
+    Unarmed, the box still flashes and says so — pull the
+    menu again to arm the exact link — and the tap opens
+    nothing: no FanDuel URL is ever invented."""
+    url = fanduel_bet_url(mkt)
+    if url is not None:
+        action = ft.Text(
+            "OPEN THIS BET ON FANDUEL ↗ — "
+            + bet_name(mkt, verdict)["slip_label"],
+            size=12, color=BONE, weight=ft.FontWeight.BOLD)
+    else:
+        action = ft.Text(
+            "OPEN ON FANDUEL — pull the menu again to arm "
+            "the exact one-tap link",
+            size=12, color=DIM)
+
+    def _open(_e, _url=url):
+        if _url is None:
+            return
+        hook = _CARD_HOOKS.get("open_url")
+        if hook is not None:
+            hook(_url)
+
+    glow = ft.Container(
+        left=0, top=0, right=0, bottom=0, border_radius=10,
+        shadow=ICE_GLOW, opacity=0.725,
+        animate_opacity=ft.Animation(
+            120, ft.AnimationCurve.EASE_IN_OUT))
+    registry = _PULSE_TARGETS.get("betnow")
+    if not isinstance(registry, dict):
+        registry = _PULSE_TARGETS["betnow"] = {}
+    registry[_card_key(mkt)] = glow
+    front = ft.Container(
         width=_CARD_DP_W, padding=10, bgcolor=CYAN_DEEP,
         border=_border_all(1.5, ACCENT), border_radius=10,
-        shadow=ICE_GLOW,
-        content=ft.Text(
-            "● BET NOW — model projects this bet to beat "
-            "its price", size=13, color=ACCENT,
-            weight=ft.FontWeight.BOLD))
+        on_click=_open,
+        content=ft.Column(
+            spacing=3, tight=True,
+            controls=[
+                ft.Text(
+                    "● BET NOW — model projects this bet to "
+                    "beat its price", size=13, color=ACCENT,
+                    weight=ft.FontWeight.BOLD),
+                action]))
+    return ft.Stack(width=_CARD_DP_W, controls=[glow, front])
 
 
 def bet_now_chip_for(mkt, verdict):
-    """The BET NOW indicator control for one card, or None:
-    it mounts only while the card is expanded (its key sits
-    in _CARD_DETAILS_OPEN) and its bet survives the ladder's
+    """The BET NOW link box for one card, or None: it mounts
+    only while the card is expanded (its key sits in
+    _CARD_DETAILS_OPEN) and its bet survives the ladder's
     pessimistic-end test. Render loops append it directly
     before the card control, so it rides at the top of the
     expansion and leaves the tree with the collapse
-    re-render — no registration, no lifecycle of its own."""
+    re-render; its glow layer's registry entry is replaced
+    on the next build and pruned by the pulse loop once the
+    layer detaches."""
     if _card_key(mkt) in _CARD_DETAILS_OPEN \
             and bet_now(verdict):
-        return _bet_now_chip()
+        return _bet_now_chip(mkt, verdict)
     return None
 
 
@@ -7917,9 +8032,18 @@ def main(page: ft.Page):
     # panel builds itself on arrival, exactly as a bottom-nav
     # tap there does). The lambdas resolve show/state at call
     # time; both are live before any tap can land.
+    def _open_card_url(url):
+        # The BET NOW box's QuickSlip tap lands here: the
+        # same UrlLauncher route the instruments take.
+        try:
+            page.run_task(url_launcher.launch_url, url)
+        except Exception:
+            pass
+
     bind_card_hooks(
         refresh=lambda: show(state["view"]),
-        slip=lambda: show("slip"))
+        slip=lambda: show("slip"),
+        open_url=_open_card_url)
     stage_status = ft.Text("", size=12, color=DIM)
 
     def on_open_instrument(inst):
@@ -9146,6 +9270,7 @@ def main(page: ft.Page):
             start_pulse("splash")
             start_pulse("shimmer")
             start_pulse("golden")
+            start_pulse("betnow")
         except Exception:
             splash["ctrl"] = None
         threading.Thread(target=_auto_pull_loop, daemon=True).start()

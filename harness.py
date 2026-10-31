@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "13.0.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 53)
+    check("APP_VERSION is 12.12.0", app.APP_VERSION == "13.1.0")
+    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 54)
     check("DISPLAY_NAME is BetFi Xii",
           app.DISPLAY_NAME == "BetFi Xii")
     check("PUBLIC_NAME is BetFi_Xii",
@@ -472,6 +472,113 @@ def main():
           and all(a == "WATCH" for a in
                   [c.get("action") for c in _gv.get("cells", [])]
                   if a is not None))
+    # ---------- v13.1 FanDuel one-tap link box ----------
+    def _fd_runner(name, sid, price, handicap=None):
+        r = {"runnerName": name, "selectionId": sid,
+             "winRunnerOdds": {"americanDisplayOdds":
+                               {"americanOddsInt": price}}}
+        if handicap is not None:
+            r["handicap"] = handicap
+        return r
+    _fd_page = {"attachments": {
+        "events": {"36236119": {
+            "eventId": 36236119,
+            "name": "Buffalo Bills @ Kansas City Chiefs",
+            "competitionId": 1}},
+        "markets": {
+            "a": {"eventId": 36236119, "marketName": "Moneyline",
+                  "marketStatus": "OPEN", "marketId": "726.111",
+                  "runners": [_fd_runner("Buffalo Bills", 101, 120),
+                              _fd_runner("Kansas City Chiefs", 102,
+                                         -140)]},
+            "b": {"eventId": 36236119, "marketName": "Spread",
+                  "marketStatus": "OPEN", "marketId": "726.112",
+                  "runners": [_fd_runner("Buffalo Bills", 103, -110,
+                                         2.5),
+                              _fd_runner("Kansas City Chiefs", 104,
+                                         -110, -2.5)]},
+            "c": {"eventId": 36236119,
+                  "marketName": "Total Points",
+                  "marketStatus": "OPEN", "marketId": "726.113",
+                  "runners": [_fd_runner("Over", 105, -110, 47.5),
+                              _fd_runner("Under", 106, -110, 47.5)]}},
+        "competitions": {}}}
+    _fd_slate, _inv, _ng, _rt = b5.fd_parse_sport_page(
+        _fd_page, "nfl")
+    check("v13.1 fdlink parser: every runner-derived slate "
+          "entry carries its runner's fd_selection_id",
+          len(_fd_slate) >= 5
+          and all(e.get("fd_selection_id") is not None
+                  for e in _fd_slate)
+          and next(e for e in _fd_slate
+                   if e["market"] == "moneyline"
+                   and e["side"] == "home")["fd_selection_id"] == 102
+          and next(e for e in _fd_slate
+                   if e["market"] == "totals")["fd_selection_id"]
+          == 105)
+    check("v13.1 fdlink url: the exact QuickSlip URL from both "
+          "ids, None without either, link states distinguished",
+          app.fanduel_bet_url({"fd_market_id": "726.111",
+                               "fd_selection_id": 102})
+          == "https://sportsbook.fanduel.com/addToBetslip"
+             "?marketId=726.111&selectionId=102"
+          and app.fanduel_bet_url({"fd_market_id": "726.111"})
+          is None
+          and app.fanduel_bet_url({"fd_selection_id": 102}) is None
+          and app.fanduel_link_state({"fd_market_id": "726.111",
+                                      "fd_selection_id": 102})
+          == "armed"
+          and app.fanduel_link_state({"fd_market_id": "726.111"})
+          == "predates-link-ids")
+    _fd_mkt = {"sport": "nfl", "home": "KC", "away": "BUF",
+               "market": "moneyline", "side": "home", "price": -110,
+               "fd_event_id": 36236119, "fd_market_id": "726.111",
+               "fd_selection_id": 102}
+    _fd_vrd = {"bet_now": True, "state": "PRICED", "p": 0.6,
+               "verdict": "BET HERE", "grade": "B"}
+    app._CARD_DETAILS_OPEN.add(app._card_key(_fd_mkt))
+    _fd_chip = app.bet_now_chip_for(_fd_mkt, _fd_vrd)
+    _fd_texts = [c.value for c in walk(_fd_chip)
+                 if isinstance(c, ft.Text)]
+    _fd_tap = next(c for c in walk(_fd_chip)
+                   if getattr(c, "on_click", None) is not None)
+    _fd_opened = []
+    app.bind_card_hooks(open_url=_fd_opened.append)
+    _fd_tap.on_click(None)
+    _fd_mkt2 = {k: v for k, v in _fd_mkt.items()
+                if k != "fd_selection_id"}
+    app._CARD_DETAILS_OPEN.add(app._card_key(_fd_mkt2))
+    _fd_chip2 = app.bet_now_chip_for(_fd_mkt2, _fd_vrd)
+    _fd_texts2 = [c.value for c in walk(_fd_chip2)
+                  if isinstance(c, ft.Text)]
+    _fd_tap2 = next(c for c in walk(_fd_chip2)
+                    if getattr(c, "on_click", None) is not None)
+    _fd_tap2.on_click(None)
+    app._CARD_DETAILS_OPEN.discard(app._card_key(_fd_mkt))
+    app._CARD_DETAILS_OPEN.discard(app._card_key(_fd_mkt2))
+    check("v13.1 fdlink box: expanded bet_now card returns the "
+          "flashing link box — tap delivers the exact URL, the "
+          "id-less market shows pull-again and launches nothing",
+          _fd_chip is not None
+          and any("OPEN THIS BET ON FANDUEL" in t
+                  for t in _fd_texts)
+          and _fd_opened
+          == ["https://sportsbook.fanduel.com/addToBetslip"
+              "?marketId=726.111&selectionId=102"]
+          and any("pull the menu again" in t for t in _fd_texts2))
+    _fd_vals = [app._pulse_value("betnow", t / 20.0)
+                for t in range(65)]
+    check("v13.1 fdlink pulse: betnow key breathes 0.45..1.0 "
+          "on a 1.6 s period",
+          app.PULSE_PERIODS.get("betnow") == 1.6
+          and min(_fd_vals) >= 0.44 and max(_fd_vals) <= 1.01
+          and max(_fd_vals) - min(_fd_vals) > 0.4)
+    _fd_secs = app._depth_sections(_fd_mkt, _fd_vrd, _rec, {})
+    check("v13.1 fdlink provenance: the depth PROVENANCE "
+          "prints the FanDuel selection id the market carries",
+          any("FanDuel selection id: 102" in ln
+              for title, lines in _fd_secs
+              if title == "PROVENANCE" for ln in lines))
     check("v12.8: 11's anatomy leads with the verdict line "
           "and carries state + calibration tag",
           any(ln.startswith("state:")
@@ -1586,10 +1693,10 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v12.12 version unified: README release line",
-          "13.0.0 (build 53)" in _readme)
+          "13.1.0 (build 54)" in _readme)
     check("v12.12 version unified: workflow build args",
-          '--build-version "13.0.0"' in _wf
-          and '--build-number "53"' in _wf)
+          '--build-version "13.1.0"' in _wf
+          and '--build-number "54"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
