@@ -120,6 +120,13 @@ in bone + BETS in ice, and the app icon is the Pilot's
 ghost-barbell logo. Display brand only, exactly as the
 native app shipped it — engine, storage, snapshots, the
 history store and holdings all carry over untouched.
+
+v13.3.1 (2026-11-01) — the Pilot's two rulings on the
+rebrand leftovers: the board header's XII serif badge is
+replaced by the mini ghost (assets/ghost-mini.png, the
+ghost's head cropped from the Pilot's logo), and the 3D
+destination's chart sections are renamed Xii Charts ->
+Scare Charts (section header + full-screen viewer title).
 """
 
 from __future__ import annotations
@@ -370,8 +377,8 @@ INTERNAL_ID = "Bet_Finder"   # rename law (BetFi Xii, kept
 # on-device storage path, snapshot filename and engine-data
 # folder) is UNCHANGED from BetFi 11 — renaming the app must
 # not orphan the user's data.
-APP_VERSION = "13.3.0"
-BUILD_NUMBER = 56
+APP_VERSION = "13.3.1"
+BUILD_NUMBER = 57
 DISPLAY_NAME = "Scare Bets"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -4267,7 +4274,7 @@ def distill_finds(markets: list, verdicts: list):
 
 
 # ------------------------------------------------------------------
-# Xii Charts (v12) — charts built from native Flet controls
+# Scare Charts (v12, as Xii Charts; renamed 13.3.1) — charts built from native Flet controls
 # (containers — pinned Flet 1.0.4 core has no chart control and
 # flet-charts is not a dependency of this app) from the CURRENT
 # pull's
@@ -4409,12 +4416,12 @@ def build_xii_charts(entries: list, zoom: float = 1.0,
                      on_tap=None, on_zoom=None,
                      detail: str = "", on_point=None,
                      highlight: str = "") -> list:
-    """The Xii Charts section controls for one pull's entries.
+    """The Scare Charts section controls for one pull's entries.
     Empty pull -> one honest line; a pull with no priced markets
     still draws PRICED vs UNPRICED and prints the empty state
     for the priced-only charts."""
     data = xii_chart_data(entries or [])
-    out = [section_header("Xii Charts — this pull, live", ACCENT),
+    out = [section_header("Scare Charts — this pull, live", ACCENT),
            ft.Text("Built from the current pull's verdicts on "
                    "every pull — the same numbers the cards "
                    "carry. Zoom with the buttons; tap a bar's "
@@ -4633,7 +4640,7 @@ def coverage_rows(markets) -> list:
 def build_coverage_section(markets, on_league=None, stamp="",
                            stale=False, on_expand=None) -> list:
     """Priced share per league on the current pull — native
-    container bars like the Xii Charts, one tappable row per
+    container bars like the Scare Charts, one tappable row per
     league. The header carries the pull stamp + stale state."""
     out = [section_header("Coverage — priced share by league",
                           ACCENT),
@@ -9178,7 +9185,7 @@ def main(page: ft.Page):
             ov = getattr(page, "overlay", None)
             if kind is None or ov is None:
                 return
-            title = {"charts": "Xii Charts — full screen",
+            title = {"charts": "Scare Charts — full screen",
                      "coverage": "Coverage — full screen",
                      "landscape": "Edge Landscape — full screen"}[kind]
             sheet = build_viewer_sheet(
@@ -9474,7 +9481,8 @@ def main(page: ft.Page):
     # Frosted ice header (9d; artist §3.3): L2 gradient at
     # translucent stops over the field (Flet has no backdrop
     # blur — the frost is layered translucency, not a filter),
-    # the XII badge (serif, keylined) + the two-tone lockup
+    # the mini-ghost badge (the Pilot's logo head, cropped;
+    # it replaced the XII serif badge in 13.3.1) + the two-tone lockup
     # (BetFi in bone, Xii in cyan, both w700 — artist §1), and
     # the live dot left of the pull stamp. (The lockup's two
     # words are SCARE in bone + BETS in cyan since the 13.3.0
@@ -9491,11 +9499,12 @@ def main(page: ft.Page):
                            width=26, height=26, border_radius=7,
                            bgcolor=PANEL_RAISED_C,
                            border=_border_all(1, CYAN_DEEP),
+                           clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
                            alignment=ft.Alignment(0, 0),
-                           content=ft.Text(
-                               "XII", size=11, color=BONE,
-                               weight=ft.FontWeight.BOLD,
-                               font_family="Georgia")),
+                           content=ft.Image(
+                               src="assets/ghost-mini.png",
+                               width=26, height=26,
+                               fit=ft.BoxFit.COVER)),
                        ft.Text("SCARE", size=22, color=BONE,
                                weight=ft.FontWeight.W_700),
                        ft.Text("BETS", size=22, color=ICE,

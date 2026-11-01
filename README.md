@@ -3,7 +3,7 @@
 **Public name: Scare_Bets (display: Scare Bets). Internal id:
 Bet_Finder — unchanged in the Xii rename and again in the
 Scare Bets rename (2026-11-01), so on-device data carries
-over. App release: 13.3.0 (build 56) — the Scare Bets
+over. App release: 13.3.1 (build 57) — the Scare Bets
 rebrand: display brand + the Pilot's ghost-barbell icon,
 internal id and storage untouched; 13.2.0 underneath stands
 unchanged, including the Show-default fix: the board opens on All markets (12.11.0's
@@ -18,7 +18,7 @@ every fit on the device, soccer prices across five leagues
 (EPL from the shipped fit; Serie A, La Liga, Bundesliga and
 Ligue 1 from real-results league fits), the menu auto-pulls on
 start and every 4 minutes, team/player names copy individually
-for search, Xii Charts render the live pull in-app (zoom via
+for search, Scare Charts render the live pull in-app (zoom via
 buttons — no sliders anywhere), and a Protected Slip sizes
 GOLDEN BET / BET HERE markets with the Kelly organ for the
 user to place and mark themselves. The service's core:

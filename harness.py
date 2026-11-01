@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 13.3.0", app.APP_VERSION == "13.3.0")
-    check("BUILD_NUMBER is 56", app.BUILD_NUMBER == 56)
+    check("APP_VERSION is 13.3.1", app.APP_VERSION == "13.3.1")
+    check("BUILD_NUMBER is 57", app.BUILD_NUMBER == 57)
     check("DISPLAY_NAME is Scare Bets",
           app.DISPLAY_NAME == "Scare Bets")
     check("PUBLIC_NAME is Scare_Bets",
@@ -1693,10 +1693,17 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v13.3 version unified: README release line",
-          "13.3.0 (build 56)" in _readme)
+          "13.3.1 (build 57)" in _readme)
     check("v13.3 version unified: workflow build args",
-          '--build-version "13.3.0"' in _wf
-          and '--build-number "56"' in _wf)
+          '--build-version "13.3.1"' in _wf
+          and '--build-number "57"' in _wf)
+    check("13.3.1: board header badge is the mini ghost",
+          'src="assets/ghost-mini.png"' in _src
+          and os.path.exists(os.path.join(
+              HERE, "assets", "ghost-mini.png")))
+    check("13.3.1: chart sections are Scare Charts",
+          "Scare Charts — this pull, live" in _src
+          and "Scare Charts — full screen" in _src)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
