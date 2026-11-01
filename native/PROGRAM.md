@@ -1,4 +1,4 @@
-# BetFi Xii — Native Program (Jetpack Compose + Chaquopy)
+# Scare Bets — Native Program (Jetpack Compose + Chaquopy)
 
 The Pilot's decision (2026-10-31): convert BetFi to a native Android
 app — **Jetpack Compose UI + the existing Python engine embedded
@@ -57,15 +57,65 @@ BUILD-LOG.md carries the current hash.
   and compares against the desktop reference verdicts under the
   canonical comparison (`parity/PARITY.md`). The phase closes when
   the same comparison prints MATCH on the Pilot's device.
-- **Phase 2 — Board live pull**: the FanDuel menu pull path moves
-  behind the bridge; Board renders real verdict cards from a live
-  pull, engine-fed, no samples.
-- **Phase 3 — Destination parity**: Finds, Slip, Lab, 3D, Stocks
-  reach feature parity with the Flet app, one destination at a
-  time, each with its own acceptance drive.
+- **Phase 2 — Board live pull** *(built in v1.0.0, see status
+  below)*: the FanDuel menu pull path lives behind the bridge;
+  Board renders real verdict cards from a live pull.
+- **Phase 3 — Destination parity** *(built in v1.0.0, see status
+  below)*: Finds, Slip, Lab, 3D, Stocks at parity with the Flet
+  app, each driven on desktop against the bridge.
 - **Phase 4 — Flair + cutover decision**: motion, Fold postures,
   the design system (Jules' lane, BRIEF-001 onward). Cutover is a
   Pilot decision, not a phase default.
+
+## v1.0.0 Complete Edition — status (2026-10-31)
+
+Per-destination status, never rounded up (BUILT = the full
+surface is implemented against the bridge and driven on desktop;
+the Kotlin side is compile-proven only by GitHub Actions — see
+BUILD-LOG.md):
+
+| Destination | Status | Notes |
+|---|---|---|
+| Board | BUILT | live full + scoped pulls, sport chips, Show control (default All), five depth sections, flashing BET NOW QuickSlip box |
+| Finds | BUILT | GOLDEN panel under the unchanged gate law; honestly empty when nothing qualifies |
+| Slip | BUILT | Protected Slip (quarter-Kelly, 5% cap, max loss = total stake printed), persisted mark-placed (PLACED, user-marked) |
+| Lab | BUILT | recorder health (history_begins + record/market counts), engine identity, parity spike (must print MATCH on device) |
+| 3D | BUILT | TRUE spatial 3D: OpenGL ES renderer — see below |
+| Stocks | BUILT | TAPE / MATRIX / OPTIONS / HOLDINGS mirroring Flet build 53; WATCH-only |
+| Betterama | PARTIAL | shell only, by Pilot order: its definition is being locked; no features invented |
+
+### True spatial 3D
+
+The 3D destination is a real OpenGL ES scene (GLSurfaceView,
+perspective projection, depth, drag-orbit camera, pinch/button
+zoom) — not a canvas projection and not the Flet HTML
+instruments (those are NOT shipped in the native app at all).
+Market/history data sits at real coordinates from
+`bridge.spatial_json`, with this axis mapping:
+
+- **x = implied probability** from the quoted price (0..1)
+- **y = edge** (model probability − implied probability)
+- **z = time** (hours; terrain: since the window's first point;
+  slate cloud: from the pull stamp to the market's start)
+
+The Edge Terrain renders as a triangle surface mesh over a
+24×24 (x, z) grid binned from the history store's G1 paths; a
+cell's height is the mean edge of its points, and cells with no
+points stay holes — no height is interpolated or invented. The
+current slate rides as a point cloud (GOLDEN points gold, BET
+NOW points ice).
+
+### Rebrand: Scare Bets (Pilot order, 2026-10-31 evening)
+
+"Betfi is no more." The product's display name is **Scare
+Bets**; the official logo (chrome ghost lifting a barbell over
+SCARE BETS; Pilot-supplied `~/workspace/user/files/91941_2_959z.jpg`,
+2048×2048) ships in the tree as the branding image and launcher
+icon source. This is a DISPLAY-brand change only: the
+applicationId stays `com.betfi.xii`, package/class names stay,
+and the engine files (betmodel5.py, history_store.py, bridge.py)
+keep their names — the one-engine law and the parity references
+depend on them.
 
 ## The standing rule
 

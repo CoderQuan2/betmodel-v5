@@ -1,9 +1,34 @@
-# native/ — BetFi Xii, Jetpack Compose + Chaquopy
+# native/ — Scare Bets, Jetpack Compose + Chaquopy
 
 The native conversion of BetFi Xii (Pilot's decision, 2026-10-31).
 Program, architecture, phasing, and team rules: **PROGRAM.md**.
 Parity contract and proofs: **parity/PARITY.md**. What has actually
 been verified, and where: **BUILD-LOG.md**.
+
+## v1.0.0 Complete Edition — per-destination status
+
+| Destination | Status |
+|---|---|
+| Board | BUILT |
+| Finds | BUILT |
+| Slip | BUILT |
+| Lab | BUILT |
+| 3D (true spatial, OpenGL ES) | BUILT |
+| Stocks | BUILT |
+| Betterama | PARTIAL — shell only; definition being locked by the Pilot |
+
+"BUILT" means implemented against the bridge payloads and driven
+on desktop (bridge side). **Kotlin compilation is proven only by
+GitHub Actions** — no JDK exists on the authoring VM.
+
+The release build is UNSIGNED unless a `keystore.properties`
+(native/ root, gitignored) supplies a keystore: release runs
+minify + shrinkResources with Chaquopy keep rules either way,
+and CI uploads the unsigned release APK as-is.
+
+The Flet HTML instruments are **not** shipped in the native app:
+the 3D destination is the native OpenGL ES scene (PROGRAM.md
+has the axis mapping).
 
 ## Layout
 
@@ -15,9 +40,14 @@ native/
     src/main/
       AndroidManifest.xml
       java/com/betfi/xii/
-        MainActivity.kt         six-destination shell; Board = parity spike
+        MainActivity.kt         seven-destination shell (Board, Finds,
+                                Slip, Lab, 3D, Stocks, Betterama)
+        AppViewModel.kt         state + background-dispatcher bridge calls
         EngineBridge.kt         the only door to Python
         Parity.kt               the canonical comparison
+        SpatialRenderer.kt      OpenGL ES true-3D scene (3D destination)
+        SpatialScreen.kt        3D destination (TIME control + GL view)
+        BetteramaScreen.kt      Betterama shell (definition being locked)
       python/
         bridge.py               the only adapter to the engine
         engine/betmodel5.py     byte-identical engine — never edit here
@@ -35,12 +65,13 @@ compiler** (`.github/workflows/build-native.yml` at the repo root):
 
 1. Trigger: push touching `native/**`, or manual `workflow_dispatch`.
 2. The workflow installs JDK 17 + Gradle 9.7.1 (pinned in the
-   workflow — see below), runs `gradle :app:assembleDebug` in
-   `native/`, and uploads `betfi-xii-native-debug` (the debug APK).
+   workflow — see below), runs `gradle :app:assembleDebug` and
+   `gradle :app:assembleRelease` in `native/`, and uploads
+   `betfi-xii-native-debug` and `betfi-xii-native-release`.
 3. Install the APK on the phone beside the Flet app (distinct
    applicationId `com.betfi.xii` — it replaces nothing), open
-   **Board**, tap **Run parity spike**. Phase 1 closes when it
-   prints **PARITY: MATCH**.
+   **Lab**, run the parity spike. Native parity closes when it
+   prints **PARITY: MATCH** on the device.
 
 ## The wrapper follow-up
 

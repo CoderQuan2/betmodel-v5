@@ -1,0 +1,12 @@
+# Release signing material — never committed. The build reads
+# keystore.properties (native/ project root) when it exists and
+# stays unsigned when it does not; see app/build.gradle.kts.
+keystore.properties
+*.jks
+*.keystore
+
+# Gradle / build output
+.gradle/
+build/
+app/build/
+local.properties

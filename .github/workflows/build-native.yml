@@ -1,9 +1,10 @@
 name: build-native
 
-# BetFi Xii native (Jetpack Compose + Chaquopy) — separate from the
+# Scare Bets native (Jetpack Compose + Chaquopy) — separate from the
 # Flet pipeline (build-apk.yml), which remains the shipping build
 # until native parity + the Pilot's device verdict (see
-# native/PROGRAM.md). This workflow only assembles a debug APK.
+# native/PROGRAM.md). This workflow assembles a debug APK and a
+# release APK (v1.0.0 production config).
 #
 # There is NO Gradle wrapper in the repo yet: the VM that authors
 # this project has no JDK, and a wrapper jar must never be faked.
@@ -38,6 +39,18 @@ jobs:
           # VERIFY: pairing for the AGP pin in native/build.gradle.kts.
           gradle-version: "9.7.1"
 
+      # compileSdk is 37 (the Compose BOM pin requires API 37);
+      # install that platform explicitly with the runner's own
+      # sdkmanager rather than assuming the image carries it.
+      # (Explicit sdkmanager, not setup-android@v3 — its default
+      # package list requests the removed legacy `tools` package;
+      # that failure is on record from 2026-10-23.)
+      - name: Install Android SDK platform 37
+        run: |
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | sort -V | tail -1)"
+          echo "Using $SDKMANAGER"
+          yes | "$SDKMANAGER" "platforms;android-37.0" "build-tools;37.0.0" "platform-tools"
+
       - name: Assemble debug APK
         working-directory: native
         run: gradle :app:assembleDebug --stacktrace
@@ -47,4 +60,22 @@ jobs:
         with:
           name: betfi-xii-native-debug
           path: native/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      # Release (v1.0.0): minified + resource-shrunk per
+      # native/app/build.gradle.kts. UNSIGNED in CI: no keystore
+      # secrets exist in this workflow, and the build only signs
+      # when a keystore.properties is present at the native/
+      # project root (it is gitignored and never committed) — so
+      # this artifact is the unsigned release APK until signing
+      # material is deliberately provided outside the repo.
+      - name: Assemble release APK
+        working-directory: native
+        run: gradle :app:assembleRelease --stacktrace
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: betfi-xii-native-release
+          path: native/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
