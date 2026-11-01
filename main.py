@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-BetFi Xii — the betmodel v5.4 mobile shell (public name:
-BetFi_Xii; display name: BetFi Xii; internal id: Bet_Finder —
+Scare Bets — the betmodel v5.4 mobile shell (public name:
+Scare_Bets; display name: Scare Bets; internal id: Bet_Finder —
 UNCHANGED from BetFi 11, so on-device storage, snapshots and
 the evidence pack carry over; a rename must never orphan the
 record).
@@ -110,6 +110,16 @@ stakes (quarter-Kelly, 5% hard cap, damping printed), total
 stake and max loss = total stake printed; the user places it
 on FanDuel themselves and marks it placed here — the app
 never places a bet and never touches a sportsbook account.
+
+v13.3.0 (2026-11-01) — Scare Bets (Pilot order): the app is
+renamed again (PUBLIC_NAME Scare_Bets, display "Scare Bets";
+INTERNAL_ID and the storage path are unchanged on purpose —
+the rename law stands: a rename must never orphan the
+record). The wordmarks (splash + board header) render SCARE
+in bone + BETS in ice, and the app icon is the Pilot's
+ghost-barbell logo. Display brand only, exactly as the
+native app shipped it — engine, storage, snapshots, the
+history store and holdings all carry over untouched.
 """
 
 from __future__ import annotations
@@ -354,14 +364,15 @@ def pressify(btn, sound=None, haptic=True):
 # ------------------------------------------------------------------
 # Bet_Finder identity + storage
 
-PUBLIC_NAME = "BetFi_Xii"
-INTERNAL_ID = "Bet_Finder"   # BetFi Xii rename law: the
-# internal id (and therefore the on-device storage path,
-# snapshot filename and engine-data folder) is UNCHANGED from
-# BetFi 11 — renaming the app must not orphan the user's data.
-APP_VERSION = "13.2.0"
-BUILD_NUMBER = 55
-DISPLAY_NAME = "BetFi Xii"
+PUBLIC_NAME = "Scare_Bets"
+INTERNAL_ID = "Bet_Finder"   # rename law (BetFi Xii, kept
+# under Scare Bets): the internal id (and therefore the
+# on-device storage path, snapshot filename and engine-data
+# folder) is UNCHANGED from BetFi 11 — renaming the app must
+# not orphan the user's data.
+APP_VERSION = "13.3.0"
+BUILD_NUMBER = 56
+DISPLAY_NAME = "Scare Bets"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
 # user starts the first pull, so the loop idles until the
@@ -632,7 +643,7 @@ async def _run_apply(job):
                 job["finish"]()
             page.update()
     except Exception as ex:  # noqa: BLE001 - surfaced below
-        print(f"BetFi Xii: render apply failed: "
+        print(f"Scare Bets: render apply failed: "
               f"{type(ex).__name__}: {ex}")
         try:
             _status = job.get("status")
@@ -774,7 +785,7 @@ def build_splash():
     generous size over a PRE-RENDERED glow layer (a
     shadow-carrying container whose OPACITY the standing splash
     pulse breathes — Flet cannot animate shadow blur), the
-    "BetFi Xii" wordmark and one soft gold sweep line under it.
+    "Scare Bets" wordmark and one soft gold sweep line under it.
     VIEWABILITY CONTRACT (v12.4.1, Pilot order): every element
     is built at its final visible state — the splash is properly
     rendered and viewable from its first painted frame, and no
@@ -810,9 +821,9 @@ def build_splash():
         spacing=0, tight=True, opacity=1.0,
         scale=ft.Scale(scale=1.0),
         controls=[
-            ft.Text("BetFi ", size=30, color=BONE,
+            ft.Text("SCARE ", size=30, color=BONE,
                     weight=ft.FontWeight.W_700),
-            ft.Text("Xii", size=30, color=ICE,
+            ft.Text("BETS", size=30, color=ICE,
                     weight=ft.FontWeight.W_700)])
     sweep = ft.Container(
         width=120, height=3, border_radius=2,
@@ -7373,7 +7384,7 @@ def main(page: ft.Page):
         "full-Kelly sizing stops being aggressive and starts "
         "being a fast way to shrink a bankroll — the losses "
         "compound before the edge can average out. That is why "
-        "BetFi sizes at quarter-Kelly and treats the full-Kelly "
+        "Scare Bets sizes at quarter-Kelly and treats the full-Kelly "
         "figure as a ceiling, not a target. If you don't have a "
         "model probability you can defend, you don't have a "
         "Kelly stake — you have a guess with a formula on it.")
@@ -7427,7 +7438,7 @@ def main(page: ft.Page):
                  "The math, in the open", "equations"),
                 (ft.Icons.CODE, "Dev",
                  "Version, fingerprint, credit", "dev")]
-            controls = [screen_title("More", "Everything else in BetFi.")]
+            controls = [screen_title("More", "Everything else in Scare Bets.")]
             # v12.1: the sound toggle — persisted on-device, default
             # ON. Off means play_sound no-ops everywhere at once.
             controls.append(_switch(
@@ -7631,8 +7642,8 @@ def main(page: ft.Page):
                     ft.Icons.FOLDER_OFF, "Record not bundled",
                     "This build shipped without the lab evidence "
                     "pack, so the Lab shows no record at all — never "
-                    "an empty ledger dressed as 0-0. The full BetFi "
-                    "Xii build carries the pack."))
+                    "an empty ledger dressed as 0-0. The full Scare "
+                    "Bets build carries the pack."))
                 page.update()
                 return
             exported = str(pack.get("exported_at") or "")
@@ -8352,7 +8363,7 @@ def main(page: ft.Page):
             credit = ft.Container(
                 bgcolor=RAISED, border_radius=10, padding=12,
                 content=ft.Column(spacing=6, controls=[
-                    ft.Text("BetFi Xii — by T. Abram.", size=13,
+                    ft.Text("Scare Bets — by T. Abram.", size=13,
                             color=INK, weight=ft.FontWeight.BOLD),
                     ft.Text("Engine: betmodel. Built with Praxis.",
                             size=12, color=DIM),
@@ -8919,7 +8930,7 @@ def main(page: ft.Page):
             "the pulled spot — never estimated. SELL stays "
             "WATCH for every name: no stock lane has passed "
             "its exam (S1/S5 FAILED-EXAM · S2/S3/S4 "
-            "NOT-BUILT), so BetFi prints no sell signal and "
+            "NOT-BUILT), so Scare Bets prints no sell signal and "
             "sizes no exit.", size=11, color=DIM, height=1.35)]
         for sym in STOCK_UNIVERSE:
             held = state["holdings"].get(sym) or {}
@@ -9339,7 +9350,7 @@ def main(page: ft.Page):
                     "Instruments not bundled in this edition",
                     "This build shipped without the instruments "
                     "folder, so the shelf prints its state instead "
-                    "of a dead list. The full BetFi Xii build "
+                    "of a dead list. The full Scare Bets build "
                     "carries the full shelf."))
                 return
             col.controls.append(stage_status)
@@ -9465,7 +9476,9 @@ def main(page: ft.Page):
     # blur — the frost is layered translucency, not a filter),
     # the XII badge (serif, keylined) + the two-tone lockup
     # (BetFi in bone, Xii in cyan, both w700 — artist §1), and
-    # the live dot left of the pull stamp.
+    # the live dot left of the pull stamp. (The lockup's two
+    # words are SCARE in bone + BETS in cyan since the 13.3.0
+    # Scare Bets rebrand.)
     header = ft.Container(
         gradient=FROST_GRADIENT,
         border=ft.Border(
@@ -9483,9 +9496,9 @@ def main(page: ft.Page):
                                "XII", size=11, color=BONE,
                                weight=ft.FontWeight.BOLD,
                                font_family="Georgia")),
-                       ft.Text("BetFi", size=22, color=BONE,
+                       ft.Text("SCARE", size=22, color=BONE,
                                weight=ft.FontWeight.W_700),
-                       ft.Text("Xii", size=22, color=ICE,
+                       ft.Text("BETS", size=22, color=ICE,
                                weight=ft.FontWeight.W_700)]),
             ft.Text(f"{DISPLAY_NAME} · engine {ENGINE_VERSION} · "
                     f"analysis only — never places a bet",

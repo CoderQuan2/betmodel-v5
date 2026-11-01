@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BetFi Xii harness — headless checks for the shell (main.py)
+"""Scare Bets harness — headless checks for the shell (main.py)
 against the shipped engine + evidence pack.
 
 Fresh for v11 (the 10.4.1 harness was builder-ephemeral and is
@@ -172,12 +172,12 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 12.12.0", app.APP_VERSION == "13.2.0")
-    check("BUILD_NUMBER is 33", app.BUILD_NUMBER == 55)
-    check("DISPLAY_NAME is BetFi Xii",
-          app.DISPLAY_NAME == "BetFi Xii")
-    check("PUBLIC_NAME is BetFi_Xii",
-          app.PUBLIC_NAME == "BetFi_Xii")
+    check("APP_VERSION is 13.3.0", app.APP_VERSION == "13.3.0")
+    check("BUILD_NUMBER is 56", app.BUILD_NUMBER == 56)
+    check("DISPLAY_NAME is Scare Bets",
+          app.DISPLAY_NAME == "Scare Bets")
+    check("PUBLIC_NAME is Scare_Bets",
+          app.PUBLIC_NAME == "Scare_Bets")
     check("INTERNAL_ID unchanged (storage carries over)",
           app.INTERNAL_ID == "Bet_Finder")
     check("engine is v5.4", b5.ENGINE_VERSION == "5.4")
@@ -685,9 +685,9 @@ def main():
     page.navigation_bar.on_change(SimpleNamespace(
         control=SimpleNamespace(selected_index=4)))
     more_texts = texts(switcher.content)
-    check("More renders; the header carries BetFi Xii / v5.4",
+    check("More renders; the header carries Scare Bets / v5.4",
           len(switcher.content.controls) >= 5
-          and any("BetFi Xii" in t
+          and any("Scare Bets" in t
                   for t in texts(page.controls[0]))
           and any("v5.4" in t
                   for t in texts(page.controls[0])))
@@ -1692,11 +1692,11 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v12.12 version unified: README release line",
-          "13.2.0 (build 55)" in _readme)
-    check("v12.12 version unified: workflow build args",
-          '--build-version "13.2.0"' in _wf
-          and '--build-number "55"' in _wf)
+    check("v13.3 version unified: README release line",
+          "13.3.0 (build 56)" in _readme)
+    check("v13.3 version unified: workflow build args",
+          '--build-version "13.3.0"' in _wf
+          and '--build-number "56"' in _wf)
     check("v12.1: requirements pin the flet-audio extension",
           "flet-audio==1.0.4" in _req)
     for _nm, _lo, _hi in (("tick", 0.03, 0.08),
@@ -2593,11 +2593,11 @@ def main():
     _imgs = [c for c in walk(_splash)
              if type(c).__name__ == "Image"]
     check("v12.4: the splash centers the new emblem, the "
-          "BetFi Xii wordmark and one gold sweep line",
+          "Scare Bets wordmark and one gold sweep line",
           len(_imgs) == 1
           and _imgs[0].src == "assets/icon.png"
-          and any(t == "BetFi " for t in texts(_splash))
-          and any(t == "Xii" for t in texts(_splash))
+          and any(t == "SCARE " for t in texts(_splash))
+          and any(t == "BETS" for t in texts(_splash))
           and any(getattr(c, "gradient", None)
                   is app.GOLD_GRADIENT
                   for c in walk(_splash))

@@ -1,10 +1,15 @@
-name: Build BetFi Xii APK
+name: Build Scare Bets APK
 
-# Builds the BetFi Xii Android app (internal id: Bet_Finder —
-# UNCHANGED by the Xii rename, so on-device data carries over;
-# engine: betmodel v5.4) with flet build apk and uploads the
-# APKs as a workflow artifact. Runs on demand and on pushes
-# to main.
+# Builds the Scare Bets Android app (internal id: Bet_Finder —
+# UNCHANGED by the Xii rename and the Scare Bets rename, so
+# on-device data carries over; engine: betmodel v5.4) with
+# flet build apk and uploads the APKs as a workflow artifact.
+# Runs on demand and on pushes to main.
+#
+# App release 13.3.0 (2026-11-01) — Scare Bets:
+# - Project/product: "Scare_Bets" / "Scare Bets", version
+#   13.3.0, build 56; staged files Scare-Bets.apk +
+#   Scare-Bets-debug.apk; artifact scare-bets-apk.
 #
 # App release v12 (2026-10-24) — BetFi Xii:
 # - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.11.0,
@@ -48,7 +53,7 @@ name: Build BetFi Xii APK
 # - Snapdragon 8 Gen 3 target (Galaxy S24 generation, Adreno
 #   750, arm64-v8a): the release build uses --split-per-abi
 #   (verified present in flet 1.0.4 --help) and the staging
-#   step selects the arm64-v8a APK by name as BetFi-Xii.apk.
+#   step selects the arm64-v8a APK by name as Scare-Bets.apk.
 #   FALLBACK: if no arm64-v8a split is produced and exactly
 #   one universal APK exists, that universal APK is staged
 #   instead, with a loud warning in the log — a split failure
@@ -136,7 +141,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "BetFi_Xii" --product "BetFi Xii" --build-version "13.2.0" --build-number "55"
+        run: flet build apk --yes --skip-flutter-doctor --project "Scare_Bets" --product "Scare Bets" --build-version "13.3.0" --build-number "56"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
@@ -146,12 +151,12 @@ jobs:
           arm64=$(find build/apk -maxdepth 1 -name '*arm64-v8a*.apk' | head -n 1)
           if [ -n "$arm64" ]; then
             echo "Selected arm64-v8a release APK: $arm64"
-            cp "$arm64" out/BetFi-Xii.apk
+            cp "$arm64" out/Scare-Bets.apk
           else
             count=$(find build/apk -maxdepth 1 -name '*.apk' | wc -l)
             echo "::warning::No arm64-v8a split APK found — falling back to the universal APK (count=$count)"
             test "$count" -eq 1
-            cp build/apk/*.apk out/BetFi-Xii.apk
+            cp build/apk/*.apk out/Scare-Bets.apk
           fi
           ls -la out/
 
@@ -186,12 +191,12 @@ jobs:
           fi
           echo "debug APK: $debug_apk"
           test -n "$debug_apk"
-          cp "$debug_apk" out/BetFi-Xii-debug.apk
+          cp "$debug_apk" out/Scare-Bets-debug.apk
           ls -la out/
 
       - name: Upload the APKs (release + debug only)
         uses: actions/upload-artifact@v4
         with:
-          name: betfi-xii-apk
+          name: scare-bets-apk
           path: out/*.apk
           if-no-files-found: error

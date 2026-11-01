@@ -1,9 +1,12 @@
-# BetFi Xii — betmodel v5.4 engine, the Android app
+# Scare Bets — betmodel v5.4 engine, the Android app
 
-**Public name: BetFi_Xii (display: BetFi Xii). Internal id:
-Bet_Finder — unchanged in the Xii rename, so on-device data
-carries over. App release: 13.2.0 (build 55) — the
-Show-default fix: the board opens on All markets (12.11.0's
+**Public name: Scare_Bets (display: Scare Bets). Internal id:
+Bet_Finder — unchanged in the Xii rename and again in the
+Scare Bets rename (2026-11-01), so on-device data carries
+over. App release: 13.3.0 (build 56) — the Scare Bets
+rebrand: display brand + the Pilot's ghost-barbell icon,
+internal id and storage untouched; 13.2.0 underneath stands
+unchanged, including the Show-default fix: the board opens on All markets (12.11.0's
 default opened on Golden bets, which hid every lane without
 a scored record). The ImageBoard of 12.11.0 stands
 unchanged: cards are drawn pictures (Design C odds-board
@@ -43,7 +46,7 @@ engine. Two Python files, no package tree, no module sprawl:
 | `instruments/` | The lab's 11 self-contained HTML instruments (179,693 bytes), served in-app by the 3D shelf. |
 | `requirements.txt` | `flet==1.0.4` and nothing else (the engine is stdlib-only). |
 | `.github/workflows/build-apk.yml` | The GitHub Actions build (below). |
-| `BetFi-Xii.escb` | The current Complete Edition — the whole app as ONE file, ESCB/2 format (see the `.escb` section below). Generated, never hand-edited. (`BetFi-10.escb` / `BetFi-11.escb` are kept as history.) |
+| `Scare-Bets.escb` | The current Complete Edition — the whole app as ONE file, ESCB/2 format (see the `.escb` section below). Generated, never hand-edited. (`BetFi-10.escb` / `BetFi-11.escb` are kept as history.) |
 | `build_escb.py` | The `.escb` builder: wraps `main.py` + `betmodel5.py` into the bundle. |
 | `armor.py` | The ESCB-T transmission armorer: base85 all-text form of a bundle. |
 | `ESCB-SPEC.md` | The `.escb` format specification and ruleset (v1 + v2). |
@@ -181,7 +184,7 @@ five permanently.
   independence product would be a lie of precision." (see the
   parlay law below). *Solver*: three solvers — stake for a
   target profit; Kelly sizing (full / half / quarter stakes,
-  with the warning printed in full — BetFi sizes at
+  with the warning printed in full — Scare Bets sizes at
   quarter-Kelly); an equal-return hedge solver that prints a
   locked loss as a loss.
 - **Lab** — the record wing (below).
@@ -196,7 +199,7 @@ five permanently.
   (sha256 prefix + byte size) of the bundled `betmodel5.py`, the
   data-source line, the **evidence-pack stamp** (format + export
   time + seeded), the **instruments count**, and the credit:
-  *BetFi — by T. Abram. Engine: betmodel. Built with Praxis.*
+  *Scare Bets — by T. Abram. Engine: betmodel. Built with Praxis.*
 
 ## The Lab wing and the evidence pack
 
@@ -323,15 +326,15 @@ guides does not apply to a Flet app and is dead.)
    whole app folder: `data/` and `instruments/` ride along as
    app assets — that is what makes the Lab populated and the 3D
    shelf live on the phone.)
-3. In the repo: **Actions → "Build BetFi Xii APK" → Run workflow**
+3. In the repo: **Actions → "Build Scare Bets APK" → Run workflow**
    (it also runs automatically on pushes to `main`). First run
    takes a while: Flet fetches its Flutter SDK and builds with
    JDK 17.
 4. When the run is green, open it and download the artifact
-   **`betfi-xii-apk`** — that zip contains exactly two files:
-   **BetFi-Xii.apk** (release, the one to install — the
+   **`scare-bets-apk`** — that zip contains exactly two files:
+   **Scare-Bets.apk** (release, the one to install — the
    arm64-v8a split, selected by name in the workflow; the
-   Snapdragon 8 Gen 3 target build) and **BetFi-Xii-debug.apk**
+   Snapdragon 8 Gen 3 target build) and **Scare-Bets-debug.apk**
    (debug build).
 5. Copy the APK to the phone and sideload it (allow "install via
    USB" / install the file; it's signed with the build's default
@@ -347,7 +350,7 @@ surface either way.
 
 - [ ] App **opens** to the Board (All cards segment); the nav
       reads **Board · Slip · Lab · 3D · More**; header reads
-      BetFi Xii · engine betmodel v5.4 · analysis only.
+      Scare Bets · engine betmodel v5.4 · analysis only.
 - [ ] With no pull yet, the menu stamp reads **UNVERIFIED** and
       the screen says so — nothing is pre-filled or assumed.
 - [ ] **Pull Menu**: the stamp updates to the pull time and
