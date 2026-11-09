@@ -1,3 +1,5 @@
 ## 2024-10-30 - Tooltips for icon-only buttons
 **Learning:** In Flet applications, the `tooltip` property on `ft.IconButton` serves as the accessible name (ARIA label equivalent) for screen readers. Icon-only buttons lacking a tooltip are inaccessible to screen reader users because they provide no context about their function.
-**Action:** Always provide a descriptive `tooltip` attribute when creating an `ft.IconButton` that does not include accompanying text, ensuring the interface remains accessible.
+**Action:** Always provide a descriptive `tooltip` attribute when creating an `ft.IconButton` that does not include accompanying text, ensuring the interface remains accessible.## 2024-11-21 - Accessible labels for TextFields
+**Learning:** In Flet applications, the `label` property on `ft.TextField` components serves as the accessible name for screen readers. Using only `hint_text` (placeholder text) is insufficient for accessibility, as placeholders disappear when typing and are not reliably announced by all screen readers.
+**Action:** Always provide a descriptive `label` attribute when creating an `ft.TextField`, even if `hint_text` is already provided, to ensure the input field is fully accessible.

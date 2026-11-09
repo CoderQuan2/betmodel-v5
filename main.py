@@ -6583,6 +6583,7 @@ def main(page: ft.Page):
     parse_field = ft.TextField(
         multiline=True, min_lines=3, max_lines=5, text_size=13,
         border_color=CHIP_BORDER, focused_border_color=ACCENT,
+        label="Paste slip text",
         hint_text="Lions -3.5 (-110)")
     parse_result = ft.Column(spacing=8)
 
@@ -9517,6 +9518,7 @@ def main(page: ft.Page):
                    controls=[pull_dot, stamp_ctrl, stale_ctrl]),
         ]))
     search_field = ft.TextField(
+        label="Search",
         hint_text="Search teams, markets, leagues\u2026",
         prefix_icon=ft.Icons.SEARCH, text_size=13,
         on_change=on_search)
