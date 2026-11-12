@@ -3,7 +3,14 @@
 **Public name: Scare_Bets (display: Scare Bets). Internal id:
 Bet_Finder — unchanged in the Xii rename and again in the
 Scare Bets rename (2026-11-01), so on-device data carries
-over. App release: 13.4.0 (build 58) — The Web of
+over. App release: 13.4.1 (build 59) — the timezone fix:
+the pinned requirements gain the tzdata package, so the
+packaged Android Python — which ships with no system
+timezone database — can resolve America/Detroit; without
+it the app died at import (the pull-history store and the
+verdict ledger both resolve that zone at module load).
+Nothing else moves. 13.4.0 (build 58) underneath stands:
+The Web of
 Everything joins the app as the Instruments panel's fifth
 segment (the same design as the space of that name,
 converted: 34 concepts, 42 connections, 10 implications,

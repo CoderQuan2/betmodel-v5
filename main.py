@@ -403,8 +403,8 @@ INTERNAL_ID = "Bet_Finder"   # rename law (BetFi Xii, kept
 # on-device storage path, snapshot filename and engine-data
 # folder) is UNCHANGED from BetFi 11 — renaming the app must
 # not orphan the user's data.
-APP_VERSION = "13.4.0"
-BUILD_NUMBER = 58
+APP_VERSION = "13.4.1"
+BUILD_NUMBER = 59
 DISPLAY_NAME = "Scare Bets"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the

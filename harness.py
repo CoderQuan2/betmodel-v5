@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 13.4.0", app.APP_VERSION == "13.4.0")
-    check("BUILD_NUMBER is 58", app.BUILD_NUMBER == 58)
+    check("APP_VERSION is 13.4.1", app.APP_VERSION == "13.4.1")
+    check("BUILD_NUMBER is 59", app.BUILD_NUMBER == 59)
     check("DISPLAY_NAME is Scare Bets",
           app.DISPLAY_NAME == "Scare Bets")
     check("PUBLIC_NAME is Scare_Bets",
@@ -1702,10 +1702,104 @@ def main():
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
     check("v13.4 version unified: README release line",
-          "13.4.0 (build 58)" in _readme)
+          "13.4.1 (build 59)" in _readme)
     check("v13.4 version unified: workflow build args",
-          '--build-version "13.4.0"' in _wf
-          and '--build-number "58"' in _wf)
+          '--build-version "13.4.1"' in _wf
+          and '--build-number "59"' in _wf)
+
+    # ---------- 13.4.1: the timezone fix ----------
+    # The packaged Android Python ships no system timezone
+    # database; history_store and verdict_ledger resolve
+    # America/Detroit at import, so the zone data must ride
+    # in the pinned set as the tzdata package (builds 55-58
+    # died at import on device without it). Two pins: the
+    # requirement itself, and a packaged-condition drive —
+    # a child interpreter with the system tz path emptied,
+    # where Detroit must FAIL without a tzdata package
+    # (the shipped crash) and RESOLVE with one (a stand-in
+    # package carrying the host's real Detroit zone file,
+    # laid out exactly as the tzdata wheel lays it out),
+    # with both bundled modules importing clean on top.
+    import re as _re
+    import subprocess as _sp
+    import zoneinfo as _zoneinfo
+    check("13.4.1 tz: requirements pin tzdata exactly",
+          _re.search(r"(?m)^tzdata==\d+\.\d+$", _req) is not None)
+    _tzchild = r'''
+import sys, zoneinfo
+zoneinfo.reset_tzpath([])
+mode = sys.argv[1]
+if mode == "without":
+    class _Block:
+        def find_spec(self, name, path=None, target=None):
+            if name == "tzdata" or name.startswith("tzdata."):
+                raise ImportError(
+                    "tzdata blocked (packaged stand-in)")
+            return None
+    sys.meta_path.insert(0, _Block())
+try:
+    import history_store, verdict_ledger
+except Exception as ex:
+    print(f"{mode}: IMPORT-FAILED {type(ex).__name__}: {ex}")
+    sys.exit(0)
+from datetime import datetime
+_jan = datetime(2026, 1, 15, 12, tzinfo=history_store.DETROIT)
+_jul = datetime(2026, 7, 15, 12, tzinfo=history_store.DETROIT)
+_s = int(_jan.utcoffset().total_seconds())
+_u = int(_jul.utcoffset().total_seconds())
+print(f"{mode}: IMPORTED jan={_s} jul={_u} "
+      f"ledger_same={verdict_ledger.DETROIT is not None}")
+'''
+    _tzdir = tempfile.mkdtemp(prefix="betfixii-tzdata-")
+    _zone_src = None
+    for _cand in _zoneinfo.TZPATH:
+        _p = os.path.join(_cand, "America", "Detroit")
+        if os.path.isfile(_p):
+            _zone_src = _p
+            break
+    _tz_ok = False
+    _tz_detail = ""
+    if _zone_src is None:
+        _tz_detail = "no host America/Detroit zone file found"
+    else:
+        try:
+            os.makedirs(os.path.join(
+                _tzdir, "tzdata", "zoneinfo", "America"))
+            for _pkg, _sub in (("tzdata", ""),
+                               ("tzdata.zoneinfo", "zoneinfo")):
+                with open(os.path.join(
+                        _tzdir, "tzdata", _sub,
+                        "__init__.py"), "w") as _fh:
+                    _fh.write("")
+            with open(_zone_src, "rb") as _fh:
+                _zone_bytes = _fh.read()
+            with open(os.path.join(
+                    _tzdir, "tzdata", "zoneinfo", "America",
+                    "Detroit"), "wb") as _fh:
+                _fh.write(_zone_bytes)
+            _env = dict(os.environ)
+            _r_without = _sp.run(
+                [sys.executable, "-c", _tzchild, "without"],
+                env={**_env, "PYTHONPATH": HERE},
+                capture_output=True, text=True, timeout=120)
+            _r_with = _sp.run(
+                [sys.executable, "-c", _tzchild, "with"],
+                env={**_env, "PYTHONPATH":
+                     _tzdir + os.pathsep + HERE},
+                capture_output=True, text=True, timeout=120)
+            _tz_ok = ("without: IMPORT-FAILED "
+                      "ZoneInfoNotFoundError"
+                      in _r_without.stdout
+                      and "with: IMPORTED jan=-18000 jul=-14400"
+                      in _r_with.stdout)
+            _tz_detail = (_r_without.stdout.strip() + " || "
+                          + _r_with.stdout.strip())
+        except Exception as _ex:  # noqa: BLE001
+            _tz_detail = f"{type(_ex).__name__}: {_ex}"
+    check("13.4.1 tz: packaged condition — Detroit unresolvable "
+          "without tzdata (the shipped crash), resolves with it "
+          "and both bundled modules import",
+          _tz_ok, _tz_detail)
 
     # ---------- 13.4.0: the Web + the verdict ledger ----------
     import verdict_ledger as _vl

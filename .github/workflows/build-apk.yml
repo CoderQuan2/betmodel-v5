@@ -6,6 +6,20 @@ name: Build Scare Bets APK
 # flet build apk and uploads the APKs as a workflow artifact.
 # Runs on demand and on pushes to main.
 #
+# App release 13.4.1 (2026-11-12) — Scare Bets:
+# - Project/product: "Scare_Bets" / "Scare Bets", version
+#   13.4.1, build 59; staged files Scare-Bets.apk +
+#   Scare-Bets-debug.apk; artifact scare-bets-apk.
+#   (The timezone fix: requirements.txt gains tzdata==2026.6.
+#   The packaged Android Python ships no system timezone
+#   database, and history_store.py / verdict_ledger.py resolve
+#   America/Detroit at import — without the tzdata package the
+#   app died at startup with ZoneInfoNotFoundError. The pin is
+#   a platform-independent wheel resolved from PyPI, one of the
+#   build's two indexes; the full pinned set was re-verified
+#   with a resolver run targeted at android_24_arm64_v8a /
+#   cp314. Nothing else moves.)
+#
 # App release 13.4.0 (2026-11-12) — Scare Bets:
 # - Project/product: "Scare_Bets" / "Scare Bets", version
 #   13.4.0, build 58; staged files Scare-Bets.apk +
@@ -147,7 +161,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "Scare_Bets" --product "Scare Bets" --build-version "13.4.0" --build-number "58"
+        run: flet build apk --yes --skip-flutter-doctor --project "Scare_Bets" --product "Scare Bets" --build-version "13.4.1" --build-number "59"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |
