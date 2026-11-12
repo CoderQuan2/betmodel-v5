@@ -172,8 +172,8 @@ def main():
     import betmodel5 as b5
 
     # ---------- identity ----------
-    check("APP_VERSION is 13.3.1", app.APP_VERSION == "13.3.1")
-    check("BUILD_NUMBER is 57", app.BUILD_NUMBER == 57)
+    check("APP_VERSION is 13.4.0", app.APP_VERSION == "13.4.0")
+    check("BUILD_NUMBER is 58", app.BUILD_NUMBER == 58)
     check("DISPLAY_NAME is Scare Bets",
           app.DISPLAY_NAME == "Scare Bets")
     check("PUBLIC_NAME is Scare_Bets",
@@ -1623,9 +1623,18 @@ def main():
     pseg = next(c for c in walk(stage)
                 if type(c).__name__ == "SegmentedButton")
     check("panel: segmented control carries Charts | Coverage "
-          "| Instruments | Registry",
+          "| Instruments | Registry | Web (13.4.0)",
           {s.value for s in pseg.segments}
-          == {"charts", "coverage", "instruments", "registry"})
+          == {"charts", "coverage", "instruments", "registry",
+              "web"})
+    pseg.on_change(SimpleNamespace(
+        control=SimpleNamespace(selected={"web"})))
+    web_live = texts(switcher.content)
+    check("panel: Web segment renders the Web of Everything "
+          "door + the ledger's foundation line (13.4.0)",
+          any("THE WEB OF EVERYTHING" in t for t in web_live)
+          and any("verdict ledger" in t.lower()
+                  for t in web_live))
     pseg.on_change(SimpleNamespace(
         control=SimpleNamespace(selected={"coverage"})))
     cov_live = texts(switcher.content)
@@ -1692,11 +1701,93 @@ def main():
     _wf = open(os.path.join(
         HERE, ".github", "workflows", "build-apk.yml")).read()
     _req = open(os.path.join(HERE, "requirements.txt")).read()
-    check("v13.3 version unified: README release line",
-          "13.3.1 (build 57)" in _readme)
-    check("v13.3 version unified: workflow build args",
-          '--build-version "13.3.1"' in _wf
-          and '--build-number "57"' in _wf)
+    check("v13.4 version unified: README release line",
+          "13.4.0 (build 58)" in _readme)
+    check("v13.4 version unified: workflow build args",
+          '--build-version "13.4.0"' in _wf
+          and '--build-number "58"' in _wf)
+
+    # ---------- 13.4.0: the Web + the verdict ledger ----------
+    import verdict_ledger as _vl
+    _lstore = tempfile.mkdtemp(prefix="betfixii-ledger-")
+    _lm = [{"sport": "nfl", "fd_event_id": 1,
+            "fd_market_id": "m1", "fd_selection_id": "s1",
+            "market": "moneyline", "side": "home", "line": None,
+            "price": -110, "market_time": "2026-11-15T18:00:00Z",
+            "home": "Lions", "away": "Bears"},
+           {"sport": "nfl", "fd_event_id": 2,
+            "fd_market_id": "m2", "fd_selection_id": "s2",
+            "market": "spread", "side": "away", "line": 3.5,
+            "price": -110, "market_time": "2026-11-15T21:00:00Z",
+            "home": "Bills", "away": "Jets"}]
+    _lv = [{"p": 0.60, "verdict": "BET HERE", "grade": "A"},
+           {"p": 0.40, "verdict": "DO NOT BET", "grade": "C"}]
+    _ll = ["BET NOW", "DO NOT BET"]
+    _r1 = _vl.log_verdicts(_lstore, "2026-11-12T10:00:00-05:00",
+                           _lm, _lv, _ll)
+    _r2 = _vl.log_verdicts(_lstore, "2026-11-12T10:00:00-05:00",
+                           _lm, _lv, _ll)
+    check("13.4.0 ledger: verdicts log once, dedupe on re-record",
+          _r1 == {"logged": 2, "skipped": 0}
+          and _r2 == {"logged": 0, "skipped": 2})
+    _s1 = _vl.settle_outcomes(
+        _lstore,
+        [{"fd_event_id": 1, "fd_market_id": "m1",
+          "fd_selection_id": "s1", "outcome": "won"},
+         {"key": "nfl|2|spread|away|3.5", "outcome": "won"},
+         {"key": "nope|9|x|y|", "outcome": "won"}],
+        "2026-11-16T01:00:00-05:00")
+    _s2 = _vl.settle_outcomes(
+        _lstore, [{"key": "nfl|1|moneyline|home|",
+                   "outcome": "lost"}],
+        "2026-11-16T02:00:00-05:00")
+    check("13.4.0 ledger: outcomes join by ids and by key; "
+          "first outcome wins; unknown markets refused",
+          _s1 == {"settled": 2, "duplicates": 0, "unknown": 1}
+          and _s2 == {"settled": 0, "duplicates": 1,
+                      "unknown": 0})
+    _fnd = _vl.foundation(_lstore)
+    check("13.4.0 ledger: foundation math is the book's own "
+          "(BET NOW hit 1.0, DO NOT BET right 0.0)",
+          _fnd["issued"] == 2 and _fnd["settled"] == 2
+          and _fnd["open"] == 0
+          and _fnd["by_layer"]["BET NOW"]["hit_rate"] == 1.0
+          and _fnd["by_layer"]["DO NOT BET"]["hit_rate"] == 0.0
+          and _fnd["by_layer"]["BET NOW"]["brier"] == 0.16)
+    _payload = _vl.verdict_web_payload(_lstore)
+    check("13.4.0 ledger: the web payload carries timelines "
+          "and outcomes",
+          len(_payload["picks"]) == 2
+          and all(len(p["timeline"]) == 1
+                  and p["outcome"] == "won"
+                  for p in _payload["picks"]))
+    check("13.4.0: the shell's BET NOW condition reads the "
+          "ladder's own rungs",
+          app.bet_now({"verdict": "BET HERE"}) is True
+          and app.bet_now({"verdict": "GOLDEN BET"}) is True
+          and app.bet_now({"verdict": "DO NOT BET"}) is False)
+    _web_path = os.path.join(HERE, "instruments",
+                             "web-of-everything.html")
+    _web = (open(_web_path, encoding="utf-8").read()
+            if os.path.isfile(_web_path) else "")
+    check("13.4.0 web: the page is bundled with its canon "
+          "stamp (34 / 42 / 10)",
+          "WEB_CANON concepts=34 edges=42 implications=10"
+          in _web)
+    check("13.4.0 web: same design — the stage, the Praxis "
+          "section, the Implications room, the time rail",
+          all(s in _web for s in (
+              'id="stage"', 'id="view-praxis"', 'id="view-imp"',
+              'id="flypad"', 'id="w"',
+              "THE RULINGS TIMELINE")))
+    check("13.4.0 web: the 4D verdict layer reads the "
+          "ledger's own feed",
+          "/api/verdict-web.json" in _web
+          and '"/api/verdict-web.json"' in _src
+          and "verdict_ledger.log_verdicts" in _src)
+    check("13.4.0 web: the panel carries the Web segment",
+          '("web", "Web")' in _src and "render_panel_web" in _src
+          and '"web": panel_web_col' in _src)
     check("13.3.1: board header badge is the mini ghost",
           'src="assets/ghost-mini.png"' in _src
           and os.path.exists(os.path.join(

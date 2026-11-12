@@ -3,7 +3,19 @@
 **Public name: Scare_Bets (display: Scare Bets). Internal id:
 Bet_Finder — unchanged in the Xii rename and again in the
 Scare Bets rename (2026-11-01), so on-device data carries
-over. App release: 13.3.1 (build 57) — the Scare Bets
+over. App release: 13.4.0 (build 58) — The Web of
+Everything joins the app as the Instruments panel's fifth
+segment (the same design as the space of that name,
+converted: 34 concepts, 42 connections, 10 implications,
+Praxis a major section, Implications a separate room, time
+the fourth axis), carrying a 4D verdict layer whose pick
+nodes wear the app's own BET NOW / DO NOT BET verdicts
+through time; and the verdict-and-outcome ledger opens —
+the app now logs every bet it issues a verdict on, joins
+each bet's outcome as it is recorded, and recomputes its
+performance mathematics (hit rates, calibration, Brier,
+per-sport records) from that living book on every read.
+13.3.1 underneath stands: the Scare Bets
 rebrand: display brand + the Pilot's ghost-barbell icon,
 internal id and storage untouched; 13.2.0 underneath stands
 unchanged, including the Show-default fix: the board opens on All markets (12.11.0's

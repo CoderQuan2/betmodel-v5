@@ -6,13 +6,16 @@ name: Build Scare Bets APK
 # flet build apk and uploads the APKs as a workflow artifact.
 # Runs on demand and on pushes to main.
 #
-# App release 13.3.1 (2026-11-01) — Scare Bets:
+# App release 13.4.0 (2026-11-12) — Scare Bets:
 # - Project/product: "Scare_Bets" / "Scare Bets", version
-#   13.3.1, build 57; staged files Scare-Bets.apk +
+#   13.4.0, build 58; staged files Scare-Bets.apk +
 #   Scare-Bets-debug.apk; artifact scare-bets-apk.
-#   (13.3.0 was the rebrand build; 13.3.1 swaps the header's
-#   XII badge for the mini ghost and renames Xii Charts ->
-#   Scare Charts, per the Pilot's rulings.)
+#   (The Web of Everything joins as the Instruments panel's
+#   fifth segment with its 4D verdict layer, and the
+#   verdict-and-outcome ledger opens — the app now logs
+#   every verdict it issues and joins outcomes as they are
+#   recorded. 13.3.1 was the mini-ghost / Scare Charts
+#   build; 13.3.0 was the rebrand build.)
 #
 # App release v12 (2026-10-24) — BetFi Xii:
 # - Project/product: "BetFi_Xii" / "BetFi Xii", version 12.11.0,
@@ -144,7 +147,7 @@ jobs:
         # --yes is REQUIRED in CI: without it flet stops to ask consent
         # to install the Flutter SDK and the run EOF-fails (run 1,
         # 2026-10-19). Flag verified against flet==1.0.4 --help.
-        run: flet build apk --yes --skip-flutter-doctor --project "Scare_Bets" --product "Scare Bets" --build-version "13.3.1" --build-number "57"
+        run: flet build apk --yes --skip-flutter-doctor --project "Scare_Bets" --product "Scare Bets" --build-version "13.4.0" --build-number "58"
 
       - name: Stage the release APK (arm64-v8a split, selected by name)
         run: |

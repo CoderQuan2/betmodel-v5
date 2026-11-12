@@ -12,7 +12,9 @@ script, byte-identical to the lab's) are the app's two Python
 files. Flet requires the entry point to be named main.py —
 that is the only reason there are two. (The 3D fulfillment
 adds one bundled module, history_store.py — the pull-history
-recorder, stdlib-only and engine-free by design.)
+recorder, stdlib-only and engine-free by design. The 13.4.0
+verdict layer adds a second, verdict_ledger.py — the
+verdict-and-outcome ledger, on the same terms.)
 
 Screens (bottom nav — five destinations through v12; v13.0 adds a sixth, Stocks):
   * Board — every checked market from the current pull as a card
@@ -121,6 +123,29 @@ ghost-barbell logo. Display brand only, exactly as the
 native app shipped it — engine, storage, snapshots, the
 history store and holdings all carry over untouched.
 
+v13.4.0 (2026-11-12) — the Pilot's three additions, one
+build: (1) The Web of Everything joins the app as the 3D
+panel's fifth segment, Web — the same design as the space
+of that name, converted, not reskinned: 34 concepts, 42
+connections, 10 implications, Praxis a major section,
+Implications a separate room, time as the fourth axis,
+served from instruments/web-of-everything.html over the
+same loopback route the instruments take. (2) Its 4D
+verdict layer: pick nodes riding the web wear the app's
+own BET NOW / DO NOT BET verdict at the moment on the time
+rail — signals only; the app is an analyst and never
+places a bet. (3) The verdict-and-outcome ledger (the new
+bundled module verdict_ledger.py, stdlib-only and
+engine-free like history_store.py): from this build the
+app logs every bet it issues a verdict on and joins each
+bet's outcome as it is recorded, and the running
+performance mathematics — hit rates per verdict layer,
+calibration of the model's own probabilities, Brier,
+per-sport records — is recomputed from that ledger on
+every read. The 4D layer reads its history from the
+ledger; the calibration instrument's named gate (settled
+outcomes joined per market) is the join the ledger makes.
+
 v13.3.1 (2026-11-01) — the Pilot's two rulings on the
 rebrand leftovers: the board header's XII serif badge is
 replaced by the mini ghost (assets/ghost-mini.png, the
@@ -153,6 +178,7 @@ if APP_DIR not in sys.path:
 
 import betmodel5 as b5  # the engine — one script, imported, never copied
 import history_store  # the 3D pull-history recorder (bundled module)
+import verdict_ledger  # the verdict-and-outcome ledger (bundled, 13.4.0)
 import flet as ft
 
 # ------------------------------------------------------------------
@@ -377,8 +403,8 @@ INTERNAL_ID = "Bet_Finder"   # rename law (BetFi Xii, kept
 # on-device storage path, snapshot filename and engine-data
 # folder) is UNCHANGED from BetFi 11 — renaming the app must
 # not orphan the user's data.
-APP_VERSION = "13.3.1"
-BUILD_NUMBER = 57
+APP_VERSION = "13.4.0"
+BUILD_NUMBER = 58
 DISPLAY_NAME = "Scare Bets"
 # Auto-pull (v12): every 4 minutes while the app is open —
 # but ONLY once armed (v12.4): the Pilot's rule is that the
@@ -1024,6 +1050,22 @@ def history_store_dir() -> str:
     return os.path.join(storage_dir(), f"{INTERNAL_ID}-history")
 
 
+def verdict_ledger_dir() -> str:
+    """The verdict-and-outcome ledger's home (the ledger
+    keeps its monthly JSONL files under
+    <this>/verdict-ledger/). Same storage root as the
+    history store, so the book survives restarts and app
+    updates exactly as the pull history does."""
+    return os.path.join(storage_dir(), f"{INTERNAL_ID}-verdicts")
+
+
+# The verdict ledger's health, on the recorder's law: a
+# ledger failure lands here and NEVER in the pull path; the
+# Web segment names it instead of hiding it.
+_LEDGER_HEALTH = {"logged": 0, "last_stamp": None,
+                  "last_error": None}
+
+
 # The slate the instrument server's /api/slate.json serves —
 # updated at every save_snapshot moment (and once at boot from
 # the restored snapshot), so the API always describes the
@@ -1446,9 +1488,12 @@ INSTRUMENTS += [
      "name": "G4 — Calibration Volume",
      "note": "Predicted p × realized frequency × time — "
              "the calibration curve as a surface. Gate: it "
-             "needs settled outcomes joined per market, "
-             "which do not exist yet; the surface prints "
-             "that gate instead of a series.",
+             "needs settled outcomes joined per market. "
+             "13.4.0 builds that join — the verdict ledger "
+             "logs every verdict and settles outcomes per "
+             "market as they are recorded — and the surface "
+             "keeps printing its gate until settled "
+             "outcomes actually land in the book.",
      "chip": "UNBUILT-DATA · PRINTS ITS GATE",
      "data": "history", "shelf": "history",
      "graph": "g4-calibration-volume",
@@ -1528,6 +1573,20 @@ def history_payload(window, graph, event_id=None) -> dict:
                 graph, win["records"], event_id)}
 
 
+def verdict_web_payload() -> dict:
+    """The 4D verdict layer's feed (13.4.0): the verdict
+    ledger's foundation mathematics plus its pick nodes —
+    each pick's verdict timeline and settled outcome — for
+    instruments/web-of-everything.html. Read fresh from the
+    ledger on every ask, so the layer always shows the
+    book as it stands."""
+    payload = verdict_ledger.verdict_web_payload(
+        verdict_ledger_dir())
+    payload["generated_at"] = datetime.now(
+        history_store.DETROIT).isoformat()
+    return payload
+
+
 class _InstrumentHandler(http.server.SimpleHTTPRequestHandler):
     """Static instrument files + the history API, one
     handler. Static behaviour is the stock handler's (the
@@ -1555,6 +1614,13 @@ class _InstrumentHandler(http.server.SimpleHTTPRequestHandler):
         if parsed.path == "/api/slate.json":
             try:
                 self._send_json(200, _slate_payload())
+            except Exception as e:  # named, never a traceback
+                self._send_json(500, {"error": type(e).__name__,
+                                      "detail": str(e)})
+            return
+        if parsed.path == "/api/verdict-web.json":
+            try:
+                self._send_json(200, verdict_web_payload())
             except Exception as e:  # named, never a traceback
                 self._send_json(500, {"error": type(e).__name__,
                                       "detail": str(e)})
@@ -5665,6 +5731,40 @@ def main(page: ft.Page):
             state["verdict_cache"] = cache
         return state["verdicts"]
 
+    def _log_verdicts(stamp, markets, verdicts):
+        """The verdict-ledger hook (13.4.0; Pilot directive
+        2026-11-12 — the app logs its bets and outcomes):
+        every market the checker issued a verdict for is
+        written to the persistent verdict-and-outcome ledger
+        with the shell's own BET NOW / DO NOT BET layer —
+        computed here by bet_now()/card_verdict(), the
+        shell's words, never re-derived downstream. Markets
+        with no verdict object, or no verdict term, were
+        issued nothing and are logged as nothing. A ledger
+        failure stamps the ledger health line and NEVER
+        breaks the pull — the recorder's law, kept."""
+        try:
+            layers = []
+            for v in verdicts or []:
+                if not isinstance(v, dict):
+                    layers.append(None)
+                    continue
+                term, _reason = card_verdict(v)
+                if not term:
+                    layers.append(None)
+                    continue
+                layers.append("BET NOW" if bet_now(v)
+                              else "DO NOT BET")
+            res = verdict_ledger.log_verdicts(
+                verdict_ledger_dir(), stamp, markets,
+                verdicts, layers)
+            _LEDGER_HEALTH["logged"] += res.get("logged", 0)
+            _LEDGER_HEALTH["last_stamp"] = stamp
+            _LEDGER_HEALTH["last_error"] = None
+        except Exception as e:
+            _LEDGER_HEALTH["last_error"] = (
+                f"{type(e).__name__}: {e}")
+
     def record_pull(rec, partial=None):
         """The 3D recorder hook (fulfillment step 1): called
         at the three save_snapshot moments — a full pull
@@ -5700,6 +5800,7 @@ def main(page: ft.Page):
                     {"pulled_at": stamp, "markets": markets,
                      "sports": {}},
                     sliced)
+                _log_verdicts(stamp, markets, sliced)
             else:
                 stamp = rec.get("pulled_at")
                 if history_store.has_pull(
@@ -5711,6 +5812,8 @@ def main(page: ft.Page):
                     return
                 res = history_store.record_pull(
                     history_store_dir(), rec, verdicts)
+                _log_verdicts(stamp, rec.get("markets") or [],
+                              verdicts)
             _note_record_result(res, stamp)
         except Exception as e:
             _RECORDER_HEALTH["last_error"] = (
@@ -8464,7 +8567,8 @@ def main(page: ft.Page):
                 6.0, max(0.5, state["chart_zoom"] * factor))
         render_stage()
 
-    # ---- Xii panel: four segments, one switcher (v12) ----
+    # ---- Xii panel: five segments, one switcher (v12;
+    # the Web segment is 13.4.0's) ----
     # Charts | Coverage | Instruments | Registry — only the
     # active segment is built per render, and the segment, the
     # chart zoom and the tapped detail all live in state, so a
@@ -8474,10 +8578,12 @@ def main(page: ft.Page):
     panel_coverage_col = ft.Column(spacing=8)
     panel_instruments_col = ft.Column(spacing=8)
     panel_registry_col = ft.Column(spacing=8)
+    panel_web_col = ft.Column(spacing=8)
     _PANEL_COLS = {"charts": panel_charts_col,
                    "coverage": panel_coverage_col,
                    "instruments": panel_instruments_col,
-                   "registry": panel_registry_col}
+                   "registry": panel_registry_col,
+                   "web": panel_web_col}
     panel_switcher = _switcher(panel_charts_col)
 
     def show_panel_segment(seg: str):
@@ -8495,7 +8601,8 @@ def main(page: ft.Page):
 
     panel_seg_ctrl = _segmented(
         [("charts", "Charts"), ("coverage", "Coverage"),
-         ("instruments", "Instruments"), ("registry", "Registry")],
+         ("instruments", "Instruments"), ("registry", "Registry"),
+         ("web", "Web")],
         "charts", on_panel_seg)
 
     # ---- the TIME control (3D fulfillment, step 3) ----
@@ -9385,6 +9492,105 @@ def main(page: ft.Page):
                         STOCKS_SAMPLE_NOTE, size=10, color=FAINT,
                         height=1.35))
 
+    def render_panel_web(col):
+        """The Web segment (13.4.0): The Web of Everything,
+        converted into the app with its design intact — the
+        same concept web as the space of that name (Praxis a
+        major section, Implications a separate room, time the
+        fourth axis), plus the 4D verdict layer the space
+        does not carry: pick nodes wearing the app's own
+        BET NOW / DO NOT BET verdicts through time, read from
+        the verdict-and-outcome ledger. Like the instruments,
+        the web is a bundled page served over the loopback
+        route and opened full-screen; this segment is its
+        door, its canon stamp, and the ledger's foundation
+        line, printed from the book itself."""
+        with _UPDATE_LOCK:
+            col.controls = []
+            col.controls.append(section_header(
+                "THE WEB OF EVERYTHING", ACCENT))
+            web_path = os.path.join(
+                INSTRUMENTS_DIR, "web-of-everything.html")
+            if not os.path.isfile(web_path):
+                col.controls.append(empty_full(
+                    ft.Icons.VIEW_IN_AR,
+                    "The Web is not bundled in this edition",
+                    "This build shipped without the Web of "
+                    "Everything page, so the segment prints "
+                    "its state instead of a dead door. The "
+                    "full Scare Bets build carries it."))
+                return
+            canon_line = ("The record's concept web, whole: "
+                          "concepts, connections and "
+                          "implications as the space holds "
+                          "them.")
+            try:
+                with open(web_path, encoding="utf-8") as f:
+                    head = f.read(4096)
+                m = re.search(
+                    r"WEB_CANON concepts=(\d+) edges=(\d+) "
+                    r"implications=(\d+)", head)
+                if m:
+                    canon_line = (
+                        f"The record's concept web, whole: "
+                        f"{m.group(1)} concepts, {m.group(2)} "
+                        f"connections, {m.group(3)} "
+                        f"implications — Praxis a major "
+                        f"section, Implications in their own "
+                        f"room, time as the fourth axis, flown "
+                        f"by keyboard, mouse and touch.")
+            except Exception:
+                pass
+            col.controls.append(ft.Text(
+                canon_line, size=11, color=DIM, height=1.35))
+            # the ledger's foundation line, from the book
+            try:
+                fnd = verdict_ledger.foundation(
+                    verdict_ledger_dir())
+                if fnd["issued"] == 0:
+                    ledger_line = (
+                        "The verdict ledger is open and empty: "
+                        "it starts with the next pull, when "
+                        "every verdict the checker issues is "
+                        "written into the book.")
+                else:
+                    bn = fnd["by_layer"]["BET NOW"]
+                    hit = ("—" if bn["hit_rate"] is None else
+                           f"{bn['hit_rate'] * 100:.0f}%")
+                    ledger_line = (
+                        f"Verdict ledger: {fnd['issued']} bets "
+                        f"issued a verdict · {fnd['settled']} "
+                        f"settled · {fnd['open']} open · BET "
+                        f"NOW hit rate {hit} over "
+                        f"{bn['decided']} decided. The web's "
+                        f"verdict layer reads this book.")
+            except Exception as e:
+                ledger_line = (
+                    f"The verdict ledger could not be read: "
+                    f"{type(e).__name__}: {e}")
+            col.controls.append(ft.Text(
+                ledger_line, size=11, color=DIM, height=1.35))
+            if _LEDGER_HEALTH.get("last_error"):
+                col.controls.append(ft.Text(
+                    f"Ledger write fault (pulls unaffected): "
+                    f"{_LEDGER_HEALTH['last_error']}",
+                    size=11, color=FAINT, height=1.3))
+            col.controls.append(ft.Text(
+                "The verdict layer signals only. This app is "
+                "an analyst — it has never placed a bet and "
+                "never will.", size=11, color=FAINT,
+                height=1.3))
+            col.controls.append(primary_button(
+                "Open the Web of Everything",
+                on_open_instrument(
+                    {"file": "web-of-everything.html",
+                     "name": "The Web of Everything"})))
+            col.controls.append(stage_status)
+            try:
+                page.run_thread(ensure_instrument_server)
+            except Exception:
+                pass
+
     def render_stage():
         with _UPDATE_LOCK:
             seg = state.get("panel_segment") or "charts"
@@ -9396,9 +9602,10 @@ def main(page: ft.Page):
                 state.get("panel_time") or "live"]
             stage_view.controls = [screen_title(
                 "Instruments",
-                "One panel, four views of the same pull and the "
+                "One panel, five views of the same pull and the "
                 "same fits: live charts, priced coverage, the "
-                "snapshot instruments and the registry map."),
+                "snapshot instruments, the registry map — and "
+                "the Web of Everything."),
                 # v12.1 texture: the segment bar wears the header
                 # band, same family as the view titles.
                 ft.Container(gradient=HEADER_GRADIENT,
@@ -9423,7 +9630,8 @@ def main(page: ft.Page):
             {"charts": render_panel_charts,
              "coverage": render_panel_coverage,
              "instruments": render_panel_instruments,
-             "registry": render_panel_registry}[seg](
+             "registry": render_panel_registry,
+             "web": render_panel_web}[seg](
                 _PANEL_COLS[seg])
             page.update()
 

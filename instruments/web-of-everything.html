@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--WEB_CANON concepts=34 edges=42 implications=10-->
+<title>The Web of Everything — Scare Bets</title>
+<style>
+:root{
+  --bg:#06040d; --panel:rgba(17,12,32,.88); --panel2:rgba(24,17,44,.92);
+  --ink:#f2ede4; --dim:#a79dc0; --faint:#6f6590; --gold:#f5c86b;
+  --magenta:#ff4fd8; --green:#3ddc84; --red:#ff5d5d; --line:rgba(167,157,192,.25);
+  --pad:10px; --fs:14px; --fs-big:26px; --radius:14px;
+}
+body.minimal{ --pad:7px; --fs:12.5px; --fs-big:21px; --radius:11px; }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:var(--fs); overflow-x:hidden;}
+h1,h2,.serif{font-family:Georgia,"Times New Roman",serif;}
+button{font:inherit;color:inherit;background:var(--panel2);
+  border:1px solid var(--line);border-radius:9px;padding:6px 10px;cursor:pointer;}
+button:focus-visible,[tabindex]:focus-visible,input:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px;}
+button.on{border-color:var(--gold);color:var(--gold);}
+header{padding:calc(var(--pad) + 4px) var(--pad) var(--pad);
+  background:radial-gradient(120% 160% at 18% 0%,#241647 0%,#0b0618 55%,var(--bg) 100%);
+  border-bottom:1px solid var(--line);}
+header h1{margin:0;font-size:var(--fs-big);letter-spacing:.14em;font-weight:600;}
+header .sub{color:var(--dim);margin-top:3px;letter-spacing:.04em;}
+nav.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;}
+nav.tabs button{letter-spacing:.08em;}
+nav.tabs button[aria-selected="true"]{background:var(--gold);color:#17102a;
+  border-color:var(--gold);font-weight:700;}
+nav.tabs .spacer{flex:1;}
+.sizewrap{display:flex;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+.sizewrap button{border:0;border-radius:0;background:transparent;color:var(--dim);}
+.sizewrap button[aria-pressed="true"]{background:var(--panel2);color:var(--gold);}
+main{padding:var(--pad);max-width:1180px;margin:0 auto;}
+.view{display:none;} .view.live{display:block;}
+/* ---- the stage ---- */
+#stagewrap{position:relative;border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;background:radial-gradient(90% 90% at 50% 42%,#150e2e 0%,#06040d 78%);}
+#stage{display:block;width:100%;height:56vh;min-height:340px;touch-action:none;cursor:grab;}
+#stage:active{cursor:grabbing;}
+#hud{position:absolute;top:8px;left:10px;font-family:ui-monospace,Menlo,monospace;
+  font-size:11px;color:var(--dim);letter-spacing:.06em;pointer-events:none;
+  text-shadow:0 1px 3px #000;}
+#hud b{color:var(--gold);font-weight:600;}
+#hud .flying{color:var(--green);}
+#flypad{position:absolute;right:8px;bottom:8px;display:grid;gap:5px;
+  grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,40px);}
+#flypad button{padding:0;font-size:15px;background:rgba(24,17,44,.78);border-radius:10px;}
+#flypad button.held{background:var(--gold);color:#17102a;}
+#boostrow{position:absolute;left:8px;bottom:8px;display:flex;gap:6px;}
+#timerail{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  margin-top:10px;padding:var(--pad);background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--radius);}
+#timerail input[type=range]{flex:1;min-width:160px;accent-color:var(--gold);}
+#wdate{font-family:ui-monospace,Menlo,monospace;color:var(--gold);min-width:96px;}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;
+  padding:2px 9px;font-size:.82em;color:var(--dim);letter-spacing:.05em;}
+.chip.gold{color:var(--gold);border-color:var(--gold);}
+.chip.mag{color:var(--magenta);border-color:var(--magenta);}
+/* ---- detail + ledger ---- */
+#below{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px;}
+@media(min-width:860px){#below{grid-template-columns:1.25fr .9fr;}}
+.card{background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius);padding:calc(var(--pad) + 2px);}
+.card h2{margin:0 0 4px;font-size:calc(var(--fs-big) * .72);}
+.card .tier{color:var(--gold);letter-spacing:.1em;font-size:.85em;}
+.card .insight{border-left:3px solid var(--gold);padding-left:10px;color:var(--ink);
+  margin:10px 0;font-style:italic;}
+.card .evo{border-left:3px solid var(--magenta);padding-left:10px;margin:10px 0;color:var(--ink);}
+.card p{color:var(--dim);line-height:1.5;margin:6px 0;}
+.conn{display:block;width:100%;text-align:left;margin:4px 0;background:transparent;}
+.conn b{color:var(--gold);font-weight:600;}
+#ledger{max-height:46vh;overflow:auto;}
+#ledger .row{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;
+  background:transparent;border:0;border-bottom:1px solid rgba(167,157,192,.12);
+  border-radius:0;padding:7px 6px;}
+#ledger .row[aria-selected="true"]{background:var(--panel2);}
+#ledger .dot{width:9px;height:9px;border-radius:50%;flex:none;position:relative;top:1px;}
+#ledger .t{color:var(--faint);font-size:.82em;letter-spacing:.05em;}
+/* ---- foundation strip ---- */
+#foundation{margin-top:10px;}
+#foundation .nums{display:flex;gap:14px;flex-wrap:wrap;font-family:ui-monospace,Menlo,monospace;}
+#foundation .nums b{color:var(--gold);font-size:1.15em;}
+/* ---- praxis ---- */
+.secttl{font-size:var(--fs-big);letter-spacing:.1em;margin:8px 0 2px;}
+.timeline{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.tlstep{display:none;} .tlstep.live{display:block;}
+.tlstep .date{color:var(--gold);font-family:ui-monospace,Menlo,monospace;}
+.tlnav{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;}
+/* ---- implications ---- */
+#view-imp{background:radial-gradient(100% 120% at 50% 0%,#2b0f2b 0%,#12060f 60%);
+  border:1px solid rgba(255,79,216,.35);border-radius:var(--radius);
+  padding:calc(var(--pad) + 2px);}
+#view-imp h2{color:#ffd7f6;}
+.impstep{display:none;} .impstep.live{display:block;}
+.impstep .kind{color:var(--magenta);letter-spacing:.14em;font-size:.85em;}
+.impstep p{line-height:1.55;color:#f3e2ee;}
+.dots{display:flex;gap:6px;margin:10px 0;}
+.dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,79,216,.25);display:block;}
+.dots i.on{background:var(--magenta);}
+footer{color:var(--faint);padding:14px var(--pad) 26px;max-width:1180px;margin:0 auto;
+  line-height:1.5;}
+kbd{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+  padding:0 5px;font-family:ui-monospace,Menlo,monospace;font-size:.85em;}
+</style>
+</head>
+<body class="minimal">
+<header>
+  <h1>THE WEB OF EVERYTHING</h1>
+  <div class="sub">Every concept in the record, in one space — Praxis at its center,
+  implications in their own room, and time as the fourth axis. Converted into
+  Scare Bets with its design intact; the app's verdict ledger rides the same
+  time axis below.</div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-web" aria-selected="true" data-view="web">THE WEB</button>
+    <button role="tab" id="tab-praxis" aria-selected="false" data-view="praxis">PRAXIS</button>
+    <button role="tab" id="tab-imp" aria-selected="false" data-view="imp">IMPLICATIONS</button>
+    <span class="spacer"></span>
+    <span class="sizewrap" role="group" aria-label="Size">
+      <button id="sz-compact" aria-pressed="false">Compact</button>
+      <button id="sz-minimal" aria-pressed="true">Minimal</button>
+    </span>
+  </nav>
+</header>
+<main>
+  <!-- ============ THE WEB ============ -->
+  <section class="view live" id="view-web" role="tabpanel" aria-labelledby="tab-web">
+    <div id="stagewrap">
+      <canvas id="stage" aria-label="The concept web in spatial 3D. Drag to drift, scroll or pinch to dive, or use the fly pad and keyboard."></canvas>
+      <div id="hud">X <b id="hud-x">0</b> · Y <b id="hud-y">0</b> · DEPTH <b id="hud-d">1.00</b> · W <b id="hud-w">—</b> <span id="hud-fly"></span></div>
+      <div id="boostrow">
+        <button id="btn-boost" aria-pressed="false" title="Boost (Shift)">BOOST</button>
+        <button id="btn-verdicts" aria-pressed="true" title="The 4D verdict layer">⚖ VERDICTS</button>
+      </div>
+      <div id="flypad" role="group" aria-label="Fly pad">
+        <button data-fly="time-" aria-label="Fly back in time">⏮</button>
+        <button data-fly="up" aria-label="Fly up">▲</button>
+        <button data-fly="depth+" aria-label="Dive deeper">＋</button>
+        <button data-fly="left" aria-label="Fly left">◀</button>
+        <button data-fly="home" aria-label="Fly to the selected concept">◎</button>
+        <button data-fly="right" aria-label="Fly right">▶</button>
+        <button data-fly="time+" aria-label="Fly forward in time">⏭</button>
+        <button data-fly="down" aria-label="Fly down">▼</button>
+        <button data-fly="depth-" aria-label="Surface">－</button>
+      </div>
+    </div>
+    <div id="timerail">
+      <button id="btn-play" aria-pressed="false" title="Play or hold time (P)">▶ TIME</button>
+      <input type="range" id="w" min="0" max="1000" value="1000" aria-label="Time — the fourth axis">
+      <span id="wdate">—</span>
+      <span class="chip gold">OCT 8 → TODAY</span>
+      <span class="chip">gold ring = a ruling landed</span>
+    </div>
+    <div class="card" id="foundation"><h2 class="serif" style="font-size:1.05em;letter-spacing:.08em;">THE VERDICT LEDGER — THE DYNAMIC FOUNDATION</h2>
+      <div class="nums" id="foundation-nums"><span>Reading the ledger…</span></div>
+      <p id="foundation-note"></p>
+    </div>
+    <div id="below">
+      <div class="card" id="detail" aria-live="polite"></div>
+      <div class="card"><h2 class="serif" style="font-size:1.05em;letter-spacing:.08em;">THE LEDGER — EVERY CONCEPT</h2>
+        <div id="ledger" role="listbox" aria-label="All concepts"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ PRAXIS ============ -->
+  <section class="view" id="view-praxis" role="tabpanel" aria-labelledby="tab-praxis">
+    <div class="secttl serif">PRAXIS</div>
+    <p style="color:var(--dim);max-width:70ch;line-height:1.55;">The operating system the
+    rest of the web runs on: a Pilot who rules, an agent pair that computes and
+    audits, and a record that never inflates what it holds.</p>
+    <div id="praxis-cards"></div>
+    <h3 class="serif" style="letter-spacing:.08em;margin-top:18px;">THE RULINGS TIMELINE</h3>
+    <p style="color:var(--dim);">Step through the moments the web changed state — each
+    one jumps the stage to the exact day.</p>
+    <div class="timeline" id="timeline"></div>
+    <div class="tlnav">
+      <button id="tl-prev">← EARLIER</button>
+      <span id="tl-count" class="chip"></span>
+      <button id="tl-next">LATER →</button>
+      <button id="tl-goto">SEE IT IN THE WEB ◎</button>
+    </div>
+  </section>
+  <!-- ============ IMPLICATIONS ============ -->
+  <section class="view" id="view-imp" role="tabpanel" aria-labelledby="tab-imp">
+    <h2 class="serif" style="letter-spacing:.1em;margin-top:2px;">IMPLICATIONS</h2>
+    <p style="color:#d9a8cf;">A separate room in the same web. Each chain runs
+    premise → consequence → stakes, one step at a time.</p>
+    <div id="imp-list" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;"></div>
+    <div id="imp-stage"></div>
+    <div class="dots" id="imp-dots"></div>
+    <div class="tlnav">
+      <button id="imp-prev">← BACK</button>
+      <span id="imp-count" class="chip mag"></span>
+      <button id="imp-next">NEXT STEP →</button>
+    </div>
+  </section>
+</main>
+<footer>
+  Flight: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> drift ·
+  <kbd>Q</kbd>/<kbd>E</kbd> depth · <kbd>,</kbd>/<kbd>.</kbd> time ·
+  <kbd>Shift</kbd> boost · <kbd>P</kbd> play/hold time · <kbd>0</kbd> reset ·
+  arrow keys walk the ledger, <kbd>Enter</kbd> flies to a concept.
+  Mouse and touch do the same work: drag, scroll or pinch, the fly pad.
+  The verdict layer signals only — this app is an analyst; it never places a bet.
+</footer>
+<script>
+"use strict";
+/* The canon — the same record The Web of Everything holds:
+   34 concepts, 42 connections, 10 implications. */
+const CANON = {
+"concepts":[
+{"id":"moneygoal","title":"$10K / Month","tier":"THE GOAL","domain":"Livelihood","size":1.15,"x":44,"y":14,"z":0.8,"appearsOn":"2026-10-09","evolvesOn":"","body":"The financial-freedom goal, from a ~$40/month base, in three lanes: freelancing for local businesses first, audience monetization second, the dispatch product third. Cold-start reality acknowledged in the plan itself: Phase 1 leads with free value and warm local outreach, not cold pitches.","insight":"The goal's lane order is a physics habit: lead with the channel you can measure, not the one you can imagine.","evolvedNote":""},
+{"id":"court","title":"67th District Court","tier":"OPEN CASE","domain":"Cases","size":0.9,"x":78,"y":96,"z":0.55,"appearsOn":"2026-11-05","evolvesOn":"","body":"A new case from November 5: speeding 25+ over and a no-insurance citation — insurance valid the same date — with CDL stakes riding on the speeding charge. For a driver, a ticket is never just a ticket; it's a credential event.","insight":"The court case, the Pegasus correction, and the road are one system: a CDL turns every roadside minute into a permanent record, which is why this web tracks them together.","evolvedNote":""},
+{"id":"arcane","title":"Arcane","tier":"IN PRODUCTION","domain":"Creation","size":1.2,"x":20,"y":34,"z":0.75,"appearsOn":"2026-11-04","evolvesOn":"2026-11-07","body":"A 2.5D fighter in Godot 4.7.2, Mortal Kombat shape: two fighters, one shared frame-data kit, identity living only in specials and cancels. Five with the Pyre kit, Queen Vileborn with Shade. Full battery: 199 checks, zero failures. Quality bar, in the Pilot's words: EA Sports quality.","insight":"Arcane runs on Praxis law — whole-project zip exchange, verified batteries, no waiting — the same operating system as the physics, pointed at a game.","evolvedNote":"Never-wait rule (2026-11-07): the build never waits on the Pilot — his hands-on phone check is an open invitation, never a gate."},
+{"id":"betfi","title":"BetFi","tier":"ALL-OR-NOTHING","domain":"Creation","size":1,"x":26,"y":48,"z":0.65,"appearsOn":"2026-10-24","evolvesOn":"","body":"The betting-model application, built under the hardest push discipline in the record: nothing ships until everything is done — loop closed, labels unified, developer language purged, all gates green. The one signed partial push (October 24) is the last of its kind.","insight":"BetFi's all-or-nothing rule and the theory's tier discipline are the same instinct in two materials: never let a partial thing pose as a finished one.","evolvedNote":""},
+{"id":"anchor","title":"Continuity Anchor","tier":"ANTI-CORRUPTION","domain":"Praxis","size":0.95,"x":50,"y":68,"z":0.6,"appearsOn":"2026-10-30","evolvesOn":"","body":"The standing re-seat: identity, standing orders, where the truth lives, recovery procedure, and the named failure modes — amnesia, persona drift, confident invention, scope bleed, re-litigation. Read first after any drift.","insight":"A framework that expects its own agent to drift, and builds the correction in advance, is doing the same move as a kill condition on an owned number.","evolvedNote":""},
+{"id":"emath","title":"Electronic Math","tier":"THE PUBLIC FACE","domain":"Public","size":1.25,"x":90,"y":68,"z":0.85,"appearsOn":"2026-11-09","evolvesOn":"","body":"The physics program's face to the world: Reddit u/Electronic-Math001, X @13tfff, and the cyan shades dude — circuit antenna, ∫ Σ λ π in orbit — as mascot. Created under a full-authority exposure grant; accounts on the Pilot's own email, password set by him alone through the secure flow.","insight":"A theory with a mascot is a theory that intends to be read. The dude's orbit — integral, sum, lambda, pi — is the program in four symbols.","evolvedNote":""},
+{"id":"haas","title":"Haas Yard Care","tier":"FIRST CLIENT","domain":"Livelihood","size":0.9,"x":34,"y":20,"z":0.6,"appearsOn":"2026-10-21","evolvesOn":"","body":"Johnnie 'Jr' Rheaves — family, runs a yard care business, and the freelancing venture's first client: deal struck in person on October 21 for the Haas Yard Care brand build. Lane one of the $10K goal, made literal.","insight":"The first client being family is not a soft start; it's the warm-outreach strategy working exactly as written.","evolvedNote":""},
+{"id":"neon","title":"Neon Block Brawl","tier":"CHARACTER LANE","domain":"Creation","size":0.9,"x":10,"y":14,"z":0.6,"appearsOn":"2026-11-06","evolvesOn":"","body":"The fighting project whose character material the Pilot uploads is always for — standing context, so no character art ever gets filed under the wrong game.","insight":"A small node with one job: it exists so a rule about routing creative material is part of the web, not a footnote.","evolvedNote":""},
+{"id":"praxis","title":"PRAXIS","tier":"THE OPERATING SYSTEM","domain":"Praxis","size":2.1,"x":50,"y":46,"z":1,"appearsOn":"2026-10-08","evolvesOn":"","body":"The Evolution Framework, incepted around 2022. Not a project among projects — the way every project here gets run: a Pilot who rules, an agent pair that computes and audits, and a record that never inflates what it holds.","insight":"Everything else in this web is either run by Praxis, published through it, or judged by its tiers.","evolvedNote":""},
+{"id":"species-mass","title":"Species Mass 3.2335×10⁻¹³ eV/c²","tier":"POSIT → OWNED VALUE","domain":"Physics","size":1.3,"x":86,"y":34,"z":0.9,"appearsOn":"2026-11-03","evolvesOn":"2026-11-12","body":"Born as a seesaw posit — √(μℏa₀/c³), a dimensional pattern with no heavy partner and no mechanism, its digits coinciding with the inherited hadronic mass figure. Used for nine days, owned by no one. Then, on 2026-11-12, one word: 'Adopt.'","insight":"This node is the time axis made visible: drag the rail before and after Nov 12 and the same number changes species — posit to owned value — without a single digit moving.","evolvedNote":"ADOPTED 2026-11-12. The Pilot's ruling: the species mass is now an owned value of the framework. The seesaw pattern gains no mechanism, the digit-coincidence with the hadronic figure stays flagged permanently — adoption owns the number with its past."},
+{"id":"laws","title":"Standing Orders","tier":"OPERATING LAW","domain":"Praxis","size":1.15,"x":34,"y":62,"z":0.8,"appearsOn":"2026-10-28","evolvesOn":"2026-11-09","body":"Plain words, no codes, in every message. Verify a job's real state before reporting it. A status reading is true only at its moment — never extended across an unobserved interval. Directives are executed, not debated. Identity data is used only when the Pilot says so, for that task only, and never stored.","insight":"These laws read like management rules. They are actually epistemology: the same refusal to overclaim that runs the physics, applied to daily life.","evolvedNote":"2026-11-09 added the sharpest law yet: no gaslight, no bait — verify before stating any status; execute a complete order without inserting a choice."},
+{"id":"boundary","title":"The Boundary Term","tier":"ADOPTED SPECIFICATION","domain":"Physics","size":1.15,"x":30,"y":82,"z":0.8,"appearsOn":"2026-11-05","evolvesOn":"","body":"The horizon boundary term, adopted as a named specification in its Hubble-radius variant: ε_Λ,ind(z) ∝ H(z). Adoption changed no tier — the induced density remains a matching quantity, vacuum stays unpriced, the boundary cancellation no-go stands. The de Sitter variant and leaving it out were both considered and not chosen.","insight":"Adopting a specification without inflating its tier is the same discipline as adopting the species mass without laundering its ancestry.","evolvedNote":""},
+{"id":"boundary-wall","title":"The Boundary Wall","tier":"[OPEN] — NEEDS NEW THEORY","domain":"Physics","size":1.2,"x":48,"y":88,"z":0.85,"appearsOn":"2026-11-05","evolvesOn":"","body":"The one wall no ruling can reach. The boundary specification is degenerate with its matching — a 15–18% band — and only a boundary tension derived from substrate quantities, or a non-pair microscopic owner (zero instances on record), breaks it. This wall waits on genuinely new theory.","insight":"Every other wall in this web fell to computation or a signature. This one is the honest frontier — the place the map says: new theory required beyond this point.","evolvedNote":""},
+{"id":"dacut","title":"The DACUT Points Case","tier":"UNRESOLVED","domain":"Cases","size":0.95,"x":92,"y":82,"z":0.6,"appearsOn":"2026-11-03","evolvesOn":"","body":"1,800 loyalty points — $54 — redeemed and taken, the reward unusable. Dutchie's human agent closed its ticket as solved and pointed at DACUT and Alpine IQ; escalations and Attorney General complaints (Michigan, Colorado, FTC) are filed. The watch continues daily; no reply on record since.","insight":"$54 is not the stake. A system that takes value and closes the ticket as 'solved' is — the case is pursued at the scale of the principle, like everything else here.","evolvedNote":""},
+{"id":"dispatch","title":"The Dispatch Tool","tier":"IN DEVELOPMENT","domain":"Livelihood","size":0.95,"x":68,"y":44,"z":0.6,"appearsOn":"2026-10-10","evolvesOn":"","body":"Logistics software grown from the driver's seat: routes, gate and lockbox codes, fuel cards, driver check-ins. What its name abbreviates is still unresolved in the record — details pending, carried honestly as pending.","insight":"Software designed by the person who has to use it at 4 AM in a yard — the dispatch tool is Arcane's design philosophy in work clothes.","evolvedNote":""},
+{"id":"hubble","title":"The Hubble Tension","tier":"[SUPPORTED] THREAD","domain":"Physics","size":1,"x":12,"y":84,"z":0.7,"appearsOn":"2026-10-09","evolvesOn":"2026-11-10","body":"~67 km/s/Mpc from the early universe, ~73.5 from the local ladder — a 5–7σ gap that better statistics will not close. On the galaxy side the same pattern: the acceleration scale tracks the expansion history. Two tensions, one thread: the history is wrong, not the rulers.","insight":"A cosmology tension and a galaxy relation, usually filed in different departments, are one observation in this web: the expansion history asserting itself twice.","evolvedNote":"The Alcock 2026 result on the a₀ evolution shape (γ ≈ 0.78 ± 0.15) was verified 2026-11-10 as peer-reviewed, MNRAS, published September."},
+{"id":"species","title":"The Mirror Species","tier":"SECTOR ADOPTED 2026-11-03","domain":"Physics","size":1.15,"x":76,"y":18,"z":0.8,"appearsOn":"2026-11-03","evolvesOn":"","body":"The substrate's fermion species, whose pairs form the condensate. The Pilot adopted the sector itself on November 3 — while explicitly not elevating its mass posit. At the adopted mass its sea: density 1.75×10²² /m³, Fermi energy 15.856 eV.","insight":"Adopting a sector but not its number is a distinction only this record would bother to keep — and it kept the whole wall honest for nine days.","evolvedNote":""},
+{"id":"moneywatch","title":"The Money Watch","tier":"SNAPSHOTS ONLY","domain":"Livelihood","size":1,"x":60,"y":80,"z":0.65,"appearsOn":"2026-11-03","evolvesOn":"2026-11-11","body":"The daily ledger watch: subscriptions ($44.98/month active), the Cash App Afterpay stack, overdraft snapshots, Chime balances, the Capital One action-required notices. Every figure is a snapshot at its minute — the standing correction: never extend a status across an unobserved interval.","insight":"Snapshot discipline was born here, in the money, and migrated into the physics reporting: a reading is true at its moment, and the interval between readings is unobserved. One law, two domains.","evolvedNote":"Nov 11: the Cash App overdraft was paid off in full, then $24.25 of new coverage was used within hours; Robinhood flagged a separate $40 deficit. Known total needing the Pilot's hand: $74.30, plus the overdraft's final settled figure."},
+{"id":"substrate","title":"The One Substrate","tier":"[THEOREM] — FRAME","domain":"Physics","size":1.5,"x":18,"y":22,"z":0.9,"appearsOn":"2026-10-08","evolvesOn":"","body":"Geotopological Hydrodynamics: one substrate condensate, no 'spacetime + matter' split. Gravity and matter are both behaviors of the same medium — GR reads plausibly as its phonon kinematics; the Einstein–Hilbert dynamics are not derived, and the record says so.","insight":"One medium for everything is the physical mirror of this page: one web for everything, no split between the theory's life and the life around it.","evolvedNote":""},
+{"id":"pairing","title":"The Pairing Scalar","tier":"[OPEN] — ONE NUMBER","domain":"Physics","size":1.35,"x":84,"y":56,"z":0.95,"appearsOn":"2026-11-06","evolvesOn":"2026-11-12","body":"The last unvalued number on the substrate side: constitutionally an input, the way the Fermi constant was for the Standard Model. Value it, and the substrate gap and compressibility stop being unknowns and become predictions. The irreducibility proof says this slot cannot be derived from inside — it can only be owned, measured, or relocated to a deeper layer.","insight":"One number stands between the theory and a closed wall — and the two candidates for it fail in opposite directions, so the ruling is really a choice of which defect the theory wears.","evolvedNote":"With the species mass adopted, the pairing wall is now open by exactly one scalar, unconditionally. Two candidate values sit on record, failing in opposite directions; the ruling package — slot crossing, frame fork, kill conditions — is drafted and waiting on the Pilot's word."},
+{"id":"pegasus","title":"The Pegasus Correction","tier":"BALL WITH SAFETY TEAM","domain":"Cases","size":1.05,"x":88,"y":12,"z":0.7,"appearsOn":"2026-11-09","evolvesOn":"","body":"The record said March 4, 2023. The evidence — an April 2025 resume, 97 dispatch sheets, a sheriff's form photographed March 6, 2025 — says March 4, 2025, Steel Transportation, SR 13 / SR 120 in Middlebury: low-speed mirror-to-mirror contact, not ticketed, driven from the scene. The wrong-date filing was stopped; the correction to Pegasus was approved, sent, and verified delivered.","insight":"A two-year error in a man's own record, caught by his own paper trail — and the fix was to correct himself to an employer, in writing, before anyone asked. That's the tier instinct applied to a career.","evolvedNote":""},
+{"id":"rar","title":"The Radial Acceleration Relation","tier":"THE BATTLEGROUND","domain":"Physics","size":1.1,"x":6,"y":64,"z":0.8,"appearsOn":"2026-10-08","evolvesOn":"","body":"Galaxy after galaxy, observed acceleration tracks baryonic acceleration with almost no scatter — the relation any replacement gravity must land exactly, not approximately. The decisive next datum sits at z~2: evolving a₀ predicts ~3.6×10⁻¹⁰; constant a₀ predicts 1.2×10⁻¹⁰.","insight":"The RAR is where the theory meets the sky — and where a single future measurement can pay off or kill years of structure.","evolvedNote":""},
+{"id":"road","title":"The Road — CDL-A","tier":"15+ YEARS","domain":"Livelihood","size":1.1,"x":58,"y":92,"z":0.7,"appearsOn":"2026-10-16","evolvesOn":"","body":"Class A commercial driving, fifteen-plus years: flatbed steel at Steel Transportation (Flint, Nov 2024 – Mar 2025), now placed with DHL through Trillium Drivers, employer of record. The road is the income the rest of the web is built on top of.","insight":"Every node in this web is downstream of diesel and dispatch sheets — the theory's sea has a literal one underneath it.","evolvedNote":""},
+{"id":"scale-task","title":"The Scale Task","tier":"STANDING TASK","domain":"Praxis","size":1.05,"x":56,"y":16,"z":0.7,"appearsOn":"2026-11-06","evolvesOn":"","body":"The standing order on the theory's hardest wall: the scale does not derive. Waves 1–3 closed every in-framework door by computation. What remains is Pilot-class: own a number, commission new theory, or both — in that order, as it turned out.","insight":"The scale task is where Praxis stops being process and becomes strategy: it decides what kind of move closes a wall — computation, ruling, or new theory.","evolvedNote":""},
+{"id":"synapse","title":"The Synapse","tier":"LIVING DOCUMENT","domain":"Praxis","size":1.1,"x":62,"y":30,"z":0.75,"appearsOn":"2026-10-16","evolvesOn":"2026-11-05","body":"The living document where the fractions meet: Gemini's updates pulled directly from the shared copy, merged under contradiction-engine rules — conflicts flagged, never silently overwritten. Synced every six hours; only tier movements, conflicts, and blocks surface.","insight":"The Synapse is the web's memory of itself — the same function this page performs for everything else.","evolvedNote":"The boundary-term ruling was folded into the Synapse living document; the treatise itself stayed untouched."},
+{"id":"triad","title":"The Triad","tier":"STRUCTURE","domain":"Praxis","size":1.2,"x":38,"y":30,"z":0.8,"appearsOn":"2026-10-16","evolvesOn":"","body":"Pilot (Quan) + Φ_Muse + Φ_Gemini. Three seats, one table. Gemini holds Lean 4 verification and the Android/Termux work; Muse holds the lab, the record, and the publishing hand; the Pilot holds every ruling.","insight":"The triad is why a physics verdict and a phone build can land in the same afternoon without either one slipping.","evolvedNote":""},
+{"id":"yjunction","title":"The Y-Junction Quark","tier":"THE MANUSCRIPT","domain":"Physics","size":1.2,"x":28,"y":12,"z":0.85,"appearsOn":"2026-10-08","evolvesOn":"","body":"The quark is the 0D endpoint where an adjoint flux tube terminates: flavor is winding, charge is m/3, mass ≈ 0. Three tubes meet at a junction core (ξ = 0.24 fm); the proton's 938 MeV is relational — tubes plus core — so a 'separated quark' is not suppressed, it is undefined.","insight":"Mass as relationship, not property: the same idea as this web, where a concept's weight is its connections.","evolvedNote":""},
+{"id":"papers","title":"The Zenodo Papers","tier":"PUBLISHED","domain":"Public","size":1,"x":94,"y":50,"z":0.7,"appearsOn":"2026-11-09","evolvesOn":"2026-11-10","body":"Version 1.1 of the angular-factor note (F = 2/3, confirmed by two blind referees) published on Zenodo, DOI 10.5281/zenodo.24089125, mirrored on GitHub. Facts only, no miracle language, clickable table of contents — the manuscript rules, applied to papers.","insight":"Publishing a correction of your own result as your second anchor paper is tier discipline with a DOI.","evolvedNote":"Anchor two landed 2026-11-10: 'The Triplet Orientation Trace: a Corrected Evaluation,' DOI 10.5281/zenodo.24099413 — a published correction of the program's own earlier evaluation."},
+{"id":"threads","title":"Threads — Physics Only","tier":"LIVE","domain":"Public","size":1.05,"x":80,"y":86,"z":0.75,"appearsOn":"2026-10-09","evolvesOn":"2026-11-12","body":"Account instaqu4n. Physics only since October 28 — the weed lane closed by Pilot order. Nothing auto-posts: drafts go to approval, exact text approved per item, then shipped. Peer voice: findings first, honest caveat second, zero hedging.","insight":"The fresh slate is the kill ledger applied to publishing: drafts that miss their moment die, so the queue can never quietly become the message.","evolvedNote":"2026-11-12: six approved replies shipped; then, on the Pilot's order, every remaining unpublished draft was killed. Fresh slate — what stands is only what's already published. History, not backlog."},
+{"id":"tiers","title":"Tier Discipline","tier":"[THEOREM] / [KILLED] / [SUPPORTED] / [OPEN]","domain":"Praxis","size":1.25,"x":66,"y":60,"z":0.85,"appearsOn":"2026-10-08","evolvesOn":"","body":"Every claim carries its grade or it doesn't travel. [THEOREM] is derived. [KILLED] is dead and stays dead in the ledger. [SUPPORTED] is evidence-weighted, not proven. Posits, calibrations, and assumptions are labeled as what they are — 'no miracles, only facts.'","insight":"Tier discipline is the thread that lets a killed claim and a theorem live in the same web without ever being confused.","evolvedNote":""},
+{"id":"candidates","title":"Two Candidates, Opposite Failures","tier":"RULING PACKAGE READY","domain":"Physics","size":1.1,"x":70,"y":76,"z":0.75,"appearsOn":"2026-11-11","evolvesOn":"","body":"0.010934 — the matching value: right size, dirty past (an artifact of one evaluation point in the calibrated family; may never be run forward as evidence). 0.015504 — the clean value: impeccable past, wrong size — forcing it in breaks the hierarchy (gap 0.188 eV, gravitational Tc 1237 K, second sound void). There is no third candidate.","insight":"A choice between a number with a past and a number with a body count — the audit priced both, and the Pilot still has to feel which defect bothers him more.","evolvedNote":""},
+{"id":"nogo","title":"Two-Condensate No-Go","tier":"[THEOREM] — VERIFIED","domain":"Physics","size":0.9,"x":38,"y":44,"z":0.55,"appearsOn":"2026-10-09","evolvesOn":"","body":"Verified: the hadronic Ψ and the gravitational substrate cannot be the same condensate — their coherence lengths differ by 10^21.3. A beautiful shortcut, killed by arithmetic, and the kill made the framework cleaner than the shortcut would have.","insight":"The no-go is proof the tiers work: the framework's most attractive unification was its own first casualty.","evolvedNote":""},
+{"id":"a0","title":"a₀ — The Acceleration Scale","tier":"[THEOREM] — STRUCTURAL FORM","domain":"Physics","size":1.4,"x":8,"y":40,"z":0.95,"appearsOn":"2026-10-08","evolvesOn":"","body":"a₀ = √(E·G_N): the structural form is a theorem. A constant a₀ is excluded at 5.3σ (statistical errors only); the scale tracks the expansion rate H(z) — evolution [SUPPORTED] in sign and magnitude, its exact shape still [OPEN]. The famous 2.33% agreement is circular and is banned from presentation as derived.","insight":"a₀ is the web's busiest node: the galaxy data, the Hubble tension, the seesaw posit, and the boundary term all hang off this one scale.","evolvedNote":""},
+{"id":"rho0","title":"ρ₀ ≈ ρ_c","tier":"[SUPPORTED]","domain":"Physics","size":1,"x":16,"y":58,"z":0.7,"appearsOn":"2026-10-08","evolvesOn":"","body":"The substrate density sits within ~18% of the critical density — not tuned. Together with the a₀ theorem, that puts the a₀ ~ cH₀ 'coincidence' at order one, under 1σ everywhere it has been checked. A coincidence that survives is a clue; this one is carried as a clue, not a proof.","insight":"An untuned 18% is worth more than a tuned 2.33% — the record's whole philosophy in one comparison.","evolvedNote":""}
+],
+"edges":[
+{"id":1,"fromId":"praxis","toId":"triad","label":"is staffed by","appearsOn":"2026-10-16"},
+{"id":2,"fromId":"praxis","toId":"synapse","label":"remembers through","appearsOn":"2026-10-16"},
+{"id":3,"fromId":"praxis","toId":"tiers","label":"judges by","appearsOn":"2026-10-08"},
+{"id":4,"fromId":"praxis","toId":"laws","label":"operates under","appearsOn":"2026-10-28"},
+{"id":5,"fromId":"praxis","toId":"anchor","label":"re-seats through","appearsOn":"2026-10-30"},
+{"id":6,"fromId":"praxis","toId":"scale-task","label":"directs","appearsOn":"2026-11-06"},
+{"id":7,"fromId":"tiers","toId":"a0","label":"grades","appearsOn":"2026-10-08"},
+{"id":8,"fromId":"tiers","toId":"nogo","label":"certified the kill","appearsOn":"2026-10-09"},
+{"id":9,"fromId":"substrate","toId":"a0","label":"sets","appearsOn":"2026-10-08"},
+{"id":10,"fromId":"substrate","toId":"rho0","label":"weighs in at","appearsOn":"2026-10-08"},
+{"id":11,"fromId":"a0","toId":"rho0","label":"coincides via","appearsOn":"2026-10-08"},
+{"id":12,"fromId":"a0","toId":"rar","label":"is tested by","appearsOn":"2026-10-08"},
+{"id":13,"fromId":"a0","toId":"hubble","label":"tracks H(z) with","appearsOn":"2026-10-08"},
+{"id":14,"fromId":"yjunction","toId":"substrate","label":"terminates tubes in","appearsOn":"2026-10-08"},
+{"id":15,"fromId":"species","toId":"substrate","label":"pairs into","appearsOn":"2026-11-03"},
+{"id":16,"fromId":"species-mass","toId":"species","label":"masses","appearsOn":"2026-11-03"},
+{"id":17,"fromId":"species-mass","toId":"pairing","label":"halved the wall beside","appearsOn":"2026-11-12"},
+{"id":18,"fromId":"pairing","toId":"candidates","label":"is priced by","appearsOn":"2026-11-11"},
+{"id":19,"fromId":"pairing","toId":"boundary-wall","label":"the other wall beside","appearsOn":"2026-11-06"},
+{"id":20,"fromId":"boundary","toId":"boundary-wall","label":"specifies but cannot price","appearsOn":"2026-11-05"},
+{"id":21,"fromId":"boundary","toId":"synapse","label":"was folded into","appearsOn":"2026-11-05"},
+{"id":22,"fromId":"scale-task","toId":"pairing","label":"besieges","appearsOn":"2026-11-06"},
+{"id":23,"fromId":"scale-task","toId":"boundary-wall","label":"besieges","appearsOn":"2026-11-06"},
+{"id":24,"fromId":"praxis","toId":"emath","label":"publishes as","appearsOn":"2026-11-09"},
+{"id":25,"fromId":"emath","toId":"papers","label":"anchors","appearsOn":"2026-11-09"},
+{"id":26,"fromId":"emath","toId":"threads","label":"speaks through","appearsOn":"2026-11-09"},
+{"id":27,"fromId":"papers","toId":"a0","label":"carries F = 2/3 for","appearsOn":"2026-11-09"},
+{"id":28,"fromId":"threads","toId":"hubble","label":"argues","appearsOn":"2026-11-11"},
+{"id":29,"fromId":"praxis","toId":"arcane","label":"builds","appearsOn":"2026-10-28"},
+{"id":30,"fromId":"laws","toId":"arcane","label":"never-wait rule governs","appearsOn":"2026-11-07"},
+{"id":31,"fromId":"laws","toId":"moneywatch","label":"snapshot law governs","appearsOn":"2026-10-28"},
+{"id":32,"fromId":"betfi","toId":"tiers","label":"all-or-nothing mirrors","appearsOn":"2026-10-24"},
+{"id":33,"fromId":"moneygoal","toId":"haas","label":"lane one is","appearsOn":"2026-10-21"},
+{"id":34,"fromId":"moneygoal","toId":"dispatch","label":"lane three is","appearsOn":"2026-10-09"},
+{"id":35,"fromId":"moneygoal","toId":"betfi","label":"is pursued beside","appearsOn":"2026-10-09"},
+{"id":36,"fromId":"road","toId":"dispatch","label":"was driven into software by","appearsOn":"2026-10-10"},
+{"id":37,"fromId":"road","toId":"pegasus","label":"its record corrected in","appearsOn":"2026-11-09"},
+{"id":38,"fromId":"road","toId":"court","label":"its credential at stake in","appearsOn":"2026-11-05"},
+{"id":39,"fromId":"road","toId":"moneywatch","label":"funds","appearsOn":"2026-11-03"},
+{"id":40,"fromId":"dacut","toId":"moneywatch","label":"is watched beside","appearsOn":"2026-11-03"},
+{"id":41,"fromId":"anchor","toId":"laws","label":"carries","appearsOn":"2026-10-30"},
+{"id":42,"fromId":"neon","toId":"arcane","label":"sibling fighter lane to","appearsOn":"2026-11-06"}
+],
+"implications":[
+{"id":"imp-one-condensate","title":"If there is only one condensate…","domain":"Physics","appearsOn":"2026-10-08","premise":"Spacetime and matter are one substrate, not two ingredients.","chain":"One substrate → no spacetime/matter split → GR as kinematics → mass as relation (Y-junction) → proton mass = tubes + core","consequence":"Gravity is what the medium's flow looks like from inside; GR survives as phonon kinematics while its dynamics become an open question instead of an axiom. 'Separated quark' stops being forbidden and becomes undefined — some sentences the universe doesn't parse.","stakes":"The two-condensate no-go already guards the border: the hadronic and gravitational condensates differ by 10^21.3 in coherence length, so the unity is structured, not simple."},
+{"id":"imp-a0-evolves","title":"If a₀ tracks H(z)…","domain":"Physics","appearsOn":"2026-10-09","premise":"The acceleration scale evolves with the expansion rate — [SUPPORTED] in sign and magnitude, shape [OPEN] at γ ≈ 0.78 ± 0.15.","chain":"a₀ theorem → ρ₀ ≈ ρ_c → a₀ ~ cH₀ at O(1) → a₀(z) tracks H(z) → constant a₀ excluded 5.3σ → z~2 RAR decides","consequence":"The Hubble tension stops being a measurement dispute and becomes a detection: early and late universes disagree because the history between them is mis-modeled. Galaxy dynamics and cosmology turn into two readings of one evolving scale.","stakes":"Decisive datum: the RAR at z~2. Evolving predicts ~3.6×10⁻¹⁰ m/s²; constant predicts 1.2×10⁻¹⁰. One observation pays off or kills the thread."},
+{"id":"imp-snapshot","title":"If a reading is only true at its moment…","domain":"Praxis","appearsOn":"2026-10-28","premise":"Snapshot discipline: a status word at time T describes that moment only; the interval between readings is unobserved.","chain":"Money snapshots → overextension corrected → law stated → applied to jobs, devices, claims → interpretation only on request, labeled","consequence":"Born in the money watch, it migrated everywhere: battery readings, job statuses, account balances, physics claims. Half the record's corrections trace back to someone — usually the agent — extending a snapshot across a gap it never measured.","stakes":"The exception is also law: when the Pilot asks for an interpretation, he gets one — with the hypotheses still labeled as hypotheses."},
+{"id":"imp-boundary","title":"The wall no signature reaches…","domain":"Physics","appearsOn":"2026-11-05","premise":"The boundary specification is degenerate with its matching across a 15–18% band, and no Pilot ruling can price it.","chain":"Boundary term adopted → degeneracy proved → rulings exhausted → non-pair owner required → new theory is the only road","consequence":"Strategy forks honestly: own what rulings can close (the pairing wall) and aim new theory where rulings can't reach. A non-pair microscopic owner — zero instances on record — is the only known shape that prices the boundary.","stakes":"This implication is the web's frontier marker: everything else here is process, evidence, or decision. This one is invention."},
+{"id":"imp-triad-builds","title":"If the triad ships a game at EA quality…","domain":"Creation","appearsOn":"2026-11-07","premise":"The same operating system that runs a physics lab — batteries of checks, standing orders, never-wait rules — is pointed at a consumer fighting game.","chain":"Praxis law → Godot build → 199-check battery → presentation pass → never-wait rule → the lab ships products","consequence":"Praxis stops being a research method and becomes a general production engine: 199 checks, zero failures, a computer opponent playing the Queen through her own input source. The framework's claim widens from 'we judge claims well' to 'we finish things, in any material.'","stakes":"The quality bar was set by the Pilot in three words — 'EA Sports quality' — and the build never waits on him to meet it."},
+{"id":"imp-credential","title":"If a license is a permanent record…","domain":"Livelihood","appearsOn":"2026-11-09","premise":"A CDL makes every roadside minute and every date on a form a career fact — including a two-year error in the driver's own incident record.","chain":"Incident misdated 2023 → paper trail says 2025 → filing stopped → correction sent & verified → decision rests with the safety team","consequence":"Accuracy stops being clerical. The Pegasus correction — volunteering a corrected date to a prospective employer, in writing, verified delivered — is what tier discipline looks like when the claim under review is your own history.","stakes":"The $12 official crash report remains the Pilot's call, unpurchased. The correction stands on the resume, the 97 dispatch sheets, and the sheriff's form — evidence first, purchase only if the record demands it."},
+{"id":"imp-clean-forced","title":"If the clean value were forced in…","domain":"Physics","appearsOn":"2026-11-11","premise":"0.015504 — the genealogically clean candidate — is imposed on the substrate slot anyway.","chain":"Clean value → gap 0.188 eV → coherence ~1 µm → Tc 1237 K → second sound void → hierarchy ruling required","consequence":"The hierarchy the slot is defined by voids: substrate gap 0.188 eV instead of ~10⁻¹³, coherence length collapsing from 5.3×10⁵ m to about a micron, gravitational critical temperature at 1237 K, and the second-sound results voided with it.","stakes":"Adopting it was never really available — it already stands as derived, and forcing it in is a different, larger ruling: 'the hierarchy target is void.' Priced, on record, and not chosen."},
+{"id":"imp-own-matching","title":"If the matching value is owned…","domain":"Physics","appearsOn":"2026-11-12","premise":"0.010934 is adopted for the pairing scalar — with the slot crossing stated as the Pilot's own act, read in its home frame, under a three-pronged kill condition.","chain":"Species mass owned → wall = one scalar → matching value owned + kill condition → compressibility predicted → deeper layer must reproduce the number or it falls","consequence":"The pairing wall closes as bookkeeping. The compressibility becomes a number (4.9385×10⁻⁴¹) and turns into a prediction; the valued contact term is small — barely 2% of the sea's kinetic stiffness — so the scalar was always a correction, never the sea's price.","stakes":"The kill conditions are the point: the value falls if a deeper construction outputs a different one, if the rest-factor derivation completes elsewhere, or if either consumer is valued independently and disagrees. Today's bookkeeping becomes tomorrow's first test of new theory."},
+{"id":"imp-owned-numbers","title":"If owned numbers carry kill conditions…","domain":"Praxis","appearsOn":"2026-11-12","premise":"An owned value is adopted declared-as-owned, genealogy and all, with the condition under which it falls written into the same ruling.","chain":"Own it declared → attach kill condition → bookkeeping firms up → deeper layer inherits a target → valuation becomes a test","consequence":"Ownership stops being a resting place and becomes a target painted on the wall for the next structure. The Standard Model owned the Fermi constant for decades; the win was relocating it to a deeper layer that had to reproduce it. Same play, run deliberately this time.","stakes":"Five inputs were already owned without apology — the dark coupling among them. The implication: a theory's honesty is measured not by how few numbers it owns, but by whether each owned number knows how it dies."},
+{"id":"imp-fresh-slate","title":"If the queue can be killed…","domain":"Public","appearsOn":"2026-11-12","premise":"Every unpublished Threads draft — weeks of batches — was killed on one order, leaving only published work standing.","chain":"Drafts accumulate → approval discipline holds → one order kills all pending → published-only record → next batch starts at zero","consequence":"A backlog stops being an asset and is treated as a liability: stale drafts quietly become the message if you let them. The fresh slate means the next batch starts from the theory's current state, not from October's leftovers.","stakes":"History, not backlog. The same move as the kill ledger: dead things are marked dead so they can never resurface dressed as live options."}
+]};
+
+/* ================= helpers ================= */
+const $ = id => document.getElementById(id);
+const DAY = 86400000;
+const parseD = s => s ? Date.parse(s + "T12:00:00") : null;
+const fmtD = ms => new Date(ms).toLocaleDateString("en-US",
+  {month:"short", day:"numeric", year:"numeric"});
+const byId = {};
+CANON.concepts.forEach(c => byId[c.id] = c);
+const DOMAIN_COLORS = {Physics:"#6ee7ff", Praxis:"#f5c86b",
+  Creation:"#b18cff", Livelihood:"#7ee2a0", Cases:"#ffb86b",
+  Public:"#ff8fb2"};
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h);}
+/* world position: the canon's own x/y, depth from its z
+   plus a fixed per-node spread so the stage is a volume */
+CANON.concepts.forEach(c => {
+  c.wx = (c.x - 50) * 1.7;
+  c.wy = (50 - c.y) * 1.7;
+  c.wz = (c.z - 0.72) * 190 + (hashStr(c.id) % 41) - 20;
+});
+
+/* ================= time (the fourth axis) ================= */
+const T0 = parseD("2026-10-08");
+let T1 = parseD("2026-11-12");
+let W = T1;                       /* current time position */
+let playing = false;
+
+/* ================= camera & flight ================= */
+const cam = {x:0, y:0, z:0, zoom:1};
+const vel = {x:0, y:0, z:0, w:0};
+let boost = false, flyTarget = null;
+const held = new Set();
+const FLYMAP = {w:[0,-1,0,0], s:[0,1,0,0], a:[-1,0,0,0], d:[1,0,0,0],
+  q:[0,0,-1,0], e:[0,0,1,0], ",":[0,0,0,-1], ".":[0,0,0,1],
+  "time-":[0,0,0,-1], "time+":[0,0,0,1], up:[0,-1,0,0],
+  down:[0,1,0,0], left:[-1,0,0,0], right:[1,0,0,0],
+  "depth+":[0,0,1,0], "depth-":[0,0,-1,0]};
+let selected = "praxis";
+
+/* ================= verdict layer ================= */
+let PICKS = [], FOUNDATION = null, verdictsOn = true;
+function layerAt(pick, w){
+  let cur = null;
+  for (const t of pick.timeline){ if (Date.parse(t.at) <= w) cur = t; else break; }
+  return cur;
+}
+function placePicks(){
+  const b = byId["betfi"]; if (!b) return;
+  PICKS.forEach((p, i) => {
+    const a = i * 2.39996, r = 24 + (i % 5) * 6;
+    p.wx = b.wx + Math.cos(a) * r;
+    p.wy = b.wy + Math.sin(a) * r * 0.72;
+    p.wz = b.wz + ((hashStr(p.key) % 61) - 30);
+    p.isPick = true;
+  });
+}
+function renderFoundation(){
+  const nums = $("foundation-nums"), note = $("foundation-note");
+  if (!FOUNDATION){
+    nums.innerHTML = "<span>The verdict layer is not reachable here — " +
+      "this page reads it from the app. The web above stands on its own.</span>";
+    note.textContent = ""; return;
+  }
+  const f = FOUNDATION, bn = f.by_layer["BET NOW"], dnb = f.by_layer["DO NOT BET"];
+  if (f.issued === 0){
+    nums.innerHTML = "<span><b>0</b> bets logged yet</span>";
+    note.textContent = "The ledger opens with the next pull: every market the " +
+      "checker issues a verdict on is written here, and outcomes join each bet " +
+      "as they are recorded. The foundation's math builds from that record — " +
+      "nothing is backfilled, nothing is invented.";
+    return;
+  }
+  const pct = v => v === null || v === undefined ? "—" : Math.round(v * 100) + "%";
+  nums.innerHTML =
+    `<span>issued <b>${f.issued}</b></span>` +
+    `<span>settled <b>${f.settled}</b></span>` +
+    `<span>open <b>${f.open}</b></span>` +
+    `<span>BET NOW hit <b>${pct(bn.hit_rate)}</b> (${bn.decided} decided)</span>` +
+    `<span>DO NOT BET right <b>${pct(dnb.hit_rate)}</b> (${dnb.decided} decided)</span>` +
+    `<span>Brier <b>${bn.brier === null ? "—" : bn.brier}</b></span>`;
+  note.textContent = "Recomputed from the ledger on every read: the app's " +
+    "standing verdict per bet against its settled outcome. Scrub the time " +
+    "rail and the pick nodes around BetFi wear the verdict the app actually " +
+    "held at that moment.";
+}
+fetch("/api/verdict-web.json").then(r => r.json()).then(d => {
+  FOUNDATION = d.foundation; PICKS = d.picks || [];
+  placePicks();
+  PICKS.forEach(p => { const t = Date.parse(p.last_at || p.first_at || "");
+    if (t && t > T1) T1 = t; });
+  if (W > T1) W = T1;
+  renderFoundation();
+}).catch(() => renderFoundation());
+
+/* ================= the 3D stage ================= */
+const cv = $("stage"), ctx = cv.getContext("2d");
+let CW = 0, CH = 0;
+function fitCanvas(){
+  const r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+  CW = r.width; CH = r.height;
+  cv.width = Math.max(1, CW * dpr); cv.height = Math.max(1, CH * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function project(wx, wy, wz){
+  const dz = wz - cam.z, f = 330;
+  const s = f / Math.max(60, f + dz);
+  return {x: CW/2 + (wx - cam.x) * s * cam.zoom,
+          y: CH/2 + (wy - cam.y) * s * cam.zoom, s: s * cam.zoom, dz};
+}
+function bornAt(c){ return parseD(c.appearsOn); }
+function draw(){
+  ctx.clearRect(0, 0, CW, CH);
+  /* starfield depth layers */
+  ctx.fillStyle = "rgba(200,190,255,.35)";
+  for (let i = 0; i < 70; i++){
+    const sx = (hashStr("s" + i) % 997) / 997 * CW, sy = (hashStr("t" + i) % 991) / 991 * CH;
+    const tw = 0.5 + ((hashStr("u" + i) % 10) / 20);
+    ctx.globalAlpha = 0.12 + tw * 0.2;
+    ctx.fillRect(sx - cam.x * 0.06 * tw, sy - cam.y * 0.06 * tw, 1.6, 1.6);
+  }
+  ctx.globalAlpha = 1;
+  const nodes = [];
+  CANON.concepts.forEach(c => { if (bornAt(c) <= W) nodes.push(c); });
+  const pickLive = [];
+  if (verdictsOn) PICKS.forEach(p => { if (layerAt(p, W)) pickLive.push(p); });
+  /* edges */
+  ctx.lineWidth = 1;
+  CANON.edges.forEach(e => {
+    if (parseD(e.appearsOn) > W) return;
+    const a = byId[e.fromId], b = byId[e.toId];
+    if (!a || !b || bornAt(a) > W || bornAt(b) > W) return;
+    const pa = project(a.wx, a.wy, a.wz), pb = project(b.wx, b.wy, b.wz);
+    const hot = selected === a.id || selected === b.id;
+    ctx.strokeStyle = hot ? "rgba(245,200,107,.85)" : "rgba(150,140,200,.28)";
+    ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
+  });
+  const bnode = byId["betfi"];
+  if (bnode && bornAt(bnode) <= W){
+    const pb = project(bnode.wx, bnode.wy, bnode.wz);
+    pickLive.forEach(p => {
+      const pp = project(p.wx, p.wy, p.wz);
+      ctx.strokeStyle = "rgba(150,140,200,.18)";
+      ctx.beginPath(); ctx.moveTo(pb.x, pb.y); ctx.lineTo(pp.x, pp.y); ctx.stroke();
+    });
+  }
+  /* nodes, far to near */
+  const all = nodes.concat(pickLive).map(n =>
+    ({n, pr: project(n.wx, n.wy, n.wz)})).sort((u, v) => v.pr.dz - u.pr.dz);
+  window._hit = [];
+  all.forEach(({n, pr}) => {
+    if (pr.x < -60 || pr.x > CW + 60 || pr.y < -60 || pr.y > CH + 60) return;
+    if (n.isPick){
+      const t = layerAt(n, W);
+      const col = t.layer === "BET NOW" ? "#3ddc84" : "#ff5d5d";
+      const r = Math.max(2.5, 4.2 * pr.s);
+      ctx.beginPath(); ctx.arc(pr.x, pr.y, r + 3, 0, 7);
+      ctx.fillStyle = col + "2e"; ctx.fill();
+      ctx.beginPath(); ctx.arc(pr.x, pr.y, r, 0, 7); ctx.fillStyle = col; ctx.fill();
+      if (n.outcome && n.settled_at && Date.parse(n.settled_at) <= W){
+        ctx.fillStyle = "#06040d"; ctx.font = "bold " + Math.max(7, r) + "px sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(n.outcome === "won" ? "W" : n.outcome === "lost" ? "L" : "½", pr.x, pr.y + .5);
+      }
+      if (n === selected || r > 5){
+        ctx.fillStyle = col; ctx.font = "10px sans-serif"; ctx.textAlign = "center";
+        ctx.fillText(t.layer, pr.x, pr.y + r + 11);
+      }
+      window._hit.push({n, x: pr.x, y: pr.y, r: r + 7});
+      return;
+    }
+    const age = (W - bornAt(n)) / DAY;
+    const grow = Math.min(1, Math.max(.15, age / 9));
+    const r = Math.max(2, n.size * 8.5 * pr.s * grow);
+    const col = DOMAIN_COLORS[n.domain] || "#ccc";
+    const grad = ctx.createRadialGradient(pr.x, pr.y, 0, pr.x, pr.y, r * 2.3);
+    grad.addColorStop(0, col + "55"); grad.addColorStop(1, col + "00");
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(pr.x, pr.y, r * 2.3, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(pr.x, pr.y, r, 0, 7); ctx.fillStyle = col; ctx.fill();
+    if (n.evolvesOn && W >= parseD(n.evolvesOn)){
+      ctx.beginPath(); ctx.arc(pr.x, pr.y, r + 3.5, 0, 7);
+      ctx.strokeStyle = "#f5c86b"; ctx.lineWidth = 2; ctx.stroke();
+    }
+    if (n.id === selected){
+      ctx.beginPath(); ctx.arc(pr.x, pr.y, r + 7, 0, 7);
+      ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.6; ctx.stroke();
+    }
+    if (r > 4.5 || n.id === selected){
+      ctx.fillStyle = "rgba(242,237,228,.92)";
+      ctx.font = (n.id === "praxis" ? "bold " : "") +
+        Math.max(9, Math.min(15, r * .92)) + "px Georgia, serif";
+      ctx.textAlign = "center";
+      const label = n.title.length > 26 ? n.title.slice(0, 25) + "…" : n.title;
+      ctx.fillText(label, pr.x, pr.y - r - 6);
+    }
+    window._hit.push({n, x: pr.x, y: pr.y, r: r + 8});
+  });
+  /* HUD */
+  $("hud-x").textContent = Math.round(cam.x);
+  $("hud-y").textContent = Math.round(-cam.y);
+  $("hud-d").textContent = cam.zoom.toFixed(2);
+  $("hud-w").textContent = fmtD(W);
+  const flying = held.size > 0 || Math.abs(vel.x) + Math.abs(vel.y) +
+    Math.abs(vel.z) + Math.abs(vel.w) > .02 || !!flyTarget;
+  $("hud-fly").innerHTML = flying ? ' · <span class="flying">IN FLIGHT</span>' : "";
+  $("wdate").textContent = fmtD(W);
+  const rail = $("w"); const v = Math.round((W - T0) / (T1 - T0) * 1000);
+  if (document.activeElement !== rail) rail.value = v;
+}
+
+/* flight loop — momentum, eased, the space's own engine */
+let lastT = performance.now();
+function loop(now){
+  const dt = Math.min(50, now - lastT); lastT = now;
+  const sp = (boost ? 2 : 1) * dt / 16.7;
+  let ax = 0, ay = 0, az = 0, aw = 0;
+  held.forEach(k => { const m = FLYMAP[k]; if (m){ ax += m[0]; ay += m[1]; az += m[2]; aw += m[3]; } });
+  if (flyTarget){
+    const dx = flyTarget.wx - cam.x, dy = flyTarget.wy - cam.y, dz = flyTarget.wz - cam.z;
+    cam.x += dx * .07 * sp; cam.y += dy * .07 * sp; cam.z += dz * .07 * sp;
+    if (Math.abs(dx) + Math.abs(dy) + Math.abs(dz) < 1.2) flyTarget = null;
+  } else {
+    vel.x = vel.x * .86 + ax * .55 * sp; vel.y = vel.y * .86 + ay * .55 * sp;
+    vel.z = vel.z * .86 + az * 2.4 * sp;  vel.w = vel.w * .86 + aw * DAY * .55 * sp;
+    cam.x += vel.x; cam.y += vel.y; cam.z += vel.z;
+    if (vel.w) W = Math.min(T1, Math.max(T0, W + vel.w));
+  }
+  if (playing){ W += dt * (T1 - T0) / 7000; if (W >= T1){ W = T1; setPlay(false); } }
+  cam.zoom = Math.min(3.2, Math.max(.45, cam.zoom));
+  draw();
+  requestAnimationFrame(loop);
+}
+
+/* ================= selection & detail ================= */
+function esc(s){ return String(s ?? "").replace(/[&<>"]/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function flyTo(n){ flyTarget = {wx: n.wx, wy: n.wy, wz: n.wz + 40}; }
+function selectNode(n, fly){
+  selected = n; renderDetail(); markLedger();
+  const node = n && n.isPick ? n : byId[n];
+  if (fly && node) flyTo(node);
+}
+function renderDetail(){
+  const el = $("detail");
+  if (selected && selected.isPick){
+    const p = selected, t = layerAt(p, W);
+    el.innerHTML = `<span class="tier" style="color:${t && t.layer === "BET NOW" ? "var(--green)" : "var(--red)"}">${t ? esc(t.layer) : "NOT YET VERDICTED"} · PICK</span>
+      <h2>${esc(p.label)}</h2>
+      <p>${esc(p.sport || "")} — first verdicted ${fmtD(Date.parse(p.first_at))}.
+      The badge this pick wears is the verdict the app held at the time on the rail.</p>
+      ${p.timeline.map(x => `<p>· ${fmtD(Date.parse(x.at))} — <b style="color:${x.layer === "BET NOW" ? "var(--green)" : "var(--red)"}">${esc(x.layer)}</b> (${esc(x.rung || "")})${x.p != null ? " · model " + Math.round(x.p * 100) + "%" : ""}${x.price != null ? " @ " + x.price : ""}</p>`).join("")}
+      ${p.outcome ? `<p class="evo" style="border-color:var(--gold)">Outcome: <b>${esc(p.outcome.toUpperCase())}</b> — settled ${fmtD(Date.parse(p.settled_at))}.</p>` : `<p>Outcome: still open in the ledger.</p>`}`;
+    return;
+  }
+  const c = byId[selected] || byId["praxis"];
+  const conns = CANON.edges.filter(e => e.fromId === c.id || e.toId === c.id);
+  el.innerHTML = `
+    <span class="tier">${esc(c.tier)}</span>
+    <h2>${esc(c.title)}</h2>
+    <span class="chip">${esc(c.domain)}</span> <span class="chip">enters ${esc(c.appearsOn)}</span>
+    <p>${esc(c.body)}</p>
+    <p class="insight">${esc(c.insight)}</p>
+    ${c.evolvedNote ? (W >= parseD(c.evolvesOn)
+      ? `<p class="evo"><b>Evolution — ${esc(c.evolvesOn)}:</b> ${esc(c.evolvedNote)}</p>`
+      : `<p class="evo">This node changes state on ${esc(c.evolvesOn)} — fly the time rail there to see it.</p>`) : ""}
+    <div>${conns.map(e => {
+      const other = e.fromId === c.id ? e.toId : e.fromId;
+      const dir = e.fromId === c.id ? "→" : "←";
+      return `<button class="conn" data-goto="${other}">${esc(byId[other].title)} <b>${dir} ${esc(e.label)}</b></button>`;
+    }).join("")}</div>`;
+  el.querySelectorAll("[data-goto]").forEach(b =>
+    b.addEventListener("click", () => selectNode(b.dataset.goto, true)));
+}
+function buildLedger(){
+  const el = $("ledger");
+  el.innerHTML = CANON.concepts.map(c =>
+    `<button class="row" role="option" data-id="${c.id}" aria-selected="${c.id === selected}">
+       <span class="dot" style="background:${DOMAIN_COLORS[c.domain]}"></span>
+       <span>${esc(c.title)}<br><span class="t">${esc(c.tier)}</span></span>
+     </button>`).join("");
+  el.querySelectorAll(".row").forEach(r => {
+    r.addEventListener("click", () => selectNode(r.dataset.id, true));
+  });
+}
+function markLedger(){
+  document.querySelectorAll("#ledger .row").forEach(r =>
+    r.setAttribute("aria-selected", String(r.dataset.id === selected)));
+}
+
+/* ================= input — keyboard, mouse, touch ================= */
+addEventListener("keydown", e => {
+  if (e.target.matches("input,textarea,select")) return;
+  const k = e.key.toLowerCase();
+  if (k === "shift"){ boost = true; $("btn-boost").setAttribute("aria-pressed", "true"); return; }
+  if (k === "p" && !e.repeat){ setPlay(!playing); return; }
+  if (k === "0"){ cam.x = cam.y = cam.z = 0; cam.zoom = 1; W = T1; flyTarget = null; return; }
+  if (FLYMAP[k] && $("view-web").classList.contains("live")){
+    held.add(k); e.preventDefault();
+  }
+  if ((e.key === "Enter") && document.activeElement?.dataset?.goto !== undefined){}
+});
+addEventListener("keyup", e => {
+  const k = e.key.toLowerCase();
+  if (k === "shift"){ boost = false; $("btn-boost").setAttribute("aria-pressed", "false"); }
+  held.delete(k);
+});
+addEventListener("blur", () => held.clear());
+let drags = new Map(), pinchD = 0;
+cv.addEventListener("pointerdown", e => {
+  cv.setPointerCapture(e.pointerId);
+  drags.set(e.pointerId, {x: e.clientX, y: e.clientY, moved: false});
+  if (drags.size === 2){
+    const [a, b] = [...drags.values()];
+    pinchD = Math.hypot(a.x - b.x, a.y - b.y);
+  }
+});
+cv.addEventListener("pointermove", e => {
+  const d = drags.get(e.pointerId); if (!d) return;
+  const dx = e.clientX - d.x, dy = e.clientY - d.y;
+  if (Math.abs(dx) + Math.abs(dy) > 3) d.moved = true;
+  if (drags.size === 1 && d.moved){
+    cam.x -= dx / cam.zoom; cam.y -= dy / cam.zoom; flyTarget = null;
+  }
+  d.x = e.clientX; d.y = e.clientY;
+  if (drags.size === 2){
+    const [a, b] = [...drags.values()];
+    const nd = Math.hypot(a.x - b.x, a.y - b.y);
+    if (pinchD) cam.zoom *= nd / pinchD;
+    pinchD = nd;
+  }
+});
+cv.addEventListener("pointerup", e => {
+  const d = drags.get(e.pointerId); drags.delete(e.pointerId);
+  if (d && !d.moved){
+    const r = cv.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+    let best = null, bd = 1e9;
+    (window._hit || []).forEach(h => {
+      const dd = Math.hypot(h.x - mx, h.y - my);
+      if (dd < Math.max(h.r, 14) && dd < bd){ bd = dd; best = h.n; }
+    });
+    if (best) selectNode(best.isPick ? best : best.id, false);
+  }
+});
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  cam.zoom *= e.deltaY < 0 ? 1.09 : 0.92;
+}, {passive: false});
+document.querySelectorAll("#flypad button").forEach(b => {
+  const k = b.dataset.fly;
+  const dn = e => {
+    e.preventDefault();
+    if (k === "home"){
+      const n = selected && selected.isPick ? selected : byId[selected];
+      if (n) flyTo(n); return;
+    }
+    held.add(k); b.classList.add("held");
+    clearTimeout(b._t);
+    b._t = setTimeout(() => {}, 300);
+  };
+  const up = () => { held.delete(k); b.classList.remove("held"); };
+  b.addEventListener("pointerdown", dn);
+  b.addEventListener("pointerup", up);
+  b.addEventListener("pointerleave", up);
+  b.addEventListener("click", e => { if (k !== "home") e.preventDefault(); });
+});
+$("btn-boost").addEventListener("click", () => {
+  boost = !boost; $("btn-boost").setAttribute("aria-pressed", String(boost));
+});
+$("btn-verdicts").addEventListener("click", () => {
+  verdictsOn = !verdictsOn;
+  $("btn-verdicts").setAttribute("aria-pressed", String(verdictsOn));
+});
+function setPlay(on){
+  playing = on;
+  $("btn-play").textContent = on ? "⏸ TIME" : "▶ TIME";
+  $("btn-play").setAttribute("aria-pressed", String(on));
+}
+$("btn-play").addEventListener("click", () => setPlay(!playing));
+$("w").addEventListener("input", e => {
+  W = T0 + (T1 - T0) * (e.target.value / 1000); setPlay(false);
+});
+
+/* ================= views ================= */
+document.querySelectorAll("nav.tabs [data-view]").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs [data-view]").forEach(x =>
+      x.setAttribute("aria-selected", String(x === b)));
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("live"));
+    $("view-" + b.dataset.view).classList.add("live");
+    if (b.dataset.view === "web"){ fitCanvas(); }
+  });
+});
+function gotoView(name){
+  document.querySelector(`nav.tabs [data-view="${name}"]`).click();
+}
+$("sz-compact").addEventListener("click", () => {
+  document.body.classList.remove("minimal");
+  $("sz-compact").setAttribute("aria-pressed", "true");
+  $("sz-minimal").setAttribute("aria-pressed", "false"); fitCanvas();
+});
+$("sz-minimal").addEventListener("click", () => {
+  document.body.classList.add("minimal");
+  $("sz-minimal").setAttribute("aria-pressed", "true");
+  $("sz-compact").setAttribute("aria-pressed", "false"); fitCanvas();
+});
+
+/* ================= praxis section ================= */
+function conceptCard(c){
+  return `<div class="card" style="margin-top:10px;">
+    <span class="tier">${esc(c.tier)}</span><h2>${esc(c.title)}</h2>
+    <p>${esc(c.body)}</p><p class="insight">${esc(c.insight)}</p>
+    ${c.evolvedNote ? `<p class="evo"><b>${esc(c.evolvesOn)}:</b> ${esc(c.evolvedNote)}</p>` : ""}
+    <button data-see="${c.id}">SEE IT IN THE WEB ◎</button></div>`;
+}
+$("praxis-cards").innerHTML =
+  ["praxis", "triad", "laws", "anchor", "scale-task"].map(id => conceptCard(byId[id])).join("") +
+  `<h3 class="serif" style="letter-spacing:.08em;margin-top:18px;">THE TWO WALLS</h3>` +
+  ["pairing", "candidates", "boundary-wall", "boundary"].map(id => conceptCard(byId[id])).join("");
+const EVENTS = [];
+CANON.concepts.forEach(c => {
+  EVENTS.push({date: c.appearsOn, kind: "ENTERS THE WEB", c});
+  if (c.evolvesOn) EVENTS.push({date: c.evolvesOn, kind: "A RULING LANDS", c, note: c.evolvedNote});
+});
+EVENTS.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+let tlIdx = EVENTS.length - 1;
+function renderTimeline(){
+  $("timeline").innerHTML = EVENTS.map((ev, i) =>
+    `<div class="tlstep ${i === tlIdx ? "live" : ""}">
+       <span class="date">${esc(ev.date)}</span> · <span class="chip gold">${esc(ev.kind)}</span>
+       <h3 class="serif" style="margin:6px 0 2px;">${esc(ev.c.title)}</h3>
+       <p style="color:var(--dim);line-height:1.5;">${esc(ev.note || ev.c.body)}</p>
+     </div>`).join("");
+  $("tl-count").textContent = (tlIdx + 1) + " / " + EVENTS.length;
+}
+$("tl-prev").addEventListener("click", () => { tlIdx = Math.max(0, tlIdx - 1); renderTimeline(); });
+$("tl-next").addEventListener("click", () => { tlIdx = Math.min(EVENTS.length - 1, tlIdx + 1); renderTimeline(); });
+$("tl-goto").addEventListener("click", () => {
+  const ev = EVENTS[tlIdx];
+  gotoView("web"); W = Math.min(T1, parseD(ev.date) + DAY - 1);
+  selectNode(ev.c.id, true);
+});
+document.querySelectorAll("[data-see]").forEach(b =>
+  b.addEventListener("click", () => {
+    gotoView("web"); selectNode(b.dataset.see, true);
+  }));
+
+/* ================= implications ================= */
+let impIdx = 0, impStep = 0;
+function impSteps(im){
+  return [{kind: "PREMISE", text: im.premise}]
+    .concat(im.chain.split("→").map(s => ({kind: "THE CHAIN", text: s.trim()})))
+    .concat([{kind: "CONSEQUENCE", text: im.consequence},
+             {kind: "WHAT'S AT STAKE", text: im.stakes}]);
+}
+function renderImp(){
+  const im = CANON.implications[impIdx], steps = impSteps(im);
+  impStep = Math.min(impStep, steps.length - 1);
+  $("imp-list").innerHTML = CANON.implications.map((x, i) =>
+    `<button data-imp="${i}" class="${i === impIdx ? "on" : ""}">${esc(x.title)}</button>`).join("");
+  document.querySelectorAll("[data-imp]").forEach(b =>
+    b.addEventListener("click", () => { impIdx = +b.dataset.imp; impStep = 0; renderImp(); }));
+  $("imp-stage").innerHTML = steps.map((s, i) =>
+    `<div class="impstep ${i === impStep ? "live" : ""}">
+       <div class="kind">${esc(s.kind)} — ${esc(im.title)}</div>
+       <p style="font-size:1.12em;">${esc(s.text)}</p></div>`).join("");
+  $("imp-dots").innerHTML = steps.map((_, i) => `<i class="${i === impStep ? "on" : ""}"></i>`).join("");
+  $("imp-count").textContent = "CHAIN " + (impIdx + 1) + " / " + CANON.implications.length +
+    " · STEP " + (impStep + 1) + " / " + steps.length;
+}
+$("imp-prev").addEventListener("click", () => { if (impStep > 0){ impStep--; renderImp(); } });
+$("imp-next").addEventListener("click", () => {
+  const n = impSteps(CANON.implications[impIdx]).length;
+  if (impStep < n - 1){ impStep++; renderImp(); }
+});
+addEventListener("keydown", e => {
+  if (!$("view-imp").classList.contains("live")) return;
+  if (e.key === "ArrowRight") $("imp-next").click();
+  if (e.key === "ArrowLeft") $("imp-prev").click();
+});
+
+/* ================= boot ================= */
+buildLedger(); renderDetail(); renderTimeline(); renderImp();
+fitCanvas(); addEventListener("resize", fitCanvas);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
